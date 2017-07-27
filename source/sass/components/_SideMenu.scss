@@ -1,0 +1,27 @@
+.side-menu {
+  border-right: 1px solid #dfdfdf;
+  width: 20%;
+  height: calc(100vh - 65px);
+  position: fixed;
+  top: 65px;
+  left: 0;
+  overflow: auto;
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    cursor: pointer;
+    color: #4a4a4a;
+    list-style-type: none;
+    font-size: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-transform: capitalize;
+    border-bottom: 1px solid #dfdfdf;
+    &.active, &:hover {
+      background: #000;
+      color: #fff;
+    }
+  }
+}

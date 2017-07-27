@@ -32,8 +32,6 @@ class Dropdown extends React.Component {
     this.setState({ selected })
   }
   scrollDown(selectedItem, scrollContainer) {
-    console.log(selectedItem);
-    if (selectedItem !== null) {console.log(selectedItem.offsetTop)}
     if (selectedItem !== null && selectedItem.offsetTop > 196) {
       scrollContainer.scrollTop += selectedItem.offsetHeight
     }
@@ -48,6 +46,8 @@ class Dropdown extends React.Component {
     const selectedItem = document.querySelector('.is-selected')
     const scrollContainer = document.querySelector('.dropdown-list>ul')
 
+    console.log(activeItem);
+
     if (e.keyCode === 40 && (activeItem >= -1 && activeItem < options.length)) {
       this.setState({activeItem: activeItem + 1}, () => { this.scrollDown(selectedItem, scrollContainer) })
 
@@ -55,7 +55,7 @@ class Dropdown extends React.Component {
       this.setState({activeItem: activeItem - 1}, () => { this.scrollUp(selectedItem, scrollContainer) })
     }
     if (e.keyCode === 13 && (activeItem > -1 && activeItem < options.length)) {
-      this.setState({ selected: options[activeItem].label, isActive: false, activeItem: -1 })
+      this.setState({ selected: options[activeItem].label, isActive: false, activeItem: 0 })
     }
   }
   setOptions(data) {
@@ -84,7 +84,7 @@ class Dropdown extends React.Component {
           readOnly={!((loadOptions !== undefined) || searchable)}
           onFocus={this.handleFocus}
           onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
+          
           value={selected}
           placeholder={placeholder || 'Select'}
         />

@@ -1,0 +1,165 @@
+$font-family-serif: Garamond, "Times New Roman", serif;
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$grey-border: #eee;
+$grey-text: #aaa;
+$black: #2c2c2c;
+$blue: #5cb8ea;
+$red: #e75051;
+$green: #8ccb47;
+$white: #fff;
+
+.OrderPage div {
+}
+.OrderPage {
+  width:100%;
+}
+.MapWrapper {
+}
+.clearfix {
+  clear:left;
+}
+.OrderitemQuantity {
+  background: $black;
+  color: white;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 14px;
+  margin-right: 4px;
+}
+.Orderitem {
+  font-weight:300;
+  width: 50%;
+  float: left;
+  padding: 5px 0px;
+  font-size: 16px;
+}
+.OrderWrapper {
+  display: inline-block;
+  position: relative;
+}
+.InfoWrapper {
+  font-size:  18px; 
+  width: 990px;
+  position: fixed;
+  bottom: 20px;
+  left:6px;
+  margin: 0 auto;
+  background: white;
+}
+.hide {
+  display: none;
+}
+.actionBox {
+  background-color: #343434;
+}
+button {
+  width: 220px;
+  font-size: 14px;
+  -webkit-transition: all 0.3s; /* Safari */
+  transition: all 0.3s;
+}
+.greenBtn {
+  color: $green;
+  border-color: $green;
+}
+.blueBtn {
+  color: $blue;
+  border-color: $blue;
+}
+.redBtn {
+  color: $red;
+  border-color: $red;
+}
+.greenBtn:hover {
+  background-color: $green;
+  color: white;
+}
+.blueBtn:hover {
+  background-color: $blue;
+  color: white;
+}
+.redBtn:hover {
+  background-color: $red;
+  color: white;
+}
+
+.OrderNum {
+  display: inline-block;
+  background-color: white !important;
+  text-align: center;
+  height: 50px;
+  border : 1px solid #eee;
+  width: 25%;
+}
+.SummaryInfo {
+  background: #414141;
+  padding-top: 11px;
+  color: white;
+  height: 46px;
+  padding-bottom: 4px;
+}
+.CostSummary {
+  text-align: center;
+  width: 33%;
+  display: inline-block;
+}
+
+.EstimatedTime{
+  text-align: right;
+  width: 33%;
+  display: inline-block;
+}
+
+.QuantitySummary {
+  width: 33%;
+  display: inline-block;
+}
+.OrderLabel {
+  color: #b2aeae;
+}
+
+.StatusBox {
+  display: inline-block;
+  width: 50%;
+}
+.DurationBox {
+  display: inline-block;
+  width: 25%;
+}
+
+.InfoBlock
+{
+  padding: 8px 40px;
+  border:solid 1px;
+  border-bottom: 0px;
+  border-color:rgb(178, 178, 178); 
+}
+.DetailBlock
+{
+  width: 33%;
+  display: inline-block;
+  padding: 8px 40px;
+  vertical-align: top;
+  border-color:rgb(178, 178, 178); 
+}
+.ConsumerInfo
+{
+  padding-left: 40px;
+  padding-right: 20px;
+}
+.RetailerInfo
+{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.DelivererInfo
+{
+  padding-left: 20px;
+  padding-right: 40px;
+}
+hr {
+  border: 0;
+  border-top: 1px solid $grey-border;
+  margin: 2rem 0;
+}
