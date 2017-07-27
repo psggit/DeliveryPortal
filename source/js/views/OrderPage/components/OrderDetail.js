@@ -10,7 +10,7 @@ class OrderDetail extends Component {
     this.props.unmountOrderDetail()
   }
   openGmap() {
-    window.open(`/order/${1}`, '_blank')
+    window.open(`/orders/${1}`, '_blank')
   }
   componentDidMount() {
 
@@ -27,6 +27,7 @@ class OrderDetail extends Component {
     }
 
     const loadingOrderDetail = true
+    const { ordersType } = this.props
 
     return (
       <div className='order-detail'>
@@ -45,8 +46,16 @@ class OrderDetail extends Component {
                   </div>
                   <p className='order-status'>Awaiting retailer confirmation</p>
                 </div>
-                <button className='btn btn-green'>Assign me</button>
-                <button className='btn btn-blue'>Skip order</button>
+                {
+                  ordersType !== 'history'
+                  ? (
+                    <div>
+                      <button className='btn btn-green'>Assign me</button>
+                      <button className='btn btn-blue'>Skip order</button>
+                    </div>
+                  )
+                  : ''
+                }
               </div>
 
               <div className='retailer detail-card'>
@@ -58,8 +67,16 @@ class OrderDetail extends Component {
                   </div>
                   <p className='order-status'>Awaiting retailer confirmation</p>
                 </div>
-                <button className='btn btn-red'>Cancel</button>
-                <button className='btn btn-green'>Confirm</button>
+                {
+                  ordersType !== 'history'
+                  ? (
+                    <div>
+                      <button className='btn btn-red'>Cancel</button>
+                      <button className='btn btn-green'>Confirm</button>
+                    </div>
+                  )
+                  : ''
+                }
               </div>
 
               <div className='delivery detail-card'>
@@ -71,16 +88,29 @@ class OrderDetail extends Component {
                   </div>
                   <p className='order-status'>Awaiting retailer confirmation</p>
                 </div>
-                <button className='btn btn-red'>Cancel</button>
-                <button className='btn btn-green'>Confirm</button>
+                {
+                  ordersType !== 'history'
+                  ? (
+                    <div>
+                      <button className='btn btn-red'>Cancel</button>
+                      <button className='btn btn-green'>Confirm</button>
+                    </div>
+                  )
+                  : ''
+                }
+
               </div>
 
-              <button
-                style={trackBtnStyle}
-                onClick={this.openGmap}
-                className='btn btn-black btn-lg'>
-                Track the order
-              </button>
+              {
+                ordersType !== 'history'
+                ? <button
+                  style={trackBtnStyle}
+                  onClick={this.openGmap}
+                  className='btn btn-black btn-lg'>
+                  Track the order
+                </button>
+                : ''
+              }
             </div>
           )
           : <div className='loader'>loading...</div>

@@ -12,6 +12,7 @@ class OrdersList extends Component {
     this.props.mountOrderDetail()
   }
   render() {
+    const { ordersType } = this.props
     return (
       <div className='orders-list' onClick={this.handleClick}>
         {

@@ -79,6 +79,7 @@ export default class OrderPage extends Component {
   // }
 
   render() {
+    console.log('mounted');
     const {
       state,
       order,
@@ -141,6 +142,7 @@ export default class OrderPage extends Component {
     const { shouldMountOrderDetail } = this.state
     const { shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
+    const ordersType = match.path.split('/').length < 3 ? 'all' :  match.path.split('/')[2]
 
     return (
       <div className='main-wrapper'>
@@ -150,8 +152,12 @@ export default class OrderPage extends Component {
           <div className='orders-filter'>
             <Dropdown options={options} onChange={this.handleChange} />
           </div>
-          <OrdersList mountOrderDetail={this.mountOrderDetail} />
-          { shouldMountOrderDetail ? <OrderDetail unmountOrderDetail={this.unmountOrderDetail} /> : '' }
+          <OrdersList ordersType={ordersType} mountOrderDetail={this.mountOrderDetail} />
+          {
+            shouldMountOrderDetail
+            ? <OrderDetail ordersType={ordersType} unmountOrderDetail={this.unmountOrderDetail} />
+            : ''
+          }
         </div>
         <div className='OrderPage'>
           {/* <div onClick={this.epicenter} className='HeadingWrapper'>
