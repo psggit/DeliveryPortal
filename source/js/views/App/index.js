@@ -13,11 +13,11 @@ const publicPath = '/';
 
 export const routeCodes = {
   DASHBOARD: publicPath,
-  gmap: `${ publicPath }order/:id`,
+  gmap: `${ publicPath }orders/:id`,
   DASHBOARD: `${ publicPath }dashboard`,
   orders: `${ publicPath }orders`,
-  assigned: `${ publicPath }assigned`,
-  history: `${ publicPath }history`
+  assigned: `${ publicPath }orders/assigned`,
+  history: `${ publicPath }orders/history`
 };
 
 export default class App extends Component {
@@ -32,7 +32,9 @@ export default class App extends Component {
           <div className='Page'>
             <Switch>
               {/* <Route exact path={ publicPath } component={ DashBoard } /> */}
-              <Route path={ routeCodes.orders} component={ OrderPage } />
+              <Route exact path={ routeCodes.orders } component={ OrderPage } />
+              <Route exact path={ routeCodes.assigned } component={ OrderPage } />
+              <Route exact path={ routeCodes.history } component={ OrderPage } />
               <Route path={ routeCodes.gmap} component={ Gmap } />
               {/* <Route path={ routeCodes.DASHBOARD} component={ DashBoard } /> */}
               <Route path='*' component={ NotFound } />
