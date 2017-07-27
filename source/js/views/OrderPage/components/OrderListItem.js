@@ -11,7 +11,7 @@ class OrderListItem extends Component {
       <div className='orders-list-item'>
         <div style={itemStyle}>
           <p><b>#2323</b></p>
-          <p>Mamun khan</p>
+          <p>John Carter</p>
         </div>
         <p className='order-status'>Awaiting retailer confirmation</p>
       </div>

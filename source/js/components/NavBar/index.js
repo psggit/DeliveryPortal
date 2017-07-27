@@ -20,10 +20,9 @@ class NavBar extends Component {
       <header>
         <ul>
           <li className="logo">
-            <img src="https://www.hipbar.com/wp-content/uploads/2017/02/first_fold_logo.png" />
+            <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
           </li>
           <li className="resume-pause">
-            <div>
               <span>
                 {
                   shouldDeliever
@@ -38,7 +37,6 @@ class NavBar extends Component {
                   : getIcon('play')
                 }
               </span>
-            </div>
           </li>
         </ul>
       </header>

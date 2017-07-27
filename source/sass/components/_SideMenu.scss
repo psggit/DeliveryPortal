@@ -10,6 +10,15 @@
     margin: 0;
     padding: 0;
   }
+  a {
+    text-decoration: none;
+    &:hover {
+      li {
+        background: #000;
+        color: #fff;
+      }
+    }
+  }
   li {
     cursor: pointer;
     color: #4a4a4a;
@@ -19,9 +28,5 @@
     box-sizing: border-box;
     text-transform: capitalize;
     border-bottom: 1px solid #dfdfdf;
-    &.active, &:hover {
-      background: #000;
-      color: #fff;
-    }
   }
 }

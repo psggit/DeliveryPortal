@@ -20,8 +20,15 @@ html {
 }
 
 body {
+  font-size: 16px;
   color: $black;
   font-family: $source-sans;
+}
+
+.main-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .App {
@@ -64,21 +71,38 @@ h3 {
 }
 
 button {
-  background: transparent;
-  border-radius: 9px;
-  border: 2px solid $black;
   cursor: pointer;
-  width: 136px;
-  padding: 7px;
-  font-size: 1.5rem;
-}
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: $source-sans;
+  &.btn {
+    border-style: none;
+    border-radius: 2px;
+    padding: 5px 20px;
+    color: #fff;
+    &:focus {
+      outline: 0;
+    }
+  }
+  &.btn-green {
+    background: #3ea03e;
+  }
+  &.btn-red {
+    background: #c72f2a;
+  }
+  &.btn-orange {
 
-button:disabled {
-  opacity: 0.3;
-}
-
-button:hover {
-  background: $white;
+  }
+  &.btn-blue {
+    background: #00b3ff;
+  }
+  &.btn-black {
+    background: #333;
+  }
+  &.btn-lg {
+    width: 320px;
+    height: 46px;
+  }
 }
 
 .Menu {

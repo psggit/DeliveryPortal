@@ -10,7 +10,14 @@ export function getDashboardStatus() {
 export function stateChange(value) {
   return {
     type: value,
-  };
+  }
+}
+
+export function filterOrdersList(filter) {
+  return {
+    type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
+    data: filter
+  }
 }
 
 export function testAction() {

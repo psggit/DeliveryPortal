@@ -15,6 +15,70 @@
     top: 65px;
     left: calc(20% + 20px);
     width: calc(50% - 40px);
+    input {
+      background: #333;
+      color: #fff;
+    }
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.order-detail {
+  padding: 20px;
+  position: fixed;
+  top: 65px;
+  left: 20%;
+  width: 50%;
+  height: calc(100vh - 65px);
+  overflow: auto;
+  background: #fff;
+  border-right: 1px solid #dfdfdf;
+  .return-to-list {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    svg {
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .detail-card {
+    text-align: left;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dfdfdf;
+    .btn {
+      margin-right: 20px;
+    }
+    h4 {
+      margin-top: 0;
+      color: #4a4a4a;
+    }
+    .info {
+      padding: 20px;
+      box-shadow: 0 0px 4px 0 #eee;
+      font-size: 16px;
+      margin: 0 auto;
+      margin-bottom: 20px;
+      background: #fff;
+      width: 100%;
+      p {
+        color: #4a4a4a;
+        margin: 0;
+      }
+      .order-status {
+        color: #9b9b9b;
+        font-style: italic;
+      }
+    }
   }
 }
 
@@ -23,6 +87,7 @@
 }
 
 .orders-list-item {
+  cursor: pointer;
   font-size: 16px;
   margin: 0 auto;
   box-shadow: 0 0px 4px 0 #eee;
@@ -31,6 +96,7 @@
   width: 100%;
   padding: 20px;
   p {
+    color: #4a4a4a;
     margin: 0;
   }
   .order-status {

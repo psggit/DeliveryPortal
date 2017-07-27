@@ -29,7 +29,8 @@ class Dropdown extends React.Component {
     this.setState({ isActive: true, activeItem: -1 })
   }
   handleClick(selected) {
-    this.setState({ selected })
+    this.props.onChange(selected.value)
+    this.setState({ selected: selected.label })
   }
   scrollDown(selectedItem, scrollContainer) {
     if (selectedItem !== null && selectedItem.offsetTop > 196) {
@@ -84,7 +85,7 @@ class Dropdown extends React.Component {
           readOnly={!((loadOptions !== undefined) || searchable)}
           onFocus={this.handleFocus}
           onChange={this.handleChange}
-          
+
           value={selected}
           placeholder={placeholder || 'Select'}
         />
@@ -107,7 +108,7 @@ class Dropdown extends React.Component {
                     return (
                       <li
                          className={`${activeItem === i ? 'is-selected' : ''}`}
-                         onClick={() => { this.handleClick(item.label) }}>
+                         onClick={() => { this.handleClick(item) }}>
                         {
                           item.image
                           ? <span className='gravatar'><img src={item.image} /></span>
