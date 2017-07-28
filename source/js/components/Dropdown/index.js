@@ -107,6 +107,7 @@ class Dropdown extends React.Component {
                   .map((item, i) => {
                     return (
                       <li
+                         key={`dropdown-option-${i}`}
                          className={`${activeItem === i ? 'is-selected' : ''}`}
                          onClick={() => { this.handleClick(item) }}>
                         {
