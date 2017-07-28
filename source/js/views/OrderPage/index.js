@@ -34,7 +34,8 @@ export default class OrderPage extends Component {
     super()
     this.state = {
       shouldMountOrderDetail: false,
-      shouldListScroll: true
+      shouldListScroll: true,
+      currentOrderId: null
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
@@ -47,17 +48,19 @@ export default class OrderPage extends Component {
     // fetchOrderInformation
   }
 
-  mountOrderDetail() {
+  mountOrderDetail(orderId) {
     this.setState({
       shouldMountOrderDetail: true,
-      shouldListScroll: false
+      shouldListScroll: false,
+      currentOrderId: orderId
     })
   }
 
   unmountOrderDetail() {
     this.setState({
       shouldMountOrderDetail: false,
-      shouldListScroll: true
+      shouldListScroll: true,
+      currentOrderId: null
     })
   }
 
@@ -79,7 +82,6 @@ export default class OrderPage extends Component {
   // }
 
   render() {
-    console.log('mounted');
     const {
       state,
       order,
@@ -139,7 +141,7 @@ export default class OrderPage extends Component {
       { value: 'awaiting confirmation from delievery boy', label: 'Awaiting confirmation from delievery boy'}
     ]
 
-    const { shouldMountOrderDetail } = this.state
+    const { shouldMountOrderDetail,  currentOrderId } = this.state
     const { shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
     const ordersType = match.path.split('/').length < 3 ? 'all' :  match.path.split('/')[2]
@@ -150,12 +152,23 @@ export default class OrderPage extends Component {
         <SideMenu />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
-            <Dropdown options={options} onChange={this.handleChange} />
+            <Dropdown
+              options={options}
+              onChange={this.handleChange}
+            />
           </div>
-          <OrdersList ordersType={ordersType} mountOrderDetail={this.mountOrderDetail} />
+          <OrdersList
+            ordersType={ordersType}
+            unmountOrderDetail={this.unmountOrderDetail}
+            mountOrderDetail={this.mountOrderDetail}
+          />
           {
             shouldMountOrderDetail
-            ? <OrderDetail ordersType={ordersType} unmountOrderDetail={this.unmountOrderDetail} />
+            ? <OrderDetail
+              ordersType={ordersType}
+              currentOrderId={currentOrderId}
+              unmountOrderDetail={this.unmountOrderDetail}
+            />
             : ''
           }
         </div>
