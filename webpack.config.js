@@ -4,7 +4,7 @@ const path = require('path');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-var AbsolutePathProviderPlugin = require('abspath-webpack-plugin')
+const AbsolutePathProviderPlugin = require('abspath-webpack-plugin')
 const SpritePlugin = require('svg-sprite-loader/plugin');
 const autoprefixer = require('autoprefixer');
 
