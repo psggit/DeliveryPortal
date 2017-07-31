@@ -1,3 +1,17 @@
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.chips {
+  height: 16px;
+  margin-top: 5px;
+  img {
+    height: 16px;
+    margin-right: 5px;
+  }
+}
+
 .order-wrapper {
   position: fixed;
   margin-left: 20%;
@@ -24,10 +38,19 @@
 
 .loader {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 44%;
+  left: 44%;
+  width: 80px;
+  height: 80px;
+  border: 10px solid #dfdfdf;
+  border-top: 10px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  background-color: #fff;
+  // display: block;
+  // transform: translate(-50%, -50%);
 }
+
 
 .order-detail {
   padding: 20px;
@@ -62,20 +85,52 @@
       margin-top: 0;
       color: #4a4a4a;
     }
-    .info {
+    .personal-info {
+      // width: 50%;
       padding: 20px;
-      box-shadow: 0 0px 4px 0 #eee;
       font-size: 16px;
-      margin: 0 auto;
-      margin-bottom: 20px;
+      // margin-bottom: 20px;
       background: #fff;
-      width: 100%;
       p {
         color: #4a4a4a;
         margin: 0;
       }
+      .name {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .address {
+        margin-bottom: 10px;
+      }
+      .phone {
+        padding: 0 10px;
+        margin-top: 10px;
+        display: inline-block;
+        border-radius: 2px;
+        border: 1px solid #4a4a4a;
+      }
       .order-status {
+        margin-top: 10px;
         color: #9b9b9b;
+        font-style: italic;
+      }
+    }
+    .order-info {
+      padding: 20px;
+      font-size: 16px;
+      color: #4a4a4a;
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        li {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+      .delivery-charge {
+        color: #ff3b34;
+        margin-top: 15px;
         font-style: italic;
       }
     }
@@ -95,6 +150,9 @@
   background: #fff;
   width: 100%;
   padding: 20px;
+  * {
+    pointer-events: none;
+  }
   p {
     color: #4a4a4a;
     margin: 0;

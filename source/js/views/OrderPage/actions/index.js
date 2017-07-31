@@ -1,4 +1,3 @@
-import api from './../api';
 import * as ActionTypes from './../constants/actions'
 
 export function getDashboardStatus() {
@@ -17,6 +16,13 @@ export function filterOrdersList(filter) {
   return {
     type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
     data: filter
+  }
+}
+
+export function assignOrder(id) {
+  return {
+    type: ActionTypes.REQUEST_ASSIGN_ORDER,
+    data: id
   }
 }
 

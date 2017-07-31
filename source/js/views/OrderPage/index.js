@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { filterOrdersList } from './actions'
+import * as actions from './actions'
 import { getIcon } from './utils'
 import * as ActionTypes from './constants/actions'
 import OrderInfo from './components/OrderInfo'
@@ -10,6 +10,7 @@ import SideMenu from './components/SideMenu'
 import OrdersList from './components/OrdersList'
 import Dropdown from '@components/Dropdown'
 import OrderDetail from './components/OrderDetail'
+import { filterOptions } from './constants/strings'
 
 @connect(state => ({
   state: state.OrderPage.get('state'),
@@ -46,6 +47,10 @@ export default class OrderPage extends Component {
 
   componentWillMount() {
     // fetchOrderInformation
+  }
+
+  handleConfirmAssign() {
+    // TODO: modify orders list with assigned orders
   }
 
   mountOrderDetail(orderId) {
@@ -134,12 +139,6 @@ export default class OrderPage extends Component {
     //   'OrderDelivered': '',
     // }
     //
-    const options = [
-      { value: 'finding retailer', label: 'Finding Retailer'},
-      { value: 'awaiting confirmation from retailer', label: 'Awaiting confirmation from retailer '},
-      { value: 'finding delievery boy', label: 'Finding delievery boy'},
-      { value: 'awaiting confirmation from delievery boy', label: 'Awaiting confirmation from delievery boy'}
-    ]
 
     const { shouldMountOrderDetail,  currentOrderId } = this.state
     const { shouldListScroll } = this.state
@@ -153,7 +152,7 @@ export default class OrderPage extends Component {
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
             <Dropdown
-              options={options}
+              options={filterOptions}
               onChange={this.handleChange}
             />
           </div>
@@ -165,6 +164,9 @@ export default class OrderPage extends Component {
           {
             shouldMountOrderDetail
             ? <OrderDetail
+              actions={actions}
+              order={order}
+              dispatch={ this.props.dispatch }
               ordersType={ordersType}
               currentOrderId={currentOrderId}
               unmountOrderDetail={this.unmountOrderDetail}

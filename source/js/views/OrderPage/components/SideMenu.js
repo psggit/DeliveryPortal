@@ -16,7 +16,7 @@ class SideMenu extends Component {
           {
             menuItems.map((item, i) => {
               return (
-                <NavLink exact to={ routeCodes[item.value] }>
+                <NavLink key={`nav-link-${i}`} exact to={ routeCodes[item.value] }>
                   <li className='menu-item'>
                     { item.label }
                   </li>

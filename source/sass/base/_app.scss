@@ -75,6 +75,10 @@ button {
   font-size: 14px;
   text-transform: uppercase;
   font-family: $source-sans;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
   &.btn {
     border-style: none;
     border-radius: 2px;

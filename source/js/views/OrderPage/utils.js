@@ -1,6 +1,7 @@
 import React from 'react'
 
 export function getIcon(name) {
+  const iconsPath = './../../../assets/icons/';
   switch (name) {
     case 'back':
       return (
@@ -13,6 +14,18 @@ export function getIcon(name) {
         		C400.004,190.438,392.251,182.686,382.688,182.686z"/>
         </g>
         </svg>
+      )
+    case 'kyc_confirmed':
+      return (
+        <img src={`${iconsPath}KYC_verified.png`} />
+      )
+    case 'delivery_verified':
+      return (
+        <img src={`${iconsPath}delivery_verified.png`} />
+      )
+    case 'retailer_confirmed':
+      return (
+        <img src={`${iconsPath}Confirmed.png`} />
       )
     default:
 
