@@ -38,15 +38,17 @@ export default class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     }
-    // this.onStateChange = this.onStateChange.bind(this)
+    this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.fetchDataOnRouteChange = this.fetchDataOnRouteChange.bind(this)
   }
 
-
-  componentWillMount() {
-    // fetchOrderInformation
+  fetchDataOnRouteChange(ordersType) {
+    // TODO: Fetch data here on route change
+    const { dispatch } = this.props
+    dispatch(actions.fetchDataOnRouteChange(ordersType))
   }
 
   handleConfirmAssign() {
@@ -69,10 +71,10 @@ export default class OrderPage extends Component {
     })
   }
 
-  // onStateChange(e) {
-  //   const { dispatch } = this.props
-  //   dispatch(stateChange(e.target.value))
-  // }
+  onStateChange(e) {
+    const { dispatch } = this.props
+    dispatch(actions.stateChange(e.target.value))
+  }
 
   handleChange(filter) {
     // Filter orders list with applied filter
@@ -96,49 +98,50 @@ export default class OrderPage extends Component {
       match
     } = this.props
 
-    // const titleMap = {
-    //   'SearchingRetailer': 'Searching For Retailers',
-    //   'AwaitingRetailerConfirmation': 'Awaiting Retailer Confirmation',
-    //   'SearchingDeliverer': 'Searching For Deliverer',
-    //   'AwaitingDelivererConfirmation': 'Awaiting Deliverer Confirmation',
-    //   'DelivererConfirmed': 'Deliverer on way to pick up the order',
-    //   'OrderDispatched': 'Order Picked Up and On way',
-    //   'OrderDelivered': 'Order Delivered',
-    //   'OrderCancelled': 'Order Cancelled',
-    // }
-    //
-    // const articleMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': 'for',
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': 'for',
-    //   'DelivererConfirmed': '',
-    //   'OrderDispatched': '',
-    //   'OrderDelivered': '',
-    //   'OrderCancelled': 'at',
-    // }
-    //
-    // const epilogueMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': 'Min.',
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': 'Min.',
-    //   'DelivererConfirmed': 'Min Ago',
-    //   'OrderDispatched': 'Min Ago',
-    //   'OrderDelivered': '',
-    //   'OrderCancelled': order.get('cancelledTime'),
-    // }
-    //
-    // const timeMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': Math.round((new Date() - new Date(retailer.get('orderPlacedTime')))/60000),
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': Math.round((new Date() - new Date(deliverer.get('orderPlacedTime')))/60000),
-    //   'DelivererConfirmed':Math.round((new Date() - new Date(deliverer.get('orderAcceptedTime')))/60000),
-    //   'OrderDispatched': Math.round((new Date() - new Date(retailer.get('dispatchedTime')))/60000),
-    //   'OrderDelivered': '',
-    // }
-    //
+
+    const titleMap = {
+      'SearchingRetailer': 'Searching For Retailers',
+      'AwaitingRetailerConfirmation': 'Awaiting Retailer Confirmation',
+      'SearchingDeliverer': 'Searching For Deliverer',
+      'AwaitingDelivererConfirmation': 'Awaiting Deliverer Confirmation',
+      'DelivererConfirmed': 'Deliverer on way to pick up the order',
+      'OrderDispatched': 'Order Picked Up and On way',
+      'OrderDelivered': 'Order Delivered',
+      'OrderCancelled': 'Order Cancelled',
+    }
+
+    const articleMap = {
+      'SearchingRetailer': '',
+      'AwaitingRetailerConfirmation': 'for',
+      'SearchingDeliverer': '',
+      'AwaitingDelivererConfirmation': 'for',
+      'DelivererConfirmed': '',
+      'OrderDispatched': '',
+      'OrderDelivered': '',
+      'OrderCancelled': 'at',
+    }
+
+    const epilogueMap = {
+      'SearchingRetailer': '',
+      'AwaitingRetailerConfirmation': 'Min.',
+      'SearchingDeliverer': '',
+      'AwaitingDelivererConfirmation': 'Min.',
+      'DelivererConfirmed': 'Min Ago',
+      'OrderDispatched': 'Min Ago',
+      'OrderDelivered': '',
+      'OrderCancelled': order.get('cancelledTime'),
+    }
+
+    const timeMap = {
+      'SearchingRetailer': '',
+      'AwaitingRetailerConfirmation': Math.round((new Date() - new Date(retailer.get('orderPlacedTime')))/60000),
+      'SearchingDeliverer': '',
+      'AwaitingDelivererConfirmation': Math.round((new Date() - new Date(deliverer.get('orderPlacedTime')))/60000),
+      'DelivererConfirmed':Math.round((new Date() - new Date(deliverer.get('orderAcceptedTime')))/60000),
+      'OrderDispatched': Math.round((new Date() - new Date(retailer.get('dispatchedTime')))/60000),
+      'OrderDelivered': '',
+    }
+
 
     const { shouldMountOrderDetail,  currentOrderId } = this.state
     const { shouldListScroll } = this.state
@@ -148,7 +151,7 @@ export default class OrderPage extends Component {
     return (
       <div className='main-wrapper'>
         <NavBar />
-        <SideMenu />
+        <SideMenu fetchDataOnRouteChange={this.fetchDataOnRouteChange} />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
             <Dropdown
@@ -157,6 +160,7 @@ export default class OrderPage extends Component {
             />
           </div>
           <OrdersList
+            orders={order.toJS().content}
             ordersType={ordersType}
             unmountOrderDetail={this.unmountOrderDetail}
             mountOrderDetail={this.mountOrderDetail}
@@ -164,6 +168,7 @@ export default class OrderPage extends Component {
           {
             shouldMountOrderDetail
             ? <OrderDetail
+              retailer={retailer}
               actions={actions}
               order={order}
               dispatch={ this.props.dispatch }
@@ -173,6 +178,22 @@ export default class OrderPage extends Component {
             />
             : ''
           }
+        </div>
+        <div>
+          <select style={{position: 'fixed', top: '65px', right: '0px'}} onChange={this.onStateChange}>
+            {
+              Object.keys(ActionTypes).map((item, i) => {
+                return (
+                  <option
+                    key={i + 1}
+                    value={ActionTypes[item]}
+                    >
+                    {ActionTypes[item]}
+                  </option>
+                )
+              })
+            }
+          </select>
         </div>
         <div className='OrderPage'>
           {/* <div onClick={this.epicenter} className='HeadingWrapper'>
