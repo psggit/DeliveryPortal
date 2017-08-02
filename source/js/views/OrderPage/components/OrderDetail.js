@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ConsumerDetail from './ConsumerDetail'
+import RetailerDetail from './RetailerDetail'
+import DelivererDetail from './DelivererDetail'
 
 class OrderDetail extends Component {
   constructor() {
@@ -20,7 +23,6 @@ class OrderDetail extends Component {
   }
 
   openAssignOrderModal(e) {
-    // e.target.className = ''
     mountModal(ConfirmModal({
       confirmMessage: 'Are your sure you want to assign this order?',
       handleConfirmAssign: this.handleConfirmAssign
@@ -50,6 +52,9 @@ class OrderDetail extends Component {
     }
 
     const loadingOrderDetail = true
+    const { retailer } = this.props
+    const retailerStatus = retailer.get('state')
+    const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
     const { ordersType, currentOrderId, order } = this.props
     const assignedTo = order.get('assignedTo')
@@ -70,130 +75,23 @@ class OrderDetail extends Component {
             <div>
               <h4>Order detail: {`#${currentOrderId}`}</h4>
 
-              <div className='order detail-card'>
-                <h4>Consumer</h4>
-                <div className='personal-info'>
-                  <p className='name'>John Carter</p>
-                  <p className='address'>
-                    H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
-                  </p>
-                  <div className='chips'>
-                    { getIcon('kyc_confirmed') }
-                    { getIcon('delivery_verified') }
-                  </div>
-                  <p className='phone'>09857189185</p>
-                  <p className='order-status'>
-                    Awaiting retailer confirmation for
-                    { ' 54 mins.' }
-                  </p>
-                </div>
+              <ConsumerDetail
+                ordersType={ordersType}
+                isOrderAssigned={isOrderAssigned}
+                deliveryCharge={deliveryCharge}
+                openAssignOrderModal={this.openAssignOrderModal}
+              />
 
-                <div className='order-info'>
-                  <p><b>Items (4)</b></p>
-                  <ul>
-                    {
-                      [1, 2, 3, 4].map((item, i) => {
-                        return (
-                          <li>
-                            <span>[2] Jack Daniels - 180ml</span>
-                            <span>INR 750</span>
-                          </li>
-                        )
-                      })
-                    }
-                  </ul>
-                  {
-                    deliveryCharge
-                    ? (
-                      <p className='delivery-charge'>
-                        Delievery fee: <span>{deliveryCharge}</span>
-                      </p>
-                    )
-                    : ''
-                  }
-                </div>
+              <RetailerDetail
+                ordersType={ordersType}
+                isOrderConfirmed={isOrderConfirmed}
+              />
 
-                <hr />
-                {
-                  ordersType !== 'history'
-                  ? (
-                    <div>
-                      <button className='btn btn-blue'>Skip order</button>
-                      <button
-                        className='btn btn-green'
-                        disabled={isOrderAssigned}
-                        onClick={this.openAssignOrderModal}>
-                        { isOrderAssigned ? 'Assigned' : 'Assign me' }
-                      </button>
-                    </div>
-                  )
-                  : ''
-                }
-              </div>
+              <DelivererDetail
+                ordersType={ordersType}
+                isOrderConfirmed={isOrderConfirmed}
+               />
 
-
-              <div className='retailer detail-card'>
-                <h4>Retailer</h4>
-                <div className='personal-info'>
-                  <p className='name'>Khal drogo</p>
-                  <p className='address'>
-                    H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
-                  </p>
-                  <div className='chips'>
-                    { getIcon('retailer_confirmed') }
-                  </div>
-                  <p className='phone'>09857189185</p>
-                  <p className='order-status'>Awaiting deliverer confirmation</p>
-                </div>
-                <hr />
-                {
-                  ordersType !== 'history'
-                  ? (
-                    <div>
-                      <button className='btn btn-red'>Cancel</button>
-                      <button
-                        className='btn btn-green'
-                        disabled={isOrderConfirmed}
-                        onClick={this.openAssignOrderModal}>
-                        { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
-                      </button>
-                    </div>
-                  )
-                  : ''
-                }
-              </div>
-
-
-              <div className='deliverer detail-card'>
-                <h4>Deliverer</h4>
-                <div className='personal-info'>
-                  <p className='name'>Khal drogo</p>
-                  {/* <p className='address'>
-                    H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
-                  </p> */}
-                  <div className='chips'>
-                    { getIcon('retailer_confirmed') }
-                  </div>
-                  <p className='phone'>09857189185</p>
-                  <p className='order-status'>Awaiting for customer to handover</p>
-                </div>
-                <hr />
-                {
-                  ordersType !== 'history'
-                  ? (
-                    <div>
-                      <button className='btn btn-red'>Cancel</button>
-                      <button
-                        className='btn btn-green'
-                        disabled={isOrderConfirmed}
-                        onClick={this.openAssignOrderModal}>
-                        { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
-                      </button>
-                    </div>
-                  )
-                  : ''
-                }
-              </div>
 
               {
                 ordersType !== 'history'
