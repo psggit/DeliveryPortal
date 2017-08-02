@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from './actions'
-import { getIcon } from './utils'
+import { getIcon, getTimeDiff } from './utils'
 import * as ActionTypes from './constants/actions'
 import OrderInfo from './components/OrderInfo'
 import NavBar from '@components/NavBar'
@@ -51,8 +51,12 @@ export default class OrderPage extends Component {
     dispatch(actions.fetchDataOnRouteChange(ordersType))
   }
 
-  handleConfirmAssign() {
-    // TODO: modify orders list with assigned orders
+  componentDidMount() {
+    const ordersType = location.href.split('/')[4] ? location.href.split('/')[4] : 'all'
+    const { dispatch, match } = this.props
+
+    // console.log(match.params);
+    dispatch(actions.fetchDataOnRouteChange(ordersType))
   }
 
   mountOrderDetail(orderId) {
@@ -134,17 +138,15 @@ export default class OrderPage extends Component {
 
     const timeMap = {
       'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': Math.round((new Date() - new Date(retailer.get('orderPlacedTime')))/60000),
+      'AwaitingRetailerConfirmation': getTimeDiff(retailer.get('orderPlacedTime')),
       'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': Math.round((new Date() - new Date(deliverer.get('orderPlacedTime')))/60000),
-      'DelivererConfirmed':Math.round((new Date() - new Date(deliverer.get('orderAcceptedTime')))/60000),
-      'OrderDispatched': Math.round((new Date() - new Date(retailer.get('dispatchedTime')))/60000),
+      'AwaitingDelivererConfirmation': getTimeDiff(deliverer.get('orderPlacedTime')),
+      'DelivererConfirmed': getTimeDiff(deliverer.get('orderAcceptedTime')),
+      'OrderDispatched': getTimeDiff(retailer.get('dispatchedTime')),
       'OrderDelivered': '',
     }
 
-
-    const { shouldMountOrderDetail,  currentOrderId } = this.state
-    const { shouldListScroll } = this.state
+    const { shouldMountOrderDetail, currentOrderId, shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
     const ordersType = match.path.split('/').length < 3 ? 'all' :  match.path.split('/')[2]
 
