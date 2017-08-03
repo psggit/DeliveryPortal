@@ -4,9 +4,18 @@ import { routeCodes } from './../../App';
 import '@sass/components/_SideMenu.scss'
 
 class SideMenu extends Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(ordersType) {
+    this.props.fetchDataOnRouteChange(ordersType)
+  }
+
   render() {
     const menuItems = [
-      { value: 'orders', label: 'in progress orders' },
+      { value: 'all', label: 'in progress orders' },
       { value: 'assigned', label: 'assigned orders'},
       { value: 'history', label: 'order history' }
     ]
@@ -17,7 +26,7 @@ class SideMenu extends Component {
             menuItems.map((item, i) => {
               return (
                 <NavLink key={`nav-link-${i}`} exact to={ routeCodes[item.value] }>
-                  <li className='menu-item'>
+                  <li className='menu-item' onClick={() => { this.handleClick(item.value) }}>
                     { item.label }
                   </li>
                 </NavLink>

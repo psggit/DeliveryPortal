@@ -12,10 +12,18 @@ export function stateChange(value) {
   }
 }
 
+
 export function filterOrdersList(filter) {
   return {
     type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
     data: filter
+  }
+}
+
+export function fetchDataOnRouteChange(routeName) {
+  return {
+    type: ActionTypes.REQUEST_FETCH_ORDERS_LIST,
+    data: routeName
   }
 }
 

@@ -56,6 +56,7 @@
     "babel-polyfill": "^6.23.0",
     "es6-promise": "^3.3.1",
     "immutable": "^3.8.1",
+    "is-utf8": "^0.2.1",
     "isomorphic-fetch": "^2.2.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
@@ -63,7 +64,6 @@
     "react-gmaps": "^1.6.0",
     "react-redux": "^4.4.8",
     "react-router": "^4.1.1",
-    "is-utf8":"^0.2.1",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0"

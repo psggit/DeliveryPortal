@@ -31,3 +31,12 @@ export function getIcon(name) {
 
   }
 }
+
+export function getTimeDiff(d) {
+  const dateNow = new Date()
+  const dateTarget = new Date(d)
+
+  return Math.round(
+    (dateNow - dateTarget) / 60000
+  )
+}
