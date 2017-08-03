@@ -13,11 +13,11 @@ import OrderDetail from './components/OrderDetail'
 import { filterOptions } from './constants/strings'
 
 @connect(state => ({
-  state: state.OrderPage.get('state'),
-  order: state.OrderPage.get('order'),
-  retailer: state.OrderPage.get('retailer'),
-  deliverer: state.OrderPage.get('deliverer'),
-  customer: state.OrderPage.get('customer'),
+  state: state.OrderPage.state,
+  order: state.OrderPage.order,
+  retailer: state.OrderPage.retailer,
+  deliverer: state.OrderPage.deliverer,
+  customer: state.OrderPage.customer,
 }))
 
 export default class OrderPage extends Component {
@@ -133,16 +133,16 @@ export default class OrderPage extends Component {
       'DelivererConfirmed': 'Min Ago',
       'OrderDispatched': 'Min Ago',
       'OrderDelivered': '',
-      'OrderCancelled': order.get('cancelledTime'),
+      'OrderCancelled': order.cancelledTime,
     }
 
     const timeMap = {
       'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': getTimeDiff(retailer.get('orderPlacedTime')),
+      'AwaitingRetailerConfirmation': getTimeDiff(retailer.orderPlacedTime),
       'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': getTimeDiff(deliverer.get('orderPlacedTime')),
-      'DelivererConfirmed': getTimeDiff(deliverer.get('orderAcceptedTime')),
-      'OrderDispatched': getTimeDiff(retailer.get('dispatchedTime')),
+      'AwaitingDelivererConfirmation': getTimeDiff(deliverer.orderPlacedTime),
+      'DelivererConfirmed': getTimeDiff(deliverer.orderAcceptedTime),
+      'OrderDispatched': getTimeDiff(retailer.dispatchedTime),
       'OrderDelivered': '',
     }
 
@@ -162,10 +162,15 @@ export default class OrderPage extends Component {
             />
           </div>
           <OrdersList
-            orders={order.toJS().content}
+            orders={order.content}
             ordersType={ordersType}
             unmountOrderDetail={this.unmountOrderDetail}
             mountOrderDetail={this.mountOrderDetail}
+            titleMap={titleMap}
+            articleMap={articleMap}
+            timeMap={timeMap}
+            epilogueMap={epilogueMap}
+            state={state}
           />
           {
             shouldMountOrderDetail

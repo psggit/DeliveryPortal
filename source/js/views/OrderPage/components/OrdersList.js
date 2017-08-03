@@ -24,46 +24,9 @@ class OrdersList extends Component {
     }
   }
   render() {
-    const { ordersType } = this.props
+    const { ordersType, orders, titleMap, articleMap, timeMap, epilogueMap, state } = this.props
     const loadingOrdersList = true
-    const orders = [
-      {
-        id: 1,
-        customer: {
-          name: 'John'
-        }
-      },
-      {
-        id: 2,
-        customer: {
-          name: 'John'
-        }
-      },
-      {
-        id: 3,
-        customer: {
-          name: 'John'
-        }
-      },
-      {
-        id: 4,
-        customer: {
-          name: 'John'
-        }
-      },
-      {
-        id: 5,
-        customer: {
-          name: 'John'
-        }
-      },
-      {
-        id: 6,
-        customer: {
-          name: 'John'
-        }
-      }
-    ]
+
     return (
       <div className='orders-list' onClick={this.handleClick}>
         {
@@ -73,6 +36,11 @@ class OrdersList extends Component {
               return <OrderListItem
                 key={item.id}
                 order={item}
+                titleMap={titleMap}
+                articleMap={articleMap}
+                timeMap={timeMap}
+                epilogueMap={epilogueMap}
+                state={state}
               />
             })
           )

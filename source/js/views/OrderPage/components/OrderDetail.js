@@ -53,13 +53,11 @@ class OrderDetail extends Component {
 
     const loadingOrderDetail = true
     const { retailer } = this.props
-    const retailerStatus = retailer.get('state')
     const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
     const { ordersType, currentOrderId, order } = this.props
-    const assignedTo = order.get('assignedTo')
     const isOrderConfirmed = false
-    const isOrderAssigned = assignedTo === currentOrderId
+    const isOrderAssigned = order.assignedTo === currentOrderId
 
     return (
       <div className='order-detail'>
