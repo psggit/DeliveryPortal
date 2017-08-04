@@ -1,3 +1,5 @@
+/* These are view particular utility functions */
+
 import React from 'react'
 
 export function getIcon(name) {
