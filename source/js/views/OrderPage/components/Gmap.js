@@ -3,13 +3,13 @@ import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
 const customerImg = '../../../../assets/icons/customer.png';
 const delivererImg = '../../../../assets/icons/deliverer.png';
 const outletImg = '../../../../assets/icons/outlet.png';
-import { Map } from 'immutable';
+// import { Map } from 'immutable';
 
 const params = {v: '3.exp', key: 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'};
 
 const Gmap = () => {
   // Initial Customer State
-  const customer = Map({
+  const customer = {
     state: null,
     id: null,
     name: null,
@@ -17,10 +17,10 @@ const Gmap = () => {
     phone: null,
     x: null,
     y: null
-  });
+  }
 
   // Initial Deliverer State
-  const deliverer = Map({
+  const deliverer = {
     state: null,
     id: null,
     name: null,
@@ -31,10 +31,10 @@ const Gmap = () => {
     deliveredTime: null,
     x: null,
     y: null
-  });
+  }
 
   // Initial Retailer State
-  const retailer = Map({
+  const retailer = {
     state: null,
     id: null,
     name: null,
@@ -45,29 +45,29 @@ const Gmap = () => {
     dispatchedTime: null,
     x: null,
     y: null
-  });
+  }
   return (
     <div className='MapWrapper'>
       <Gmaps
         style={{width: '100%', height: '100vh'}}
-        lat={(customer.get('x') + retailer.get('x') - 0.12)/2}
-        lng={(customer.get('y') + retailer.get('y'))/2}
+        lat={(customer.x + retailer.x - 0.12)/2}
+        lng={(customer.y + retailer.y/2)}
         zoom={12}
         loadingMessage={'Loading...'}
         params={params}
         onMapCreated={this.onMapCreated}>
         <Marker
           icon={customerImg}
-          lat={customer.get('x')}
-          lng={customer.get('y')} />
+          lat={customer.x}
+          lng={customer.y} />
         <Marker
           icon={delivererImg}
-          lat={deliverer.get('x')}
-          lng={deliverer.get('y')} />
+          lat={deliverer.x}
+          lng={deliverer.y} />
         <Marker
           icon={outletImg}
-        lat={retailer.get('x')}
-        lng={retailer.get('y')} />
+        lat={retailer.x}
+        lng={retailer.y} />
       </Gmaps>
     </div>
   )
