@@ -4,6 +4,9 @@ import { getIcon } from './../utils'
 class ConsumerDetail extends Component {
   render() {
     const { isOrderAssigned, deliveryCharge, ordersType, openAssignOrderModal } = this.props
+    const isKYCconfirmed = true
+    const isDeliveryVerified = false
+
     return (
       <div className='order detail-card'>
         <h4>Consumer</h4>
@@ -13,8 +16,8 @@ class ConsumerDetail extends Component {
             H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
           </p>
           <div className='chips'>
-            { getIcon('kyc_confirmed') }
-            { getIcon('delivery_verified') }
+            { isKYCconfirmed ? getIcon('kyc_confirmed') : '' }
+            { isDeliveryVerified ? getIcon('delivery_verified') : '' }
           </div>
           <p className='phone'>09857189185</p>
           <p className='order-status'>
@@ -49,21 +52,15 @@ class ConsumerDetail extends Component {
         </div>
 
         <hr />
-        {
-          ordersType !== 'history'
-          ? (
-            <div>
-              <button className='btn btn-blue'>Skip order</button>
-              <button
-                className='btn btn-green'
-                disabled={isOrderAssigned}
-                onClick={openAssignOrderModal}>
-                { isOrderAssigned ? 'Assigned' : 'Assign me' }
-              </button>
-            </div>
-          )
-          : ''
-        }
+        <div>
+          <button className='btn btn-blue'>Skip order</button>
+          <button
+            className='btn btn-green'
+            disabled={isOrderAssigned}
+            onClick={openAssignOrderModal}>
+            { isOrderAssigned ? 'Assigned' : 'Assign me' }
+          </button>
+        </div>
       </div>
     )
   }
