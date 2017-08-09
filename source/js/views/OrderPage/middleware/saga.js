@@ -1,3 +1,8 @@
+/*
+This is your saga file, which containes generator functions.
+This is a side-effect container. Do all your side-effect here only.
+*/
+
 import { takeLatest, delay } from 'redux-saga'
 import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'

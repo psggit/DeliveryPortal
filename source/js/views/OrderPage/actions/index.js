@@ -1,3 +1,10 @@
+/*
+This file contains only action creators.
+Action creator is a pure function that just return
+plain JavaScript object (action).
+Don't do any side-effect.
+*/
+
 import * as ActionTypes from './../constants/actions'
 
 export function getDashboardStatus() {
@@ -15,10 +22,10 @@ export function stateChange(value) {
   // })
 }
 
-// export const filterOrdersList = (filter) => ({
-//   type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
-//   data: filter
-// })
+export const filterOrdersList = (filter) => ({
+  type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
+  data: filter
+})
 
 export const fetchDataOnRouteChange = (routeName) => ({
   type: ActionTypes.REQUEST_FETCH_ORDERS_DATA,
