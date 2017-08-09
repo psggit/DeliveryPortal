@@ -76,6 +76,8 @@ export function constructFetchUtility(options) {
     mode: cors ? 'no-cors' : 'cors'
   }
 
+  // console.log(fetchOptions);
+
   // add data to request
   if (data) {
     fetchOptions.body = constructBody({type, data})

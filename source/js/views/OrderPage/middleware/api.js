@@ -2,10 +2,10 @@ import { GET } from '@utils/fetch'
 
 export function fetchDataOnRouteChange() {
   return GET({
-    api: `https://jsonplaceholder.typicode.com/posts/1`,
+    api: `https://jsonplaceholder.typicode.com/posts`,
     type: 'Public',
-    cors: true
-    // handleError: true
+    cors: false,
+    handleError: true
   })
-  .then((json) => (json))
+  .then(json => json)
 }
