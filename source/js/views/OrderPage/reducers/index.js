@@ -128,14 +128,14 @@ const CompleteOrderState = {
 
 
 const actionsMap = {
-  [ActionTypes.REQUEST_FETCH_ORDERS_LIST]: (state, action) => {
+  [ActionTypes.SUCCESS_FETCH_ORDERS_DATA]: (state, action) => {
 
     // Order Management : placed
     // order.set('state', 'placed')
     // order.set('content')
 
     const order = {
-      state: null,
+      state: 'placed',
       assignedTo: null,
       id: 1,
       content: [
@@ -206,7 +206,7 @@ const actionsMap = {
     }
 
     return Object.assign({}, state, {
-      state: null,
+      state: 'SearchingRetailer',
       order,
       retailer,
       deliverer,
