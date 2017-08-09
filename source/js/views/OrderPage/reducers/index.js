@@ -218,6 +218,10 @@ const actionsMap = {
 
   },
 
+  [ActionTypes.SUCCESS_FORCE_REDEEM]: (state, action) => {
+    return state
+  },
+
   [ActionTypes.STATE_FINDING_RETAILER]: (state, action) => {
     // Order Management : placed
     const order = {
