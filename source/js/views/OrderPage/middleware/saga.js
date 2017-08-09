@@ -13,8 +13,9 @@ import * as Api from './api'
  */
 function* fetchDataOnRouteChange(action) {
   try {
-    // const { data, meta } = yield call(utils.getData, action)
-    const data = {}
+    const { data } = yield call(Api.fetchDataOnRouteChange, action)
+    // console.log(data);
+    // const data = {}
     const meta = {}
     yield put({type: ActionTypes.SUCCESS_FETCH_ORDERS_DATA, data, meta})
   } catch (err) {
