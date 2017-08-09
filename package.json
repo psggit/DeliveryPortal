@@ -53,6 +53,7 @@
     "webpack-dev-server": "^2.2.1"
   },
   "dependencies": {
+    "abspath-webpack-plugin": "0.0.1",
     "babel-polyfill": "^6.23.0",
     "es6-promise": "^3.3.1",
     "immutable": "^3.8.1",
