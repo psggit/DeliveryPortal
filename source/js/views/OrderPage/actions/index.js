@@ -10,66 +10,22 @@ export function stateChange(value) {
   return {
     type: value,
   }
+  // return callApi(url).then(res => {
+  //   dispatch(dispatchFetch(res.data))
+  // })
 }
 
+// export const filterOrdersList = (filter) => ({
+//   type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
+//   data: filter
+// })
 
-export function filterOrdersList(filter) {
-  return {
-    type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
-    data: filter
-  }
-}
+export const fetchDataOnRouteChange = (routeName) => ({
+  type: ActionTypes.REQUEST_FETCH_ORDERS_DATA,
+  data: routeName
+})
 
-export function fetchDataOnRouteChange(routeName) {
-  return {
-    type: ActionTypes.REQUEST_FETCH_ORDERS_LIST,
-    data: routeName
-  }
-}
-
-export function assignOrder(id) {
-  return {
-    type: ActionTypes.REQUEST_ASSIGN_ORDER,
-    data: id
-  }
-}
-
-export function testAction() {
-  return {
-    type: ActionTypes.TEST_ACTION,
-  };
-}
-
-// Async action example
-
-function testAsyncStart() {
-  return {
-    type: TEST_ASYNC_ACTION_START,
-  };
-}
-
-function testAsyncSuccess(data) {
-  return {
-    type: TEST_ASYNC_ACTION_SUCCESS,
-    data,
-  };
-}
-
-function testAsyncError(error) {
-  return {
-    type: TEST_ASYNC_ACTION_ERROR,
-    error,
-  };
-}
-
-export function testAsync() {
-  return function (dispatch) {
-    dispatch(testAsyncStart());
-
-    api.testAsync()
-      .then(data => dispatch(testAsyncSuccess(data)))
-      .catch(error => dispatch(testAsyncError(error)));
-  };
-}
-
-// Update
+export const assignOrder = (id) => ({
+  type: ActionTypes.REQUEST_ASSIGN_ORDER,
+  data: id
+})

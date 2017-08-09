@@ -11,6 +11,7 @@ class SideMenu extends Component {
 
   handleClick(ordersType) {
     this.props.fetchDataOnRouteChange(ordersType)
+    this.props.unmountOrderDetail()
   }
 
   render() {

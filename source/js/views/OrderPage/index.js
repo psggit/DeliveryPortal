@@ -13,7 +13,6 @@ import OrderDetail from './components/OrderDetail'
 import { filterOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
 
-
 class OrderPage extends Component {
 
   static propTypes = {
@@ -41,14 +40,12 @@ class OrderPage extends Component {
 
   fetchDataOnRouteChange(ordersType) {
     // TODO: Fetch data here on route change
-    // const { dispatch } = this.props
     const { actions } = this.props
     actions.fetchDataOnRouteChange(ordersType)
   }
 
   componentDidMount() {
     const ordersType = location.href.split('/')[4] ? location.href.split('/')[4] : 'all'
-    // const { dispatch, match } = this.props
     const { actions } = this.props
     // console.log(match.params);
     actions.fetchDataOnRouteChange(ordersType)
@@ -143,13 +140,14 @@ class OrderPage extends Component {
 
     const { shouldMountOrderDetail, currentOrderId, shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
-    const ordersType = match.path.split('/').length < 3 ? 'all' :  match.path.split('/')[2]
-    const { actions } = this.props
 
     return (
       <div className='main-wrapper'>
         <NavBar />
-        <SideMenu fetchDataOnRouteChange={this.fetchDataOnRouteChange} />
+        <SideMenu
+          unmountOrderDetail={this.unmountOrderDetail}
+          fetchDataOnRouteChange={this.fetchDataOnRouteChange}
+        />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
             <Dropdown
@@ -159,7 +157,6 @@ class OrderPage extends Component {
           </div>
           <OrdersList
             orders={order.content}
-            ordersType={ordersType}
             unmountOrderDetail={this.unmountOrderDetail}
             mountOrderDetail={this.mountOrderDetail}
             titleMap={titleMap}
@@ -175,7 +172,6 @@ class OrderPage extends Component {
               actions={actions}
               order={order}
               dispatch={ this.props.dispatch }
-              ordersType={ordersType}
               currentOrderId={currentOrderId}
               unmountOrderDetail={this.unmountOrderDetail}
             />
@@ -198,43 +194,6 @@ class OrderPage extends Component {
             }
           </select>
         </div>
-        <div className='OrderPage'>
-          {/* <div onClick={this.epicenter} className='HeadingWrapper'>
-                <select onChange={this.onStateChange}>
-                  {
-                    Object.keys(ActionTypes).map((item, i) => {
-                      return (
-                        <option
-                          key={i + 1}
-                          value={ActionTypes[item]}
-                          >
-                          {ActionTypes[item]}
-                        </option>
-                      )
-                    })
-                  }
-                </select>
-          </div> */}
-          <div className='OrderWrapper'>
-            {/* <Gmap
-              customer={customer}
-              deliverer={deliverer}
-              retailer={retailer}
-            /> */}
-            {/* <OrderInfo
-              state={state}
-              customer={customer}
-              order={order}
-              deliverer={deliverer}
-              retailer={retailer}
-              match={match}
-              timeMap={timeMap}
-              titleMap={titleMap}
-              articleMap={articleMap}
-              epilogueMap={epilogueMap}
-            /> */}
-          </div>
-        </div>
       </div>
     )
   }
@@ -251,6 +210,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch)
 })
+
 
 export default connect(
   mapStateToProps,

@@ -18,7 +18,7 @@ class OrderListItem extends Component {
       background: stateColorMap[orderState]
     }
 
-    const { order, titleMap, articleMap, timeMap, epilogueMap, state } = this.props
+    const { order, orderStatus } = this.props
     // console.log(order);
     return (
       <div className='orders-list-item' id={order.id} style={orderItemStyle}>
@@ -27,7 +27,7 @@ class OrderListItem extends Component {
           <p>{order.customer.name}</p>
         </div>
         <p className='order-status'>
-          {titleMap[state]}{articleMap[state]}{timeMap[state]}{epilogueMap[state]}
+          {orderStatus}
         </p>
       </div>
     )

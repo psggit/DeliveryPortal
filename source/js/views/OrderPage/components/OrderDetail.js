@@ -19,7 +19,7 @@ class OrderDetail extends Component {
   }
 
   openGmap() {
-    window.open(`/orders/${1}`, '_blank')
+    window.open(`/orders/track/${1}`, '_blank')
   }
 
   openAssignOrderModal(e) {
@@ -74,33 +74,24 @@ class OrderDetail extends Component {
               <h4>Order detail: {`#${currentOrderId}`}</h4>
 
               <ConsumerDetail
-                ordersType={ordersType}
                 isOrderAssigned={isOrderAssigned}
                 deliveryCharge={deliveryCharge}
                 openAssignOrderModal={this.openAssignOrderModal}
               />
 
               <RetailerDetail
-                ordersType={ordersType}
                 isOrderConfirmed={isOrderConfirmed}
               />
 
               <DelivererDetail
-                ordersType={ordersType}
                 isOrderConfirmed={isOrderConfirmed}
                />
-
-
-              {
-                ordersType !== 'history'
-                ? <button
-                  style={trackBtnStyle}
-                  onClick={this.openGmap}
-                  className='btn btn-black btn-lg'>
-                  Track the order
-                </button>
-                : ''
-              }
+               <button
+                 style={trackBtnStyle}
+                 onClick={this.openGmap}
+                 className='btn btn-black btn-lg'>
+                 Track the order
+               </button>
             </div>
           )
           : <div className='loader'></div>

@@ -20,21 +20,15 @@ class DelivererDetail extends Component {
                 <p className='order-status'>Awaiting for customer to handover</p>
               </div>
               <hr />
-              {
-                ordersType !== 'history'
-                ? (
-                  <div>
-                    <button className='btn btn-red'>Cancel</button>
-                    <button
-                      className='btn btn-green'
-                      disabled={isOrderConfirmed}
-                      onClick={this.openAssignOrderModal}>
-                      { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
-                    </button>
-                  </div>
-                )
-                : ''
-              }
+              <div>
+                <button className='btn btn-red'>Cancel</button>
+                <button
+                  className='btn btn-green'
+                  disabled={isOrderConfirmed}
+                  onClick={this.openAssignOrderModal}>
+                  { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
+                </button>
+              </div>
             </div>
       </div>
     )
