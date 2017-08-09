@@ -1,0 +1,96 @@
+/**
+ * utility methods for constructing `Fetch` API
+ */
+
+import "whatwg-fetch"
+// import Session from "./../session"
+// import { api_base_url } from ""
+const api_base_url = ''
+/**
+ * Helper methods to create window.fetch instance
+ */
+const getToken = () => ({
+  "Authorization": `Token ${Session.getItem("token")}`
+})
+
+function getHeaders(type) {
+  const json_headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+
+  switch (type) {
+    case "FormData":
+      return getToken()
+    case "Public":
+      return Object.assign({}, json_headers)
+    case 'RSS':
+      return Object.assign({}, {'Accept': 'application/xml', 'Content-Type': 'application/xml'})
+    default:
+      return Object.assign({}, json_headers, getToken())
+  }
+}
+
+
+/**
+ * fetch data constructor(s)
+ */
+function constructBody({ type, data }) {
+  switch (type) {
+    case "FormData":
+      return data
+
+    default:
+      return JSON.stringify(data)
+  }
+}
+
+/**
+ * Error handling helpers
+ */
+export function checkStatus(response) {
+  if (response.status >= 200 && response.status < 305) {
+    return response
+  } else {
+    // console.log(response.statusText);
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+
+/**
+ * constructFetchUtility - return a window.fetch instance
+ * @param {Object} options
+ */
+export function constructFetchUtility(options) {
+  const { api, data, method, type, cors, prependBaseUrl = true } = options
+
+  // construct request url
+  const url = prependBaseUrl ? `${api_base_url}${api}` : api
+
+  // construct options for creating `window.fetch` instance
+  let fetchOptions = {
+    method,
+    headers: getHeaders(type),
+    mode: cors ? 'no-cors' : 'cors'
+  }
+
+  // add data to request
+  if (data) {
+    fetchOptions.body = constructBody({type, data})
+  }
+
+  // return window.fetch instance
+  return (options.handleError)
+       ? fetch(url, fetchOptions)
+         .then(checkStatus)
+         .then(parseJSON)
+       : fetch(url, fetchOptions)
+         .then(parseJSON)
+}
+
+function parseJSON(response) {
+  // console.log(response.json());
+  return response.json()
+}
