@@ -140,6 +140,7 @@ class OrderPage extends Component {
 
     const { shouldMountOrderDetail, currentOrderId, shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
+    const { actions } = this.props
 
     return (
       <div className='main-wrapper'>
