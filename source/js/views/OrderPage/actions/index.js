@@ -29,3 +29,7 @@ export const assignOrder = (id) => ({
   type: ActionTypes.REQUEST_ASSIGN_ORDER,
   data: id
 })
+
+export const forceRedeem = () => ({
+  type: ActionTypes.REQUEST_FORCE_REDEEM
+})

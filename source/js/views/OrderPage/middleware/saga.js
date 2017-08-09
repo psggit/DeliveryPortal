@@ -17,6 +17,17 @@ function* fetchDataOnRouteChange(action) {
   }
 }
 
+function* forceRedeem(action) {
+  try {
+    // const { data, meta } = yield call(utils.getData, action)
+    const data = {}
+    const meta = {}
+    yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data, meta})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 
 function* filterOrdersData(action) {
   try {
@@ -42,6 +53,12 @@ export function* watchFetchDataOnRouteChange() {
 export function* watchFilterOrdersData() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FILTER_ORDERS_DATA, filterOrdersData)
+  }
+}
+
+export function* watchForceRedeem() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FORCE_REDEEM, forceRedeem)
   }
 }
 

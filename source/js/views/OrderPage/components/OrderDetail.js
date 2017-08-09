@@ -30,8 +30,8 @@ class OrderDetail extends Component {
   }
 
   handleConfirmAssign(id) {
-    const { dispatch, currentOrderId, actions } = this.props
-    dispatch(actions.assignOrder(currentOrderId))
+    const { currentOrderId, actions } = this.props
+    actions.assignOrder(currentOrderId)
     unMountModal()
   }
 
@@ -59,6 +59,8 @@ class OrderDetail extends Component {
     const isOrderConfirmed = false
     const isOrderAssigned = order.assignedTo === currentOrderId
 
+    const { actions } = this.props
+
     return (
       <div className='order-detail'>
         <span
@@ -74,6 +76,7 @@ class OrderDetail extends Component {
               <h4>Order detail: {`#${currentOrderId}`}</h4>
 
               <ConsumerDetail
+                actions={actions}
                 isOrderAssigned={isOrderAssigned}
                 deliveryCharge={deliveryCharge}
                 openAssignOrderModal={this.openAssignOrderModal}
