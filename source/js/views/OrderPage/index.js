@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import * as actions from './actions'
+import * as Actions from './actions'
 import { getIcon, getTimeDiff } from './utils'
 import * as ActionTypes from './constants/actions'
 import OrderInfo from './components/OrderInfo'
@@ -11,16 +11,10 @@ import OrdersList from './components/OrdersList'
 import Dropdown from '@components/Dropdown'
 import OrderDetail from './components/OrderDetail'
 import { filterOptions } from './constants/strings'
+import { bindActionCreators } from 'redux'
 
-@connect(state => ({
-  state: state.OrderPage.state,
-  order: state.OrderPage.order,
-  retailer: state.OrderPage.retailer,
-  deliverer: state.OrderPage.deliverer,
-  customer: state.OrderPage.customer,
-}))
 
-export default class OrderPage extends Component {
+class OrderPage extends Component {
 
   static propTypes = {
     state: PropTypes.string,
@@ -47,16 +41,17 @@ export default class OrderPage extends Component {
 
   fetchDataOnRouteChange(ordersType) {
     // TODO: Fetch data here on route change
-    const { dispatch } = this.props
-    dispatch(actions.fetchDataOnRouteChange(ordersType))
+    // const { dispatch } = this.props
+    const { actions } = this.props
+    actions.fetchDataOnRouteChange(ordersType)
   }
 
   componentDidMount() {
     const ordersType = location.href.split('/')[4] ? location.href.split('/')[4] : 'all'
-    const { dispatch, match } = this.props
-
+    // const { dispatch, match } = this.props
+    const { actions } = this.props
     // console.log(match.params);
-    dispatch(actions.fetchDataOnRouteChange(ordersType))
+    actions.fetchDataOnRouteChange(ordersType)
   }
 
   mountOrderDetail(orderId) {
@@ -76,8 +71,8 @@ export default class OrderPage extends Component {
   }
 
   onStateChange(e) {
-    const { dispatch } = this.props
-    dispatch(actions.stateChange(e.target.value))
+    // const { dispatch } = this.props
+    actions.stateChange(e.target.value)
   }
 
   handleChange(filter) {
@@ -149,6 +144,7 @@ export default class OrderPage extends Component {
     const { shouldMountOrderDetail, currentOrderId, shouldListScroll } = this.state
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
     const ordersType = match.path.split('/').length < 3 ? 'all' :  match.path.split('/')[2]
+    const { actions } = this.props
 
     return (
       <div className='main-wrapper'>
@@ -243,3 +239,20 @@ export default class OrderPage extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  state: state.OrderPage.state,
+  order: state.OrderPage.order,
+  retailer: state.OrderPage.retailer,
+  deliverer: state.OrderPage.deliverer,
+  customer: state.OrderPage.customer,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderPage)
