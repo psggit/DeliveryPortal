@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga'
 import 'babel-polyfill';
 import logger from 'dev/logger';
+import rootSaga from './rootSaga'
 
 import rootReducer from './reducers';
 
@@ -12,6 +14,7 @@ import App from './views/App';
 
 // Load SCSS
 import '../sass/app.scss';
+const sagaMiddleware = createSagaMiddleware()
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -20,7 +23,7 @@ let store = null;
 
 if (isProduction) {
   // In production adding only thunk middleware
-  const middleware = applyMiddleware(thunk);
+  const middleware = applyMiddleware(sagaMiddleware);
 
   store = createStore(
     rootReducer,
@@ -29,7 +32,7 @@ if (isProduction) {
 } else {
   // In development mode beside thunk
   // logger and DevTools are added
-  const middleware = applyMiddleware(thunk, logger);
+  const middleware = applyMiddleware(sagaMiddleware, logger);
   let enhancer;
 
   // Enable DevTools if browser extension is installed
@@ -47,6 +50,8 @@ if (isProduction) {
     enhancer
   );
 }
+
+sagaMiddleware.run(rootSaga)
 
 // Render it to DOM
 ReactDOM.render(

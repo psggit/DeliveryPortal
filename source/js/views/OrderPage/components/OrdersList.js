@@ -7,12 +7,12 @@ class OrdersList extends Component {
     super()
     this.handleClick = this.handleClick.bind(this)
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.ordersType !== this.props.ordersType) {
-      this.props.unmountOrderDetail()
-      // TODO: fetch orders list and filters (if required) based on ordersType (assigned, history etc.)
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.ordersType !== this.props.ordersType) {
+  //     this.props.unmountOrderDetail()
+  //     // TODO: fetch orders list and filters (if required) based on ordersType (assigned, history etc.)
+  //   }
+  // }
   componentDidMount() {
 
   }
@@ -24,8 +24,9 @@ class OrdersList extends Component {
     }
   }
   render() {
-    const { ordersType, orders, titleMap, articleMap, timeMap, epilogueMap, state } = this.props
+    const { orders, titleMap, articleMap, timeMap, epilogueMap, state } = this.props
     const loadingOrdersList = true
+    const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
       <div className='orders-list' onClick={this.handleClick}>
@@ -36,11 +37,7 @@ class OrdersList extends Component {
               return <OrderListItem
                 key={item.id}
                 order={item}
-                titleMap={titleMap}
-                articleMap={articleMap}
-                timeMap={timeMap}
-                epilogueMap={epilogueMap}
-                state={state}
+                orderStatus={orderStatus}
               />
             })
           )
