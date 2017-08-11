@@ -12,6 +12,8 @@ import Dropdown from '@components/Dropdown'
 import OrderDetail from './components/OrderDetail'
 import { filterOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
+import Pagination from 'react-js-pagination'
+import '@sass/components/_pagination.scss'
 
 class OrderPage extends Component {
 
@@ -29,13 +31,15 @@ class OrderPage extends Component {
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
-      currentOrderId: null
+      currentOrderId: null,
+      activePage: 2
     }
     this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.fetchDataOnRouteChange = this.fetchDataOnRouteChange.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
   }
 
   fetchDataOnRouteChange(ordersType) {
@@ -47,8 +51,13 @@ class OrderPage extends Component {
   componentDidMount() {
     const ordersType = location.href.split('/')[4] ? location.href.split('/')[4] : 'all'
     const { actions } = this.props
+    const _self = this
     // console.log(match.params);
     actions.fetchDataOnRouteChange(ordersType)
+    // ;(function pollOrdersData() {
+    // 	_self.props.actions.fetchDataOnRouteChange(ordersType)
+    // 	setTimeout(pollOrdersData, 10000)
+    // })()
   }
 
   mountOrderDetail(orderId) {
@@ -72,6 +81,11 @@ class OrderPage extends Component {
     actions.stateChange(e.target.value)
   }
 
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({activePage: pageNumber});
+  }
+
   handleChange(filter) {
     // Filter orders list with applied filter
     // const { dispatch } = this.props
@@ -91,6 +105,7 @@ class OrderPage extends Component {
       retailer,
       deliverer,
       customer,
+      loadingOrdersList,
       match
     } = this.props
 
@@ -157,6 +172,7 @@ class OrderPage extends Component {
             />
           </div>
           <OrdersList
+            loadingOrdersList={loadingOrdersList}
             orders={order.content}
             unmountOrderDetail={this.unmountOrderDetail}
             mountOrderDetail={this.mountOrderDetail}
@@ -165,6 +181,13 @@ class OrderPage extends Component {
             timeMap={timeMap}
             epilogueMap={epilogueMap}
             state={state}
+          />
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={10}
+            totalItemsCount={250}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
           />
           {
             shouldMountOrderDetail
@@ -202,6 +225,7 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
+  loadingOrdersList: state.OrderPage.loadingOrdersList,
   order: state.OrderPage.order,
   retailer: state.OrderPage.retailer,
   deliverer: state.OrderPage.deliverer,
