@@ -158,7 +158,7 @@ class OrderPage extends Component {
     const { actions } = this.props
 
     return (
-      <div className='main-wrapper'>
+      <div>
         <NavBar />
         <SideMenu
           unmountOrderDetail={this.unmountOrderDetail}

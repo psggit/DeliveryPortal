@@ -4,7 +4,7 @@ class OrderListItem extends Component {
   render() {
     const orderState = 'AwaitingRetailerConfirmation'
     const stateColorMap = {
-      'AwaitingRetailerConfirmation': 'rgba(255, 9, 0, 0.11)',
+      'AwaitingRetailerConfirmation': '#ffebea',
       // 'AwaitingRetailerConfirmation': '#ff3b34',
       // 'AwaitingRetailerConfirmation': '#ff3b34',
     }
@@ -15,7 +15,9 @@ class OrderListItem extends Component {
     }
 
     const orderItemStyle = {
-      background: stateColorMap[orderState]
+      background: stateColorMap[orderState],
+      border: `1px solid ${'#ff3b34'}`,
+      borderRadius: '2px'
     }
 
     const { order, orderStatus } = this.props

@@ -1,10 +1,8 @@
 .pagination {
   margin: 0;
   padding: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;
+  position: relative;
+  text-align: center;
 
   li {
     cursor: pointer;
@@ -12,9 +10,12 @@
     list-style-type: none;
     display: inline-block;
     border: 1px solid #333;
+    border-right: 0;
     width: 32px;
     line-height: 32px;
     text-align: center;
+    background: #fff;
+
     &:first-child {
       border-top-left-radius: 2px;
       border-bottom-left-radius: 2px;
@@ -22,6 +23,7 @@
     &:last-child {
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
+      border-right: 1px solid #333;
     }
     &.active, &:hover {
       background: #333;

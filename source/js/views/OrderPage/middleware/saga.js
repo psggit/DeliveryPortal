@@ -21,6 +21,11 @@ function* fetchDataOnRouteChange(action) {
   }
 }
 
+const it = fetchDataOnRouteChange()
+console.log(it.next())
+console.log(it.next())
+console.log(it.next());
+
 function* forceRedeem(action) {
   try {
     // const { data, meta } = yield call(utils.getData, action)
@@ -65,10 +70,3 @@ export function* watchForceRedeem() {
     yield* takeLatest(ActionTypes.REQUEST_FORCE_REDEEM, forceRedeem)
   }
 }
-
-//
-// export default function* rootSaga() {
-//   yield [
-//     fork(watchFetchOrdersData)
-//   ]
-// }

@@ -76,8 +76,6 @@ export function constructFetchUtility(options) {
     mode: cors ? 'no-cors' : 'cors'
   }
 
-  // console.log(fetchOptions);
-
   // add data to request
   if (data) {
     fetchOptions.body = constructBody({type, data})
@@ -93,6 +91,5 @@ export function constructFetchUtility(options) {
 }
 
 function parseJSON(response) {
-  // console.log(response.json());
   return response.json()
 }

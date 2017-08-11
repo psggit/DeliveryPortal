@@ -119,6 +119,7 @@ const RetailerState = {
 // Initial Order State
 const CompleteOrderState = {
   state: null,
+  loadingOrdersList: true,
   order: OrderState,
   retailer: RetailerState,
   deliverer: DelivererState,
@@ -207,6 +208,7 @@ const actionsMap = {
 
     return Object.assign({}, state, {
       state: 'SearchingRetailer',
+      loadingOrdersList: false,
       order,
       retailer,
       deliverer,
