@@ -10,10 +10,17 @@ class NavBar extends Component {
     }
     this.handleClick = this.handleClick.bind(this)
   }
+
+  handleLogout() {
+    localStorage.clear()
+    location.href = '/login'
+  }
+
   handleClick() {
     const { shouldDeliever } = this.state
     this.setState({ shouldDeliever: !shouldDeliever })
   }
+
   render() {
     const { shouldDeliever } = this.state
     return (
@@ -38,6 +45,7 @@ class NavBar extends Component {
                 }
               </span>
           </li>
+          <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>
     )
