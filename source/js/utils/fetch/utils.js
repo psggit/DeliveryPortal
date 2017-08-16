@@ -4,8 +4,7 @@
 
 import "whatwg-fetch"
 // import Session from "./../session"
-// import { api_base_url } from ""
-const api_base_url = ''
+import { api_base_url } from "./../config"
 /**
  * Helper methods to create window.fetch instance
  */
