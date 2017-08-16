@@ -73,9 +73,9 @@ export function constructFetchUtility(options) {
   let fetchOptions = {
     method,
     headers: getHeaders(type),
-    mode: cors ? 'no-cors' : 'cors'
   }
 
+  if(cors) fetchOptions.mode = 'cors'
   // add data to request
   if (data) {
     fetchOptions.body = constructBody({type, data})
