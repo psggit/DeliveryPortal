@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Gmap from './../OrderPage/components/Gmap'
 import NotFound from 'views/NotFound';
 import OrderPage from './../OrderPage';
-// import Login from './../Login';
+import Login from './../Login';
 import OrderList from './../OrderList';
 import Menu from 'components/Global/Menu';
 
@@ -35,7 +35,7 @@ export default class App extends Component {
         <div className='App'>
           <div className='Page'>
             <Switch>
-              {/* <Route exact path={ routeCodes.LOGIN } component={ Login } /> */}
+              <Route exact path={ routeCodes.LOGIN } component={ Login } />
               <Route exact path={ routeCodes.all } component={ OrderPage } />
               <Route exact path={ routeCodes.assigned } component={ OrderPage } />
               <Route exact path={ routeCodes.history } component={ OrderPage } />
