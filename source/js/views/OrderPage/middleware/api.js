@@ -1,10 +1,10 @@
 import { GET } from '@utils/fetch'
 
-export function fetchDataOnRouteChange() {
+export function fetchOrdersData() {
   return GET({
     api: `https://jsonplaceholder.typicode.com/posts`,
     type: 'Public',
-    cors: false,
+    prependBaseUrl: false,
     handleError: true
   })
   .then(json => json)

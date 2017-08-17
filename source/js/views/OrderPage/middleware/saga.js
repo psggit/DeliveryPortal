@@ -11,20 +11,15 @@ import * as Api from './api'
 /**
  * Handlers
  */
-function* fetchDataOnRouteChange(action) {
+function* fetchOrdersData(action) {
   try {
-    const data  = yield call(Api.fetchDataOnRouteChange, action)
+    const data  = yield call(Api.fetchOrdersData, action)
     const meta = {}
     yield put({type: ActionTypes.SUCCESS_FETCH_ORDERS_DATA, data, meta})
   } catch (err) {
     console.log(err)
   }
 }
-
-const it = fetchDataOnRouteChange()
-console.log(it.next())
-console.log(it.next())
-console.log(it.next());
 
 function* forceRedeem(action) {
   try {
@@ -53,9 +48,9 @@ function* filterOrdersData(action) {
 /**
  * Watchers
  */
-export function* watchFetchDataOnRouteChange() {
+export function* watchFetchOrdersData() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDERS_DATA, fetchDataOnRouteChange)
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDERS_DATA, fetchOrdersData)
   }
 }
 

@@ -27,7 +27,7 @@ export const filterOrdersList = (filter) => ({
   data: filter
 })
 
-export const fetchDataOnRouteChange = (routeName) => ({
+export const fetchOrdersData = (routeName) => ({
   type: ActionTypes.REQUEST_FETCH_ORDERS_DATA,
   data: routeName
 })
