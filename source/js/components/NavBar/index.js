@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { getIcon } from './utils'
+import { getIcon } from './../utils'
+import SearchInput from './../SearchInput'
+
 import './index.scss'
 
 class NavBar extends Component {
@@ -23,6 +25,7 @@ class NavBar extends Component {
 
   render() {
     const { shouldDeliever } = this.state
+
     return (
       <header>
         <ul>
@@ -44,6 +47,9 @@ class NavBar extends Component {
                   : getIcon('play')
                 }
               </span>
+          </li>
+          <li>
+            <SearchInput />
           </li>
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
