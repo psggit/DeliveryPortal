@@ -10,18 +10,18 @@ const env = process.env.NODE_ENV;
  */
 const RUNTIME__CONFIG = {
   "development": {
-    host: "",
-    api_version: ""
+    host: "https://finn.local:8080",
+    api_version: "/api/v1"
   },
 
   "staging": {
-    host: "",
-    api_version: ""
+    host: "https://api.hipbar.in",
+    api_version: "/api/v1"
   },
 
   "production": {
-    host: "",
-    api_version: ""
+    host: "https://api.hipbar.com",
+    api_version: "/api/v1"
   }
 }
 
