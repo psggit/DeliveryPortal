@@ -34,12 +34,9 @@ export function getIcon(name) {
   }
 }
 
-export function getTimeDiff(d) {
-  const dateNow = new Date()
-  const dateTarget = new Date(d)
-
+export function getTimeDiff(d1, d2) {
   return Math.round(
-    (dateNow - dateTarget) / 60000
+    (d1 - new Date(d2)) / 60000
   )
 }
 
