@@ -23,7 +23,7 @@ export function stateChange(value) {
 }
 
 export const filterOrdersList = (filter) => ({
-  type: ActionTypes.REQUEST_FILTER_ORDERS_LIST,
+  type: ActionTypes.REQUEST_FILTER_ORDERS_DATA,
   data: filter
 })
 

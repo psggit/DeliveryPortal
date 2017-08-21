@@ -25,7 +25,7 @@ class OrderDetail extends Component {
   openAssignOrderModal(e) {
     mountModal(ConfirmModal({
       confirmMessage: 'Are your sure you want to assign this order?',
-      handleConfirmAssign: this.handleConfirmAssign
+      handleConfirm: this.handleConfirmAssign
     }))
   }
 
