@@ -49,7 +49,7 @@ class NavBar extends Component {
               </span>
           </li>
           <li>
-            <SearchInput />
+            <SearchInput search={this.props.search} />
           </li>
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>

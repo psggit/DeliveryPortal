@@ -6,6 +6,7 @@ class SearchInput extends Component {
   constructor() {
     super()
     this.handleChange = this.handleChange.bind(this)
+    this.handlePress = this.handlePress.bind(this)
   }
 
   handleChange(e) {
@@ -14,9 +15,11 @@ class SearchInput extends Component {
   }
 
   handlePress(e) {
-    console.log('fefe');
-    // const { actions } = this.props
-    // if (e.keyCode === 13) actions.filterOrdersData()
+    if (e.keyCode === 13) {
+      const { queryString } = this.state
+      // e.target.value = ''
+      this.props.search()
+    }
   }
 
   render() {

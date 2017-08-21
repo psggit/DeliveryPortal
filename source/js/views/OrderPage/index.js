@@ -37,7 +37,7 @@ class OrderPage extends Component {
     this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    this.handleFilterChange = this.handleFilterChange.bind(this)
     this.fetchDataOnRouteChange = this.fetchDataOnRouteChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
   }
@@ -45,7 +45,12 @@ class OrderPage extends Component {
   fetchDataOnRouteChange(ordersType) {
     // TODO: Fetch data here on route change
     const { actions } = this.props
-    actions.fetchDataOnRouteChange(ordersType)
+    actions.fetchOrdersData(ordersType)
+  }
+
+  componentWillMount() {
+    if (!localStorage.getItem('_hipbaru'))
+    location.href = '/login'
   }
 
   componentDidMount() {
@@ -53,7 +58,7 @@ class OrderPage extends Component {
     const { actions } = this.props
     const _self = this
     // console.log(match.params);
-    actions.fetchDataOnRouteChange(ordersType)
+    actions.fetchOrdersData(ordersType)
     // ;(function pollOrdersData() {
     // 	_self.props.actions.fetchDataOnRouteChange(ordersType)
     // 	setTimeout(pollOrdersData, 10000)
@@ -82,14 +87,19 @@ class OrderPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({activePage: pageNumber});
+    console.log(`active page is ${pageNumber}`)
+    this.setState({ activePage: pageNumber })
+    const postData = {
+      offset: 2,
+      limit: 20
+    }
+    // actions.fetchOrdersData(postData)
   }
 
-  handleChange(filter) {
+  handleFilterChange(filter) {
+    console.log(filter);
     // Filter orders list with applied filter
-    // const { dispatch } = this.props
-    // dispatch(filterOrdersList(filter))
+    // actions.filterOrdersData()
   }
 
   // onMapCreated(map) {
@@ -145,21 +155,26 @@ class OrderPage extends Component {
 
     const timeMap = {
       'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': getTimeDiff(retailer.orderPlacedTime),
+      'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.orderPlacedTime),
       'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': getTimeDiff(deliverer.orderPlacedTime),
-      'DelivererConfirmed': getTimeDiff(deliverer.orderAcceptedTime),
-      'OrderDispatched': getTimeDiff(retailer.dispatchedTime),
+      'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.orderPlacedTime),
+      'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
+      'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
       'OrderDelivered': '',
     }
 
-    const { shouldMountOrderDetail, currentOrderId, shouldListScroll } = this.state
+    const {
+      shouldMountOrderDetail,
+      currentOrderId, shouldListScroll,
+      activePage
+    } = this.state
+
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
     const { actions } = this.props
 
     return (
       <div>
-        <NavBar />
+        <NavBar search={actions.filterOrdersList} />
         <SideMenu
           unmountOrderDetail={this.unmountOrderDetail}
           fetchDataOnRouteChange={this.fetchDataOnRouteChange}
@@ -168,7 +183,7 @@ class OrderPage extends Component {
           <div className='orders-filter'>
             <Dropdown
               options={filterOptions}
-              onChange={this.handleChange}
+              onChange={this.handleFilterChange}
             />
           </div>
           <OrdersList
@@ -183,7 +198,7 @@ class OrderPage extends Component {
             state={state}
           />
           <Pagination
-            activePage={this.state.activePage}
+            activePage={activePage}
             itemsCountPerPage={10}
             totalItemsCount={250}
             pageRangeDisplayed={5}
@@ -203,7 +218,7 @@ class OrderPage extends Component {
           }
         </div>
         <div>
-          <select style={{position: 'fixed', top: '65px', right: '0px'}} onChange={this.onStateChange}>
+          {/* <select style={{position: 'fixed', top: '65px', right: '0px'}} onChange={this.onStateChange}>
             {
               Object.keys(ActionTypes).map((item, i) => {
                 return (
@@ -216,7 +231,7 @@ class OrderPage extends Component {
                 )
               })
             }
-          </select>
+          </select> */}
         </div>
       </div>
     )
