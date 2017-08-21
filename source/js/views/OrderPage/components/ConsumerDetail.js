@@ -29,6 +29,7 @@ class ConsumerDetail extends Component {
     const DigitInput = styled.input`
       height: 32px;
       width: 32px;
+      padding: 0;
       border-style: none;
       margin-right: 10px;
       border: 1px solid #D0D0D0;
