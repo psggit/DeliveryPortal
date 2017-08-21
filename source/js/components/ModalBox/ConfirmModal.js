@@ -20,7 +20,7 @@ export default function confirmModal (data) {
             <ModalBody>{ data.confirmMessage }</ModalBody>
           <ModalFooter>
             <button className='btn btn-secondary' onClick={unMountModal}>Cancel</button>
-            <button className='btn btn-primary' onClick={data.handleConfirmAssign}>Confirm</button>
+            <button className='btn btn-primary' onClick={data.handleConfirm}>Confirm</button>
           </ModalFooter>
         </ModalBox>
       )
