@@ -45,6 +45,17 @@ function* filterOrdersData(action) {
 }
 
 
+function* assignOrder(action) {
+  try {
+    // const { data, meta } = yield call(utils.getData, action)
+    const data = {}
+    const meta = {}
+    yield put({type: ActionTypes.SUCCESS_ASSIGN_ORDER, data, meta})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 /**
  * Watchers
  */
@@ -63,5 +74,11 @@ export function* watchFilterOrdersData() {
 export function* watchForceRedeem() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FORCE_REDEEM, forceRedeem)
+  }
+}
+
+export function* watchAssignOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_ORDER, assignOrder)
   }
 }

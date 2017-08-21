@@ -217,7 +217,7 @@ const actionsMap = {
   },
 
   [ActionTypes.REQUEST_ASSIGN_ORDER]: (state, action) => {
-
+    return state
   },
 
   [ActionTypes.SUCCESS_FORCE_REDEEM]: (state, action) => {
