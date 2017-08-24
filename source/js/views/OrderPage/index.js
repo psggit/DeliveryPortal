@@ -28,24 +28,42 @@ class OrderPage extends Component {
 
   constructor() {
     super()
+
+    this.pagesLimit = 5
+    this.ordersType = location.href.split('/')[4]
+                      ? location.href.split('/')[4]
+                      : 'all'
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
       currentOrderId: null,
-      activePage: 2
+      activePage: 1,
+      queryString: '',
+      searchAPI: '/deliveryStatus/searchLiveOrders'
     }
-    this.onStateChange = this.onStateChange.bind(this)
+    // this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleFilterChange = this.handleFilterChange.bind(this)
-    this.fetchDataOnRouteChange = this.fetchDataOnRouteChange.bind(this)
+    this.handleRouteChange = this.handleRouteChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
+    this.setQueryString = this.setQueryString.bind(this)
   }
 
-  fetchDataOnRouteChange(ordersType) {
-    // TODO: Fetch data here on route change
-    const { actions } = this.props
-    actions.fetchOrdersData(ordersType)
+  handleRouteChange() {
+    switch (this.ordersType) {
+      case 'assigned':
+        this.setState({ searchAPI: '/deliveryStatus/searchAssignedOrders' })
+        break
+
+      case 'history':
+        this.setState({ searchAPI: '/deliveryStatus/searchHistoryOrders' })
+        break
+
+      default:
+        this.setState({ searchAPI: '/deliveryStatus/searchLiveOrders' })
+        break
+    }
   }
 
   componentWillMount() {
@@ -54,11 +72,13 @@ class OrderPage extends Component {
   }
 
   componentDidMount() {
-    const ordersType = location.href.split('/')[4] ? location.href.split('/')[4] : 'all'
     const { actions } = this.props
     const _self = this
     // console.log(match.params);
-    actions.fetchOrdersData(ordersType)
+    actions.fetchOrdersData({
+      offset: 0,
+      limit: this.pagesLimit,
+    })
     // ;(function pollOrdersData() {
     // 	_self.props.actions.fetchDataOnRouteChange(ordersType)
     // 	setTimeout(pollOrdersData, 10000)
@@ -81,19 +101,27 @@ class OrderPage extends Component {
     })
   }
 
-  onStateChange(e) {
-    // const { dispatch } = this.props
-    actions.stateChange(e.target.value)
+  setQueryString(queryString) {
+    this.setState({ queryString })
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`)
+    let offset = this.pagesLimit * (pageNumber - 1)
+    const { actions } = this.props
+    const { searchAPI, queryString } = this.state
     this.setState({ activePage: pageNumber })
+
     const postData = {
-      offset: 2,
-      limit: 20
+      offset: offset,
+      limit: this.pagesLimit
     }
-    // actions.fetchOrdersData(postData)
+
+    if(queryString.length) {
+      postData.query = queryString
+      actions.fetchOrdersData(postData, searchAPI)
+      return
+    }
+    actions.fetchOrdersData(postData)
   }
 
   handleFilterChange(filter) {
@@ -111,62 +139,65 @@ class OrderPage extends Component {
   render() {
     const {
       state,
-      order,
-      retailer,
-      deliverer,
-      customer,
+      orders,
+      ordersCount,
+      // order,
+      // retailer,
+      // deliverer,
+      // customer,
       loadingOrdersList,
       match
     } = this.props
 
 
-    const titleMap = {
-      'SearchingRetailer': 'Searching For Retailers',
-      'AwaitingRetailerConfirmation': 'Awaiting Retailer Confirmation',
-      'SearchingDeliverer': 'Searching For Deliverer',
-      'AwaitingDelivererConfirmation': 'Awaiting Deliverer Confirmation',
-      'DelivererConfirmed': 'Deliverer on way to pick up the order',
-      'OrderDispatched': 'Order Picked Up and On way',
-      'OrderDelivered': 'Order Delivered',
-      'OrderCancelled': 'Order Cancelled',
-    }
+    // const titleMap = {
+    //   'SearchingRetailer': 'Searching For Retailers',
+    //   'AwaitingRetailerConfirmation': 'Awaiting Retailer Confirmation',
+    //   'SearchingDeliverer': 'Searching For Deliverer',
+    //   'AwaitingDelivererConfirmation': 'Awaiting Deliverer Confirmation',
+    //   'DelivererConfirmed': 'Deliverer on way to pick up the order',
+    //   'OrderDispatched': 'Order Picked Up and On way',
+    //   'OrderDelivered': 'Order Delivered',
+    //   'OrderCancelled': 'Order Cancelled',
+    // }
 
-    const articleMap = {
-      'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': 'for',
-      'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': 'for',
-      'DelivererConfirmed': '',
-      'OrderDispatched': '',
-      'OrderDelivered': '',
-      'OrderCancelled': 'at',
-    }
+    // const articleMap = {
+    //   'SearchingRetailer': '',
+    //   'AwaitingRetailerConfirmation': 'for',
+    //   'SearchingDeliverer': '',
+    //   'AwaitingDelivererConfirmation': 'for',
+    //   'DelivererConfirmed': '',
+    //   'OrderDispatched': '',
+    //   'OrderDelivered': '',
+    //   'OrderCancelled': 'at',
+    // }
 
-    const epilogueMap = {
-      'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': 'Min.',
-      'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': 'Min.',
-      'DelivererConfirmed': 'Min Ago',
-      'OrderDispatched': 'Min Ago',
-      'OrderDelivered': '',
-      'OrderCancelled': order.cancelledTime,
-    }
+    // const epilogueMap = {
+    //   'SearchingRetailer': '',
+    //   'AwaitingRetailerConfirmation': 'Min.',
+    //   'SearchingDeliverer': '',
+    //   'AwaitingDelivererConfirmation': 'Min.',
+    //   'DelivererConfirmed': 'Min Ago',
+    //   'OrderDispatched': 'Min Ago',
+    //   'OrderDelivered': '',
+    //   'OrderCancelled': order.cancelledTime,
+    // }
 
-    const timeMap = {
-      'SearchingRetailer': '',
-      'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.orderPlacedTime),
-      'SearchingDeliverer': '',
-      'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.orderPlacedTime),
-      'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
-      'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
-      'OrderDelivered': '',
-    }
+    // const timeMap = {
+    //   'SearchingRetailer': '',
+    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.orderPlacedTime),
+    //   'SearchingDeliverer': '',
+    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.orderPlacedTime),
+    //   'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
+    //   'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
+    //   'OrderDelivered': '',
+    // }
 
     const {
       shouldMountOrderDetail,
       currentOrderId, shouldListScroll,
-      activePage
+      activePage,
+      searchAPI,
     } = this.state
 
     const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
@@ -174,7 +205,12 @@ class OrderPage extends Component {
 
     return (
       <div>
-        <NavBar search={actions.filterOrdersList} />
+        <NavBar
+          search={actions.fetchOrdersData}
+          searchAPI={searchAPI}
+          setQueryString={this.setQueryString}
+          pagesLimit={5}
+        />
         <SideMenu
           unmountOrderDetail={this.unmountOrderDetail}
           fetchDataOnRouteChange={this.fetchDataOnRouteChange}
@@ -188,22 +224,26 @@ class OrderPage extends Component {
           </div>
           <OrdersList
             loadingOrdersList={loadingOrdersList}
-            orders={order.content}
+            orders={orders}
             unmountOrderDetail={this.unmountOrderDetail}
             mountOrderDetail={this.mountOrderDetail}
-            titleMap={titleMap}
-            articleMap={articleMap}
-            timeMap={timeMap}
-            epilogueMap={epilogueMap}
+            // titleMap={titleMap}
+            // articleMap={articleMap}
+            // timeMap={timeMap}
+            // epilogueMap={epilogueMap}
             state={state}
           />
-          <Pagination
-            activePage={activePage}
-            itemsCountPerPage={10}
-            totalItemsCount={250}
-            pageRangeDisplayed={5}
-            onChange={this.handlePageChange}
-          />
+          {
+            !loadingOrdersList
+            ? <Pagination
+              activePage={activePage}
+              itemsCountPerPage={this.pagesLimit}
+              totalItemsCount={ordersCount}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            />
+            : ''
+          }
           {
             shouldMountOrderDetail
             ? <OrderDetail
@@ -241,10 +281,12 @@ class OrderPage extends Component {
 const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
   loadingOrdersList: state.OrderPage.loadingOrdersList,
-  order: state.OrderPage.order,
-  retailer: state.OrderPage.retailer,
-  deliverer: state.OrderPage.deliverer,
-  customer: state.OrderPage.customer,
+  orders: state.OrderPage.orders,
+  ordersCount: state.OrderPage.ordersCount
+  // order: state.OrderPage.order,
+  // retailer: state.OrderPage.retailer,
+  // deliverer: state.OrderPage.deliverer,
+  // customer: state.OrderPage.customer,
 })
 
 const mapDispatchToProps = (dispatch) => ({

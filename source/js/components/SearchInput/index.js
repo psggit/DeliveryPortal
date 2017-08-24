@@ -12,13 +12,27 @@ class SearchInput extends Component {
   handleChange(e) {
     const queryString = e.target.value
     this.setState({ queryString })
+    this.props.setQueryString(queryString)
+    const { searchAPI, pagesLimit } = this.props
+    // e.target.value = ''
+    this.props.search({
+      offset: 0,
+      limit: pagesLimit,
+      query: queryString
+    }, searchAPI)
   }
 
   handlePress(e) {
     if (e.keyCode === 13) {
       const { queryString } = this.state
+      
+      const { searchAPI, pagesLimit } = this.props
       // e.target.value = ''
-      this.props.search()
+      this.props.search({
+        offset: 0,
+        limit: pagesLimit,
+        query: queryString
+      }, searchAPI)
     }
   }
 

@@ -27,9 +27,10 @@ export const filterOrdersList = (filter) => ({
   data: filter
 })
 
-export const fetchOrdersData = (routeName) => ({
+export const fetchOrdersData = (data, api = '/deliveryStatus/liveOrders') => ({
   type: ActionTypes.REQUEST_FETCH_ORDERS_DATA,
-  data: routeName
+  data: data,
+  api: api
 })
 
 export const assignOrder = (id) => ({
