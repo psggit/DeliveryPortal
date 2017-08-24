@@ -10,8 +10,8 @@ const env = process.env.NODE_ENV;
  */
 const RUNTIME__CONFIG = {
   "development": {
-    host: "https://finn.local:8080",
-    api_version: "/api/v1"
+    host: "https://gremlin.hearsay81.hasura-app.io",
+    api_version: ""
   },
 
   "staging": {
