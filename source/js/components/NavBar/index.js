@@ -54,6 +54,8 @@ class NavBar extends Component {
               searchAPI={this.props.searchAPI}
               setQueryString={this.props.setQueryString}
               pagesLimit={this.props.pagesLimit}
+              pageOffset={this.props.pageOffset}
+              resetPagination={this.props.resetPagination}
             />
           </li>
           <li className='user' onClick={this.handleLogout}>Logout</li>

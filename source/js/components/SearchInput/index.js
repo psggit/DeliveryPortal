@@ -9,12 +9,12 @@ class SearchInput extends Component {
     this.handlePress = this.handlePress.bind(this)
   }
 
-  handleChange(e) {
-    const queryString = e.target.value
-    this.setState({ queryString })
-    this.props.setQueryString(queryString)
-    const { searchAPI, pagesLimit } = this.props
-    // e.target.value = ''
+  search(queryString) {
+    const { searchAPI, pagesLimit, pageOffset } = this.props
+
+    this.props.setQueryString(queryString, 0)
+    this.props.resetPagination()
+    
     this.props.search({
       offset: 0,
       limit: pagesLimit,
@@ -22,17 +22,16 @@ class SearchInput extends Component {
     }, searchAPI)
   }
 
+  handleChange(e) {
+    const queryString = e.target.value
+    this.setState({ queryString })
+    // this.search(queryString)
+  }
+
   handlePress(e) {
     if (e.keyCode === 13) {
       const { queryString } = this.state
-      
-      const { searchAPI, pagesLimit } = this.props
-      // e.target.value = ''
-      this.props.search({
-        offset: 0,
-        limit: pagesLimit,
-        query: queryString
-      }, searchAPI)
+      this.search(queryString)
     }
   }
 

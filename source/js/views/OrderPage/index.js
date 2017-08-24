@@ -14,6 +14,7 @@ import { filterOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import '@sass/components/_pagination.scss'
+import Qr from 'query-string'
 
 class OrderPage extends Component {
 
@@ -30,16 +31,15 @@ class OrderPage extends Component {
     super()
 
     this.pagesLimit = 5
-    this.ordersType = location.href.split('/')[4]
-                      ? location.href.split('/')[4]
-                      : 'all'
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
       currentOrderId: null,
       activePage: 1,
-      queryString: '',
-      searchAPI: '/deliveryStatus/searchLiveOrders'
+      query: '',
+      searchAPI: '/deliveryStatus/searchLiveOrders',
+      pageOffset: 0,
+      ordersType: location.href.split('/')[4]
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
@@ -48,10 +48,12 @@ class OrderPage extends Component {
     this.handleRouteChange = this.handleRouteChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
     this.setQueryString = this.setQueryString.bind(this)
+    this.resetPagination = this.resetPagination.bind(this)
   }
 
-  handleRouteChange() {
-    switch (this.ordersType) {
+  handleRouteChange(ordersType) {
+    this.setState({ ordersType })
+    switch (ordersType) {
       case 'assigned':
         this.setState({ searchAPI: '/deliveryStatus/searchAssignedOrders' })
         break
@@ -66,6 +68,27 @@ class OrderPage extends Component {
     }
   }
 
+  fetchDataFromQueryParams() {
+    const queryString = location.search
+    const parsed = Qr.parse(queryString)
+    const { actions } = this.props
+    const postData = {
+      offset: parseInt(parsed.start),
+      limit: this.pagesLimit
+    }
+
+    const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
+    this.setState({ activePage: pageNumber })
+
+    if(parsed.q) {
+      const { searchAPI } = this.state
+      postData.query = parsed.q
+      actions.fetchOrdersData(postData, searchAPI)
+      return
+    }
+    actions.fetchOrdersData(postData)
+  }
+
   componentWillMount() {
     if (!localStorage.getItem('_hipbaru'))
     location.href = '/login'
@@ -75,10 +98,12 @@ class OrderPage extends Component {
     const { actions } = this.props
     const _self = this
     // console.log(match.params);
-    actions.fetchOrdersData({
-      offset: 0,
-      limit: this.pagesLimit,
-    })
+    this.fetchDataFromQueryParams()
+    // actions.fetchOrdersData({
+    //   offset: 0,
+    //   limit: this.pagesLimit,
+    // })
+
     // ;(function pollOrdersData() {
     // 	_self.props.actions.fetchDataOnRouteChange(ordersType)
     // 	setTimeout(pollOrdersData, 10000)
@@ -101,23 +126,40 @@ class OrderPage extends Component {
     })
   }
 
-  setQueryString(queryString) {
-    this.setState({ queryString })
+  setQueryString(query, start) {
+    this.setState({ query })
+    const { ordersType } = this.state
+
+    const parsed = {}
+    if (query.length) { parsed.q = query }
+    parsed.start = start
+    const queryString = Qr.stringify(parsed)
+
+    const ot = !ordersType || ordersType == 'all' ? '' : `${ordersType}/`
+
+    const pushUrl = `/orders${ot}?${queryString}`
+    history.pushState(null, null, pushUrl)
+  }
+
+  resetPagination() {
+    this.setState({ activePage: 1 })
   }
 
   handlePageChange(pageNumber) {
     let offset = this.pagesLimit * (pageNumber - 1)
     const { actions } = this.props
-    const { searchAPI, queryString } = this.state
-    this.setState({ activePage: pageNumber })
+    const { searchAPI, query } = this.state
+    this.setState({ activePage: pageNumber, pageOffset: offset })
 
     const postData = {
       offset: offset,
       limit: this.pagesLimit
     }
 
-    if(queryString.length) {
-      postData.query = queryString
+    this.setQueryString(query, offset)
+
+    if(query.length) {
+      postData.query = query
       actions.fetchOrdersData(postData, searchAPI)
       return
     }
@@ -197,6 +239,7 @@ class OrderPage extends Component {
       shouldMountOrderDetail,
       currentOrderId, shouldListScroll,
       activePage,
+      pageOffset,
       searchAPI,
     } = this.state
 
@@ -210,10 +253,12 @@ class OrderPage extends Component {
           searchAPI={searchAPI}
           setQueryString={this.setQueryString}
           pagesLimit={5}
+          pageOffset={pageOffset}
+          resetPagination={this.resetPagination}
         />
         <SideMenu
           unmountOrderDetail={this.unmountOrderDetail}
-          fetchDataOnRouteChange={this.fetchDataOnRouteChange}
+          handleRouteChange={this.handleRouteChange}
         />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
