@@ -60,6 +60,7 @@
     "is-utf8": "^0.2.1",
     "isomorphic-fetch": "^2.2.1",
     "prop-types": "^15.5.10",
+    "query-string": "^5.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-gmaps": "^1.6.0",
