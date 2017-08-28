@@ -22,7 +22,14 @@ class ConsumerDetail extends Component {
   }
 
   render() {
-    const { isOrderAssigned, deliveryCharge, ordersType, openAssignOrderModal } = this.props
+    const {
+      isOrderAssigned,
+      deliveryCharge,
+      ordersType,
+      openAssignOrderModal,
+      customer
+    } = this.props
+
     const isKYCconfirmed = true
     const isDeliveryVerified = true
 
@@ -45,15 +52,15 @@ class ConsumerDetail extends Component {
       <div className='order detail-card'>
         <h4>Consumer</h4>
         <div className='personal-info'>
-          <p className='name'>John Carter</p>
+          <p className='name'>{customer.name}</p>
           <p className='address'>
-            H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
+            {customer.address}
           </p>
           <div className='chips'>
-            { isKYCconfirmed ? getIcon('kyc_confirmed') : '' }
+            { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
             { isDeliveryVerified ? getIcon('delivery_verified') : '' }
           </div>
-          <p className='phone'>09857189185</p>
+          {customer.phone ? <p className='phone'>{customer.phone}</p> : ''}
           <p className='order-status'>
             Awaiting retailer confirmation for
             { ' 54 mins.' }

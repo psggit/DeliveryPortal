@@ -24,8 +24,8 @@ class OrdersList extends Component {
     }
   }
   render() {
-    const { orders, titleMap, articleMap, timeMap, epilogueMap, state, loadingOrdersList } = this.props
-    const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
+    const { orders, state, loadingOrdersList } = this.props
+    // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
       <div className='orders-list' onClick={this.handleClick}>
@@ -34,9 +34,10 @@ class OrdersList extends Component {
           ? (
             orders.map((item, i) => {
               return <OrderListItem
-                key={item.id}
-                order={item}
-                orderStatus={orderStatus}
+                key={`${i+1}${item.order_id}`}
+                id={item.order_id}
+                consumerName={item.consumer_name}
+                orderStatus={item.status}
               />
             })
           )

@@ -7,24 +7,14 @@ Don't do any side-effect.
 
 import * as ActionTypes from './../constants/actions'
 
-export function getDashboardStatus() {
-  // TODO: Get deliverer Status
-  // TODO: Get Outlet Status
-  // TODO: Get Todays Status ORder
-  console.log('Delivery Status');
-}
-export function stateChange(value) {
-  return {
-    type: value,
-  }
-  // return callApi(url).then(res => {
-  //   dispatch(dispatchFetch(res.data))
-  // })
-}
-
 export const filterOrdersList = (filter) => ({
   type: ActionTypes.REQUEST_FILTER_ORDERS_DATA,
   data: filter
+})
+
+export const fetchOrderDetail = (orderId) => ({
+  type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL,
+  data: { id: orderId }
 })
 
 export const fetchOrdersData = (data, api = '/deliveryStatus/liveOrders') => ({

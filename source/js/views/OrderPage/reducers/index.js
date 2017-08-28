@@ -120,17 +120,17 @@ const RetailerState = {
 const CompleteOrderState = {
   state: null,
   loadingOrdersList: true,
-  order: OrderState,
-  retailer: RetailerState,
-  deliverer: DelivererState,
-  customer: CustomerState
+  orders: []
+  // order: OrderState,
+  // retailer: RetailerState,
+  // deliverer: DelivererState,
+  // customer: CustomerState
 }
 
 
 
 const actionsMap = {
   [ActionTypes.SUCCESS_FETCH_ORDERS_DATA]: (state, action) => {
-
     // Order Management : placed
     // order.set('state', 'placed')
     // order.set('content')
@@ -209,10 +209,50 @@ const actionsMap = {
     return Object.assign({}, state, {
       state: 'SearchingRetailer',
       loadingOrdersList: false,
-      order,
-      retailer,
-      deliverer,
-      customer
+      orders: action.data.orders,
+      ordersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_ORDER_DETAIL]: (state, action) => {
+    const { orderStatus } = action.data
+
+    return Object.assign({}, state, {
+      order: {
+        id: orderStatus.order_id,
+        status: orderStatus.status,
+        cancellationFee: orderStatus.cancellation_fee,
+        cancelledTime: orderStatus.cancelled_time,
+        returnTime: orderStatus.cancellation_return_time,
+        deliveredTime: orderStatus.dp_delivered_time,
+        pickedUpTime: orderStatus.dp_picked_up_time,
+        landmark: orderStatus.landmark,
+        deliveryFee: orderStatus.deliveredFee,
+        
+        isFreelancer: orderStatus.is_freelancer
+      },
+      retailer: {
+        id: orderStatus.retailer_id,
+        name: orderStatus.retailer_name,
+        phone: orderStatus.retailer_phone,
+        gps: orderStatus.retailer_gps,
+        address: orderStatus.retailer_address,
+        confirmationTime: orderStatus.retailer_confimation_time
+      },
+      deliverer: {
+        id: orderStatus.dp_id,
+        name: orderStatus.dp_name,
+        confirmationTime: orderStatus.dp_confirmation_time,
+        reachedToConsumerTime: orderStatus.dp_reached_to_consumer_time
+      },
+      customer: {
+        id: orderStatus.consumer_id,
+        address: orderStatus.consumer_address,
+        name: orderStatus.consumer_name,
+        gps: orderStatus.consumer_gps,
+        isAgeVerified: orderStatus.is_age_verified,
+        phone: orderStatus.contact_number
+      }
     })
   },
 

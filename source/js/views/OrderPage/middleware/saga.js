@@ -13,20 +13,28 @@ import * as Api from './api'
  */
 function* fetchOrdersData(action) {
   try {
-    const data  = yield call(Api.fetchOrdersData, action)
-    const meta = {}
-    yield put({type: ActionTypes.SUCCESS_FETCH_ORDERS_DATA, data, meta})
+    const data = yield call(Api.fetchOrdersData, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_ORDERS_DATA, data})
   } catch (err) {
     console.log(err)
   }
 }
 
+function* fetchOrderDetail(action) {
+  try {
+    const data = yield call(Api.fetchOrderDetail, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_ORDER_DETAIL, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+
 function* forceRedeem(action) {
   try {
     // const { data, meta } = yield call(utils.getData, action)
     const data = {}
-    const meta = {}
-    yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data, meta})
+    yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data})
   } catch (err) {
     console.log(err)
   }
@@ -68,6 +76,12 @@ export function* watchFetchOrdersData() {
 export function* watchFilterOrdersData() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FILTER_ORDERS_DATA, filterOrdersData)
+  }
+}
+
+export function* watchFetchOrderDetail() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDER_DETAIL, fetchOrderDetail)
   }
 }
 

@@ -72,13 +72,13 @@ class OrderPage extends Component {
     const queryString = location.search
     const parsed = Qr.parse(queryString)
     const { actions } = this.props
+    const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
     const postData = {
-      offset: parseInt(parsed.start),
+      offset: parseInt(parsed.start) ? parseInt(parsed.start): 0,
       limit: this.pagesLimit
     }
 
-    const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
-    this.setState({ activePage: pageNumber })
+    this.setState({ activePage: pageNumber ? pageNumber : 1 })
 
     if(parsed.q) {
       const { searchAPI } = this.state
@@ -97,13 +97,7 @@ class OrderPage extends Component {
   componentDidMount() {
     const { actions } = this.props
     const _self = this
-    // console.log(match.params);
     this.fetchDataFromQueryParams()
-    // actions.fetchOrdersData({
-    //   offset: 0,
-    //   limit: this.pagesLimit,
-    // })
-
     // ;(function pollOrdersData() {
     // 	_self.props.actions.fetchDataOnRouteChange(ordersType)
     // 	setTimeout(pollOrdersData, 10000)
@@ -116,6 +110,8 @@ class OrderPage extends Component {
       shouldListScroll: false,
       currentOrderId: orderId
     })
+    const { actions } = this.props
+    actions.fetchOrderDetail(orderId)
   }
 
   unmountOrderDetail() {
@@ -183,10 +179,10 @@ class OrderPage extends Component {
       state,
       orders,
       ordersCount,
-      // order,
-      // retailer,
-      // deliverer,
-      // customer,
+      order,
+      retailer,
+      deliverer,
+      customer,
       loadingOrdersList,
       match
     } = this.props
@@ -293,6 +289,8 @@ class OrderPage extends Component {
             shouldMountOrderDetail
             ? <OrderDetail
               retailer={retailer}
+              customer={customer}
+              deliverer={deliverer}
               actions={actions}
               order={order}
               dispatch={ this.props.dispatch }
@@ -327,11 +325,11 @@ const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
   loadingOrdersList: state.OrderPage.loadingOrdersList,
   orders: state.OrderPage.orders,
-  ordersCount: state.OrderPage.ordersCount
-  // order: state.OrderPage.order,
-  // retailer: state.OrderPage.retailer,
-  // deliverer: state.OrderPage.deliverer,
-  // customer: state.OrderPage.customer,
+  ordersCount: state.OrderPage.ordersCount,
+  order: state.OrderPage.order,
+  retailer: state.OrderPage.retailer,
+  deliverer: state.OrderPage.deliverer,
+  customer: state.OrderPage.customer,
 })
 
 const mapDispatchToProps = (dispatch) => ({

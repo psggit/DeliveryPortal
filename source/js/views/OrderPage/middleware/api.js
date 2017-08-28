@@ -9,3 +9,12 @@ export function fetchOrdersData(action) {
   })
   .then(json => json)
 }
+
+export function fetchOrderDetail(action) {
+  return POST({
+    api: `/deliveryStatus/orderStatus/`,
+    data: action.data,
+    type: 'Public'
+  })
+  .then(json => json)
+}

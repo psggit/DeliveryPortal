@@ -5,6 +5,7 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
+import Gmap from './Gmap'
 
 class OrderDetail extends Component {
   constructor() {
@@ -52,12 +53,13 @@ class OrderDetail extends Component {
     }
 
     const loadingOrderDetail = true
-    const { retailer } = this.props
     const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
-    const { ordersType, currentOrderId, order } = this.props
+    const { ordersType, currentOrderId, order, customer, deliverer, retailer } = this.props
+    console.log(retailer, customer, deliverer)
     const isOrderConfirmed = false
-    const isOrderAssigned = order.assignedTo === currentOrderId
+    // const isOrderAssigned = order.assignedTo === currentOrderId
+    const isOrderAssigned = false
 
     const { actions } = this.props
 
@@ -74,13 +76,18 @@ class OrderDetail extends Component {
           ? (
             <div>
               <h4>Order detail: {`#${currentOrderId}`}</h4>
-
-              <ConsumerDetail
+            {
+              customer
+              ? <ConsumerDetail
+                customer={customer}
+                order={order}
                 actions={actions}
                 isOrderAssigned={isOrderAssigned}
                 deliveryCharge={deliveryCharge}
                 openAssignOrderModal={this.openAssignOrderModal}
               />
+              : ''
+            }
 
               <RetailerDetail
                 isOrderConfirmed={isOrderConfirmed}
@@ -89,6 +96,15 @@ class OrderDetail extends Component {
               <DelivererDetail
                 isOrderConfirmed={isOrderConfirmed}
                />
+                {
+                  customer && retailer && deliverer
+                  ? <Gmap
+                    customer={customer}
+                    deliverer={deliverer}
+                    retailer={retailer}
+                  />
+                  : ''
+                }
                <button
                  style={trackBtnStyle}
                  onClick={this.openGmap}
