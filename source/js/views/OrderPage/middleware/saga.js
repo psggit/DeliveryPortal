@@ -55,10 +55,8 @@ function* filterOrdersData(action) {
 
 function* assignOrder(action) {
   try {
-    // const { data, meta } = yield call(utils.getData, action)
-    const data = {}
-    const meta = {}
-    yield put({type: ActionTypes.SUCCESS_ASSIGN_ORDER, data, meta})
+    const data = yield call(Api.assignOrder, action)
+    yield put({type: ActionTypes.SUCCESS_ASSIGN_ORDER, data})
   } catch (err) {
     console.log(err)
   }
