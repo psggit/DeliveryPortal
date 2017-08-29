@@ -19,9 +19,9 @@ class OrderDetail extends Component {
     this.props.unmountOrderDetail()
   }
 
-  openGmap() {
-    window.open(`/orders/track/${1}`, '_blank')
-  }
+  // openGmap() {
+  //   window.open(`/orders/track/${1}`, '_blank')
+  // }
 
   openAssignOrderModal(e) {
     mountModal(ConfirmModal({
@@ -32,7 +32,11 @@ class OrderDetail extends Component {
 
   handleConfirmAssign(id) {
     const { currentOrderId, actions } = this.props
-    actions.assignOrder(currentOrderId)
+    const postData = {
+      support_id: 1,
+      order_id: currentOrderId
+    }
+    actions.assignOrder(postData)
     unMountModal()
   }
 
@@ -47,16 +51,14 @@ class OrderDetail extends Component {
       marginBottom: '10px'
     }
 
-    const trackBtnStyle = {
-      display: 'block',
-      margin: '0 auto'
-    }
+    // const trackBtnStyle = {
+    //   display: 'block',
+    //   margin: '0 auto'
+    // }
 
-    const loadingOrderDetail = true
     const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
-    const { ordersType, currentOrderId, order, customer, deliverer, retailer } = this.props
-    console.log(retailer, customer, deliverer)
+    const { ordersType, currentOrderId, order, customer, deliverer, retailer, loadingOrderDetail } = this.props
     const isOrderConfirmed = false
     // const isOrderAssigned = order.assignedTo === currentOrderId
     const isOrderAssigned = false
@@ -72,7 +74,7 @@ class OrderDetail extends Component {
         </span>
 
         {
-          loadingOrderDetail
+          !loadingOrderDetail
           ? (
             <div>
               <h4>Order detail: {`#${currentOrderId}`}</h4>
@@ -105,12 +107,12 @@ class OrderDetail extends Component {
                   />
                   : ''
                 }
-               <button
+               {/* <button
                  style={trackBtnStyle}
                  onClick={this.openGmap}
                  className='btn btn-black btn-lg'>
                  Track the order
-               </button>
+               </button> */}
             </div>
           )
           : <div className='loader'></div>
