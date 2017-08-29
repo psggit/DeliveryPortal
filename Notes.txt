@@ -1,0 +1,13 @@
+1. Notepad for particular order. (only after assign, show who edited)
+2. No.of orders delivered, cancelled, inprogress.
+3. Date filter.
+4. CSV export
+5. Put consumer id in place of consumer name 
+
+
+User mgmt:
+
+1. Admin
+2. Support
+3. Excise ( only in progress )
+  - replace consumer name with consumer id
