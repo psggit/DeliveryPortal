@@ -10,6 +10,10 @@ const params = {v: '3.exp', key: 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'};
 class Gmap extends Component {
   constructor() {
     super()
+    this.state = {
+      dx: 13.009563,
+      dy: 80.254907
+    }
   }
   // // Initial Customer State
   // const customer = {
@@ -50,32 +54,54 @@ class Gmap extends Component {
   //   y: null
   // }
   render() {
+    var socket = io('https://livered.hearsay81.hasura-app.io/', {
+      path: '/pool'
+    })
+    
+    console.log(socket)
+    
+    socket.on('status', function (data) {
+      console.log(data);
+      socket.emit('subscribe', {"order_id": '43'});
+    });
+    
+    socket.on('subscribed', function(data) {
+      console.log(data)
+    })
+    
+    socket.on('live_data', function(res) {
+      console.log(res)
+      // this.setState({
+      //   dx: res.gps.split(',')[0],
+      //   dy: res.gps.split(',')[1]
+      // })
+    })
+    
     const { customer, retailer, deliverer } = this.props
     const cx = parseFloat(customer.gps.split(',')[0])
     const cy = parseFloat(customer.gps.split(',')[1])
     const rx = parseFloat(retailer.gps.split(',')[0])
     const ry = parseFloat(retailer.gps.split(',')[1])
-    const dx = parseFloat(retailer.gps.split(',')[0]) + 1
-    const dy = parseFloat(retailer.gps.split(',')[1]) + 1
+    const { dx, dy } = this.state
 
     return (
       <div className='MapWrapper'>
         <Gmaps
           style={{width: '100%', height: '100vh'}}
-          lat={cx}
-          lng={cy}
+          lat={dx}
+          lng={dy}
           zoom={12}
           loadingMessage={'Loading...'}
           params={params}
-          onMapCreated={this.onMapCreated}>
+          >
           <Marker
             icon={customerImg}
             lat={cx}
             lng={cy} />
           <Marker
             icon={delivererImg}
-            lat={rx}
-            lng={ry} />
+            lat={dx}
+            lng={dy} />
           <Marker
             icon={outletImg}
           lat={rx}
