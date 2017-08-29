@@ -69,3 +69,11 @@ Request:
     returned_time
   }
 }
+
+
+4. POST /deliveryStatus/assignSupport
+
+{
+  support_id,
+  order_id
+}
