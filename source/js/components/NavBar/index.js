@@ -56,6 +56,7 @@ class NavBar extends Component {
               pagesLimit={this.props.pagesLimit}
               pageOffset={this.props.pageOffset}
               resetPagination={this.props.resetPagination}
+              unmountOrderDetail={this.props.unmountOrderDetail}
             />
           </li>
           <li className='user' onClick={this.handleLogout}>Logout</li>

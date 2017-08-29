@@ -184,6 +184,7 @@ class OrderPage extends Component {
       deliverer,
       customer,
       loadingOrdersList,
+      loadingOrderDetail,
       match
     } = this.props
 
@@ -233,7 +234,9 @@ class OrderPage extends Component {
 
     const {
       shouldMountOrderDetail,
-      currentOrderId, shouldListScroll,
+      currentOrderId,
+      shouldListScroll,
+      ordersType,
       activePage,
       pageOffset,
       searchAPI,
@@ -251,6 +254,7 @@ class OrderPage extends Component {
           pagesLimit={5}
           pageOffset={pageOffset}
           resetPagination={this.resetPagination}
+          unmountOrderDetail={this.unmountOrderDetail}
         />
         <SideMenu
           unmountOrderDetail={this.unmountOrderDetail}
@@ -258,10 +262,14 @@ class OrderPage extends Component {
         />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
-            <Dropdown
-              options={filterOptions}
-              onChange={this.handleFilterChange}
-            />
+            {
+              ordersType !== 'history'
+              ? <Dropdown
+                  options={filterOptions}
+                  onChange={this.handleFilterChange}
+                />
+              : <input type='date' />
+            }
           </div>
           <OrdersList
             loadingOrdersList={loadingOrdersList}
@@ -291,6 +299,7 @@ class OrderPage extends Component {
               retailer={retailer}
               customer={customer}
               deliverer={deliverer}
+              loadingOrderDetail={loadingOrderDetail}
               actions={actions}
               order={order}
               dispatch={ this.props.dispatch }
@@ -330,6 +339,7 @@ const mapStateToProps = (state) => ({
   retailer: state.OrderPage.retailer,
   deliverer: state.OrderPage.deliverer,
   customer: state.OrderPage.customer,
+  loadingOrderDetail: state.OrderPage.loadingOrderDetail
 })
 
 const mapDispatchToProps = (dispatch) => ({

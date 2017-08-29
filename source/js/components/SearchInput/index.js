@@ -7,6 +7,9 @@ class SearchInput extends Component {
     super()
     this.handleChange = this.handleChange.bind(this)
     this.handlePress = this.handlePress.bind(this)
+    this.state = {
+      queryString: ''
+    }
   }
 
   search(queryString) {
@@ -14,6 +17,7 @@ class SearchInput extends Component {
 
     this.props.setQueryString(queryString, 0)
     this.props.resetPagination()
+    this.props.unmountOrderDetail()
     
     this.props.search({
       offset: 0,
@@ -29,8 +33,8 @@ class SearchInput extends Component {
   }
 
   handlePress(e) {
-    if (e.keyCode === 13) {
-      const { queryString } = this.state
+    const { queryString } = this.state
+    if (e.keyCode === 13 && queryString.length) {
       this.search(queryString)
     }
   }
