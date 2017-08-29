@@ -120,11 +120,12 @@ const RetailerState = {
 const CompleteOrderState = {
   state: null,
   loadingOrdersList: true,
-  orders: []
-  // order: OrderState,
-  // retailer: RetailerState,
-  // deliverer: DelivererState,
-  // customer: CustomerState
+  orders: [],
+  loadingOrderDetail: true,
+  order: OrderState,
+  retailer: RetailerState,
+  deliverer: DelivererState,
+  customer: CustomerState
 }
 
 
@@ -218,6 +219,8 @@ const actionsMap = {
     const { orderStatus } = action.data
 
     return Object.assign({}, state, {
+      state: 'SearchingDeliverer',
+      loadingOrderDetail: false,
       order: {
         id: orderStatus.order_id,
         status: orderStatus.status,

@@ -18,3 +18,13 @@ export function fetchOrderDetail(action) {
   })
   .then(json => json)
 }
+
+
+export function assignOrder(action) {
+  return POST({
+    api: `/deliveryStatus/assignSupport`,
+    data: action.data,
+    type: 'Public'
+  })
+  .then(json => json)
+}
