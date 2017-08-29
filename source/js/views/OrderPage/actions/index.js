@@ -23,9 +23,9 @@ export const fetchOrdersData = (data, api = '/deliveryStatus/liveOrders') => ({
   api: api
 })
 
-export const assignOrder = (id) => ({
+export const assignOrder = (data) => ({
   type: ActionTypes.REQUEST_ASSIGN_ORDER,
-  data: id
+  data: data
 })
 
 export const forceRedeem = () => ({
