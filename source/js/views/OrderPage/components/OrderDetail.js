@@ -58,10 +58,19 @@ class OrderDetail extends Component {
 
     const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
-    const { ordersType, currentOrderId, order, customer, deliverer, retailer, loadingOrderDetail } = this.props
+    const {
+      ordersType,
+      currentOrderId,
+      order,
+      customer, 
+      deliverer,
+      retailer,
+      loadingOrderDetail
+    } = this.props
+
     const isOrderConfirmed = false
-    // const isOrderAssigned = order.assignedTo === currentOrderId
-    const isOrderAssigned = false
+    const supportId = 1
+    const isOrderAssigned = supportId == order.assignedTo
 
     const { actions } = this.props
 
@@ -92,10 +101,12 @@ class OrderDetail extends Component {
             }
 
               <RetailerDetail
+                retailer={retailer}
                 isOrderConfirmed={isOrderConfirmed}
               />
 
               <DelivererDetail
+                deliverer={deliverer}
                 isOrderConfirmed={isOrderConfirmed}
                />
                 {

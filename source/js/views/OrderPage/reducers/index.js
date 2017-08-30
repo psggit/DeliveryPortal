@@ -231,7 +231,7 @@ const actionsMap = {
         pickedUpTime: orderStatus.dp_picked_up_time,
         landmark: orderStatus.landmark,
         deliveryFee: orderStatus.deliveredFee,
-        
+        assignedTo: orderStatus.assigned_to,
         isFreelancer: orderStatus.is_freelancer
       },
       retailer: {
@@ -260,7 +260,11 @@ const actionsMap = {
   },
 
   [ActionTypes.REQUEST_ASSIGN_ORDER]: (state, action) => {
-    return state
+    return Object.assign({}, state, {
+      order: Object.assign({}, state, {
+        assignedTo: 1
+      })
+    })
   },
 
   [ActionTypes.SUCCESS_FORCE_REDEEM]: (state, action) => {
