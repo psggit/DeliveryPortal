@@ -3,20 +3,20 @@ import { getIcon } from './../utils'
 
 class RetailerDetail extends Component {
   render() {
-    const { isOrderConfirmed, ordersType } = this.props
+    const { isOrderConfirmed, ordersType, retailer } = this.props
     return (
       <div className='retailer detail-card'>
         <h4>Retailer</h4>
              <div>
                <div className='personal-info'>
-                 <p className='name'>Khal drogo</p>
+                 <p className='name'>{retailer.name}</p>
                  <p className='address'>
-                   H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
+                   {retailer.address}
                  </p>
                  <div className='chips'>
                    { getIcon('retailer_confirmed') }
                  </div>
-                 <p className='phone'>09857189185</p>
+                 <p className='phone'>{retailer.phone}</p>
                  <p className='order-status'>Awaiting deliverer confirmation</p>
                </div>
                <hr />

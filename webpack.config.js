@@ -45,6 +45,11 @@ const plugins = [
     path.resolve('./source/sass')
   ),
 
+  new AbsolutePathProviderPlugin(
+    /^@utils/,
+    path.resolve('./source/js/utils')
+  ),
+
   new HtmlWebpackPlugin({
     template: path.join(sourcePath, 'index.html'),
     path: buildPath,

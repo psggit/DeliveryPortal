@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga'
 import 'babel-polyfill';
 import logger from 'dev/logger';
