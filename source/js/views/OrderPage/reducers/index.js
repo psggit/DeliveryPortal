@@ -119,6 +119,9 @@ const RetailerState = {
 // Initial Order State
 const CompleteOrderState = {
   state: null,
+  loadingOrdersList: true,
+  orders: [],
+  loadingOrderDetail: true,
   order: OrderState,
   retailer: RetailerState,
   deliverer: DelivererState,
@@ -128,14 +131,13 @@ const CompleteOrderState = {
 
 
 const actionsMap = {
-  [ActionTypes.REQUEST_FETCH_ORDERS_LIST]: (state, action) => {
-
+  [ActionTypes.SUCCESS_FETCH_ORDERS_DATA]: (state, action) => {
     // Order Management : placed
     // order.set('state', 'placed')
     // order.set('content')
 
     const order = {
-      state: null,
+      state: 'placed',
       assignedTo: null,
       id: 1,
       content: [
@@ -206,16 +208,67 @@ const actionsMap = {
     }
 
     return Object.assign({}, state, {
-      state: null,
-      order,
-      retailer,
-      deliverer,
-      customer
+      state: 'SearchingRetailer',
+      loadingOrdersList: false,
+      orders: action.data.orders,
+      ordersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_ORDER_DETAIL]: (state, action) => {
+    const { orderStatus } = action.data
+
+    return Object.assign({}, state, {
+      state: 'SearchingDeliverer',
+      loadingOrderDetail: false,
+      order: {
+        id: orderStatus.order_id,
+        status: orderStatus.status,
+        cancellationFee: orderStatus.cancellation_fee,
+        cancelledTime: orderStatus.cancelled_time,
+        returnTime: orderStatus.cancellation_return_time,
+        deliveredTime: orderStatus.dp_delivered_time,
+        pickedUpTime: orderStatus.dp_picked_up_time,
+        landmark: orderStatus.landmark,
+        deliveryFee: orderStatus.deliveredFee,
+        assignedTo: orderStatus.assigned_to,
+        isFreelancer: orderStatus.is_freelancer
+      },
+      retailer: {
+        id: orderStatus.retailer_id,
+        name: orderStatus.retailer_name,
+        phone: orderStatus.retailer_phone,
+        gps: orderStatus.retailer_gps,
+        address: orderStatus.retailer_address,
+        confirmationTime: orderStatus.retailer_confimation_time
+      },
+      deliverer: {
+        id: orderStatus.dp_id,
+        name: orderStatus.dp_name,
+        confirmationTime: orderStatus.dp_confirmation_time,
+        reachedToConsumerTime: orderStatus.dp_reached_to_consumer_time
+      },
+      customer: {
+        id: orderStatus.consumer_id,
+        address: orderStatus.consumer_address,
+        name: orderStatus.consumer_name,
+        gps: orderStatus.consumer_gps,
+        isAgeVerified: orderStatus.is_age_verified,
+        phone: orderStatus.contact_number
+      }
     })
   },
 
   [ActionTypes.REQUEST_ASSIGN_ORDER]: (state, action) => {
+    return Object.assign({}, state, {
+      order: Object.assign({}, state, {
+        assignedTo: 1
+      })
+    })
+  },
 
+  [ActionTypes.SUCCESS_FORCE_REDEEM]: (state, action) => {
+    return state
   },
 
   [ActionTypes.STATE_FINDING_RETAILER]: (state, action) => {

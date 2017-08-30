@@ -5,6 +5,7 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
+import Gmap from './Gmap'
 
 class OrderDetail extends Component {
   constructor() {
@@ -18,20 +19,24 @@ class OrderDetail extends Component {
     this.props.unmountOrderDetail()
   }
 
-  openGmap() {
-    window.open(`/orders/track/${1}`, '_blank')
-  }
+  // openGmap() {
+  //   window.open(`/orders/track/${1}`, '_blank')
+  // }
 
   openAssignOrderModal(e) {
     mountModal(ConfirmModal({
       confirmMessage: 'Are your sure you want to assign this order?',
-      handleConfirmAssign: this.handleConfirmAssign
+      handleConfirm: this.handleConfirmAssign
     }))
   }
 
   handleConfirmAssign(id) {
-    const { dispatch, currentOrderId, actions } = this.props
-    dispatch(actions.assignOrder(currentOrderId))
+    const { currentOrderId, actions } = this.props
+    const postData = {
+      support_id: 1,
+      order_id: currentOrderId
+    }
+    actions.assignOrder(postData)
     unMountModal()
   }
 
@@ -46,18 +51,28 @@ class OrderDetail extends Component {
       marginBottom: '10px'
     }
 
-    const trackBtnStyle = {
-      display: 'block',
-      margin: '0 auto'
-    }
+    // const trackBtnStyle = {
+    //   display: 'block',
+    //   margin: '0 auto'
+    // }
 
-    const loadingOrderDetail = true
-    const { retailer } = this.props
     const delivererStatus = 'confirmed'
     const deliveryCharge = 'INR 30'
-    const { ordersType, currentOrderId, order } = this.props
+    const {
+      ordersType,
+      currentOrderId,
+      order,
+      customer, 
+      deliverer,
+      retailer,
+      loadingOrderDetail
+    } = this.props
+
     const isOrderConfirmed = false
-    const isOrderAssigned = order.assignedTo === currentOrderId
+    const supportId = 1
+    const isOrderAssigned = supportId == order.assignedTo
+
+    const { actions } = this.props
 
     return (
       <div className='order-detail'>
@@ -68,30 +83,47 @@ class OrderDetail extends Component {
         </span>
 
         {
-          loadingOrderDetail
+          !loadingOrderDetail
           ? (
             <div>
               <h4>Order detail: {`#${currentOrderId}`}</h4>
-
-              <ConsumerDetail
+            {
+              customer
+              ? <ConsumerDetail
+                customer={customer}
+                order={order}
+                actions={actions}
                 isOrderAssigned={isOrderAssigned}
                 deliveryCharge={deliveryCharge}
                 openAssignOrderModal={this.openAssignOrderModal}
               />
+              : ''
+            }
 
               <RetailerDetail
+                retailer={retailer}
                 isOrderConfirmed={isOrderConfirmed}
               />
 
               <DelivererDetail
+                deliverer={deliverer}
                 isOrderConfirmed={isOrderConfirmed}
                />
-               <button
+                {
+                  customer && retailer && deliverer
+                  ? <Gmap
+                    customer={customer}
+                    deliverer={deliverer}
+                    retailer={retailer}
+                  />
+                  : ''
+                }
+               {/* <button
                  style={trackBtnStyle}
                  onClick={this.openGmap}
                  className='btn btn-black btn-lg'>
                  Track the order
-               </button>
+               </button> */}
             </div>
           )
           : <div className='loader'></div>

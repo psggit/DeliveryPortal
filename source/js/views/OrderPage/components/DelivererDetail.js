@@ -3,13 +3,13 @@ import { getIcon } from './../utils'
 
 class DelivererDetail extends Component {
   render() {
-    const { isOrderConfirmed, ordersType } = this.props
+    const { isOrderConfirmed, ordersType, deliverer } = this.props
     return (
       <div className='deliverer detail-card'>
         <h4>Deliverer</h4>
             <div>
               <div className='personal-info'>
-                <p className='name'>Khal drogo</p>
+                <p className='name'>{deliverer.name}</p>
                 {/* <p className='address'>
                   H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
                 </p> */}

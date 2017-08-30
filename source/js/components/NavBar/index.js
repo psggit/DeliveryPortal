@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { getIcon } from './utils'
+import { getIcon } from './../utils'
+import SearchInput from './../SearchInput'
+
 import './index.scss'
 
 class NavBar extends Component {
@@ -10,12 +12,20 @@ class NavBar extends Component {
     }
     this.handleClick = this.handleClick.bind(this)
   }
+
+  handleLogout() {
+    localStorage.clear()
+    location.href = '/login'
+  }
+
   handleClick() {
     const { shouldDeliever } = this.state
     this.setState({ shouldDeliever: !shouldDeliever })
   }
+
   render() {
     const { shouldDeliever } = this.state
+
     return (
       <header>
         <ul>
@@ -38,6 +48,20 @@ class NavBar extends Component {
                 }
               </span>
           </li>
+          <li>
+            <SearchInput
+              search={this.props.search}
+              searchAPI={this.props.searchAPI}
+              setQueryString={this.props.setQueryString}
+              setSearchQuery={this.props.setSearchQuery}
+              pagesLimit={this.props.pagesLimit}
+              pageOffset={this.props.pageOffset}
+              resetPagination={this.props.resetPagination}
+              unmountOrderDetail={this.props.unmountOrderDetail}
+              searchQuery={this.props.searchQuery}
+            />
+          </li>
+          <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>
     )
