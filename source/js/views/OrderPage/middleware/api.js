@@ -28,3 +28,21 @@ export function assignOrder(action) {
   })
   .then(json => json)
 }
+
+export function skipRetailer(action) {
+  return POST({
+    api: `https://api1.hearsay81.hasura-app.io/support/skip_retailer`,
+    data: action.data,
+    type: 'Public',
+    prependBaseUrl: false
+  })
+}
+
+export function skipDeliverer(action) {
+  return POST({
+    api: `https://api1.hearsay81.hasura-app.io/support/skip_dp`,
+    data: action.data,
+    type: 'Public',
+    prependBaseUrl: false
+  })
+}

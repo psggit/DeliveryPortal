@@ -6,3 +6,9 @@ export const filterOptions = [
   { value: 'finding delievery boy', label: 'Finding delievery boy'},
   { value: 'awaiting confirmation from delievery boy', label: 'Awaiting confirmation from delievery boy'}
 ]
+
+export const dateOptions = [
+  { value: 'today', label: 'Today' },
+  { value: 'tomorrow', label: 'Tomorrow' },
+  { value: 'custom', label: 'Custom date' }
+]

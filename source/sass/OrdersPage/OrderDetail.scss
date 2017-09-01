@@ -1,0 +1,211 @@
+// .order-detail {
+//   padding: 20px;
+//   position: fixed;
+//   top: 65px;
+//   left: 20%;
+//   width: 50%;
+//   height: calc(100vh - 65px);
+//   overflow: auto;
+//   background: #fff;
+//   border-right: 1px solid #dfdfdf;
+//   .return-to-list {
+//     display: inline-block;
+//     width: 28px;
+//     height: 28px;
+//     cursor: pointer;
+//     svg {
+//       pointer-events: none;
+//       width: 100%;
+//       height: 100%;
+//     }
+//   }
+//   .detail-card {
+//     text-align: left;
+//     padding: 20px 0;
+//     margin-bottom: 20px;
+//     border-bottom: 1px solid #dfdfdf;
+//     .btn {
+//       margin-right: 20px;
+//     }
+//     h4 {
+//       margin-top: 0;
+//       color: #4a4a4a;
+//     }
+//     .personal-info {
+//       // width: 50%;
+//       padding: 20px;
+//       font-size: 16px;
+//       // margin-bottom: 20px;
+//       background: #fff;
+//       p {
+//         color: #4a4a4a;
+//         margin: 0;
+//       }
+//       .name {
+//         font-weight: 600;
+//         margin-bottom: 10px;
+//       }
+//       .address {
+//         margin-bottom: 10px;
+//       }
+//       .phone {
+//         padding: 0 10px;
+//         margin-top: 10px;
+//         display: inline-block;
+//         border-radius: 2px;
+//         border: 1px solid #4a4a4a;
+//       }
+//       .order-status {
+//         margin-top: 10px;
+//         color: #9b9b9b;
+//         font-style: italic;
+//       }
+//     }
+//     .order-info {
+//       padding: 20px;
+//       font-size: 16px;
+//       color: #4a4a4a;
+//       ul {
+//         list-style-type: none;
+//         margin: 0;
+//         padding: 0;
+//         li {
+//           display: flex;
+//           justify-content: space-between;
+//         }
+//       }
+//       .delivery-charge {
+//         color: #ff3b34;
+//         margin-top: 15px;
+//         font-style: italic;
+//       }
+//     }
+//   }
+// }
+.container {
+  padding: 20px;
+  background: #f6f6f6;
+  height: calc(100vh - 150px);
+}
+hr {
+  margin-bottom: 0 !important;
+  margin-top: 1rem !important;
+}
+
+.left, .right {
+  display: inline-block;
+  width: calc(50% - 10px);
+  vertical-align: top;
+}
+.left {
+  margin-right: 10px;
+}
+.right {
+  margin-left: 10px;
+}
+
+.order-detail {
+  position: fixed;
+  top: 65px;
+  left: 20%;
+  width: calc(100% - 288px);
+  height: calc(100vh - 65px);
+  background: #fff;
+  padding: 20px;
+  overflow: auto;
+
+  .return-to-list {
+    vertical-align: top;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    margin-right: 20px;
+    svg {
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 0px 4px #9b9b9b;
+  background: #fff;
+  border-radius: 2px;
+  .card-head {
+    padding: 0px 20px 5px 20px;
+    background: #1a4f86;
+    color: #fff;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    text-transform: uppercase;
+    h4 {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 20px;
+    }
+    img {
+      display: inline-block;
+      position: relative;
+      top: 3px;
+      height: 16px;
+    }
+  }
+  .card-body {
+    padding: 10px 20px;
+  }
+  .card-footer {
+    padding: 5px 20px 10px 20px;
+    border-top: 1px solid #dfdfdf;
+    button {
+      margin-right: 10px;
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+  }
+  p {
+    color: #4a4a4a;
+    font-size: 16px;
+  }
+  .subhead {
+    font-size: 16px;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 18px;
+    font-weight: normal;
+    display: inline-block;
+    margin: 0;
+  }
+ table {
+   width: 100%;
+  //  border: 1px solid #f6f6f6;
+   tr {
+     border-bottom: 1px solid #f6f6f6;
+   }
+   thead td {
+     color: #333;
+     font-weight: 600;
+   }
+   td {
+     font-size: 16px;
+     padding: 10px;
+     color: #4a4a4a;
+   }
+ }
+}
+
+.MapWrapper {
+  position: fixed;
+  top: 125px;
+  left: 308px;
+  width: calc(100% - 328px);
+  height: calc(100vh - 150px);
+}

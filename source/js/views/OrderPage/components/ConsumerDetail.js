@@ -35,22 +35,35 @@ class ConsumerDetail extends Component {
 
     const DigitInput = styled.input`
       height: 32px;
-      width: 32px;
-      padding: 0;
+      width: 80px;
+      padding: 0 20px;
       border-style: none;
       margin-right: 10px;
       border: 1px solid #D0D0D0;
-      border-radius: 6px;	background-color: #F7F7F7;
-      box-shadow: inset 0 2px 2px 0 rgba(188,188,188,0.5);
-      text-align: center;
       &:focus {
         outline: 0;
       }
     `
 
     return (
-      <div className='order detail-card'>
-        <h4>Consumer</h4>
+      <div className='card'>
+        <div className='card-head'>
+          <h4>Consumer</h4>
+          { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
+        </div>
+        <div className='card-body'>
+          <p>
+            <span><b>Name: </b></span>
+            <span>{customer.name}</span>
+          </p>
+          <p>
+            <span><b>Phone: </b></span>
+            <span>{'0987655698'}</span>
+          </p>
+          <p className='subhead'>Address:</p>
+          <p>{customer.address}</p>
+        </div>
+        {/* <h4>Consumer</h4>
         <div className='personal-info'>
           <p className='name'>{customer.name}</p>
           <p className='address'>
@@ -92,19 +105,7 @@ class ConsumerDetail extends Component {
           }
           <div>
             <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
+              maxLength='4'
               onKeyDown={this.handleChange}
             />
             <button
@@ -124,7 +125,7 @@ class ConsumerDetail extends Component {
             onClick={openAssignOrderModal}>
             { isOrderAssigned ? 'Assigned' : 'Assign me' }
           </button>
-        </div>
+        </div> */}
       </div>
     )
   }

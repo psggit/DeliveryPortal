@@ -62,6 +62,24 @@ function* assignOrder(action) {
   }
 }
 
+function* skipRetailer(action) {
+  try {
+    const data = yield call(Api.skipRetailer, action)
+    yield put({type: ActionTypes.SUCCESS_SKIP_RETAILER, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* skipDeliverer(action) {
+  try {
+    const data = yield call(Api.skipDeliverer, action)
+    yield put({type: ActionTypes.SUCCESS_SKIP_DELIVERER, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 /**
  * Watchers
  */
@@ -92,5 +110,17 @@ export function* watchForceRedeem() {
 export function* watchAssignOrder() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_ASSIGN_ORDER, assignOrder)
+  }
+}
+
+export function* watchSkipRetailer() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SKIP_RETAILER, skipRetailer)
+  }
+}
+
+export function* watchSkipDeliverer() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SKIP_DELIVERER, skipDeliverer)
   }
 }

@@ -16,34 +16,53 @@ class OrdersList extends Component {
   componentDidMount() {
 
   }
-  handleClick(e) {
-    const target = e.target
-    const orderId = target.id
-    if (target.className === 'orders-list-item') {
-      this.props.mountOrderDetail(parseInt(orderId))
-    }
+  handleClick(orderId) {
+    this.props.mountOrderDetail(parseInt(orderId))
   }
   render() {
     const { orders, state, loadingOrdersList } = this.props
     // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
-      <div className='orders-list' onClick={this.handleClick}>
-        {
-          !loadingOrdersList
-          ? (
-            orders.map((item, i) => {
-              return <OrderListItem
-                key={`${i+1}${item.order_id}`}
-                id={item.order_id}
-                consumerName={item.consumer_name}
-                orderStatus={item.status}
-              />
-            })
-          )
-          : <div className='loader'></div>
-        }
-      </div>
+      <table className='orders-list'>
+        <thead>
+          <tr>
+            <td>Order Id</td>
+            <td>Order status</td>
+            <td>Consumer Id</td>
+            <td>Consumer name</td>
+            <td>Consumer phone</td>
+            <td>Assigned to</td>
+            <td>Order placed time</td>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loadingOrdersList
+            ? (
+              orders.map((item, i) => {
+                return (
+                  <OrderListItem
+                  key={item.order_id}
+                  id={item.order_id}
+                  consumerName={item.consumer_name}
+                  consumerId={item.consumer_id}
+                  retailer_notified_time={item.retailer_notified_time}
+                  dp_delivered_time={item.dp_delivered_time}
+                  retailer_accepted_time={item.retailer_confirmation_time}
+                  cancellation_time={item.cancellation_time}
+                  orderPlacedTime={item.order_placed_time}
+                  cancellation_return_time={item.cancellation_return_time}
+                  orderStatus={item.status}
+                  handleClick={this.handleClick}
+                />
+                )
+              })
+            )
+            : <tr className='loader'></tr>
+          }
+        </tbody>
+      </table>
     )
   }
 }

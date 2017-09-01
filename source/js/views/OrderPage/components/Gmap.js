@@ -87,7 +87,7 @@ class Gmap extends Component {
     return (
       <div className='MapWrapper'>
         <Gmaps
-          style={{width: '100%', height: '100vh'}}
+          style={{width: '100%', height: '100%'}}
           lat={dx}
           lng={dy}
           zoom={12}

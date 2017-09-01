@@ -9,11 +9,13 @@ import SideMenu from './components/SideMenu'
 import OrdersList from './components/OrdersList'
 import Dropdown from '@components/Dropdown'
 import OrderDetail from './components/OrderDetail'
-import { filterOptions } from './constants/strings'
+import { filterOptions, dateOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import '@sass/components/_pagination.scss'
 import Qr from 'query-string'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import DatePicker from './components/DatePicker'
 
 class OrderPage extends Component {
 
@@ -29,7 +31,7 @@ class OrderPage extends Component {
   constructor() {
     super()
 
-    this.pagesLimit = 5
+    this.pagesLimit = 10
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
@@ -52,7 +54,7 @@ class OrderPage extends Component {
     this.setSearchQuery = this.setSearchQuery.bind(this)
   }
 
-  handleRouteChange(ordersType) {
+  handleRouteChange(ordersType, calledBy) {
     this.setState({ ordersType })
     let fetchAPI = '/deliveryStatus/liveOrders'
     let searchAPI = '/deliveryStatus/searchLiveOrders'
@@ -68,8 +70,10 @@ class OrderPage extends Component {
         break
     }
     this.setState({ fetchAPI, searchAPI })
-    this.resetPagination()
-    this.setSearchQuery('')
+    if(calledBy !== 'componentDidMount') {
+      this.resetPagination()
+      this.setSearchQuery('')
+    }
     this.props.actions.fetchOrdersData({
       support_id: 1,
       offset: 0,
@@ -107,7 +111,13 @@ class OrderPage extends Component {
     const { ordersType } = this.state
     const _self = this
     this.fetchDataFromQueryParams()
-    this.handleRouteChange(ordersType)
+    // this.handleRouteChange(ordersType, 'componentDidMount')
+
+    // window.onpopstate = function() {
+    //   const { ordersType } = _self.state
+    //   _self.fetchDataFromQueryParams()
+    //   _self.handleRouteChange(ordersType, 'componentDidMount')
+    // }
     // ;(function pollOrdersData() {
     // 	_self.props.actions.fetchOrdersData()
     // 	setTimeout(pollOrdersData, 10000)
@@ -184,6 +194,17 @@ class OrderPage extends Component {
     // actions.filterOrdersData()
   }
 
+  // handleDateChange(dateType) {
+  //   console.log(dateType)
+  //   switch (dateType) {
+  //     case 'custom':
+  //       mountModal(DatePicker())
+  //       break
+  //   }
+  // }
+  handleChooseDate() {
+    mountModal(DatePicker())
+  }
   // onMapCreated(map) {
   //   map.setOptions({
   //     disableDefaultUI: true
@@ -240,9 +261,9 @@ class OrderPage extends Component {
 
     // const timeMap = {
     //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.orderPlacedTime),
+    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.notifiedTime),
     //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.orderPlacedTime),
+    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.notifiedTime),
     //   'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
     //   'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
     //   'OrderDelivered': '',
@@ -282,26 +303,32 @@ class OrderPage extends Component {
         />
         <div className='order-wrapper' style={listWrapperInlineStyle}>
           <div className='orders-filter'>
+            <label>Filter by</label>
             {
               ordersType !== 'history'
               ? <Dropdown
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : <input type='date' />
+              : <button style={{marginLeft: '20px'}} onClick={this.handleChooseDate}>Choose date</button>
             }
           </div>
-          <OrdersList
-            loadingOrdersList={loadingOrdersList}
-            orders={orders}
-            unmountOrderDetail={this.unmountOrderDetail}
-            mountOrderDetail={this.mountOrderDetail}
-            // titleMap={titleMap}
-            // articleMap={articleMap}
-            // timeMap={timeMap}
-            // epilogueMap={epilogueMap}
-            state={state}
-          />
+          {
+            orders
+            ? <OrdersList
+              loadingOrdersList={loadingOrdersList}
+              orders={orders}
+              unmountOrderDetail={this.unmountOrderDetail}
+              mountOrderDetail={this.mountOrderDetail}
+              // titleMap={titleMap}
+              // articleMap={articleMap}
+              // timeMap={timeMap}
+              // epilogueMap={epilogueMap}
+              state={state}
+            />
+            : ''
+          }
+          
           {
             !loadingOrdersList
             ? <Pagination
@@ -329,20 +356,7 @@ class OrderPage extends Component {
           }
         </div>
         <div>
-          {/* <select style={{position: 'fixed', top: '65px', right: '0px'}} onChange={this.onStateChange}>
-            {
-              Object.keys(ActionTypes).map((item, i) => {
-                return (
-                  <option
-                    key={i + 1}
-                    value={ActionTypes[item]}
-                    >
-                    {ActionTypes[item]}
-                  </option>
-                )
-              })
-            }
-          </select> */}
+
         </div>
       </div>
     )

@@ -1,18 +1,48 @@
 import React, { Component } from 'react'
 import { getIcon } from './../utils'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ShowNotified from './showNotified'
 
 class DelivererDetail extends Component {
+  constructor() {
+    super()
+    this.showNotified = this.showNotified.bind(this)
+  }
+  showNotified() {
+    const { notifiedDeliverers } = this.props
+    mountModal(ShowNotified({
+      heading: 'Notified deliverers',
+      content: notifiedDeliverers
+    }))
+  }
   render() {
     const { isOrderConfirmed, ordersType, deliverer } = this.props
     return (
-      <div className='deliverer detail-card'>
-        <h4>Deliverer</h4>
-            <div>
+      <div className='card'>
+        <div className='card-head'>
+          <h4>Deliverer</h4>
+        </div>
+        <div className='card-body'>
+          <p>
+            <span><b>Name: </b></span>
+            <span>{deliverer.name}</span>
+          </p>
+          <p>
+            <span><b>Phone: </b></span>
+            <span>{deliverer.phone}</span>
+          </p>
+        </div>
+        <div className='card-footer'>
+          <button>Skip</button>
+          <button>Confirm</button>
+          <button onClick={this.showNotified}>Show notified deliverers</button>
+        </div>
+            {/* <div>
               <div className='personal-info'>
                 <p className='name'>{deliverer.name}</p>
-                {/* <p className='address'>
+                <p className='address'>
                   H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
-                </p> */}
+                </p>
                 <div className='chips'>
                   { getIcon('retailer_confirmed') }
                 </div>
@@ -29,7 +59,7 @@ class DelivererDetail extends Component {
                   { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
                 </button>
               </div>
-            </div>
+            </div> */}
       </div>
     )
   }
