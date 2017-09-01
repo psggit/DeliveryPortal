@@ -178,7 +178,7 @@ class OrderPage extends Component {
       limit: this.pagesLimit
     }
 
-    this.setQueryString(searchQuery, offset)
+    // this.setQueryString(searchQuery, offset)
 
     if(searchQuery.length) {
       postData.query = searchQuery

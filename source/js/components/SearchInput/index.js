@@ -19,7 +19,7 @@ class SearchInput extends Component {
   search(searchQuery) {
     const { searchAPI, pagesLimit, pageOffset } = this.props
 
-    this.props.setQueryString(searchQuery, 0)
+    // this.props.setQueryString(searchQuery, 0)
     this.props.setSearchQuery(searchQuery)
     this.props.resetPagination()
     this.props.unmountOrderDetail()

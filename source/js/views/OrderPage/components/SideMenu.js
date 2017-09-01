@@ -7,9 +7,13 @@ class SideMenu extends Component {
   constructor() {
     super()
     this.handleClick = this.handleClick.bind(this)
+    this.state = {
+      ordersType: 'all'
+    }
   }
 
   handleClick(ordersType) {
+    this.setState({ ordersType })
     this.props.handleRouteChange(ordersType)
     this.props.unmountOrderDetail()
   }
@@ -26,8 +30,8 @@ class SideMenu extends Component {
           {
             menuItems.map((item, i) => {
               return (
-                <NavLink key={`nav-link-${i}`} exact to={ routeCodes[item.value] }>
-                  <li className='menu-item' onClick={() => { this.handleClick(item.value) }}>
+                <NavLink key={`nav-link-${i}`} exact to={ routeCodes.all }>
+                  <li className={`menu-item ${this.state.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
                     { item.label }
                   </li>
                 </NavLink>

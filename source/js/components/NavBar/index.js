@@ -30,7 +30,9 @@ class NavBar extends Component {
       <header>
         <ul>
           <li className="logo">
-            <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
+            <a href='/orders'>
+              <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
+            </a>
           </li>
           <li className="resume-pause">
               <span>

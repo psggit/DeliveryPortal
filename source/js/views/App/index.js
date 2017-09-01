@@ -37,9 +37,9 @@ export default class App extends Component {
             <Switch>
               <Route exact path={ routeCodes.LOGIN } component={ Login } />
               <Route exact path={ routeCodes.all } component={ OrderPage } />
-              <Route exact path={ routeCodes.assigned } component={ OrderPage } />
+              {/* <Route exact path={ routeCodes.assigned } component={ OrderPage } />
               <Route exact path={ routeCodes.history } component={ OrderPage } />
-              <Route exact path={ routeCodes.gmap } component={ Gmap } />
+              <Route exact path={ routeCodes.gmap } component={ Gmap } /> */}
               {/* <Route path={ routeCodes.DASHBOARD} component={ DashBoard } /> */}
               <Route path='*' component={ NotFound } />
             </Switch>

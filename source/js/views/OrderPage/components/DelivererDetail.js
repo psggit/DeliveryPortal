@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ShowNotified from './showNotified'
+import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
 class DelivererDetail extends Component {
   constructor() {
     super()
     this.showNotified = this.showNotified.bind(this)
+    this.handleSkipDeliverer = this.handleSkipDeliverer.bind(this)
+    this.openSkipDeliverer = this.openSkipDeliverer.bind(this)
   }
   showNotified() {
     const { notifiedDeliverers } = this.props
@@ -14,6 +17,17 @@ class DelivererDetail extends Component {
       heading: 'Notified deliverers',
       content: notifiedDeliverers
     }))
+  }
+  openSkipDeliverer() {
+    mountModal(ConfirmModal({
+      heading: 'Skip deliverer',
+      confirmMessage: 'Are you sure you want to skip the deliverer?',
+      handleConfirm: this.handleSkipDeliverer
+    }))
+  }
+  handleSkipDeliverer() {
+    const { orderId, actions } = this.props
+    actions.skipDeliverer(orderId)
   }
   render() {
     const { isOrderConfirmed, ordersType, deliverer } = this.props
@@ -33,33 +47,10 @@ class DelivererDetail extends Component {
           </p>
         </div>
         <div className='card-footer'>
-          <button>Skip</button>
+          <button onClick={this.openSkipDeliverer}>Skip</button>
           <button>Confirm</button>
           <button onClick={this.showNotified}>Show notified deliverers</button>
         </div>
-            {/* <div>
-              <div className='personal-info'>
-                <p className='name'>{deliverer.name}</p>
-                <p className='address'>
-                  H.No.191, Rua de Ourém, Fontainhas, Altinho, Patto Centre, Panjim, Goa 403001
-                </p>
-                <div className='chips'>
-                  { getIcon('retailer_confirmed') }
-                </div>
-                <p className='phone'>09857189185</p>
-                <p className='order-status'>Awaiting for customer to handover</p>
-              </div>
-              <hr />
-              <div>
-                <button className='btn btn-red'>Cancel</button>
-                <button
-                  className='btn btn-green'
-                  disabled={isOrderConfirmed}
-                  onClick={this.openAssignOrderModal}>
-                  { isOrderConfirmed ? 'Confirmed' : 'Confirm' }
-                </button>
-              </div>
-            </div> */}
       </div>
     )
   }

@@ -31,3 +31,11 @@ export const assignOrder = (data) => ({
 export const forceRedeem = () => ({
   type: ActionTypes.REQUEST_FORCE_REDEEM
 })
+
+export const skipRetailer = () => ({
+  type: ActionTypes.REQUEST_SKIP_RETAILER
+})
+
+export const skipDeliverer = () => ({
+  type: ActionTypes.REQUEST_SKIP_DELIVERER
+})

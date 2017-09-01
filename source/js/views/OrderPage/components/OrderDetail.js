@@ -39,6 +39,7 @@ class OrderDetail extends Component {
 
   openAssignOrderModal(e) {
     mountModal(ConfirmModal({
+      heading: 'Assign order',
       confirmMessage: 'Are your sure you want to assign this order?',
       handleConfirm: this.handleConfirmAssign
     }))
@@ -107,30 +108,32 @@ class OrderDetail extends Component {
 
     return (
       <div className='order-detail'>
-        <span
-          className='return-to-list'
-          onClick={this.handleClick}>
-          { getIcon('back') }
-        </span>
-        <span style={{color: '#4a4a4a', fontSize: '18px', marginRight: '20px'}}>Order Id: <b>{`#${currentOrderId}`}</b></span>
-        <span style={{color: '#4a4a4a', fontStyle: 'italic', fontSize: '16px'}}>
-        {
-          order && retailer
-          ? `${orderChar} ${eval(formula) ? eval(formula) : ''} ${article ? article : ''}`
-          : ''
-        }
-        </span>
-        {
-          deliverer.confirmationTime
-          ? <button
-              style={trackBtnStyle}
-              onClick={this.openGmap}
-              className=''>
-              { shouldOpenGmap ? 'Close Map' : 'Track this order' }
-            </button>
-          : ''  
-        }
-        <hr />
+        <div className='order-detail-head'>
+          <span
+            className='return-to-list'
+            onClick={this.handleClick}>
+            { getIcon('back') }
+          </span>
+          <span style={{color: '#4a4a4a', fontSize: '18px', marginRight: '20px'}}>Order Id: <b>{`#${currentOrderId}`}</b></span>
+          <span style={{color: '#4a4a4a', fontStyle: 'italic', fontSize: '16px'}}>
+          {
+            order && retailer
+            ? `${orderChar} ${eval(formula) ? eval(formula) : ''} ${article ? article : ''}`
+            : ''
+          }
+          </span>
+          {
+            deliverer.confirmationTime
+            ? <button
+                style={trackBtnStyle}
+                onClick={this.openGmap}
+                className=''>
+                { shouldOpenGmap ? 'Close Map' : 'Track this order' }
+              </button>
+            : ''  
+          }
+        </div>
+        {/* <hr /> */}
 
         {
           !loadingOrderDetail
@@ -163,18 +166,22 @@ class OrderDetail extends Component {
                 {
                   retailer.confirmationTime
                   ? <RetailerDetail
+                      actions={actions}
                       notifiedRetailers={order.retailers}
                       retailer={retailer}
                       isOrderConfirmed={isOrderConfirmed}
+                      orderId={order.id}
                     />
                   : ''  
                 }
                 {
                   deliverer.confirmationTime
                   ? <DelivererDetail
+                      actions={actions}                      
                       notifiedDeliverers={order.deliverers}
                       deliverer={deliverer}
                       isOrderConfirmed={isOrderConfirmed}
+                      orderId={order.id}
                     />
                   : ''
                 }
