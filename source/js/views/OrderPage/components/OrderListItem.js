@@ -47,7 +47,8 @@ class OrderListItem extends Component {
       dp_delivered_time,
       retailer_accepted_time,
       cancellation_time,
-      cancellation_return_time
+      cancellation_return_time,
+      dp_reached_to_consumer_time
     } = this.props
     const orderChar = orderStatus.split('::')[0]
     const formula = orderStatus.split('::')[1]

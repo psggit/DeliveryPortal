@@ -26,8 +26,15 @@ class RetailerDetail extends Component {
     }))
   }
   handleSkipRetailer() {
-    const { orderId, actions } = this.props
-    actions.skipRetailer(orderId)
+    const { orderId, actions, retailer, orders } = this.props
+
+    actions.skipRetailer({
+      order_id: orderId,
+      retailer_id: retailer.id
+    })
+    
+    unMountModal()
+    actions.fetchOrderDetail(orderId)
   }
   render() {
     const { isOrderConfirmed, ordersType, retailer } = this.props
@@ -46,11 +53,17 @@ class RetailerDetail extends Component {
             <span>{retailer.phone}</span>
           </p>
         </div>
-        <div className='card-footer'>
-          <button onClick={this.openSkipRetailer}>Skip</button>
-          <button>Confirm</button>
-          <button onClick={this.showNotified}>Show notified retailers</button>
-        </div>
+        {
+          ordersType !== 'history'
+          ? (
+            <div className='card-footer'>
+              <button onClick={this.openSkipRetailer}>Skip</button>
+              <button>Confirm</button>
+              <button onClick={this.showNotified}>Show notified retailers</button>
+            </div>
+          )
+          : ''
+        }
       </div>
     )
   }

@@ -8,8 +8,10 @@ import { api_base_url } from "./../config"
 /**
  * Helper methods to create window.fetch instance
  */
+
 const getToken = () => ({
-  "Authorization": `Token ${Session.getItem("token")}`
+  // "Authorization": `Token ${Session.getItem("token")}`,
+  "x-hasura-role": `${localStorage.getItem('x-hasura-role')}`
 })
 
 function getHeaders(type) {

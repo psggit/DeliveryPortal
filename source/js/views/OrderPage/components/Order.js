@@ -1,25 +1,51 @@
 import React, { Component } from 'react'
 import { getIcon } from './../utils'
-import styled from 'styled-components'
 import { validateNumType, checkCtrlA } from './../utils'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
 class Order extends Component {
   constructor() {
     super()
     this.handleChange = this.handleChange.bind(this)
     this.handleForceRedeem = this.handleForceRedeem.bind(this)
+    this.handleCancelOrder = this.handleCancelOrder.bind(this)
+    this.openCancelOrder = this.openCancelOrder.bind(this)
+    this.state = {
+      forceRedeemKey: 0
+    }
   }
 
   handleChange(e) {
-    if (!(validateNumType(e.keyCode) || checkCtrlA(e))) {
+    if (validateNumType(e.keyCode) || checkCtrlA(e)) {
+      this.setState({ forceRedeemKey: parseInt(e.target.value) })
+    } else {
       e.preventDefault()
     }
   }
 
   handleForceRedeem() {
-    const { actions } = this.props
-    actions.forceRedeem()
+    const { actions, order } = this.props
+    const { forceRedeemKey } = this.state
+    // console.log(forceRedeemKey.toString())
+    if (forceRedeemKey.toString().length === 4)
+    actions.forceRedeem({ order_id: order.id,  forceRedeemKey: forceRedeemKey })
   }
+
+  openCancelOrder() {
+    const { order } = this.props
+    mountModal(ConfirmModal({
+      heading: `Cancel order #${order.id}`,
+      confirmMessage: 'Are you sure you want to cancel this order?',
+      handleConfirm: this.handleCancelOrder
+    }))
+  }
+
+  handleCancelOrder() {{
+    const { actions, order } = this.props
+    actions.cancelOrder({ order_id: order.id })
+    unMountModal()
+  }}
 
   render() {
     const {
@@ -32,18 +58,15 @@ class Order extends Component {
     const isKYCconfirmed = true
     const isDeliveryVerified = true
 
-    const DigitInput = styled.input`
-      height: 30px;
-      width: 80px;
-      padding: 0 20px;
-      border-style: none;
-      margin-right: 10px;
-      vertical-align: middle;
-      border: 1px solid #D0D0D0;
-      &:focus {
-        outline: 0;
-      }
-    `
+    const DigitInput = {
+      height: '30px',
+      width: '80px',
+      padding: '0 20px',
+      borderStyle: 'none',
+      marginRight: '10px',
+      verticalAlign: 'middle',
+      border: '1px solid #D0D0D0'
+    }
 
     return (
       <div className='card'>
@@ -84,21 +107,32 @@ class Order extends Component {
           </p>
         </div>
 
-        <div className='card-footer'>
-          <button disabled={isOrderAssigned} onClick={openAssignOrderModal}>Assign to me</button>
-          <button>Cancel order</button>
-          <div style={{float: 'right'}}>
-            <DigitInput
-              maxLength='4'
-              onKeyDown={this.handleChange}
-            />
-            <button
-              onClick={this.handleForceRedeem}
-              >
-              Force redeem
-            </button>
-          </div>
-        </div>
+        {
+          ordersType !== 'history'
+          ? (
+            <div className='card-footer'>
+              <button disabled={isOrderAssigned} onClick={openAssignOrderModal}>Assign to me</button>
+              <button onClick={this.openCancelOrder}>Cancel order</button>
+              {
+                this.props.canAccess('force-redeem')
+                ? (
+                  <div style={{float: 'right'}}>
+                    <input
+                      style={DigitInput}
+                      maxLength='4'
+                      onKeyDown={this.handleChange}
+                    />
+                    <button onClick={this.handleForceRedeem}>
+                      Force redeem
+                    </button>
+                  </div>
+                )
+                : ''
+              }
+            </div>
+          )
+          : ''
+        }
       </div>
     )
   }

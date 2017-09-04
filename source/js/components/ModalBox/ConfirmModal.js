@@ -9,9 +9,6 @@ export default function confirmModal (data) {
   return class confirmModal extends React.Component {
     constructor (props) {
       super(props)
-      this.state = {
-
-      }
     }
     render () {
       return (

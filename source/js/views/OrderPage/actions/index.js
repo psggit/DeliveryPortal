@@ -28,14 +28,22 @@ export const assignOrder = (data) => ({
   data: data
 })
 
-export const forceRedeem = () => ({
-  type: ActionTypes.REQUEST_FORCE_REDEEM
+export const skipRetailer = (data) => ({
+  type: ActionTypes.REQUEST_SKIP_RETAILER,
+  data: data
 })
 
-export const skipRetailer = () => ({
-  type: ActionTypes.REQUEST_SKIP_RETAILER
+export const skipDeliverer = (data) => ({
+  type: ActionTypes.REQUEST_SKIP_DELIVERER,
+  data: data
 })
 
-export const skipDeliverer = () => ({
-  type: ActionTypes.REQUEST_SKIP_DELIVERER
+export const cancelOrder = (data) => ({
+  type: ActionTypes.REQUEST_CANCEL_ORDER,
+  data: data
+})
+
+export const forceRedeem = (data) => ({
+  type: ActionTypes.REQUEST_FORCE_REDEEM,
+  data: data
 })

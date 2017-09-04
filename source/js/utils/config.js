@@ -15,13 +15,13 @@ const RUNTIME__CONFIG = {
   },
 
   "staging": {
-    host: "https://api.hipbar.in",
-    api_version: "/api/v1"
+    host: "https://gremlin.hearsay81.hasura-app.io",
+    api_version: ""
   },
 
   "production": {
-    host: "https://api.hipbar.com",
-    api_version: "/api/v1"
+    host: "https://gremlin.hearsay81.hasura-app.io",
+    api_version: ""
   }
 }
 

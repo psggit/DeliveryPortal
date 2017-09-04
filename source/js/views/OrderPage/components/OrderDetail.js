@@ -94,6 +94,7 @@ class OrderDetail extends Component {
       const article = order.status.split('::')[2]
   
       const dp_delivered_time = order.deliveredTime
+      const dp_reached_to_consumer_time = deliverer.reachedToConsumerTime
       const cancellation_time = order.cancellationTime
       const orderPlacedTime = order.orderPlacedTime
       const cancellation_return_time = order.cancellationReturnTime
@@ -123,7 +124,7 @@ class OrderDetail extends Component {
           }
           </span>
           {
-            deliverer.confirmationTime
+            deliverer.confirmationTime && ordersType !== 'history'
             ? <button
                 style={trackBtnStyle}
                 onClick={this.openGmap}
@@ -142,19 +143,22 @@ class OrderDetail extends Component {
               <div className='left'>
                 {
                   order
-                  ? <Order 
+                  ? <Order
+                      canAccess={this.props.canAccess} 
                       order={order}
                       actions={actions}
                       openAssignOrderModal={this.openAssignOrderModal}
                       isOrderAssigned={isOrderAssigned}
+                      ordersType={ordersType}
                     />
                   : ''
                 }
               </div>
               <div className='right'>
                 {
-                  customer
+                  customer && this.props.canAccess('consumer')
                   ? <ConsumerDetail
+                      ordersType={ordersType}
                       customer={customer}
                       actions={actions}
                       isOrderAssigned={isOrderAssigned}
@@ -164,8 +168,9 @@ class OrderDetail extends Component {
                 }
   
                 {
-                  retailer.confirmationTime
+                  retailer.confirmationTime && this.props.canAccess('retailer')
                   ? <RetailerDetail
+                      ordersType={ordersType}
                       actions={actions}
                       notifiedRetailers={order.retailers}
                       retailer={retailer}
@@ -175,8 +180,9 @@ class OrderDetail extends Component {
                   : ''  
                 }
                 {
-                  deliverer.confirmationTime
+                  deliverer.confirmationTime && this.props.canAccess('deliverer')
                   ? <DelivererDetail
+                      ordersType={ordersType}
                       actions={actions}                      
                       notifiedDeliverers={order.deliverers}
                       deliverer={deliverer}

@@ -34,7 +34,10 @@ class NavBar extends Component {
               <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
             </a>
           </li>
-          <li className="resume-pause">
+          {
+            this.props.canAccess('resume-pause')
+            ? (
+              <li className="resume-pause">
               <span>
                 {
                   shouldDeliever
@@ -50,6 +53,9 @@ class NavBar extends Component {
                 }
               </span>
           </li>
+            )
+            : ''
+          }
           <li>
             <SearchInput
               search={this.props.search}

@@ -32,8 +32,7 @@ function* fetchOrderDetail(action) {
 
 function* forceRedeem(action) {
   try {
-    // const { data, meta } = yield call(utils.getData, action)
-    const data = {}
+    const data = yield call(Api.forceRedeem, action)
     yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data})
   } catch (err) {
     console.log(err)
@@ -80,6 +79,15 @@ function* skipDeliverer(action) {
   }
 }
 
+function* cancelOrder(action) {{
+  try {
+    const data = yield call(Api.cancelOrder, action)
+    yield put({type: ActionTypes.SUCCESS_CANCEL_ORDER, data})
+  } catch (err) {
+    console.log(err)
+  }
+}}
+
 /**
  * Watchers
  */
@@ -122,5 +130,11 @@ export function* watchSkipRetailer() {
 export function* watchSkipDeliverer() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_SKIP_DELIVERER, skipDeliverer)
+  }
+}
+
+export function* watchCancelOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_CANCEL_ORDER, cancelOrder)
   }
 }

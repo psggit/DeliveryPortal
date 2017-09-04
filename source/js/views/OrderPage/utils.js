@@ -53,3 +53,13 @@ export function checkCtrlA(e) {
   }
   return false
 }
+
+export function canAccess(feature) {
+  const hasuraRole = localStorage.getItem('x-hasura-role')
+  const accessObj = {
+    "support_person": ['resume-pause'],
+    "support_team_leader": ['force-redeem', 'skip'],
+    "excise": ['consumer', 'retailer', 'deliverer']
+  } 
+  return !(accessObj[hasuraRole].indexOf(feature) > -1)
+}

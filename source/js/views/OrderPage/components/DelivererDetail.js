@@ -26,8 +26,14 @@ class DelivererDetail extends Component {
     }))
   }
   handleSkipDeliverer() {
-    const { orderId, actions } = this.props
-    actions.skipDeliverer(orderId)
+    const { orderId, actions, deliverer, ordersType } = this.props
+
+    actions.skipDeliverer({
+      order_id: orderId,
+    })
+    
+    unMountModal()
+    actions.fetchOrderDetail(orderId)
   }
   render() {
     const { isOrderConfirmed, ordersType, deliverer } = this.props
@@ -46,11 +52,17 @@ class DelivererDetail extends Component {
             <span>{deliverer.phone}</span>
           </p>
         </div>
-        <div className='card-footer'>
-          <button onClick={this.openSkipDeliverer}>Skip</button>
-          <button>Confirm</button>
-          <button onClick={this.showNotified}>Show notified deliverers</button>
-        </div>
+        {
+          ordersType !== 'history'
+          ? (
+            <div className='card-footer'>
+              <button onClick={this.openSkipDeliverer}>Skip</button>
+              <button>Confirm</button>
+              <button onClick={this.showNotified}>Show notified deliverers</button>
+            </div>
+          )
+          : ''
+        }
       </div>
     )
   }

@@ -26,6 +26,33 @@ class LoginForm extends React.Component {
     if (e.keyCode === 13) this.handleSubmit()
   }
 
+  getHasuraRole(data) {
+    console.log(data)
+    const hasuraRoles = data.hasura_roles
+    // const hasuraRoles = ["user", "support_person", "excise", "support_admin"]
+    const rolesMap = {
+      "user": 1,
+      "admin": 6,
+      "support_person": 3,
+      "support_admin": 5,
+      "support_team_leader": 4,
+      "excise": 2
+    }
+    let maxRole = rolesMap["user"]
+    let xHasuraRole = "user"
+    for(let i=0; i<hasuraRoles.length; i++) {
+      if (maxRole < rolesMap[hasuraRoles[i]]) {
+        maxRole = rolesMap[hasuraRoles[i]]
+        xHasuraRole = hasuraRoles[i]
+      }
+    }
+    return xHasuraRole
+  }
+
+  createSession(data) {
+    localStorage.setItem('x-hasura-role', this.getHasuraRole(data))
+  }
+
   handleSubmit () {
     const { username, password } = this.state
     const formData = {
@@ -58,6 +85,7 @@ class LoginForm extends React.Component {
         }
         response.json().then(function(data) {
           localStorage.setItem('_hipbaru', JSON.stringify(data))
+          _self.createSession(data)
           location.href = '/orders'
         })
       }
@@ -94,6 +122,7 @@ class LoginForm extends React.Component {
           />
         </div>
         <button
+          disabled={isSubmitting}
           className='form-group btn btn-green btn-lg'
           style={style} onClick={this.handleSubmit}>
           Login

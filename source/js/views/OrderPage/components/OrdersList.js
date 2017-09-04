@@ -43,12 +43,13 @@ class OrdersList extends Component {
               orders.map((item, i) => {
                 return (
                   <OrderListItem
-                  key={item.order_id}
+                  key={`order-list-item-${i}`}
                   id={item.order_id}
                   consumerName={item.consumer_name}
                   consumerId={item.consumer_id}
                   retailer_notified_time={item.retailer_notified_time}
                   dp_delivered_time={item.dp_delivered_time}
+                  dp_reached_to_consumer_time={item.dp_reached_to_consumer_time}
                   retailer_accepted_time={item.retailer_confirmation_time}
                   cancellation_time={item.cancellation_time}
                   orderPlacedTime={item.order_placed_time}

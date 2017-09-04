@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as Actions from './actions'
-import { getIcon, getTimeDiff } from './utils'
+import { getIcon, getTimeDiff, canAccess } from './utils'
 import * as ActionTypes from './constants/actions'
 import NavBar from '@components/NavBar'
 import SideMenu from './components/SideMenu'
@@ -41,7 +41,7 @@ class OrderPage extends Component {
       searchAPI: '/deliveryStatus/searchLiveOrders',
       fetchAPI: '/deliveryStatus/liveOrders',
       pageOffset: 0,
-      ordersType: location.href.split('/')[4]
+      ordersType: ''
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
@@ -61,12 +61,12 @@ class OrderPage extends Component {
     switch (ordersType) {
       case 'assigned':
         fetchAPI = '/deliveryStatus/liveAssignedOrders'
-        searchAPI = 'deliveryStatsu/searchAssignedOrders'
+        searchAPI = 'deliveryStatus/searchAssignedOrders'
         break
 
       case 'history':
-        fetchAPI = '/deliveryStatus/liveAssignedOrders'
-        searchAPI = '/deliveryStatus/searchHistoryOrders'
+        fetchAPI = '/deliveryStatus/liveOrders'
+        searchAPI = '/deliveryStatus/searchLiveOrders'
         break
     }
     this.setState({ fetchAPI, searchAPI })
@@ -287,6 +287,7 @@ class OrderPage extends Component {
     return (
       <div>
         <NavBar
+          canAccess={canAccess}
           search={actions.fetchOrdersData}
           searchQuery={searchQuery}
           searchAPI={searchAPI}
@@ -343,6 +344,8 @@ class OrderPage extends Component {
           {
             shouldMountOrderDetail
             ? <OrderDetail
+              ordersType={ordersType}
+              canAccess={canAccess}
               retailer={retailer}
               customer={customer}
               deliverer={deliverer}

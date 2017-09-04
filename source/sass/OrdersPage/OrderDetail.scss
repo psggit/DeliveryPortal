@@ -1,7 +1,6 @@
 
 .container {
-  padding: 20px;
-  background: #f6f6f6;
+  margin-top: 20px;
   height: calc(100vh - 150px);
 }
 hr {
@@ -25,6 +24,7 @@ hr {
   .order-detail-head {
     background: #fff;
     padding: 20px;
+    box-shadow: 0 0px 2px 0 #9b9b9b;
   }
   position: fixed;
   top: 65px;
@@ -52,7 +52,7 @@ hr {
 
 .card {
   margin-bottom: 20px;
-  box-shadow: 0 0px 4px #9b9b9b;
+  box-shadow: 0 0px 2px #9b9b9b;
   background: #fff;
   border-radius: 2px;
   .card-head {
