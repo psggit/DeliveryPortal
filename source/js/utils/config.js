@@ -36,5 +36,17 @@ function getApiBaseUrl() {
   return config.host + config.api_version
 }
 
+if (window.location.href.split(':')[1] === '//localhost') {
+  authUrl = 'https://auth.' + appName + '.hasura-app.io';
+  blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
+  gremlinUrl = scheme + '://gremlin' + baseHost;
+} else {
+  scheme = window.location.href.split(':')[0];
+  baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
+  authUrl = scheme + '://auth' + baseHost;
+  blogicUrl = scheme + '://api1' + baseHost;
+  gremlinUrl = scheme + '://gremlin' + baseHost;
+}
+
 export const api_base_url = getApiBaseUrl()
 export const host_server = getHostServer()
