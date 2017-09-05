@@ -21,7 +21,7 @@ html {
 
 body {
   font-size: 16px;
-  color: $black;
+  color: #4a4a4a;
   font-family: $source-sans;
   overflow: hidden;
 }
@@ -192,9 +192,10 @@ input {
 }
 .Page {
   // margin: 0 !important;
-
+  background-color: #f6f6f6;
+  max-width: 1440px;
   margin: 0 auto;
-  box-shadow: 0 0 4px 0 #9b9b9b;
+  // box-shadow: 0 0 4px 0 #9b9b9b;
   // @include lg {
   //   margin: 0 0 0 20rem;
   // }

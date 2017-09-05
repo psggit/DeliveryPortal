@@ -15,13 +15,16 @@
 .order-wrapper {
   // position: fixed;
   // margin-left: 288px;
+  position: relative;
   display: inline-block;
-  width: calc(100% - 288px);
+  width: calc(100% - 289px);
   height: calc(100vh - 65px);
   padding: 20px;
+  padding-top: 0;
   background: #f6f6f6;
   overflow: auto;
   margin-top: 20px;
+  margin-left: 1px;
   // text-align: center;
   .orders-filter {
     display: block;

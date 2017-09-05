@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ShowNotified from './showNotified'
 import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
@@ -23,6 +24,7 @@ class OrderDetail extends Component {
     this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
     this.openGmap = this.openGmap.bind(this)
+    this.showNotified = this.showNotified.bind(this)
     this.state = {
       shouldOpenGmap: false
     }
@@ -35,6 +37,14 @@ class OrderDetail extends Component {
   openGmap() {
     const { shouldOpenGmap } = this.state
     this.setState({ shouldOpenGmap: !shouldOpenGmap })
+  }
+
+  showNotified(e) {
+    const { order } = this.props
+    mountModal(ShowNotified({
+      heading: e.target.id === 'show-retailers'? 'Notified retailers' : 'Notified deliverers',
+      content: e.target.id === 'show-retailers' ? order.retailers : order.deliverers
+    }))
   }
 
   openAssignOrderModal(e) {
@@ -131,7 +141,17 @@ class OrderDetail extends Component {
                 className=''>
                 { shouldOpenGmap ? 'Close Map' : 'Track this order' }
               </button>
-            : ''  
+            : '' 
+          }
+          {
+            order.retailers.length
+            ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified retailers</button>
+            : ''
+          }
+          {
+            order.deliverers.length
+            ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified deliverers</button>
+            : ''
           }
         </div>
         {/* <hr /> */}
