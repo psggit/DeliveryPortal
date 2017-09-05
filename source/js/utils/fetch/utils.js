@@ -4,7 +4,7 @@
 
 import "whatwg-fetch"
 // import Session from "./../session"
-import { api_base_url } from "./../config"
+import { Api } from "./../config"
 /**
  * Helper methods to create window.fetch instance
  */
@@ -65,10 +65,10 @@ export function checkStatus(response) {
  * @param {Object} options
  */
 export function constructFetchUtility(options) {
-  const { api, data, method, type, cors, prependBaseUrl = true } = options
+  const { api, data, method, type, cors, prependBaseUrl = true, apiBase } = options
 
   // construct request url
-  const url = prependBaseUrl ? `${api_base_url}${api}` : api
+  const url = prependBaseUrl ? `${Api[apiBase]}${api}` : api
 
   // construct options for creating `window.fetch` instance
   let fetchOptions = {

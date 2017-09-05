@@ -4,6 +4,7 @@ export function fetchOrdersData(action) {
   console.log(action)
   return POST({
     api: action.api,
+    apiBase: 'gremlinUrl',
     data: action.data
   })
   .then(json => json)

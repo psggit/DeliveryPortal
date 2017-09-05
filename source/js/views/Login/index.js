@@ -1,6 +1,7 @@
 import React from 'react'
 import "whatwg-fetch"
 import '@sass/login.scss'
+import { Api } from './../../utils/config'
 
 class LoginForm extends React.Component {
   constructor (props) {
@@ -82,7 +83,7 @@ class LoginForm extends React.Component {
 
     this.setState({isSubmitting: true})
 
-    fetch('https://auth.hearsay81.hasura-app.io/login', fetchOptions)
+    fetch(`${Api.authUrl}/login`, fetchOptions)
     .then(
       function(response) {
         if (response.status !== 200) {
