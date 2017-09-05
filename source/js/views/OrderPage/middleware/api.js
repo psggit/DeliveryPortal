@@ -12,8 +12,7 @@ export function fetchOrdersData(action) {
 export function fetchOrderDetail(action) {
   return POST({
     api: `/deliveryStatus/orderStatus/`,
-    data: action.data,
-    type: 'Public'
+    data: action.data
   })
   .then(json => json)
 }
@@ -55,7 +54,7 @@ export function forceRedeem(action) {
 
 export function cancelOrder(action) {
   return POST({
-    api: `https://api1.hearsay81.hasura-app.io/support/cancel_order`,
+    api: `https://api1.hearsay81.hasura-app.io/support/cancel`,
     data: action.data,
     prependBaseUrl: false
   })

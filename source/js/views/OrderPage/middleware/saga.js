@@ -7,6 +7,8 @@ import { takeLatest, delay } from 'redux-saga'
 import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
+import Notify from '@components/Notification'
+
 
 /**
  * Handlers
@@ -79,14 +81,23 @@ function* skipDeliverer(action) {
   }
 }
 
-function* cancelOrder(action) {{
+function* cancelOrder(action) {
   try {
+    // Notify("Successfully canceled order")
     const data = yield call(Api.cancelOrder, action)
     yield put({type: ActionTypes.SUCCESS_CANCEL_ORDER, data})
   } catch (err) {
     console.log(err)
   }
-}}
+}
+
+function* setLoadingOrderDetail(action) {
+  try {
+    yield put({type: ActionTypes.SUCCESS_SET_LOAD, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 /**
  * Watchers

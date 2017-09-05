@@ -42,9 +42,10 @@ class Order extends Component {
   }
 
   handleCancelOrder() {{
-    const { actions, order } = this.props
+    const { actions, order, unmountOrderDetail } = this.props
     actions.cancelOrder({ order_id: order.id })
     unMountModal()
+    unmountOrderDetail()
   }}
 
   render() {

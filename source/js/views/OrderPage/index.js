@@ -16,6 +16,7 @@ import '@sass/components/_pagination.scss'
 import Qr from 'query-string'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import DatePicker from './components/DatePicker'
+// import Store from './../../'
 
 class OrderPage extends Component {
 
@@ -110,16 +111,22 @@ class OrderPage extends Component {
     const { actions } = this.props
     const { ordersType } = this.state
     const _self = this
-    this.fetchDataFromQueryParams()
+    // this.fetchDataFromQueryParams()
     // this.handleRouteChange(ordersType, 'componentDidMount')
-
+      actions.fetchOrdersData({
+        offset: 0,
+        limit: _self.pagesLimit
+      })
     // window.onpopstate = function() {
     //   const { ordersType } = _self.state
     //   _self.fetchDataFromQueryParams()
     //   _self.handleRouteChange(ordersType, 'componentDidMount')
     // }
     // ;(function pollOrdersData() {
-    // 	_self.props.actions.fetchOrdersData()
+    // 	actions.fetchOrdersData({
+    //     offset: 0,
+    //     limit: _self.pagesLimit
+    //   })
     // 	setTimeout(pollOrdersData, 10000)
     // })()
   }
@@ -140,6 +147,7 @@ class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     })
+    // this.props.actions.setLoadingOrderDetail()
   }
 
   setSearchQuery(searchQuery) {

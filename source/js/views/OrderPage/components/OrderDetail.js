@@ -150,6 +150,7 @@ class OrderDetail extends Component {
                       openAssignOrderModal={this.openAssignOrderModal}
                       isOrderAssigned={isOrderAssigned}
                       ordersType={ordersType}
+                      unmountOrderDetail={this.props.unmountOrderDetail}
                     />
                   : ''
                 }

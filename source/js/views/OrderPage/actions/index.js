@@ -47,3 +47,7 @@ export const forceRedeem = (data) => ({
   type: ActionTypes.REQUEST_FORCE_REDEEM,
   data: data
 })
+
+export const setLoadingOrderDetail = (data) => ({
+  type: ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL
+})

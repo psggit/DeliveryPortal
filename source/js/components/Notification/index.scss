@@ -1,0 +1,23 @@
+.notification {
+  position: fixed;
+  top: 65px;
+  right: 0;
+  padding: 20px;
+  min-width: 300px;
+  border-radius: 2px;
+  z-index: 2;
+  box-shadow: 0 2px 4px 0 #9b9b9b;
+  &.success {
+    background: #4990ef;
+    color: #fff;
+  }
+
+  &.warning {
+    background: orange;
+    color: #fff;
+  }
+}
+
+.example-enter {
+  opacity: 0;
+}
