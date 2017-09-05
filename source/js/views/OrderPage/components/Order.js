@@ -29,7 +29,7 @@ class Order extends Component {
     const { forceRedeemKey } = this.state
     // console.log(forceRedeemKey.toString())
     if (forceRedeemKey.toString().length === 4)
-    actions.forceRedeem({ order_id: order.id,  forceRedeemKey: forceRedeemKey })
+    actions.forceRedeem({ order_id: order.id,  last_four_digits: forceRedeemKey })
   }
 
   openCancelOrder() {

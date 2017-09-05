@@ -13,6 +13,7 @@ export function fetchOrdersData(action) {
 export function fetchOrderDetail(action) {
   return POST({
     api: `/deliveryStatus/orderStatus/`,
+    apiBase: 'gremlinUrl',
     data: action.data
   })
   .then(json => json)
@@ -22,6 +23,7 @@ export function fetchOrderDetail(action) {
 export function assignOrder(action) {
   return POST({
     api: `/deliveryStatus/assignSupport`,
+    apiBase: 'gremlinUrl',
     data: action.data,
 
   })
@@ -30,33 +32,32 @@ export function assignOrder(action) {
 
 export function skipRetailer(action) {
   return POST({
-    api: `https://api1.hearsay81.hasura-app.io/support/skip_retailer`,
-    data: action.data,
-    prependBaseUrl: false
+    api: `/support/skip_retailer`,
+    apiBase: 'blogicUrl',
+    data: action.data
   })
 }
 
 export function skipDeliverer(action) {
   return POST({
-    api: `https://api1.hearsay81.hasura-app.io/support/skip_dp`,
-    data: action.data,
-    type: 'Public',
-    prependBaseUrl: false
+    api: `/support/skip_dp`,
+    apiBase: 'blogicUrl',
+    data: action.data
   })
 }
 
 export function forceRedeem(action) {
   return POST({
-    api: `https://api1.hearsay81.hasura-app.io/support/force_redeem`,
-    data: action.data,
-    prependBaseUrl: false
+    api: `/support/force_redeem`,
+    apiBase: 'blogicUrl',
+    data: action.data
   })
 }
 
 export function cancelOrder(action) {
   return POST({
-    api: `https://api1.hearsay81.hasura-app.io/support/cancel`,
-    data: action.data,
-    prependBaseUrl: false
+    api: `/support/cancel`,
+    apiBase: 'blogicUrl',
+    data: action.data
   })
 }

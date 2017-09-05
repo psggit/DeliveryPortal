@@ -13,8 +13,9 @@
 }
 
 .order-wrapper {
-  position: fixed;
-  margin-left: 288px;
+  // position: fixed;
+  // margin-left: 288px;
+  display: inline-block;
   width: calc(100% - 288px);
   height: calc(100vh - 65px);
   padding: 20px;

@@ -4,9 +4,12 @@
   background: #fff;
   width: 260px;
   height: calc(100vh - 125px);
-  position: fixed;
-  top: 85px;
-  left: 20px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 65px 0 0 20px;
+  // position: fixed;
+  // top: 85px;
+  // left: 20px;
   overflow: auto;
   ul {
     margin: 0;

@@ -57,6 +57,8 @@ export function checkCtrlA(e) {
 export function canAccess(feature) {
   const hasuraRole = localStorage.getItem('x-hasura-role')
   const accessObj = {
+    "admin": [],
+    "support_admin": [],
     "support_person": ['resume-pause'],
     "support_team_leader": ['force-redeem', 'skip'],
     "excise": ['consumer', 'retailer', 'deliverer']
