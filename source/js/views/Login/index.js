@@ -27,7 +27,6 @@ class LoginForm extends React.Component {
   }
 
   getHasuraRole(data) {
-    console.log(data)
     const hasuraRoles = data.hasura_roles
     // const hasuraRoles = ["user", "support_person", "excise", "support_admin"]
     const rolesMap = {
@@ -49,8 +48,16 @@ class LoginForm extends React.Component {
     return xHasuraRole
   }
 
+  getAuthToken(data) {
+    const token = data.auth_token
+    console.log(token)
+    return token
+  }
+
+
   createSession(data) {
     localStorage.setItem('x-hasura-role', this.getHasuraRole(data))
+    localStorage.setItem('auth-token', this.getAuthToken(data))
   }
 
   handleSubmit () {

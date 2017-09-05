@@ -10,7 +10,7 @@ import { api_base_url } from "./../config"
  */
 
 const getToken = () => ({
-  // "Authorization": `Token ${Session.getItem("token")}`,
+  "Authorization": `Bearer ${localStorage.getItem('auth-token')}`,
   "x-hasura-role": `${localStorage.getItem('x-hasura-role')}`
 })
 
