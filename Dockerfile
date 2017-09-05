@@ -13,4 +13,4 @@ COPY ./ /app
 
 RUN npm run build
 
-ENTRYPOINT ["npm", "run", "dev"]
+ENTRYPOINT ["npm", "run", "preview"]
