@@ -48,8 +48,11 @@ class OrderListItem extends Component {
       retailer_accepted_time,
       cancellation_time,
       cancellation_return_time,
-      dp_reached_to_consumer_time
+      dp_reached_to_consumer_time,
+      assignedTo,
+      consumerPhone
     } = this.props
+
     const orderChar = orderStatus.split('::')[0]
     const formula = orderStatus.split('::')[1]
     const article = orderStatus.split('::')[2]
@@ -62,8 +65,8 @@ class OrderListItem extends Component {
         </td>
         <td>{consumerId}</td>
         <td>{consumerName}</td>
-        <td>9876546788</td>
-        <td>Harshit</td>
+        <td>{consumerPhone}</td>
+        <td>{assignedTo}</td>
         <td>{Moment(orderPlacedTime).format('MMM Do YY, h:mm a')}</td>
       </tr>
     )
