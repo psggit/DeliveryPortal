@@ -78,7 +78,7 @@ class OrderPage extends Component {
     this.props.actions.fetchOrdersData({
       support_id: 1,
       offset: 0,
-      limit: this.pagesLimit
+      limit: this.pagesLimit,
     }, fetchAPI)
   }
 
@@ -123,14 +123,16 @@ class OrderPage extends Component {
     //   _self.handleRouteChange(ordersType, 'componentDidMount')
     // }
     ;(function pollOrdersData() {
-      const { activePage, fetchAPI } = _self.state
+      const { activePage, fetchAPI, searchQuery, searchAPI } = _self.state
       let offset = _self.pagesLimit * (activePage - 1)
-      console.log(offset)
+      console.log(searchQuery.length)
+      let api = searchQuery.length ? searchAPI : fetchAPI
     	actions.fetchOrdersData({
         offset: offset,
         limit: _self.pagesLimit,
-        support_id: 1
-      }, fetchAPI)
+        support_id: 1,
+        query: searchQuery
+      }, api)
     	setTimeout(pollOrdersData, 5000)
     })()
   }

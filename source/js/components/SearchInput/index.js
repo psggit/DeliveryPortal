@@ -24,6 +24,7 @@ class SearchInput extends Component {
       searched: false
     })
     
+    this.props.setSearchQuery('')
     this.search('')
   }
 
