@@ -94,6 +94,10 @@ table.orders-list {
   }
   td {
     padding: 15px;
+    font-size: 15px;
+  }
+  td:nth-child(2) {
+    font-size: 14px;
   }
   tbody {
     height: 50vh;
