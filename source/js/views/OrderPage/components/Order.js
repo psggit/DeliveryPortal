@@ -43,6 +43,7 @@ class Order extends Component {
     const { actions, order } = this.props
     const { forceRedeemKey } = this.state
     actions.forceRedeem({ order_id: order.id,  last_four_digits: forceRedeemKey })
+    unMountModal()
   }
 
   openCancelOrder() {

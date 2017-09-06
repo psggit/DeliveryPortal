@@ -36,8 +36,10 @@ function* forceRedeem(action) {
   try {
     const data = yield call(Api.forceRedeem, action)
     yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data})
+    Notify("Successfully redeemed the order", "success")
   } catch (err) {
     console.log(err)
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -58,8 +60,10 @@ function* assignOrder(action) {
   try {
     const data = yield call(Api.assignOrder, action)
     yield put({type: ActionTypes.SUCCESS_ASSIGN_ORDER, data})
+    Notify("Successfully assigned the order", "success")
   } catch (err) {
     console.log(err)
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -67,8 +71,10 @@ function* skipRetailer(action) {
   try {
     const data = yield call(Api.skipRetailer, action)
     yield put({type: ActionTypes.SUCCESS_SKIP_RETAILER, data})
+    Notify("Successfully skipped the retailer", "success")
   } catch (err) {
     console.log(err)
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -76,8 +82,10 @@ function* skipDeliverer(action) {
   try {
     const data = yield call(Api.skipDeliverer, action)
     yield put({type: ActionTypes.SUCCESS_SKIP_DELIVERER, data})
+    Notify("Successfully skipped the retailer", "success")
   } catch (err) {
     console.log(err)
+    Notify("Something went wrong", "warning")
   }
 }
 
