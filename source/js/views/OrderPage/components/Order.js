@@ -3,6 +3,7 @@ import { getIcon } from './../utils'
 import { validateNumType, checkCtrlA } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
+// import Notify from '@components/Notification'
 
 class Order extends Component {
   constructor() {
@@ -11,12 +12,14 @@ class Order extends Component {
     this.handleForceRedeem = this.handleForceRedeem.bind(this)
     this.handleCancelOrder = this.handleCancelOrder.bind(this)
     this.openCancelOrder = this.openCancelOrder.bind(this)
+    this.validateForceRedeem = this.validateForceRedeem.bind(this)
     this.state = {
       forceRedeemKey: 0
     }
   }
 
   handleChange(e) {
+    console.log(e.target.value)
     if (validateNumType(e.keyCode) || checkCtrlA(e)) {
       this.setState({ forceRedeemKey: parseInt(e.target.value) })
     } else {
@@ -24,11 +27,21 @@ class Order extends Component {
     }
   }
 
+  validateForceRedeem() {
+    const { forceRedeemKey } = this.state
+    // console.log(forceRedeemKey.toString())
+    if (forceRedeemKey.toString().length === 4) {
+      mountModal(ConfirmModal({
+        heading: 'Force redeem',
+        confirmMessage: 'Are you sure you want to force redeem this order?',
+        handleConfirm: this.handleForceRedeem,
+      }))
+    }
+  }
+
   handleForceRedeem() {
     const { actions, order } = this.props
     const { forceRedeemKey } = this.state
-    // console.log(forceRedeemKey.toString())
-    if (forceRedeemKey.toString().length === 4)
     actions.forceRedeem({ order_id: order.id,  last_four_digits: forceRedeemKey })
   }
 
@@ -37,7 +50,7 @@ class Order extends Component {
     mountModal(ConfirmModal({
       heading: `Cancel order #${order.id}`,
       confirmMessage: 'Are you sure you want to cancel this order?',
-      handleConfirm: this.handleCancelOrder
+      handleConfirm: this.handleCancelOrder,
     }))
   }
 
@@ -122,8 +135,9 @@ class Order extends Component {
                       style={DigitInput}
                       maxLength='4'
                       onKeyDown={this.handleChange}
+                      onKeyUp={this.handleChange}
                     />
-                    <button onClick={this.handleForceRedeem}>
+                    <button onClick={this.validateForceRedeem}>
                       Force redeem
                     </button>
                   </div>
