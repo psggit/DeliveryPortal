@@ -115,8 +115,6 @@ class OrderDetail extends Component {
       const retailer_notified_time = retailer.notifiedTime
     // }
 
-    console.log(order, retailer)
-
     return (
       <div className='order-detail'>
         <div className='order-detail-head'>
