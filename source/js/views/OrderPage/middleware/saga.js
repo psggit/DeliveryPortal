@@ -83,17 +83,18 @@ function* skipDeliverer(action) {
 
 function* cancelOrder(action) {
   try {
-    // Notify("Successfully canceled order")
     const data = yield call(Api.cancelOrder, action)
     yield put({type: ActionTypes.SUCCESS_CANCEL_ORDER, data})
+    Notify("Successfully cancelled the order", "success")
   } catch (err) {
     console.log(err)
+    Notify("Something went wrong", "warning")
   }
 }
 
-function* setLoadingOrderDetail(action) {
+function* setLoadingOrderDetail() {
   try {
-    yield put({type: ActionTypes.SUCCESS_SET_LOAD, data})
+    yield put({type: ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL})
   } catch (err) {
     console.log(err)
   }
@@ -147,5 +148,11 @@ export function* watchSkipDeliverer() {
 export function* watchCancelOrder() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_CANCEL_ORDER, cancelOrder)
+  }
+}
+
+export function* watchSetLoadingOrderDetail() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, cancelOrder)
   }
 }
