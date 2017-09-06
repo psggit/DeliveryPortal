@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Moment from 'moment'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
 function getTimeDiff(d2) {
   const d1 = new Date()
@@ -12,11 +14,25 @@ function getTimeDiff(d2) {
 class OrderListItem extends Component {
   constructor() {
     super()
-    this.handleClick = this.handleClick.bind(this)
+    this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
+    this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
   }
-  handleClick() {
-    console.log('fefe')
-    // this.props.handleClick(id)
+  openAssignOrderModal() {
+    mountModal(ConfirmModal({
+      heading: 'Assign order',
+      confirmMessage: 'Are your sure you want to assign this order?',
+      handleConfirm: this.handleConfirmAssign
+    }))
+  }
+
+  handleConfirmAssign() {
+    const { actions, id } = this.props
+    const postData = {
+      support_id: 1,
+      order_id: id
+    }
+    actions.assignOrder(postData)
+    unMountModal()
   }
   render() {
     const orderState = 'AwaitingRetailerConfirmation'
@@ -66,7 +82,7 @@ class OrderListItem extends Component {
         <td>{consumerId}</td>
         <td>{consumerName}</td>
         <td>{consumerPhone}</td>
-        <td>{assignedTo}</td>
+        <td>{!assignedTo ? <button onClick={this.openAssignOrderModal}>Assign</button> : assignedTo}</td>
         <td>{Moment(orderPlacedTime).format('MMM Do YY, h:mm a')}</td>
       </tr>
     )

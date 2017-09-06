@@ -115,20 +115,24 @@ class OrderPage extends Component {
     // this.handleRouteChange(ordersType, 'componentDidMount')
       actions.fetchOrdersData({
         offset: 0,
-        limit: _self.pagesLimit
+        limit: this.pagesLimit
       })
     // window.onpopstate = function() {
     //   const { ordersType } = _self.state
     //   _self.fetchDataFromQueryParams()
     //   _self.handleRouteChange(ordersType, 'componentDidMount')
     // }
-    // ;(function pollOrdersData() {
-    // 	actions.fetchOrdersData({
-    //     offset: 0,
-    //     limit: _self.pagesLimit
-    //   })
-    // 	setTimeout(pollOrdersData, 10000)
-    // })()
+    ;(function pollOrdersData() {
+      const { activePage, fetchAPI } = _self.state
+      let offset = _self.pagesLimit * (activePage - 1)
+      console.log(offset)
+    	actions.fetchOrdersData({
+        offset: offset,
+        limit: _self.pagesLimit,
+        support_id: 1
+      }, fetchAPI)
+    	setTimeout(pollOrdersData, 5000)
+    })()
   }
 
   mountOrderDetail(orderId) {
@@ -329,10 +333,7 @@ class OrderPage extends Component {
               orders={orders}
               unmountOrderDetail={this.unmountOrderDetail}
               mountOrderDetail={this.mountOrderDetail}
-              // titleMap={titleMap}
-              // articleMap={articleMap}
-              // timeMap={timeMap}
-              // epilogueMap={epilogueMap}
+              actions={actions}
               state={state}
             />
             : ''

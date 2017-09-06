@@ -54,28 +54,28 @@ class Gmap extends Component {
   //   y: null
   // }
   render() {
-    // var socket = io('https://livered.hearsay81.hasura-app.io/', {
-    //   path: '/pool'
-    // })
+    var socket = io('https://livered.hearsay81.hasura-app.io/', {
+      path: '/pool'
+    })
     
-    // console.log(socket)
+    console.log(socket)
     
-    // socket.on('status', function (data) {
-    //   console.log(data);
-    //   socket.emit('subscribe', {"order_id": '43'});
-    // });
+    socket.on('status', function (data) {
+      console.log(data);
+      socket.emit('subscribe', {"order_id": '43'});
+    });
     
-    // socket.on('subscribed', function(data) {
-    //   console.log(data)
-    // })
+    socket.on('subscribed', function(data) {
+      console.log(data)
+    })
     
-    // socket.on('live_data', function(res) {
-    //   console.log(res)
-    //   // this.setState({
-    //   //   dx: res.gps.split(',')[0],
-    //   //   dy: res.gps.split(',')[1]
-    //   // })
-    // })
+    socket.on('live_data', function(res) {
+      console.log(res)
+      this.setState({
+        dx: res.gps.split(',')[0],
+        dy: res.gps.split(',')[1]
+      })
+    })
     
     const { customer, retailer, deliverer } = this.props
     const cx = parseFloat(customer.gps.split(',')[0])

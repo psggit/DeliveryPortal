@@ -47,7 +47,7 @@ class OrderDetail extends Component {
     }))
   }
 
-  openAssignOrderModal(e) {
+  openAssignOrderModal() {
     mountModal(ConfirmModal({
       heading: 'Assign order',
       confirmMessage: 'Are your sure you want to assign this order?',

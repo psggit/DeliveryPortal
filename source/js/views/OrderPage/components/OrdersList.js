@@ -7,15 +7,7 @@ class OrdersList extends Component {
     super()
     this.handleClick = this.handleClick.bind(this)
   }
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.ordersType !== this.props.ordersType) {
-  //     this.props.unmountOrderDetail()
-  //     // TODO: fetch orders list and filters (if required) based on ordersType (assigned, history etc.)
-  //   }
-  // }
-  componentDidMount() {
 
-  }
   handleClick(orderId) {
     this.props.mountOrderDetail(parseInt(orderId))
   }
@@ -58,6 +50,7 @@ class OrdersList extends Component {
                     handleClick={this.handleClick}
                     assignedTo={item.assigned_to}
                     consumerPhone={item.consumer_phone}
+                    actions={this.props.actions}
                 />
                 )
               })
