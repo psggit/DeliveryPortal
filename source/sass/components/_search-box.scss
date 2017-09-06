@@ -13,7 +13,16 @@
     width: 20px;
     height: 20px;
     transform: translateY(-50%);
+    &.clear-search {
+      right: 40px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
     svg {
+      position: absolute;
+      top: 0;
+      left: 0;
       fill: #fff;
       width: 20px;
       width: 20px;
