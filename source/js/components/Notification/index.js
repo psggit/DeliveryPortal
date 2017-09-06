@@ -1,25 +1,30 @@
-import React from 'react'
-import { render } from 'react-dom'
-import Notification from './Notification'
+import React from "react"
+import { render } from "react-dom"
+import Notification from "./Notification"
 import './index.scss'
 
-export default function Notify(message, type = 'success') {
-  // const className = "notification-container"
+/**
+ * # Notification
+ * (module_name: notification)
+ * A ReactJS utility to create simple default style notifications
+ */
 
-  // const el = document.querySelector(`.${className}`)
-  // if (el) {
-  //   el.parentNode.removeChild(el)
-  // }
+export default function Notify(message, type = "default") {
+  const className = "notification-container"
 
-  // const container = document.createElement("div")
-  // container.setAttribute("class", className)
-  // document.body.appendChild(container)
+  const el = document.querySelector(`.${className}`)
+  if (el) {
+    el.parentNode.removeChild(el)
+  }
 
-  render (
-   <Notification
-    message={message}
-    type={type}
-   />,
-   document.getElementById('notification-container')
+  const container = document.createElement("div")
+  container.setAttribute("class", className)
+  document.body.appendChild(container)
+
+  render(
+    <Notification
+      message={message}
+      type={type}
+    />, container
   )
 }

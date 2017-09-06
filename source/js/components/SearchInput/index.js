@@ -7,13 +7,24 @@ class SearchInput extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handlePress = this.handlePress.bind(this)
+    this.handleClearSearch = this.handleClearSearch.bind(this)
     this.state = {
-      searchQuery: props.searchQuery
+      searchQuery: props.searchQuery,
+      searched: false
     }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ searchQuery: nextProps.searchQuery })
+  }
+
+  handleClearSearch() {
+    this.setState({
+      searchQuery: '',
+      searched: false
+    })
+    
+    this.search('')
   }
 
   search(searchQuery) {
@@ -40,6 +51,7 @@ class SearchInput extends Component {
   handlePress(e) {
     const { searchQuery } = this.state
     if (e.keyCode === 13 && searchQuery.length) {
+      this.setState({ searched: true })
       this.search(searchQuery)
     }
   }
@@ -54,7 +66,8 @@ class SearchInput extends Component {
           onKeyDown={this.handlePress}
           value={searchQuery}
         />
-        <span>{ getIcon('search')}</span>
+        { this.state.searched ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
+        <span>{ getIcon('search') }</span>
       </div>
     )
   }
