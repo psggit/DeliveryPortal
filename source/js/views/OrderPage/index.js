@@ -1,3 +1,8 @@
+/*
+  !!! Beware of over abstraction while writing any function !!!
+*/
+
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -70,11 +75,11 @@ class OrderPage extends Component {
         searchAPI = '/deliveryStatus/searchLiveOrders'
         break
     }
-    this.setState({ fetchAPI, searchAPI })
-    if(calledBy !== 'componentDidMount') {
-      this.resetPagination()
-      this.setSearchQuery('')
-    }
+    this.setState({ fetchAPI, searchAPI, activePage: 1 })
+    // if(calledBy !== 'componentDidMount') {
+    //   this.resetPagination()
+    //   this.setSearchQuery('')
+    // }
     this.props.actions.fetchOrdersData({
       support_id: 1,
       offset: 0,
@@ -125,7 +130,7 @@ class OrderPage extends Component {
     ;(function pollOrdersData() {
       const { activePage, fetchAPI, searchQuery, searchAPI } = _self.state
       let offset = _self.pagesLimit * (activePage - 1)
-      console.log(searchQuery.length)
+      // console.log(searchQuery.length)
       let api = searchQuery.length ? searchAPI : fetchAPI
     	actions.fetchOrdersData({
         offset: offset,
@@ -133,7 +138,7 @@ class OrderPage extends Component {
         support_id: 1,
         query: searchQuery
       }, api)
-    	setTimeout(pollOrdersData, 5000)
+    	setTimeout(pollOrdersData, 30000)
     })()
   }
 
