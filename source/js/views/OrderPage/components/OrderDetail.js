@@ -108,6 +108,10 @@ class OrderDetail extends Component {
       const cancellation_time = order.cancellationTime
       const orderPlacedTime = order.orderPlacedTime
       const cancellation_return_time = order.cancellationReturnTime
+      const dp_picked_up_time = order.pickedUpTime
+      const dp_notified_time = deliverer.notifiedTime
+      const dp_arrived_at_store_time = deliverer.arrivedAtStoreTime
+      const dp_accepted_time = deliverer.acceptedTime
     // }
 
     // if (retailer) {
@@ -131,26 +135,28 @@ class OrderDetail extends Component {
             : ''
           }
           </span>
-          {
-            deliverer.confirmationTime && ordersType !== 'history'
-            ? <button
-                style={trackBtnStyle}
-                onClick={this.openGmap}
-                className=''>
-                { shouldOpenGmap ? 'Close Map' : 'Track this order' }
-              </button>
-            : '' 
-          }
-          {
-            order.retailers.length
-            ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified retailers</button>
-            : ''
-          }
-          {
-            order.deliverers.length
-            ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified deliverers</button>
-            : ''
-          }
+          <div style={{marginLeft: '20px'}}>
+            {
+              deliverer.confirmationTime && ordersType !== 'history'
+              ? <button
+                  style={trackBtnStyle}
+                  onClick={this.openGmap}
+                  className=''>
+                  { shouldOpenGmap ? 'Close Map' : 'Track this order' }
+                </button>
+              : '' 
+            }
+            {
+              order.retailers.length
+              ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified retailers</button>
+              : ''
+            }
+            {
+              order.deliverers.length
+              ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified deliverers</button>
+              : ''
+            }
+            </div>
         </div>
         {/* <hr /> */}
 
@@ -215,6 +221,7 @@ class OrderDetail extends Component {
               {
                 shouldOpenGmap
                 ? <Gmap
+                  orderId={order.id}
                   customer={customer}
                   deliverer={deliverer}
                   retailer={retailer}
