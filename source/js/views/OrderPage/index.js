@@ -194,7 +194,7 @@ class OrderPage extends Component {
       // } else {
       //   timeOutId = setTimeout(pollOrdersData, 30000)
       // }
-      setTimeout(pollOrdersData, 3000)
+      setTimeout(pollOrdersData, 30000)
     })()
   }
 
