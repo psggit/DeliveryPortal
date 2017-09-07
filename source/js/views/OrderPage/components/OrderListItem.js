@@ -35,24 +35,6 @@ class OrderListItem extends Component {
     unMountModal()
   }
   render() {
-    const orderState = 'AwaitingRetailerConfirmation'
-    const stateColorMap = {
-      'AwaitingRetailerConfirmation': '#ff3b34',
-      // 'AwaitingRetailerConfirmation': '#ff3b34',
-      // 'AwaitingRetailerConfirmation': '#ff3b34',
-    }
-    const itemStyle = {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginBottom: '10px',
-    }
-
-    const statusStyle = {
-      color: stateColorMap[orderState],
-      fontStyle: 'italic',
-      borderRadius: '5px',
-      padding: '0 4px 4px 4px'
-    }
 
     const {
       consumerName,
@@ -65,19 +47,37 @@ class OrderListItem extends Component {
       cancellation_time,
       cancellation_return_time,
       dp_reached_to_consumer_time,
+      dp_arrived_at_store_time,
+      dp_accepted_time,
+      dp_notified_time,
+      dp_picked_up_time,
       assignedTo,
       consumerPhone
     } = this.props
+    
+
 
     const orderChar = orderStatus.split('::')[0]
     const formula = orderStatus.split('::')[1]
     const article = orderStatus.split('::')[2]
+
+    const waitingTime = eval(formula)
+    console.log(waitingTime)
+    
+    const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
+    
+    const statusStyle = {
+      color: waitingTime >=5 ? '#ff3b34' : '',
+      fontStyle: 'italic',
+    }
+
+    // console.log(formula)
     
     return (
-      <tr className='orders-list-item'>
+      <tr className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
         <td onClick={() => {this.props.handleClick(id)} }>{id}</td>
         <td style={statusStyle} className='order-status'>
-          {`${orderChar} ${eval(formula) ? eval(formula) : ''} ${article ? article : ''}`}
+          {`${orderChar} ${ waitingTime ? waitingTime : ''} ${article ? article : ''}`}
         </td>
         <td>{consumerId}</td>
         <td>{consumerName}</td>
