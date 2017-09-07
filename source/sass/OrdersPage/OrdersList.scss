@@ -3,6 +3,12 @@
     100% { transform: rotate(360deg); }
 }
 
+@keyframes blink {
+  50% {
+    background: #fff;
+  }
+}
+
 .chips {
   height: 16px;
   margin-top: 5px;
@@ -120,8 +126,20 @@ table.orders-list {
   td:first-child {
     cursor: pointer;
     color: #4990ef;
+    text-decoration: underline;
   }
   &:hover {
     background: #eaeaea;
+  }
+  &.danger {
+    animation-name: blink;
+    animation-timing-function: linear;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    // transition: all 0.5s ease alternate;
+    background: #f8d7da;
+    td {
+      color: #721c24;
+    }
   }
 }
