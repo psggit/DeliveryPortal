@@ -63,6 +63,7 @@ class OrderPage extends Component {
   }
 
   fetchOrdersData(ordersType, offset) {
+    console.log(ordersType, offset)
     this.setState({ ordersType })
     this.setSearchQuery('')
     const { actions } = this.props
@@ -177,16 +178,16 @@ class OrderPage extends Component {
     const { ordersType } = this.state
     const _self = this
     // this.fetchDataFromQueryParams()
-    this.fetchOrdersData('all')
+    this.fetchOrdersData('all', 0)
 
     let timeOutId
 
     ;(function pollOrdersData() {
-      const { offset, ordersType, searchQuery } = _self.state
-
+      const { pageOffset, ordersType, searchQuery } = _self.state
+      console.log(pageOffset)
       searchQuery.length 
-      ? _self.searchOrdersData(ordersType)
-      : _self.fetchOrdersData(ordersType)
+      ? _self.searchOrdersData(searchQuery, pageOffset)
+      : _self.fetchOrdersData(ordersType, pageOffset)
 
       // if (ordersType !== 'all') {
       //   clearTimeout(timeOutId)

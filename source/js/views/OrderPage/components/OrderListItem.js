@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Moment from 'moment'
+import moment from 'moment'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
@@ -8,6 +8,14 @@ function getTimeDiff(d2) {
   return Math.round(
     (d1 - new Date(d2)) / 60000
   )
+}
+
+function Moment(time) {
+  return {
+    format: function(format) {
+      return moment(time).format('MMM Do YY, h:mm a')
+    }
+  }
 }
 
 
