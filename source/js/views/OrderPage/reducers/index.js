@@ -128,6 +128,8 @@ const actionsMap = {
         confirmationTime: orderStatus.dp_confirmation_time,
         reachedToConsumerTime: orderStatus.dp_reached_to_consumer_time,
         notifiedTime: orderStatus.dp_notified_time,
+        arrivedAtStoreTime: orderStatus.dp_arrived_at_store_time,
+        acceptedTime: orderStatus.dp_accepted_time
       },
       customer: {
         id: orderStatus.consumer_id,
