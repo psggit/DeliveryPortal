@@ -16,7 +16,8 @@ class OrdersList extends Component {
     // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
-      <table className='orders-list'>
+      <div className='order-list-container'>
+        <table className='orders-list'>
         <thead>
           <tr>
             <td>Order Id</td>
@@ -47,7 +48,7 @@ class OrdersList extends Component {
                     dp_accepted_time={item.dp_accepted_time}
                     dp_reached_to_consumer_time={item.dp_reached_to_consumer_time}
                     retailer_accepted_time={item.retailer_confirmation_time}
-                    cancellation_time={item.cancellation_time}
+                    cancellation_time={item.cancelled_time}
                     orderPlacedTime={item.order_placed_time}
                     cancellation_return_time={item.cancellation_return_time}
                     orderStatus={item.status}
@@ -63,6 +64,7 @@ class OrdersList extends Component {
           }
         </tbody>
       </table>
+      </div>
     )
   }
 }

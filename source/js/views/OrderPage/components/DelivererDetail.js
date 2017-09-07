@@ -8,6 +8,8 @@ class DelivererDetail extends Component {
     super()
     this.handleSkipDeliverer = this.handleSkipDeliverer.bind(this)
     this.openSkipDeliverer = this.openSkipDeliverer.bind(this)
+    this.handleConfirmDeliverer = this.handleConfirmDeliverer.bind(this)
+    this.openConfirmDeliverer = this.openConfirmDeliverer.bind(this)
   }
   openSkipDeliverer() {
     mountModal(ConfirmModal({
@@ -15,6 +17,22 @@ class DelivererDetail extends Component {
       confirmMessage: 'Are you sure you want to skip the deliverer?',
       handleConfirm: this.handleSkipDeliverer
     }))
+  }
+
+  openConfirmDeliverer() {
+    mountModal(ConfirmModal({
+      heading: 'Confirm deliverer',
+      confirmMessage: 'Are you sure you want to confirm the deliverer?',
+      handleConfirm: this.handleConfirmDeliverer
+    }))
+  }
+
+  handleConfirmDeliverer() {
+    const { deliverer, actions } = this.props
+    
+    actions.confirmDeliverer({
+      retailer_id: deliverer.id
+    })
   }
   handleSkipDeliverer() {
     const { orderId, actions, deliverer, ordersType } = this.props
@@ -48,7 +66,7 @@ class DelivererDetail extends Component {
           ? (
             <div className='card-footer'>
               <button onClick={this.openSkipDeliverer}>Skip</button>
-              <button>Confirm</button>
+              <button onClick={this.openConfirmDeliverer}>Confirm</button>
             </div>
           )
           : ''

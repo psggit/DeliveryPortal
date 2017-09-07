@@ -25,10 +25,11 @@ class SearchInput extends Component {
     })
     
     this.props.setSearchQuery('')
-    this.search('')
+    this.search('', 0)
   }
 
   search(searchQuery) {
+    console.log(searchQuery)
     const { searchAPI, pagesLimit, pageOffset } = this.props
 
     // this.props.setQueryString(searchQuery, 0)
@@ -36,11 +37,7 @@ class SearchInput extends Component {
     this.props.resetPagination()
     this.props.unmountOrderDetail()
     
-    this.props.search({
-      offset: 0,
-      limit: pagesLimit,
-      query: searchQuery
-    }, searchAPI)
+    this.props.search(searchQuery, 0)
   }
 
   handleChange(e) {
@@ -67,7 +64,7 @@ class SearchInput extends Component {
           onKeyDown={this.handlePress}
           value={searchQuery}
         />
-        { this.state.searched ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
+        { this.state.searchQuery ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
         <span>{ getIcon('search') }</span>
       </div>
     )

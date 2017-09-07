@@ -2,7 +2,8 @@
 .container {
   position: relative;
   margin-top: 20px;
-  // height: calc(100vh - 150px);
+  height: calc(100vh - 220px);
+  overflow: auto;
 }
 hr {
   margin-bottom: 0 !important;
@@ -11,17 +12,18 @@ hr {
 
 .left, .right {
   display: inline-block;
-  width: calc(50% - 10px);
+  width: calc(50% - 20px);
   vertical-align: top;
 }
 .left {
-  margin-right: 10px;
+  margin: 0 10px;
 }
 .right {
-  margin-left: 10px;
+  margin: 0 10px;
 }
 
 .order-detail {
+  margin-top: 1px;
   .order-detail-head {
     background: #fff;
     padding: 20px;
@@ -34,7 +36,7 @@ hr {
   height: 100%;
   background: #f6f6f6;
   padding: 20px;
-  // overflow: auto;
+  overflow: hidden;
   padding-top: 0;
 
   .return-to-list {

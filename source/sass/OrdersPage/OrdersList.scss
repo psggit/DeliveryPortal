@@ -18,6 +18,12 @@
   }
 }
 
+.order-list-container {
+  height: calc(100vh - 200px);
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
 .order-wrapper {
   // position: fixed;
   // margin-left: 288px;
@@ -28,7 +34,7 @@
   padding: 20px;
   padding-top: 0;
   background: #f6f6f6;
-  overflow: auto;
+  overflow: hidden;
   margin-top: 20px;
   margin-left: 1px;
   // text-align: center;
@@ -80,9 +86,6 @@
 table.orders-list {
   box-shadow: 0 0 4px 0 #9b9b9b;
   width: 100%;
-  margin-bottom: 20px;
-  overflow: auto;
-  height: 40vh;
   
   thead {
     font-size: 14px;
@@ -136,7 +139,7 @@ table.orders-list {
     animation-timing-function: linear;
     animation-duration: 0.5s;
     animation-iteration-count: infinite;
-    // transition: all 0.5s ease alternate;
+    transition: all 0.5s ease alternate;
     background: #f8d7da;
     td {
       color: #721c24;

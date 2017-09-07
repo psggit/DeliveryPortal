@@ -32,7 +32,7 @@ if (isProduction) {
 } else {
   // In development mode beside thunk
   // logger and DevTools are added
-  const middleware = applyMiddleware(sagaMiddleware);
+  const middleware = applyMiddleware(sagaMiddleware, logger);
   let enhancer;
 
   // Enable DevTools if browser extension is installed

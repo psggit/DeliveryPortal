@@ -193,7 +193,7 @@ class OrderDetail extends Component {
                 }
   
                 {
-                  retailer.confirmationTime && this.props.canAccess('retailer')
+                  retailer.id && this.props.canAccess('retailer')
                   ? <RetailerDetail
                       ordersType={ordersType}
                       actions={actions}
@@ -205,7 +205,7 @@ class OrderDetail extends Component {
                   : ''  
                 }
                 {
-                  deliverer.confirmationTime && this.props.canAccess('deliverer')
+                  deliverer.id && this.props.canAccess('deliverer')
                   ? <DelivererDetail
                       ordersType={ordersType}
                       actions={actions}                      

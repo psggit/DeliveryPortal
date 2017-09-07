@@ -61,13 +61,13 @@ class OrderListItem extends Component {
     const formula = orderStatus.split('::')[1]
     const article = orderStatus.split('::')[2]
 
-    const waitingTime = eval(formula)
-    console.log(waitingTime)
+    const time = eval(formula)
+    
     
     const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
     
     const statusStyle = {
-      color: waitingTime >=5 ? '#ff3b34' : '',
+      color: time >=5 ? '#ff3b34' : '',
       fontStyle: 'italic',
     }
 
@@ -77,7 +77,7 @@ class OrderListItem extends Component {
       <tr className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
         <td onClick={() => {this.props.handleClick(id)} }>{id}</td>
         <td style={statusStyle} className='order-status'>
-          {`${orderChar} ${ waitingTime ? waitingTime : ''} ${article ? article : ''}`}
+          {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
         </td>
         <td>{consumerId}</td>
         <td>{consumerName}</td>

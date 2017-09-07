@@ -13,10 +13,73 @@ import Notify from '@components/Notification'
 /**
  * Handlers
  */
-function* fetchOrdersData(action) {
+function* fetchLiveOrders(action) {
   try {
-    const data = yield call(Api.fetchOrdersData, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_ORDERS_DATA, data})
+    const data = yield call(Api.fetchLiveOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* fetchLiveAssignedOrders(action) {
+  try {
+    const data = yield call(Api.fetchLiveAssignedOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ASSIGNED_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* fetchLiveUnassignedOrders(action) {
+  try {
+    const data = yield call(Api.fetchLiveUnassignedOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_UNASSIGNED_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* fetchHistoryOrders(action) {
+  try {
+    const data = yield call(Api.fetchHistoryOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_HISTORY_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* searchLiveOrders(action) {
+  try {
+    const data = yield call(Api.searchLiveOrders, action)
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* searchLiveAssignedOrders(action) {
+  try {
+    const data = yield call(Api.searchLiveAssignedOrders, action)
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ASSIGNED_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* searchLiveUnassignedOrders(action) {
+  try {
+    const data = yield call(Api.searchLiveUnassignedOrders, action)
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_UNASSIGNED_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* searchHistoryOrders(action) {
+  try {
+    const data = yield call(Api.searchHistoryOrders, action)
+    yield put({type: ActionTypes.SUCCESS_SEARCH_HISTORY_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -100,6 +163,28 @@ function* cancelOrder(action) {
   }
 }
 
+function* confirmRetailer(action) {
+  try {
+    const data = yield call(Api.confirmRetailer, action)
+    yield put({type: ActionTypes.SUCCESS_CONFIRM_RETAILER, data})
+    Notify("Successfully confirmed the retailer", "success")
+  } catch (err) {
+    console.log(err)
+    Notify("Something went wrong", "warning")
+  }
+}
+
+function* confirmDeliverer(action) {
+  try {
+    const data = yield call(Api.confirmDeliverer, action)
+    yield put({type: ActionTypes.SUCCESS_CONFIRM_DELIVERER, data})
+    Notify("Successfully confirmed the deliverer", "success")
+  } catch (err) {
+    console.log(err)
+    Notify("Something went wrong", "warning")
+  }
+}
+
 function* setLoadingOrderDetail() {
   try {
     yield put({type: ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL})
@@ -111,9 +196,57 @@ function* setLoadingOrderDetail() {
 /**
  * Watchers
  */
-export function* watchFetchOrdersData() {
+// export function* watchFetchOrdersData() {
+//   while (true) {
+//     yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDERS_DATA, fetchOrdersData)
+//   }
+// }
+
+export function* watchFetchLiveOrders() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDERS_DATA, fetchOrdersData)
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ORDERS, fetchLiveOrders)
+  }
+}
+
+export function* watchFetchLiveAssignedOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ASSIGNED_ORDERS, fetchLiveAssignedOrders)
+  }
+}
+
+export function* watchFetchLiveUnassignedOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_UNASSIGNED_ORDERS, fetchLiveUnassignedOrders)
+  }
+}
+
+export function* watchFetchHistoryOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_HISTORY_ORDERS, fetchHistoryOrders)
+  }
+}
+
+export function* watchSearchLiveOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ORDERS, searchLiveOrders)
+  }
+}
+
+export function* watchSearchLiveAssignedOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ASSIGNED_ORDERS, searchLiveAssignedOrders)
+  }
+}
+
+export function* watchSearchLiveUnassignedOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_UNASSIGNED_ORDERS, searchLiveUnassignedOrders)
+  }
+}
+
+export function* watchSearchHistoryOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SEARCH_HISTORY_ORDERS, searchHistoryOrders)
   }
 }
 
@@ -156,6 +289,18 @@ export function* watchSkipDeliverer() {
 export function* watchCancelOrder() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_CANCEL_ORDER, cancelOrder)
+  }
+}
+
+export function* watchConfirmRetailer() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_CONFIRM_RETAILER, confirmRetailer)
+  }
+}
+
+export function* watchConfirmDeliverer() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_CONFIRM_DELIVERER, confirmDeliverer)
   }
 }
 

@@ -8,6 +8,8 @@ class RetailerDetail extends Component {
     super()
     this.handleSkipRetailer = this.handleSkipRetailer.bind(this)
     this.openSkipRetailer = this.openSkipRetailer.bind(this)
+    this.handleConfirmRetailer = this.handleConfirmRetailer.bind(this)
+    this.openConfirmRetailer = this.openConfirmRetailer.bind(this)
   }
   openSkipRetailer() {
     mountModal(ConfirmModal({
@@ -15,6 +17,20 @@ class RetailerDetail extends Component {
       confirmMessage: 'Are you sure you want to skip the retailer?',
       handleConfirm: this.handleSkipRetailer
     }))
+  }
+  openConfirmRetailer() {
+    mountModal(ConfirmModal({
+      heading: 'Confirm retailer',
+      confirmMessage: 'Are you sure you want to confirm the retailer?',
+      handleConfirm: this.handleConfirmRetailer
+    }))
+  }
+  handleConfirmRetailer() {
+    const { retailer, actions } = this.props
+
+    actions.confirmRetailer({
+      retailer_id: retailer.id
+    })
   }
   handleSkipRetailer() {
     const { orderId, actions, retailer, orders } = this.props
@@ -49,7 +65,7 @@ class RetailerDetail extends Component {
           ? (
             <div className='card-footer'>
               <button onClick={this.openSkipRetailer}>Skip</button>
-              <button>Confirm</button>
+              <button onClick={this.openConfirmRetailer}>Confirm</button>
             </div>
           )
           : ''
