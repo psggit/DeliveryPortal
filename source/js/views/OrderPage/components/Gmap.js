@@ -15,6 +15,30 @@ class Gmap extends Component {
       dy: 80.254907
     }
   }
+  
+  componentDidMount() {
+    const { orderId } = this.props
+    const _self = this
+    var socket = io('https://livered.hearsay81.hasura-app.io/', {
+      path: '/pool'
+    })
+    socket.on('status', function (data) {
+      console.log(data);
+      socket.emit('subscribe', {"order_id": orderId });
+    });
+    
+    socket.on('subscribed', function(data) {
+      console.log(data)
+    })
+    
+    socket.on('live_data', function(res) {
+      console.log(res)
+      _self.setState({
+        dx: res.gps_coordinates[0],
+        dy: res.gps_coordinates[1]
+      })
+    })
+  }
   // // Initial Customer State
   // const customer = {
   //   state: null,
@@ -54,28 +78,6 @@ class Gmap extends Component {
   //   y: null
   // }
   render() {
-    var socket = io('https://livered.hearsay81.hasura-app.io/', {
-      path: '/pool'
-    })
-    
-    console.log(socket)
-    
-    socket.on('status', function (data) {
-      console.log(data);
-      socket.emit('subscribe', {"order_id": '43'});
-    });
-    
-    socket.on('subscribed', function(data) {
-      console.log(data)
-    })
-    
-    socket.on('live_data', function(res) {
-      console.log(res)
-      this.setState({
-        dx: res.gps.split(',')[0],
-        dy: res.gps.split(',')[1]
-      })
-    })
     
     const { customer, retailer, deliverer } = this.props
     const cx = parseFloat(customer.gps.split(',')[0])
