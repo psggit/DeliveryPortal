@@ -160,16 +160,10 @@ const actionsMap = {
     })
   },
 
-  [ActionTypes.REQUEST_ASSIGN_ORDER]: (state, action) => {
+  [ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL]: (state, action) => {
     return Object.assign({}, state, {
-      order: Object.assign({}, state.order, {
-        assignedTo: 1
-      })
+      loadingOrderDetail: true
     })
-  },
-
-  [ActionTypes.SUCCESS_FORCE_REDEEM]: (state, action) => {
-    return state
   }
 };
 

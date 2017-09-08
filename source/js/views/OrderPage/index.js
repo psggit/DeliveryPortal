@@ -184,16 +184,16 @@ class OrderPage extends Component {
     ;(function pollOrdersData() {
       const { pageOffset, ordersType, searchQuery } = _self.state
 
-      searchQuery.length 
-      ? _self.searchOrdersData(searchQuery, pageOffset)
-      : _self.fetchOrdersData(ordersType, pageOffset)
+      // searchQuery.length 
+      // ? _self.searchOrdersData(searchQuery, pageOffset)
+      // : _self.fetchOrdersData(ordersType, pageOffset)
 
       // if (ordersType !== 'all') {
       //   clearTimeout(timeOutId)
       // } else {
       //   timeOutId = setTimeout(pollOrdersData, 30000)
       // }
-      setTimeout(pollOrdersData, 30000)
+      // setTimeout(pollOrdersData, 30000)
     })()
   }
 
@@ -213,7 +213,7 @@ class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     })
-    // this.props.actions.setLoadingOrderDetail()
+    this.props.actions.setLoadingOrderDetail()
   }
 
   setSearchQuery(searchQuery) {

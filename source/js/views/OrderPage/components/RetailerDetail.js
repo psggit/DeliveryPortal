@@ -31,8 +31,9 @@ class RetailerDetail extends Component {
     actions.confirmRetailer({
       retailer_id: retailer.id,
       deliveru_order_id: orderId
-    })
+    }, )
     unMountModal()
+    // actions.fetchOrderDetail(orderId)
   }
   handleSkipRetailer() {
     const { orderId, actions, retailer, orders } = this.props
@@ -43,7 +44,7 @@ class RetailerDetail extends Component {
     })
     
     unMountModal()
-    actions.fetchOrderDetail(orderId)
+    // actions.fetchOrderDetail(orderId)
   }
   render() {
     const { isOrderConfirmed, ordersType, retailer } = this.props

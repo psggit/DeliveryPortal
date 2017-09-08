@@ -15,12 +15,7 @@ class Order extends Component {
     this.validateForceRedeem = this.validateForceRedeem.bind(this)
     this.state = {
       forceRedeemKey: 0,
-      isOrderAssigned: false
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ isOrderAssigned: nextProps.isOrderAssigned })
   }
 
   handleChange(e) {
@@ -71,7 +66,8 @@ class Order extends Component {
     const {
       ordersType,
       openAssignOrderModal,
-      order
+      order,
+      isOrderAssigned
     } = this.props
 
     const isKYCconfirmed = true
@@ -130,7 +126,7 @@ class Order extends Component {
           ordersType !== 'history'
           ? (
             <div className='card-footer'>
-              <button disabled={this.state.isOrderAssigned} onClick={openAssignOrderModal}>Assign to me</button>
+              <button disabled={isOrderAssigned} onClick={openAssignOrderModal}>Assign to me</button>
               <button onClick={this.openCancelOrder}>Cancel order</button>
               {
                 this.props.canAccess('force-redeem')

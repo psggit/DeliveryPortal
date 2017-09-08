@@ -35,6 +35,7 @@ class DelivererDetail extends Component {
       deliverer_order_id: orderId
     })
     unMountModal()
+    // actions.fetchOrderDetail(orderId)
   }
   handleSkipDeliverer() {
     const { orderId, actions, deliverer, ordersType } = this.props
@@ -44,7 +45,7 @@ class DelivererDetail extends Component {
     })
     
     unMountModal()
-    actions.fetchOrderDetail(orderId)
+    // actions.fetchOrderDetail(orderId)
   }
   render() {
     const { isOrderConfirmed, ordersType, deliverer } = this.props

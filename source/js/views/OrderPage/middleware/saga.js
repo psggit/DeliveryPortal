@@ -98,7 +98,7 @@ function* fetchOrderDetail(action) {
 function* forceRedeem(action) {
   try {
     const data = yield call(Api.forceRedeem, action)
-    yield put({type: ActionTypes.SUCCESS_FORCE_REDEEM, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully redeemed the order", "success")
   } catch (err) {
     console.log(err)
@@ -122,7 +122,7 @@ function* filterOrdersData(action) {
 function* assignOrder(action) {
   try {
     const data = yield call(Api.assignOrder, action)
-    yield put({type: ActionTypes.SUCCESS_ASSIGN_ORDER, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully assigned the order", "success")
   } catch (err) {
     console.log(err)
@@ -133,7 +133,7 @@ function* assignOrder(action) {
 function* skipRetailer(action) {
   try {
     const data = yield call(Api.skipRetailer, action)
-    yield put({type: ActionTypes.SUCCESS_SKIP_RETAILER, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully skipped the retailer", "success")
   } catch (err) {
     console.log(err)
@@ -144,7 +144,7 @@ function* skipRetailer(action) {
 function* skipDeliverer(action) {
   try {
     const data = yield call(Api.skipDeliverer, action)
-    yield put({type: ActionTypes.SUCCESS_SKIP_DELIVERER, data})
+    yield put({type: ActionTypes.SUCCESS_SKIP_DELIVERER, data: {id: action.data.order_id}})
     Notify("Successfully skipped the retailer", "success")
   } catch (err) {
     console.log(err)
@@ -155,7 +155,7 @@ function* skipDeliverer(action) {
 function* cancelOrder(action) {
   try {
     const data = yield call(Api.cancelOrder, action)
-    yield put({type: ActionTypes.SUCCESS_CANCEL_ORDER, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully cancelled the order", "success")
   } catch (err) {
     console.log(err)
@@ -166,7 +166,7 @@ function* cancelOrder(action) {
 function* confirmRetailer(action) {
   try {
     const data = yield call(Api.confirmRetailer, action)
-    yield put({type: ActionTypes.SUCCESS_CONFIRM_RETAILER, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully confirmed the retailer", "success")
   } catch (err) {
     console.log(err)
@@ -177,7 +177,7 @@ function* confirmRetailer(action) {
 function* confirmDeliverer(action) {
   try {
     const data = yield call(Api.confirmDeliverer, action)
-    yield put({type: ActionTypes.SUCCESS_CONFIRM_DELIVERER, data})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully confirmed the deliverer", "success")
   } catch (err) {
     console.log(err)
@@ -306,6 +306,6 @@ export function* watchConfirmDeliverer() {
 
 export function* watchSetLoadingOrderDetail() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, cancelOrder)
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, setLoadingOrderDetail)
   }
 }
