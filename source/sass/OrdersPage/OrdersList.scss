@@ -109,6 +109,9 @@ table.orders-list {
   td:nth-child(2) {
     font-size: 14px;
   }
+  td:nth-child(3) {
+    text-align: center;
+  }
   tbody {
     height: 50vh;
   }
@@ -132,6 +135,7 @@ table.orders-list {
     color: #4990ef;
     text-decoration: underline;
   }
+  
   &:hover {
     background: #eaeaea;
   }

@@ -60,8 +60,12 @@ class OrderListItem extends Component {
       dp_notified_time,
       dp_picked_up_time,
       assignedTo,
+      assignedToId,
       consumerPhone
     } = this.props
+
+    const supportId = 1
+    const isOrderAssigned = supportId == assignedToId
     
 
 
@@ -75,7 +79,7 @@ class OrderListItem extends Component {
     const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
     
     const statusStyle = {
-      color: time >=5 ? '#ff3b34' : '',
+      color: time >=5 && !cancellation_time  ? '#ff3b34' : '',
       fontStyle: 'italic',
     }
 
@@ -88,9 +92,9 @@ class OrderListItem extends Component {
           {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
         </td>
         <td>{consumerId}</td>
-        <td>{consumerName}</td>
-        <td>{consumerPhone}</td>
-        <td>{!assignedTo ? <button onClick={this.openAssignOrderModal}>Assign</button> : assignedTo}</td>
+        { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
+        { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
+        { this.props.canAccess('consumer-col') ? <td>{!assignedTo ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedTo}</td> : '' }
         <td>{Moment(orderPlacedTime).format('MMM Do YY, h:mm a')}</td>
       </tr>
     )

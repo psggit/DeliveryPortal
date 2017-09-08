@@ -83,6 +83,7 @@ class Order extends Component {
       border: '1px solid #D0D0D0'
     }
 
+
     return (
       <div className='card'>
         <div className='card-head'>
@@ -123,7 +124,7 @@ class Order extends Component {
         </div>
 
         {
-          ordersType !== 'history'
+          ordersType !== 'history' && this.props.canAccess('action-buttons')
           ? (
             <div className='card-footer'>
               <button disabled={isOrderAssigned} onClick={openAssignOrderModal}>Assign to me</button>

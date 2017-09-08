@@ -146,7 +146,7 @@ class OrderDetail extends Component {
           </span>
           <div style={{marginLeft: '20px'}}>
             {
-              deliverer.confirmationTime && ordersType !== 'history'
+              deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}
@@ -192,6 +192,7 @@ class OrderDetail extends Component {
                 {
                   customer && this.props.canAccess('consumer')
                   ? <ConsumerDetail
+                      canAccess={this.props.canAccess} 
                       ordersType={ordersType}
                       customer={customer}
                       actions={actions}
@@ -204,6 +205,7 @@ class OrderDetail extends Component {
                 {
                   retailer.id && this.props.canAccess('retailer')
                   ? <RetailerDetail
+                      canAccess={this.props.canAccess} 
                       ordersType={ordersType}
                       actions={actions}
                       notifiedRetailers={order.retailers}
@@ -216,6 +218,7 @@ class OrderDetail extends Component {
                 {
                   deliverer.id && this.props.canAccess('deliverer')
                   ? <DelivererDetail
+                      canAccess={this.props.canAccess}
                       ordersType={ordersType}
                       actions={actions}                      
                       notifiedDeliverers={order.deliverers}

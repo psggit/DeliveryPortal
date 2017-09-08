@@ -65,11 +65,11 @@ class DelivererDetail extends Component {
           </p>
         </div>
         {
-          ordersType !== 'history'
+          ordersType !== 'history' && this.props.canAccess('action-buttons')
           ? (
             <div className='card-footer'>
               <button onClick={this.openSkipDeliverer}>Skip</button>
-              <button onClick={this.openConfirmDeliverer}>Confirm</button>
+              { !deliverer.confirmationTime ? <button onClick={this.openConfirmDeliverer}>Confirm</button> : '' }
             </div>
           )
           : ''

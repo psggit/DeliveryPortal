@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
       "support_person": 3,
       "support_admin": 5,
       "support_team_leader": 4,
-      "excise": 2
+      "excise_person": 2
     }
     let maxRole = rolesMap["user"]
     let xHasuraRole = "user"

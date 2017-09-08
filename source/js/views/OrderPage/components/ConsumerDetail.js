@@ -43,7 +43,7 @@ class ConsumerDetail extends Component {
           </p>
           <p>
             <span><b>Phone: </b></span>
-            <span>{'0987655698'}</span>
+            <span>{customer.phone}</span>
           </p>
           <p className='subhead'>Address:</p>
           <p>{customer.address}</p>
