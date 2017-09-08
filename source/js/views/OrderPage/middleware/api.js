@@ -135,7 +135,7 @@ export function cancelOrder(action) {
 
 export function confirmRetailer(action) {
   return POST({
-    api: `/support/cancel`,
+    api: `/support/confirmRetailer`,
     apiBase: 'blogicUrl',
     data: action.data
   })
@@ -143,7 +143,7 @@ export function confirmRetailer(action) {
 
 export function confirmDeliverer(action) {
   return POST({
-    api: `/support/cancel`,
+    api: `/support/confirmDp`,
     apiBase: 'blogicUrl',
     data: action.data
   })

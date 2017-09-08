@@ -63,7 +63,6 @@ class OrderPage extends Component {
   }
 
   fetchOrdersData(ordersType, offset) {
-    console.log(ordersType, offset)
     this.setState({ ordersType })
     this.setSearchQuery('')
     const { actions } = this.props
@@ -184,7 +183,7 @@ class OrderPage extends Component {
 
     ;(function pollOrdersData() {
       const { pageOffset, ordersType, searchQuery } = _self.state
-      console.log(pageOffset)
+
       searchQuery.length 
       ? _self.searchOrdersData(searchQuery, pageOffset)
       : _self.fetchOrdersData(ordersType, pageOffset)

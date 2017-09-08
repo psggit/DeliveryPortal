@@ -8,6 +8,7 @@ import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
 import Gmap from './Gmap'
+import moment from 'moment'
 import '@sass/OrdersPage/OrderDetail.scss'
 
 function getTimeDiff(d2) {
@@ -16,6 +17,14 @@ function getTimeDiff(d2) {
     (d1 - new Date(d2)) / 60000
   )
 }
+function Moment(time) {
+  return {
+    format: function(format) {
+      return moment(time).format('MMM Do YY, h:mm a')
+    }
+  }
+}
+
 
 class OrderDetail extends Component {
   constructor() {

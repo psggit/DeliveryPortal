@@ -28,11 +28,13 @@ class DelivererDetail extends Component {
   }
 
   handleConfirmDeliverer() {
-    const { deliverer, actions } = this.props
+    const { deliverer, actions, orderId } = this.props
     
     actions.confirmDeliverer({
-      retailer_id: deliverer.id
+      dp_id: deliverer.id,
+      deliverer_order_id: orderId
     })
+    unMountModal()
   }
   handleSkipDeliverer() {
     const { orderId, actions, deliverer, ordersType } = this.props

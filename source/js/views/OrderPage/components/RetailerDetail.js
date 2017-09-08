@@ -26,11 +26,13 @@ class RetailerDetail extends Component {
     }))
   }
   handleConfirmRetailer() {
-    const { retailer, actions } = this.props
+    const { retailer, actions, orderId } = this.props
 
     actions.confirmRetailer({
-      retailer_id: retailer.id
+      retailer_id: retailer.id,
+      deliveru_order_id: orderId
     })
+    unMountModal()
   }
   handleSkipRetailer() {
     const { orderId, actions, retailer, orders } = this.props
