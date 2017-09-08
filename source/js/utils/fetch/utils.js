@@ -83,7 +83,7 @@ export function constructFetchUtility(options) {
   }
 
   // return window.fetch instance
-  return (!options.handleError)
+  return (options.handleError)
        ? fetch(url, fetchOptions)
          .then(checkStatus)
          .then(parseJSON)

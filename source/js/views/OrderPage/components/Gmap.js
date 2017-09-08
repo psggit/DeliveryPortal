@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
-const customerImg = './../../../../assets/icons/customer.png';
-const delivererImg = './../../../../assets/icons/deliverer.png';
-const outletImg = './../../../../assets/icons/outlet.png';
+const customerImg = './../../../../assets/icons/customer.svg';
+const delivererImg = './../../../../assets/icons/deliverer.svg';
+const outletImg = './../../../../assets/icons/retailer.svg';
+import { getIcon } from './../utils'
 // import { Map } from 'immutable';
 
 const params = {v: '3.exp', key: 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'};

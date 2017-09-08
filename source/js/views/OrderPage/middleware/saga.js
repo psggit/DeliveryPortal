@@ -98,11 +98,14 @@ function* fetchOrderDetail(action) {
 function* forceRedeem(action) {
   try {
     const data = yield call(Api.forceRedeem, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Successfully redeemed the order", "success")
+    if (data.errorCode) {
+      Notify(data.message, "warning")
+    } else {
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+      Notify("Successfully redeemed the order", "success")
+    }
   } catch (err) {
     console.log(err)
-    Notify("Something went wrong", "warning")
   }
 }
 
@@ -133,44 +136,56 @@ function* assignOrder(action) {
 function* skipRetailer(action) {
   try {
     const data = yield call(Api.skipRetailer, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Successfully skipped the retailer", "success")
+    if (data.errorCode) {
+      Notify(data.message, "warning")
+    } else {
+      Notify("Successfully skipped the retailer", "success")
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    }
   } catch (err) {
     console.log(err)
-    Notify("Something went wrong", "warning")
   }
 }
 
 function* skipDeliverer(action) {
   try {
     const data = yield call(Api.skipDeliverer, action)
-    yield put({type: ActionTypes.SUCCESS_SKIP_DELIVERER, data: {id: action.data.order_id}})
-    Notify("Successfully skipped the retailer", "success")
+    if (data.errorCode) {
+      Notify(data.message, "warning")
+    } else {
+      Notify("Successfully skipped the deliverer", "success")
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    }
   } catch (err) {
     console.log(err)
-    Notify("Something went wrong", "warning")
   }
 }
 
 function* cancelOrder(action) {
   try {
     const data = yield call(Api.cancelOrder, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Successfully cancelled the order", "success")
+    if (data.errorCode) {
+      Notify(data.message, "warning")
+    } else {
+      Notify("Successfully cancelled the order", "success")
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    }
   } catch (err) {
     console.log(err)
-    Notify("Something went wrong", "warning")
   }
 }
 
 function* confirmRetailer(action) {
   try {
     const data = yield call(Api.confirmRetailer, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Successfully confirmed the retailer", "success")
+    if (data.errorCode) {
+      Notify(data.message, "warning")
+    } else {
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+      Notify("Successfully confirmed the retailer", "success")
+    }
   } catch (err) {
     console.log(err)
-    Notify("Something went wrong", "warning")
   }
 }
 

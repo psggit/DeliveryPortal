@@ -90,7 +90,7 @@ class Order extends Component {
           <h4>Order</h4>
         </div>
         <div className='card-body'>
-          <p className='subhead'>Ordered items (4)</p>
+          <p className='subhead'>Ordered items ({ order.cartItems.length })</p>
           <table>
             <thead>
               <tr>
@@ -106,8 +106,8 @@ class Order extends Component {
                   return (
                     <tr key={item.product_id}>
                       <td>{item.brand_name}</td>
-                      <td>{item.total_volume}</td>
-                      <td>{item.total_price}</td>
+                      <td>{`${item.total_volume} ml`}</td>
+                      <td>{`INR ${item.total_price}`}</td>
                       <td>{item.count}</td>
                     </tr>
                   )

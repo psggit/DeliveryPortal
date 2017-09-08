@@ -173,7 +173,7 @@ const actionsMap = {
         name: orderStatus.consumer_name,
         gps: orderStatus.consumer_gps,
         isAgeVerified: true,
-        phone: orderStatus.contact_number
+        phone: orderStatus.consumer_phone
       }
     })
   },

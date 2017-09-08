@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
-import ShowNotified from './showNotified'
+import ShowNotifiedRetailers from './ShowNotifiedRetailers'
+import ShowNotifiedDeliverers from './ShowNotifiedDeliverers'
 import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
@@ -33,7 +34,8 @@ class OrderDetail extends Component {
     this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
     this.openGmap = this.openGmap.bind(this)
-    this.showNotified = this.showNotified.bind(this)
+    this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
+    this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
     this.state = {
       shouldOpenGmap: false
     }
@@ -48,11 +50,19 @@ class OrderDetail extends Component {
     this.setState({ shouldOpenGmap: !shouldOpenGmap })
   }
 
-  showNotified(e) {
+  showNotifiedRetailers(e) {
     const { order } = this.props
-    mountModal(ShowNotified({
-      heading: e.target.id === 'show-retailers'? 'Notified retailers' : 'Notified deliverers',
-      content: e.target.id === 'show-retailers' ? order.retailers : order.deliverers
+    mountModal(ShowNotifiedRetailers({
+      heading: 'Notified retailers',
+      content: order.retailers
+    }))
+  }
+
+  showNotifiedDeliverers(e) {
+    const { order } = this.props
+    mountModal(ShowNotifiedDeliverers({
+      heading: 'Notified deliverers',
+      content: order.deliverers
     }))
   }
 
@@ -157,12 +167,12 @@ class OrderDetail extends Component {
             }
             {
               order.retailers.length
-              ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified retailers</button>
+              ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotifiedRetailers}>Show notified retailers</button>
               : ''
             }
             {
               order.deliverers.length
-              ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotified}>Show notified deliverers</button>
+              ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotifiedDeliverers}>Show notified deliverers</button>
               : ''
             }
             </div>
