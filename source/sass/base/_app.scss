@@ -102,10 +102,11 @@ button {
     background: #00b3ff;
   }
   &.btn-black {
-    background: #333;
+    background: #222;
   }
   &.btn-lg {
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
     height: 46px;
   }
 }

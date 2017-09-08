@@ -1,14 +1,71 @@
+.form-container {
+  width: 500px;
+  height: 60vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4a4a4a;
+  background-image: url("https://www.transparenttextures.com/patterns/az-subtle.png");
+  box-shadow: 0 2px 4px 0 #222;
+}
+
+.login-header {
+  height: 70px;
+  width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 0px 2px 0 #222;
+  img {
+    vertical-align: middle;
+    width: 70px;
+    height: 70px;
+  }
+  span {
+    vertical-align: middle;
+    color: #fff;
+    font-size: 20px;
+    // text-transform: uppercase;
+    margin-left: 60px;
+    font-family: 'Raleway', sans-serif;
+  }
+}
+
 .form-wrapper {
   width: 320px;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .form-group {
   margin-top: 20px;
+  &:first-child {
+    margin-top: 0;
+  }
   label {
     font-size: 16px;
+    color: #fff;
   }
   input {
+    border-radius: 4px;
+    background: #dfdfdf;
     width: 100%;
   }
+}
+
+#login {
+  height: 100vh;
+  background-color: #4a4a4a;
+  width: 100%;
+  
+}
+
+.errorLogin {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  color: #ff3b34;
+  font-size: 16px;
 }

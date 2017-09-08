@@ -97,6 +97,15 @@ const actionsMap = {
     })
   },
 
+  [ActionTypes.SUCCESS_FETCH_LIVE_UNASSIGNED_ORDERS]: (state, action) => {
+    return Object.assign({}, state, {
+      state: 'SearchingRetailer',
+      loadingOrdersList: false,
+      orders: action.data.orders,
+      ordersCount: action.data.count
+    })
+  },
+
   [ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
       state: 'SearchingRetailer',
