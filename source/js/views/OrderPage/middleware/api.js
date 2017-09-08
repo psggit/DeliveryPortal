@@ -29,7 +29,7 @@ export function fetchLiveAssignedOrders(action) {
 
 export function fetchLiveUnassignedOrders(action) {
   return POST({
-    api: `/deliveryStatus/liveunAssignedOrders`,
+    api: `/deliveryStatus/liveUnassignedOrders`,
     apiBase: 'gremlinUrl',
     data: action.data
   })

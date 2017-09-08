@@ -14,6 +14,7 @@ class SideMenu extends Component {
 
   handleClick(ordersType) {
     this.setState({ ordersType })
+    this.props.resetPagination()
     this.props.handleRouteChange(ordersType)
     this.props.unmountOrderDetail()
   }
@@ -22,7 +23,8 @@ class SideMenu extends Component {
     const menuItems = [
       { value: 'all', label: 'in progress orders' },
       { value: 'assigned', label: 'assigned orders'},
-      { value: 'history', label: 'order history' }
+      { value: 'history', label: 'order history' },
+      { value: 'unassigned', label: 'unnassigned orders'}
     ]
     return (
       <div className='side-menu'>

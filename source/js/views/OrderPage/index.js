@@ -62,7 +62,7 @@ class OrderPage extends Component {
     this.searchOrdersData = this.searchOrdersData.bind(this)
   }
 
-  fetchOrdersData(ordersType, offset) {
+  fetchOrdersData(ordersType, offset = this.state.pageOffset) {
     this.setState({ ordersType })
     this.setSearchQuery('')
     const { actions } = this.props
@@ -184,16 +184,16 @@ class OrderPage extends Component {
     ;(function pollOrdersData() {
       const { pageOffset, ordersType, searchQuery } = _self.state
 
-      // searchQuery.length 
-      // ? _self.searchOrdersData(searchQuery, pageOffset)
-      // : _self.fetchOrdersData(ordersType, pageOffset)
+      searchQuery.length 
+      ? _self.searchOrdersData(searchQuery, pageOffset)
+      : _self.fetchOrdersData(ordersType, pageOffset)
 
       // if (ordersType !== 'all') {
       //   clearTimeout(timeOutId)
       // } else {
       //   timeOutId = setTimeout(pollOrdersData, 30000)
       // }
-      // setTimeout(pollOrdersData, 30000)
+      setTimeout(pollOrdersData, 30000)
     })()
   }
 
@@ -237,7 +237,7 @@ class OrderPage extends Component {
   // }
 
   resetPagination() {
-    this.setState({ activePage: 1 })
+    this.setState({ activePage: 1, pageOffset: 0 })
   }
 
   handlePageChange(pageNumber) {
@@ -367,6 +367,7 @@ class OrderPage extends Component {
           unmountOrderDetail={this.unmountOrderDetail}
         />
         <SideMenu
+          resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
           handleRouteChange={this.fetchOrdersData}
         />
