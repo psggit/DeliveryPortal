@@ -38,7 +38,7 @@ export function fetchLiveUnassignedOrders(action) {
 
 export function fetchHistoryOrders(action) {
   return POST({
-    api: `/deliveryStatus/historyOrders`,
+    api: `/deliveryStatus/orderHistory`,
     apiBase: 'gremlinUrl',
     data: action.data
   })

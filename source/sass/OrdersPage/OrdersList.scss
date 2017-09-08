@@ -139,8 +139,7 @@ table.orders-list {
     animation-name: blink;
     animation-timing-function: linear;
     animation-duration: 0.5s;
-    animation-iteration-count: infinite;
-    transition: all 0.5s ease alternate;
+    // animation-iteration-count: infinite;
     background: #f8d7da;
     td {
       color: #721c24;

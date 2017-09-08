@@ -24,7 +24,7 @@ class SideMenu extends Component {
       { value: 'all', label: 'in progress orders' },
       { value: 'assigned', label: 'assigned orders'},
       { value: 'history', label: 'order history' },
-      { value: 'unassigned', label: 'unnassigned orders'}
+      { value: 'unassigned', label: 'unassigned orders'}
     ]
     return (
       <div className='side-menu'>
