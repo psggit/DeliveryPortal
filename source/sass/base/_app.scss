@@ -200,33 +200,5 @@ input {
   // @include lg {
   //   margin: 0 0 0 20rem;
   // }
-}
-
-.Example {
-  background: #F6F8FA;
-  padding: 2rem;
-  border-radius: 0.4rem;
-}
-
-.Example .Icon {
-  margin-right: 10px;
-}
-
-.BackgroundImgExample {
-  background-image: url(../assets/img/book1.jpg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 16rem;
-  max-width: 25rem;
-}
-
-.ImgExample {
-  max-width: 25rem;
-}
-
-hr {
-  border: 0;
-  border-top: 1px solid $grey-border;
-  margin: 2rem 0;
+  // background-image: url(../assets/icons/customer.png);
 }

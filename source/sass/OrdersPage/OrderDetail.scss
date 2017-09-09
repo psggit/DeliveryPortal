@@ -1,9 +1,11 @@
 
 .order-detail-container {
   padding: 20px;
-  margin: 0 20px;
+  margin: 1px 6%;
   height: calc(100vh - 140px);
   overflow: auto;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 #9b9b9b;
 }
 hr {
   margin-bottom: 0 !important;
@@ -23,8 +25,26 @@ hr {
 }
 
 .order-detail {
+  button {
+    padding: 5px 20px;
+    border: 1px solid #dfdfdf;
+    border-radius: 2px;
+    background-color: #f2f2f2;
+    color: #757575;
+    font-weight: 600;
+    &:focus {
+      outline: 0;
+    }
+    &:hover {
+      border-color: #c6c6c6;
+      background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);
+      background-color: #f8f8f8;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+      color: #333;
+    }
+  }
   .order-detail-head {
-    // margin: 0 20px;
+    margin: 0 6%;
     background: #fff;
     padding: 20px;
     box-shadow: 0 0px 2px 0 #9b9b9b;

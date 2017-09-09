@@ -3,13 +3,9 @@ import { unmountComponentAtNode } from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// import DashBoard from 'views/DashBoard';
-import Gmap from './../OrderPage/components/Gmap'
 import NotFound from 'views/NotFound';
 import OrderPage from './../OrderPage';
 import Login from './../Login';
-import OrderList from './../OrderList';
-import Menu from 'components/Global/Menu';
 
 const publicPath = '/';
 

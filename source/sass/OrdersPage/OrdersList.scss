@@ -25,7 +25,7 @@ body.no-scroll {
 
 
 .body-container {
-  padding: 20px;
+  padding: 40px 6%;
 }
 
 .order-list-container {
@@ -77,7 +77,7 @@ body.no-scroll {
 }
 
 table.orders-list {
-  // box-shadow: 0 0 4px 0 #9b9b9b;
+  box-shadow: 0 0 4px 0 #9b9b9b;
   width: 100%;
   
   thead {
@@ -90,12 +90,13 @@ table.orders-list {
   thead td {
     color: #fff;
     font-size: 14px;
+    padding: 10px 20px;
   }
   tr {
     border-bottom: 1px solid #f6f6f6;
   }
   td {
-    padding: 20px;
+    padding: 20px 20px;
     font-size: 15px;
   }
   td:nth-child(2) {
@@ -110,6 +111,7 @@ table.orders-list {
 }
 
 .orders-list-item {
+  cursor: pointer;
   font-size: 16px;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -135,6 +137,9 @@ table.orders-list {
     animation-duration: 0.5s;
     // animation-iteration-count: infinite;
     background: #f8d7da;
+    &:hover {
+      background: #eaeaea;
+    }
     td {
       color: #721c24;
     }

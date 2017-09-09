@@ -86,8 +86,8 @@ class OrderListItem extends Component {
     // console.log(formula)
     
     return (
-      <tr className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
-        <td onClick={() => {this.props.handleClick(id)} }>{id}</td>
+      <tr onClick={() => {this.props.handleClick(id)} } className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
+        <td>{id}</td>
         <td style={statusStyle} className='order-status'>
           {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
         </td>
