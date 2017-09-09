@@ -18,6 +18,8 @@ class Gmap extends Component {
   }
   
   componentDidMount() {
+    document.querySelector('.modal-container').style.width = '70%'
+    document.querySelector('.modal-container').style.height = '80%'
     const { orderId } = this.props
     const _self = this
     var socket = io('https://livered.hearsay81.hasura-app.io/', {
@@ -39,6 +41,10 @@ class Gmap extends Component {
         dy: res.gps_coordinates[1]
       })
     })
+  }
+  componentWillUnmount() {
+    document.querySelector('.modal-container').style.width = '46%'
+    document.querySelector('.modal-container').style.height = 'auto'
   }
   // // Initial Customer State
   // const customer = {

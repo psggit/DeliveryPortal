@@ -1,18 +1,36 @@
 header {
+  background-image: url("https://www.transparenttextures.com/patterns/az-subtle.png");
   // background-color: rgba(56,56,56,0.56);
   box-shadow: 0 1px 4px 0 #333;
   z-index: 1;
-	// position: fixed;
+	position: fixed;
 	top: 0;
 	left: 0;
-  background: #333;
+  background-color: #333;
   height: 65px;
   width: 100%;
   li {
     list-style-type: none;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 20px;
+    // margin-right: 20px;
+    &.menu-item {
+      position: relative;
+      top: -2px;
+      padding: 0 20px;
+    }
+  }
+  a {
+    font-size: 16px;
+    text-transform: capitalize;
+    li {
+      line-height: 65px;
+      color: #fff;
+      &:hover, &.active {
+        background: #686868;
+        color: #fff;
+      }
+    }
   }
   ul {
 		position: relative;
@@ -34,7 +52,8 @@ header {
   	width: 196px;
   	border: 1px solid #B2B2B2;
   	border-radius: 4px;
-  	background-color: #686868;
+    background-color: #686868;
+    margin: 0 80px;
     span {
 			height: 17px;
 			width: 17px;

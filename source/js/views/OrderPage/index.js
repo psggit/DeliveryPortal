@@ -21,6 +21,7 @@ import '@sass/components/_pagination.scss'
 import Qr from 'query-string'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import DatePicker from './components/DatePicker'
+import SearchInput from '@components/SearchInput'
 // import Store from './../../'
 
 class OrderPage extends Component {
@@ -37,7 +38,7 @@ class OrderPage extends Component {
   constructor() {
     super()
 
-    this.pagesLimit = 10
+    this.pagesLimit = 40
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
@@ -62,13 +63,17 @@ class OrderPage extends Component {
     this.searchOrdersData = this.searchOrdersData.bind(this)
   }
 
-  fetchOrdersData(ordersType, offset = this.state.pageOffset) {
-    this.setState({ ordersType })
+  fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
+    this.setState({ ordersType, offset })
     this.setSearchQuery('')
     const { actions } = this.props
     const postData = {
       offset,
       limit: this.pagesLimit
+      // where: {
+      //   type: filterType,
+      //   value: filterValue
+      // }
     }
 
     switch (ordersType) {
@@ -257,9 +262,17 @@ class OrderPage extends Component {
   }
 
   handleFilterChange(filter) {
-    console.log(filter);
-    // Filter orders list with applied filter
-    // actions.filterOrdersData()
+    this.resetPagination()
+    const { actions } = this.props
+    const postData = {
+      limit: this.pagesLimit,
+      offset: 0,
+      where: {
+        type: 'status',
+        value: ''
+      }
+    }
+    fetchOrdersData(this.state.ordersType, 0)
   }
 
   // handleDateChange(dateType) {
@@ -349,12 +362,15 @@ class OrderPage extends Component {
     } = this.state
 
 
-    const listWrapperInlineStyle = { overflow: shouldListScroll ? '' : 'hidden' }
     const { actions } = this.props
+    !shouldListScroll
+    ? document.querySelector('body').className = 'no-scroll'
+    : document.querySelector('body').className = ''
 
     return (
       <div>
         <NavBar
+          handleRouteChange={this.fetchOrdersData}
           canAccess={canAccess}
           search={this.searchOrdersData}
           searchQuery={searchQuery}
@@ -366,12 +382,12 @@ class OrderPage extends Component {
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
         />
-        <SideMenu
+        {/* <SideMenu
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
           handleRouteChange={this.fetchOrdersData}
-        />
-        <div className='order-wrapper' style={listWrapperInlineStyle}>
+        /> */}
+        <div className='body-container'>
           <div className='orders-filter'>
             <label>Filter by</label>
             {
@@ -380,8 +396,18 @@ class OrderPage extends Component {
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : <button style={{marginLeft: '20px'}} onClick={this.handleChooseDate}>Choose date</button>
+              : <button onClick={this.handleChooseDate}>Choose date</button>
             }
+            <SearchInput
+              search={this.searchOrdersData}
+              setQueryString={this.setQueryString}
+              setSearchQuery={this.setSearchQuery}
+              pagesLimit={this.pagesLimit}
+              pageOffset={pageOffset}
+              resetPagination={this.resetPagination}
+              unmountOrderDetail={this.unmountOrderDetail}
+              searchQuery={searchQuery}
+            />
           </div>
           {
             orders
@@ -424,7 +450,7 @@ class OrderPage extends Component {
             />
             : ''
           }
-        </div>
+          </div>
         <div>
 
         </div>

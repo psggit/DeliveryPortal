@@ -22,6 +22,7 @@ export default function showNotified (data) {
                   <tr>
                     <td>Name</td>
                     <td>Notified at</td>
+                    <td>Status</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,7 @@ export default function showNotified (data) {
                         <tr key={`notified-deliverer-${i}`}>
                           <td>{item.deliverer_name}</td>
                           <td>{Moment(item.notified_at).format('MMM, Do, YY, h:mm a')}</td>
+                          <td>{item.status}</td>
                         </tr>
                       )
                     })

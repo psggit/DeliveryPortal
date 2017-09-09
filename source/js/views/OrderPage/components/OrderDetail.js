@@ -8,7 +8,7 @@ import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
-import Gmap from './Gmap'
+import ShowGmap from './ShowGmap'
 import moment from 'moment'
 import '@sass/OrdersPage/OrderDetail.scss'
 
@@ -36,9 +36,6 @@ class OrderDetail extends Component {
     this.openGmap = this.openGmap.bind(this)
     this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
     this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
-    this.state = {
-      shouldOpenGmap: false
-    }
   }
 
   handleClick() {
@@ -46,8 +43,13 @@ class OrderDetail extends Component {
   }
 
   openGmap() {
-    const { shouldOpenGmap } = this.state
-    this.setState({ shouldOpenGmap: !shouldOpenGmap })
+    const { order, retailer, deliverer, customer } = this.props
+    mountModal(ShowGmap({
+      id: order.id,
+      retailer,
+      deliverer,
+      customer
+    }))
   }
 
   showNotifiedRetailers(e) {
@@ -115,7 +117,6 @@ class OrderDetail extends Component {
     const isOrderAssigned = supportId == order.assignedToId
 
     const { actions } = this.props
-    const { shouldOpenGmap } = this.state
 
     // if (order) {
       const orderChar = order.status.split('::')[0]
@@ -154,14 +155,14 @@ class OrderDetail extends Component {
             : ''
           }
           </span>
-          <div style={{marginLeft: '20px'}}>
+          {/* <div style={{marginLeft: '20px'}}> */}
             {
               deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}
                   className=''>
-                  { shouldOpenGmap ? 'Close Map' : 'Track this order' }
+                  Track this order
                 </button>
               : '' 
             }
@@ -175,14 +176,14 @@ class OrderDetail extends Component {
               ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotifiedDeliverers}>Show notified deliverers</button>
               : ''
             }
-            </div>
+            {/* </div> */}
         </div>
         {/* <hr /> */}
 
         {
           !loadingOrderDetail
           ? (
-            <div className='container'>
+            <div className='order-detail-container'>
               <div className='left'>
                 {
                   order
@@ -240,16 +241,6 @@ class OrderDetail extends Component {
                 }
                 
               </div>
-              {
-                shouldOpenGmap
-                ? <Gmap
-                  orderId={order.id}
-                  customer={customer}
-                  deliverer={deliverer}
-                  retailer={retailer}
-                />
-                : ''
-              }
             </div>
           )
           : <div className='loader'></div>
