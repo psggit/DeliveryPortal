@@ -52,6 +52,7 @@ class RetailerDetail extends Component {
       <div className='card'>
         <div className='card-head'>
           <h4>Retailer</h4>
+          { retailer.confirmationTime ? getIcon('confirmed') : '' }
         </div>
         <div className='card-body'>
           <p>

@@ -19,9 +19,9 @@ export function getIcon(name) {
       return (
         <img src={`${iconsPath}delivery_verified.png`} />
       )
-    case 'retailer_confirmed':
+    case 'confirmed':
       return ( 
-        <img src={`${iconsPath}retailer_verified.png`} />
+        <img src={`${iconsPath}Confirmed.png`} />
       )  
     default:
 
