@@ -80,7 +80,7 @@ class OrderListItem extends Component {
     const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
     
     const statusStyle = {
-      color: time >=5 && !cancellation_time  ? '#ff3b34' : '',
+      color: time >=5 && !cancellation_time && getHasuraRole() != 'excise_person'? '#ff3b34' : '',
       fontStyle: 'italic',
     }
 
