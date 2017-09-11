@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { getHasuraRole } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
@@ -86,7 +87,13 @@ class OrderListItem extends Component {
     // console.log(formula)
     
     return (
-      <tr onClick={() => {this.props.handleClick(id)} } className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
+      <tr
+      onClick={() => {this.props.handleClick(id)} }
+      className={
+        `orders-list-item ${orderPlacedWaitingTime >=60 && getHasuraRole() != 'excise_person'
+        ? 'danger'
+        : ''}`
+        }>
         <td>{id}</td>
         <td style={statusStyle} className='order-status'>
           {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}

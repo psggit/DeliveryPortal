@@ -48,9 +48,13 @@ export function checkCtrlA(e) {
   return false
 }
 
+export function getHasuraRole() {
+  return localStorage.getItem('x-hasura-role')
+}
+
 export function canAccess(feature) {
   // console.log(feature)
-  const hasuraRole = localStorage.getItem('x-hasura-role')
+  const hasuraRole = getHasuraRole()
   const accessObj = {
     "admin": [],
     "support_admin": [],
