@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { getHasuraRole } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
@@ -79,15 +80,21 @@ class OrderListItem extends Component {
     const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
     
     const statusStyle = {
-      color: time >=5 && !cancellation_time  ? '#ff3b34' : '',
+      color: time >=5 && !cancellation_time && getHasuraRole() != 'excise_person'? '#ff3b34' : '',
       fontStyle: 'italic',
     }
 
     // console.log(formula)
     
     return (
-      <tr className={`orders-list-item ${orderPlacedWaitingTime >=60 ? 'danger' : ''}`}>
-        <td onClick={() => {this.props.handleClick(id)} }>{id}</td>
+      <tr
+      onClick={() => {this.props.handleClick(id)} }
+      className={
+        `orders-list-item ${orderPlacedWaitingTime >=60 && getHasuraRole() != 'excise_person'
+        ? 'danger'
+        : ''}`
+        }>
+        <td>{id}</td>
         <td style={statusStyle} className='order-status'>
           {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
         </td>

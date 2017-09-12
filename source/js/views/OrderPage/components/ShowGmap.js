@@ -4,8 +4,9 @@ import ModalFooter from '@components/ModalBox/ModalFooter'
 import ModalBody from '@components/ModalBox/ModalBody'
 import ModalBox from '@components/ModalBox'
 import { unMountModal } from '@components/ModalBox/utils'
-import '@sass/OrdersPage/ShowNotified.scss'
-import Moment from 'moment'
+// import '@sass/OrdersPage/ShowNotified.scss'
+// import Moment from 'moment'
+import Gmap from './Gmap'
 
 export default function showNotified (data) {
   return class showNotified extends React.Component {
@@ -18,26 +19,12 @@ export default function showNotified (data) {
         <ModalBox>
           <ModalHeader>{ data.heading }</ModalHeader>
             <ModalBody>
-              <table>
-                <thead>
-                  <tr>
-                    <td>Name</td>
-                    <td>Notified at</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    data.content.map(item => {
-                      return (
-                        <tr>
-                          <td>{item.retailer_name}</td>
-                          <td>{Moment(item.notified_at).format('MMM, Do, YY, h:mm a')}</td>
-                        </tr>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
+              <Gmap
+                orderId={data.id}
+                customer={data.customer}
+                deliverer={data.deliverer}
+                retailer={data.retailer}
+              />
             </ModalBody>
           <ModalFooter>
             <button className='btn btn-primary' onClick={unMountModal}>Close</button>

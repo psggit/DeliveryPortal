@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
-const customerImg = './../../../../assets/icons/customer.svg';
-const delivererImg = './../../../../assets/icons/deliverer.svg';
-const outletImg = './../../../../assets/icons/retailer.svg';
+const customerImg = '../assets/icons/customer.svg';
+const delivererImg = '../assets/icons/deliverer.svg';
+const outletImg = '../assets/icons/retailer.svg';
+
+// import customer from '/icons/customer.svg'
+// console.log(customer)
 import { getIcon } from './../utils'
 // import { Map } from 'immutable';
 
@@ -18,6 +21,8 @@ class Gmap extends Component {
   }
   
   componentDidMount() {
+    document.querySelector('.modal-container').style.width = '70%'
+    document.querySelector('.modal-container').style.height = '80%'
     const { orderId } = this.props
     const _self = this
     var socket = io('https://livered.hearsay81.hasura-app.io/', {
@@ -39,6 +44,10 @@ class Gmap extends Component {
         dy: res.gps_coordinates[1]
       })
     })
+  }
+  componentWillUnmount() {
+    document.querySelector('.modal-container').style.width = '46%'
+    document.querySelector('.modal-container').style.height = 'auto'
   }
   // // Initial Customer State
   // const customer = {
@@ -98,7 +107,7 @@ class Gmap extends Component {
           params={params}
           >
           <Marker
-            icon={customerImg}
+            icon={'../assets/icons/customer.svg'}
             lat={cx}
             lng={cy} />
           <Marker

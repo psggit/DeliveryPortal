@@ -53,6 +53,7 @@ class DelivererDetail extends Component {
       <div className='card'>
         <div className='card-head'>
           <h4>Deliverer</h4>
+          { deliverer.confirmationTime ? getIcon('confirmed') : '' }
         </div>
         <div className='card-body'>
           <p>
