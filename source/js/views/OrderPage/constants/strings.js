@@ -5,7 +5,8 @@ export const filterOptions = [
   { value: 'awaiting_retailer_confirmation', label: 'Awaiting retailer confirmation'},
   // { value: 'finding delievery boy', label: 'Finding delievery boy'},
   { value: 'awaiting_dp_confirmation', label: 'Awaiting deliverer confirmation'},
-  { value: 'dp_confirmed', label: 'En-route to customers' }
+  { value: 'dp_confirmed', label: 'En-route to customers' },
+  { value: 'arrived_at_consumer_address', label: 'Arrived at consumer location' }
   // { value: 'cancelled products by delivery person', label: 'Cancelled products by delivery person'},
   // { value: 'cancelled products by customer', label: 'Cancelled products by customer'},
   // { value: 'successful deliveries', label: 'Successful deliveries'}
