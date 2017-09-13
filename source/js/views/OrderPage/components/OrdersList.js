@@ -9,7 +9,7 @@ class OrdersList extends Component {
   }
 
   handleClick(orderId) {
-    this.props.mountOrderDetail(parseInt(orderId))
+    this.props.mountOrderDetail(orderId)
   }
   render() {
     const { orders, state, loadingOrdersList } = this.props
