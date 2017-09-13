@@ -30,7 +30,7 @@ class RetailerDetail extends Component {
 
     actions.confirmRetailer({
       retailer_id: retailer.id,
-      deliveru_order_id: orderId
+      delivery_order_id: orderId
     }, )
     unMountModal()
     // actions.fetchOrderDetail(orderId)

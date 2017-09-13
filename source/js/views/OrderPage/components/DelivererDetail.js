@@ -32,7 +32,7 @@ class DelivererDetail extends Component {
     
     actions.confirmDeliverer({
       dp_id: deliverer.id,
-      deliverer_order_id: orderId
+      delivery_order_id: orderId
     })
     unMountModal()
     // actions.fetchOrderDetail(orderId)
