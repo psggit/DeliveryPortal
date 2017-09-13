@@ -64,7 +64,7 @@ export function canAccess(feature) {
     "support_admin": [],
     "support_person": ['resume-pause'],
     "support_team_leader": ['force-redeem', 'skip'],
-    "excise_person": ['action-buttons', 'map', 'assign', 'consumer-col', 'resume-pause', 'other-orders']
+    "excise_person": ['action-buttons', 'assign', 'consumer-col', 'resume-pause', 'other-orders']
   } 
   return !(accessObj[hasuraRole].indexOf(feature) > -1)
 }
