@@ -60,6 +60,8 @@ class OrderPage extends Component {
     this.setSearchQuery = this.setSearchQuery.bind(this)
     this.fetchOrdersData = this.fetchOrdersData.bind(this)
     this.searchOrdersData = this.searchOrdersData.bind(this)
+    this.filterOrdersData = this.filterOrdersData.bind(this)
+    this.handleClearFilter = this.handleClearFilter.bind(this)
   }
 
   fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
@@ -244,6 +246,17 @@ class OrderPage extends Component {
     this.setState({ activePage: 1, pageOffset: 0 })
   }
 
+  filterOrdersData(filter) {
+    const { actions } = this.props
+    const postData = {
+      limit: this.pagesLimit,
+      offset: this.pageOffset,
+      filter_by: filter
+    }
+
+    actions.fetchLiveOrders(postData)    
+  }
+
   handlePageChange(pageNumber) {
     let offset = this.pagesLimit * (pageNumber - 1)
     const { actions } = this.props
@@ -262,16 +275,21 @@ class OrderPage extends Component {
 
   handleFilterChange(filter) {
     this.resetPagination()
-    const { actions } = this.props
-    const postData = {
-      limit: this.pagesLimit,
-      offset: 0,
-      where: {
-        type: 'status',
-        value: ''
-      }
-    }
-    fetchOrdersData(this.state.ordersType, 0)
+    // const { actions } = this.props
+    // const postData = {
+    //   limit: this.pagesLimit,
+    //   offset: 0,
+    //   where: {
+    //     type: 'status',
+    //     value: ''
+    //   }
+    // }
+    this.filterOrdersData(filter)
+  }
+
+  handleClearFilter() {
+    const { ordersType, pageOffset } = this.state
+    this.fetchOrdersData(ordersType, pageOffset)
   }
 
   // handleDateChange(dateType) {
@@ -392,6 +410,7 @@ class OrderPage extends Component {
             {
               ordersType !== 'history'
               ? <Dropdown
+                  handleClearFilter={this.handleClearFilter}
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
