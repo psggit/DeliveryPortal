@@ -60,10 +60,14 @@ class DelivererDetail extends Component {
             <span><b>Name: </b></span>
             <span>{deliverer.name}</span>
           </p>
-          <p>
-            <span><b>Phone: </b></span>
-            <span>{deliverer.phone}</span>
-          </p>
+          {
+            deliverer.phone
+            ? <p>
+                <span><b>Phone: </b></span>
+                <span>{deliverer.phone}</span>
+              </p>
+            : ''  
+          }
         </div>
         {
           ordersType !== 'history' && this.props.canAccess('action-buttons')

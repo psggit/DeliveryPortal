@@ -58,14 +58,19 @@ class LoginForm extends React.Component {
 
   getAuthToken(data) {
     const token = data.auth_token
-    console.log(token)
     return token
+  }
+
+  getHasuraId(data) {
+    const hasuraId = data.hasura_id
+    return hasuraId
   }
 
 
   createSession(data) {
     localStorage.setItem('x-hasura-role', this.getHasuraRole(data))
     localStorage.setItem('auth-token', this.getAuthToken(data))
+    localStorage.setItem('hasura-id', this.getHasuraId(data))
   }
 
   handleSubmit () {

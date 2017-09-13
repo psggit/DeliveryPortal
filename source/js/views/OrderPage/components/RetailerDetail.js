@@ -59,10 +59,14 @@ class RetailerDetail extends Component {
             <span><b>Name: </b></span>
             <span>{retailer.name}</span>
           </p>
-          <p>
-            <span><b>Phone: </b></span>
-            <span>{retailer.phone}</span>
-          </p>
+          {
+            retailer.phone
+            ? <p>
+                <span><b>Phone: </b></span>
+                <span>{retailer.phone}</span>
+              </p>
+            : ''  
+          }
         </div>
         {
           ordersType !== 'history' && this.props.canAccess('action-buttons')

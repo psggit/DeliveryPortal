@@ -37,14 +37,22 @@ class ConsumerDetail extends Component {
           { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
         </div>
         <div className='card-body'>
-          <p>
-            <span><b>Name: </b></span>
-            <span>{customer.name}</span>
-          </p>
-          <p>
-            <span><b>Phone: </b></span>
-            <span>{customer.phone}</span>
-          </p>
+          {
+            customer.className
+            ? <p>
+                <span><b>Name: </b></span>
+                <span>{customer.name}</span>
+              </p>
+            : ''  
+          }
+          {
+            customer.phone
+            ? <p>
+                <span><b>Phone: </b></span>
+                <span>{customer.phone}</span>
+              </p>
+            : ''  
+          }
           <p className='subhead'>Address:</p>
           <p>{customer.address}</p>
         </div>

@@ -52,6 +52,10 @@ export function getHasuraRole() {
   return localStorage.getItem('x-hasura-role')
 }
 
+export function getHasuraId() {
+  return localStorage.getItem('hasura-id')
+}
+
 export function canAccess(feature) {
   // console.log(feature)
   const hasuraRole = getHasuraRole()
