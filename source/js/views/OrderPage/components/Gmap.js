@@ -25,7 +25,7 @@ class Gmap extends Component {
     document.querySelector('.modal-container').style.height = '80%'
     const { orderId } = this.props
     const _self = this
-    var socket = io('https://livered.hearsay81.hasura-app.io/', {
+    var socket = io('https://livered.bulwarks78.hasura-app.io/', {
       path: '/pool'
     })
     socket.on('status', function (data) {
