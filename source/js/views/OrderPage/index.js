@@ -406,7 +406,7 @@ class OrderPage extends Component {
         /> */}
         <div className='body-container'>
           <div className='orders-filter'>
-            <label>Filter by</label>
+            { ordersType !== 'history' ? <label>Filter by</label> : '' }
             {
               ordersType !== 'history'
               ? <Dropdown
@@ -414,7 +414,7 @@ class OrderPage extends Component {
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : <button onClick={this.handleChooseDate}>Choose date</button>
+              : /*<button onClick={this.handleChooseDate}>Choose date</button>*/ ''
             }
             <SearchInput
               search={this.searchOrdersData}
