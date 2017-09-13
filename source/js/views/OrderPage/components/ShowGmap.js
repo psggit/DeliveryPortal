@@ -14,7 +14,6 @@ export default function showNotified (data) {
       super()
     }
     render () {
-      console.log(data)
       return (
         <ModalBox>
           <ModalHeader>{ data.heading }</ModalHeader>

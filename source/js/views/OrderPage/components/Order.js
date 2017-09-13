@@ -95,9 +95,9 @@ class Order extends Component {
             <thead>
               <tr>
                 <td>Brand</td>
-                <td>Quantity</td>
+                <td>Volume</td>
                 <td>Price</td>
-                <td>Total</td>
+                <td>Quantity</td>
               </tr>
             </thead>
             <tbody>
