@@ -60,6 +60,7 @@ class OrderListItem extends Component {
       dp_accepted_time,
       dp_notified_time,
       dp_picked_up_time,
+      dp_confirmation_time,
       assignedTo,
       assignedToId,
       consumerPhone

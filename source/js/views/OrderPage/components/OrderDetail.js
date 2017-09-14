@@ -133,6 +133,7 @@ class OrderDetail extends Component {
       const dp_notified_time = deliverer.notifiedTime
       const dp_arrived_at_store_time = deliverer.arrivedAtStoreTime
       const dp_accepted_time = deliverer.acceptedTime
+      const dp_confirmation_time = deliverer.confirmationTime
     // }
 
     // if (retailer) {
