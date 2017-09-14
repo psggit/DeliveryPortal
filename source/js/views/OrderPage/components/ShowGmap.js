@@ -6,7 +6,7 @@ import ModalBox from '@components/ModalBox'
 import { unMountModal } from '@components/ModalBox/utils'
 // import '@sass/OrdersPage/ShowNotified.scss'
 // import Moment from 'moment'
-import Gmap from './gmap-old'
+import Gmap from './Gmap'
 
 export default function showNotified (data) {
   return class showNotified extends React.Component {
