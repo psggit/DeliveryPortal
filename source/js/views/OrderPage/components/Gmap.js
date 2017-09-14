@@ -60,6 +60,10 @@ class Gmap extends Component {
     document.querySelector('.modal-container').style.width = '46%'
     document.querySelector('.modal-container').style.height = 'auto'
   }
+
+  handleZoomStart(e) {
+    console.log(e)
+  }
   render() {
     const { dx, dy, cx, cy, rx, ry } = this.state
 
@@ -69,6 +73,7 @@ class Gmap extends Component {
         style={{width: '100%', height: '100%'}}
         defaultCenter={this.state.center}
         defaultZoom={this.state.zoom}
+        onZoomAnimationStart={this.handleZoomStart}
       >
         <AnyReactComponent
           lat={cx}

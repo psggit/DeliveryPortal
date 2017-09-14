@@ -125,7 +125,7 @@ class LoginForm extends React.Component {
         response.json().then(function(data) {
           localStorage.setItem('_hipbaru', JSON.stringify(data))
           _self.createSession(data)
-          // location.href = '/orders'
+          location.href = '/orders'
         })
       }
     )

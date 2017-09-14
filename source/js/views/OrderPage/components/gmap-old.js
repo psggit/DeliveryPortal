@@ -15,9 +15,12 @@ class Gmap extends Component {
   constructor() {
     super()
     this.state = {
-      dx: 13.009563,
-      dy: 80.254907
+      dx: null,
+      dy: null,
+      zoom: 18
     }
+    this.handleMapCreated = this.handleMapCreated.bind(this)
+    this.handleZoomChanged = this.handleZoomChanged.bind(this)
   }
   
   componentDidMount() {
@@ -46,9 +49,18 @@ class Gmap extends Component {
     })
   }
 
-  // handleZoomChanged(val) {
-  //   console.log(val)
-  // }
+  handleMapCreated(map) {
+    this.setState({ map })
+  }
+  handleZoomChanged() {
+    const { map, zoom } = this.state
+    const newZoome = map.getZoom()
+    // console.log(newZoome, zoom)
+    if (zoom !== newZoome) {
+      // console.log('changed')
+      this.setState({ zoom: newZoome }) 
+    }
+  }
   componentWillUnmount() {
     document.querySelector('.modal-container').style.width = '46%'
     document.querySelector('.modal-container').style.height = 'auto'
@@ -106,9 +118,11 @@ class Gmap extends Component {
           style={{width: '100%', height: '100%'}}
           lat={dx}
           lng={dy}
-          zoom={18}
+          zoom={this.state.zoom}
           loadingMessage={'Loading...'}
           params={params}
+          onMapCreated={this.handleMapCreated}
+          onZoomChanged={this.handleZoomChanged}
           >
           <Marker
             icon={'../assets/icons/customer.svg'}
@@ -120,8 +134,8 @@ class Gmap extends Component {
             lng={dy} />
           <Marker
             icon={outletImg}
-          lat={rx}
-          lng={ry} />
+            lat={rx}
+            lng={ry} />
         </Gmaps>
       </div>
     )
