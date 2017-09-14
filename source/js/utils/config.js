@@ -37,7 +37,7 @@
 // }
 
 function getAPIObj() {
-  if (window.location.href.split(':')[1] === '//localhost') {
+  if (window.location.href.split(':')[1] === '//localhost' || window.location.href.split(':')[1] === '//192.168.10.131') {
     let scheme = 'https'
     let baseHost = '.bulwarks78.hasura-app.io'
     let appName = 'bulwarks78'

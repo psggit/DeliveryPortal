@@ -100,14 +100,13 @@ table.orders-list {
     padding: 20px 20px;
     font-size: 15px;
   }
-  td:nth-child(2) {
-    font-size: 14px;
+  tbody {
+    td:nth-child(2) {
+      font-size: 14px;
+    }
   }
   td:nth-child(3) {
     text-align: center;
-  }
-  tbody {
-    height: 50vh;
   }
 }
 
