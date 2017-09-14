@@ -22,6 +22,10 @@ class Gmap extends Component {
     this.state = {
       center: { lat: cx, lng: cy },
       zoom: 12,
+      cx,
+      cy,
+      rx,
+      ry,
       dx: 13.009563,
       dy: 80.254907
     }
@@ -57,12 +61,7 @@ class Gmap extends Component {
     document.querySelector('.modal-container').style.height = 'auto'
   }
   render() {
-    const { customer, retailer, deliverer } = this.props
-    const cx = parseFloat(customer.gps.split(',')[0])
-    const cy = parseFloat(customer.gps.split(',')[1])
-    const rx = parseFloat(retailer.gps.split(',')[0])
-    const ry = parseFloat(retailer.gps.split(',')[1])
-    const { dx, dy } = this.state
+    const { dx, dy, cx, cy, rx, ry } = this.state
 
     return (
       <div className='MapWrapper'>
