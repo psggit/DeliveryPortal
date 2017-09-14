@@ -126,7 +126,7 @@ class LoginForm extends React.Component {
         <div className='form-container'>
           <div className='login-header'>
             <img src='https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png'/>
-            <span>Hipbar Support Login</span>
+            <span>Login</span>
           </div>
           <div className='form-wrapper'>
             <div className='form-group'>
