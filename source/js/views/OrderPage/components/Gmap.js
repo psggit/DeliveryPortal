@@ -21,7 +21,7 @@ class Gmap extends Component {
     super(props)
     this.state = {
       center: { lat: cx, lng: cy },
-      zoom: 12,
+      zoom: 16,
       cx,
       cy,
       rx,

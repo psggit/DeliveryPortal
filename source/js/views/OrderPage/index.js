@@ -433,6 +433,7 @@ class OrderPage extends Component {
               canAccess={canAccess}
               loadingOrdersList={loadingOrdersList}
               orders={orders}
+              ordersType={ordersType}
               unmountOrderDetail={this.unmountOrderDetail}
               mountOrderDetail={this.mountOrderDetail}
               actions={actions}

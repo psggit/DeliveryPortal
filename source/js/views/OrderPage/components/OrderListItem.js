@@ -46,6 +46,7 @@ class OrderListItem extends Component {
   render() {
 
     const {
+      ordersType,
       consumerName,
       id, consumerId,
       orderStatus,
@@ -91,7 +92,7 @@ class OrderListItem extends Component {
       <tr
       onClick={() => {this.props.handleClick(id)} }
       className={
-        `orders-list-item ${orderPlacedWaitingTime >=60 && getHasuraRole() != 'excise_person'
+        `orders-list-item ${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
         ? 'danger'
         : ''}`
         }>

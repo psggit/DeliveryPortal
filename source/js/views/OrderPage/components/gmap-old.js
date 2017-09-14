@@ -102,7 +102,7 @@ class Gmap extends Component {
           style={{width: '100%', height: '100%'}}
           lat={dx}
           lng={dy}
-          zoom={12}
+          zoom={18}
           loadingMessage={'Loading...'}
           params={params}
           >

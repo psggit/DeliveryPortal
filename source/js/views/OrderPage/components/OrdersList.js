@@ -36,6 +36,7 @@ class OrdersList extends Component {
               orders.map((item, i) => {
                 return (
                   <OrderListItem
+                    ordersType={this.props.ordersType}
                     key={`order-list-item-${i}`}
                     id={item.order_id}
                     consumerName={item.consumer_name}
