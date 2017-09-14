@@ -16,7 +16,8 @@ class Gmap extends Component {
     super()
     this.state = {
       dx: 13.009563,
-      dy: 80.254907
+      dy: 80.254907,
+      shouldZoom: true
     }
   }
   
@@ -41,7 +42,8 @@ class Gmap extends Component {
       console.log(res)
       _self.setState({
         dx: res.gps_coordinates[0],
-        dy: res.gps_coordinates[1]
+        dy: res.gps_coordinates[1],
+        shouldZoom: false
       })
     })
   }
@@ -102,7 +104,7 @@ class Gmap extends Component {
           style={{width: '100%', height: '100%'}}
           lat={dx}
           lng={dy}
-          zoom={12}
+          zoom={this.state.shouldZoom ? 12 : undefined}
           loadingMessage={'Loading...'}
           params={params}
           >
