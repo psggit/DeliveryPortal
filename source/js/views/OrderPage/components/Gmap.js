@@ -81,8 +81,8 @@ class Gmap extends Component {
           img={outletImg}
         />
         <AnyReactComponent
-          lat={59.955413}
-          lng={30.337844}
+          lat={dx}
+          lng={dy}
           img={delivererImg}
         />
       </GoogleMapReact>
