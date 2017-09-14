@@ -443,7 +443,7 @@ class OrderPage extends Component {
           }
           
           {
-            !loadingOrdersList
+            !loadingOrdersList && ordersCount > 0
             ? <Pagination
               activePage={activePage}
               itemsCountPerPage={this.pagesLimit}
