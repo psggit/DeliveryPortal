@@ -159,7 +159,7 @@ class OrderDetail extends Component {
           </span>
           {/* <div style={{marginLeft: '20px'}}> */}
             {
-              deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
+              !deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}

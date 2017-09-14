@@ -66,11 +66,28 @@ class LoginForm extends React.Component {
     return hasuraId
   }
 
+  setCookie(cname, cvalue, exdays = 365) {
+    const d = new Date()
+    d.setTime(d.getTime() + (exdays*24*60*60*1000))
+    const expires = "expires=" + d.toUTCString()
+    document.cookie = `${cname}=${cvalue}; ${expires}`
+  }
 
   createSession(data) {
     localStorage.setItem('x-hasura-role', this.getHasuraRole(data))
     localStorage.setItem('auth-token', this.getAuthToken(data))
     localStorage.setItem('hasura-id', this.getHasuraId(data))
+    // this.setCookie('dinoisses', this.getAuthToken(data))
+    // function getCookie(cname) {
+    //   var name = cname + "="
+    //   var ca = document.cookie.split(';')
+    //   for(var i=0; i<ca.length; i++) {
+    //       var c = ca[i]
+    //       while (c.charAt(0)==' ') c = c.substring(1)
+    //       if (c.indexOf(name) == 0) return c.substring(name.length,c.length)
+    //   }
+    //   return ""
+    // }
   }
 
   handleSubmit () {
@@ -87,6 +104,7 @@ class LoginForm extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
+      credentials: "include",
       mode: 'cors',
       body: JSON.stringify(formData)
     }
@@ -98,6 +116,7 @@ class LoginForm extends React.Component {
     fetch(`${Api.authUrl}/login`, fetchOptions)
     .then(
       function(response) {
+        console.log(response.headers)
         if (response.status !== 200) {
           console.log('Looks like there was a problem. Status Code: ' + response.status)
           _self.setState({ isSubmitting: false, error: true })
@@ -106,7 +125,7 @@ class LoginForm extends React.Component {
         response.json().then(function(data) {
           localStorage.setItem('_hipbaru', JSON.stringify(data))
           _self.createSession(data)
-          location.href = '/orders'
+          // location.href = '/orders'
         })
       }
     )

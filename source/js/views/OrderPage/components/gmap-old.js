@@ -45,6 +45,10 @@ class Gmap extends Component {
       })
     })
   }
+
+  // handleZoomChanged(val) {
+  //   console.log(val)
+  // }
   componentWillUnmount() {
     document.querySelector('.modal-container').style.width = '46%'
     document.querySelector('.modal-container').style.height = 'auto'
