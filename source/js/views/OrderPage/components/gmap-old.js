@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
+import { Api } from './../../../utils/config'
 const customerImg = '../assets/icons/customer.svg';
 const delivererImg = '../assets/icons/deliverer.svg';
 const outletImg = '../assets/icons/retailer.svg';
@@ -28,7 +29,7 @@ class Gmap extends Component {
     document.querySelector('.modal-container').style.height = '80%'
     const { orderId } = this.props
     const _self = this
-    var socket = io('https://livered.bulwarks78.hasura-app.io/', {
+    var socket = io(Api.socketUrl, {
       path: '/pool'
     })
     socket.on('status', function (data) {
