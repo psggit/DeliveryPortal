@@ -9,14 +9,11 @@ export default function confirmModal (data) {
   return class confirmModal extends React.Component {
     constructor (props) {
       super(props)
-      this.state = {
-
-      }
     }
     render () {
       return (
         <ModalBox>
-          <ModalHeader>Modal heading</ModalHeader>
+          <ModalHeader>{ data.heading }</ModalHeader>
             <ModalBody>{ data.confirmMessage }</ModalBody>
           <ModalFooter>
             <button className='btn btn-secondary' onClick={unMountModal}>Cancel</button>

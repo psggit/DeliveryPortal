@@ -1,20 +1,27 @@
+/*
+  !!! Beware of over abstraction while writing any function !!!
+*/
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as Actions from './actions'
-import { getIcon, getTimeDiff } from './utils'
+import { getIcon, getTimeDiff, canAccess } from './utils'
 import * as ActionTypes from './constants/actions'
-import OrderInfo from './components/OrderInfo'
 import NavBar from '@components/NavBar'
 import SideMenu from './components/SideMenu'
 import OrdersList from './components/OrdersList'
 import Dropdown from '@components/Dropdown'
 import OrderDetail from './components/OrderDetail'
-import { filterOptions } from './constants/strings'
+import { filterOptions, dateOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import '@sass/components/_pagination.scss'
 import Qr from 'query-string'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import DatePicker from './components/DatePicker'
+import SearchInput from '@components/SearchInput'
+// import Store from './../../'
 
 class OrderPage extends Component {
 
@@ -30,73 +37,141 @@ class OrderPage extends Component {
   constructor() {
     super()
 
-    this.pagesLimit = 5
+    this.pagesLimit = 40
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
       currentOrderId: null,
       activePage: 1,
-      searchQuery: Qr.parse(location.search).q ? Qr.parse(location.search).q : '',
+      searchQuery: '',
       searchAPI: '/deliveryStatus/searchLiveOrders',
       fetchAPI: '/deliveryStatus/liveOrders',
       pageOffset: 0,
-      ordersType: location.href.split('/')[4]
+      ordersType: 'all'
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleFilterChange = this.handleFilterChange.bind(this)
-    this.handleRouteChange = this.handleRouteChange.bind(this)
+    // this.handleRouteChange = this.handleRouteChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
-    this.setQueryString = this.setQueryString.bind(this)
+    // this.setQueryString = this.setQueryString.bind(this)
     this.resetPagination = this.resetPagination.bind(this)
     this.setSearchQuery = this.setSearchQuery.bind(this)
+    this.fetchOrdersData = this.fetchOrdersData.bind(this)
+    this.searchOrdersData = this.searchOrdersData.bind(this)
+    this.filterOrdersData = this.filterOrdersData.bind(this)
+    this.handleClearFilter = this.handleClearFilter.bind(this)
   }
 
-  handleRouteChange(ordersType) {
-    this.setState({ ordersType })
-    let fetchAPI = '/deliveryStatus/liveOrders'
-    let searchAPI = '/deliveryStatus/searchLiveOrders'
+  fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
+    this.setState({ ordersType, offset })
+    this.setSearchQuery('')
+    const { actions } = this.props
+    const postData = {
+      offset,
+      limit: this.pagesLimit
+      // where: {
+      //   type: filterType,
+      //   value: filterValue
+      // }
+    }
+
     switch (ordersType) {
       case 'assigned':
-        fetchAPI = '/deliveryStatus/liveAssignedOrders'
-        searchAPI = 'deliveryStatsu/searchAssignedOrders'
+        postData.support_id = 1
+        actions.fetchLiveAssignedOrders(postData)
+        break
+
+      case 'unassigned':
+        actions.fetchLiveUnassignedOrders(postData)
         break
 
       case 'history':
-        fetchAPI = '/deliveryStatus/liveAssignedOrders'
-        searchAPI = '/deliveryStatus/searchHistoryOrders'
+        actions.fetchHistoryOrders(postData)
+        break
+        
+      default:
+        actions.fetchLiveOrders(postData)
         break
     }
-    this.setState({ fetchAPI, searchAPI })
-    this.resetPagination()
-    this.setSearchQuery('')
-    this.props.actions.fetchOrdersData({
-      support_id: 1,
-      offset: 0,
-      limit: this.pagesLimit
-    }, fetchAPI)
   }
-
-  fetchDataFromQueryParams() {
-    const queryString = location.search
-    const parsed = Qr.parse(queryString)
+  
+  searchOrdersData(searchQuery, offset) {
     const { actions } = this.props
-    const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
+    const { ordersType } = this.state
     const postData = {
-      offset: parseInt(parsed.start) ? parseInt(parsed.start): 0,
-      limit: this.pagesLimit
+      offset,
+      limit: this.pagesLimit,
+      query: searchQuery
     }
+    
+    switch (ordersType) {
+      case 'assigned':
+        postData.support_id = 1
+        actions.searchLiveAssignedOrders(postData)
+        break
 
-    this.setState({ activePage: pageNumber ? pageNumber : 1 })
-    if(parsed.q) {
-      const { searchAPI } = this.state
-      postData.query = parsed.q
-      actions.fetchOrdersData(postData, searchAPI)
-      return
+      case 'unassigned':
+        actions.searchLiveUnassignedOrders(postData)
+        break
+
+      case 'history':
+        actions.searchHistoryOrders(postData)
+        break
+
+      default:
+        actions.searchLiveOrders(postData)
+        break
     }
-    actions.fetchOrdersData(postData)
   }
+
+  // handleRouteChange(ordersType, calledBy) {
+  //   this.setState({ ordersType })
+  //   let fetchAPI = '/deliveryStatus/liveOrders'
+  //   let searchAPI = '/deliveryStatus/searchLiveOrders'
+  //   switch (ordersType) {
+  //     case 'assigned':
+  //       fetchAPI = '/deliveryStatus/liveAssignedOrders'
+  //       searchAPI = 'deliveryStatus/searchAssignedOrders'
+  //       break
+
+  //     case 'history':
+  //       fetchAPI = '/deliveryStatus/liveOrders'
+  //       searchAPI = '/deliveryStatus/searchLiveOrders'
+  //       break
+  //   }
+  //   this.setState({ fetchAPI, searchAPI, activePage: 1 })
+  //   // if(calledBy !== 'componentDidMount') {
+  //   //   this.resetPagination()
+  //   //   this.setSearchQuery('')
+  //   // }
+  //   this.props.actions.fetchOrdersData({
+  //     support_id: 1,
+  //     offset: 0,
+  //     limit: this.pagesLimit,
+  //   }, fetchAPI)
+  // }
+
+  // fetchDataFromQueryParams() {
+  //   const queryString = location.search
+  //   const parsed = Qr.parse(queryString)
+  //   const { actions } = this.props
+  //   const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
+  //   const postData = {
+  //     offset: parseInt(parsed.start) ? parseInt(parsed.start): 0,
+  //     limit: this.pagesLimit
+  //   }
+
+  //   this.setState({ activePage: pageNumber ? pageNumber : 1 })
+  //   if(parsed.q) {
+  //     const { searchAPI } = this.state
+  //     postData.query = parsed.q
+  //     actions.fetchOrdersData(postData, searchAPI)
+  //     return
+  //   }
+  //   actions.fetchOrdersData(postData)
+  // }
 
   componentWillMount() {
     if (!localStorage.getItem('_hipbaru'))
@@ -107,12 +182,25 @@ class OrderPage extends Component {
     const { actions } = this.props
     const { ordersType } = this.state
     const _self = this
-    this.fetchDataFromQueryParams()
-    this.handleRouteChange(ordersType)
-    // ;(function pollOrdersData() {
-    // 	_self.props.actions.fetchOrdersData()
-    // 	setTimeout(pollOrdersData, 10000)
-    // })()
+    // this.fetchDataFromQueryParams()
+    this.fetchOrdersData('all', 0)
+
+    let timeOutId
+
+    ;(function pollOrdersData() {
+      const { pageOffset, ordersType, searchQuery } = _self.state
+
+      searchQuery.length 
+      ? _self.searchOrdersData(searchQuery, pageOffset)
+      : _self.fetchOrdersData(ordersType, pageOffset)
+
+      // if (ordersType !== 'all') {
+      //   clearTimeout(timeOutId)
+      // } else {
+      //   timeOutId = setTimeout(pollOrdersData, 30000)
+      // }
+      setTimeout(pollOrdersData, 30000)
+    })()
   }
 
   mountOrderDetail(orderId) {
@@ -131,60 +219,90 @@ class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     })
+    this.props.actions.setLoadingOrderDetail()
   }
 
   setSearchQuery(searchQuery) {
     this.setState({ searchQuery })
   }
 
-  setQueryString(searchQuery = this.state, start = 0) {
-    const { ordersType } = this.state
-    const parsed = {}
+  // setQueryString(searchQuery = this.state, start = 0) {
+  //   const { ordersType } = this.state
+  //   const parsed = {}
 
-    if (searchQuery.length) {
-      parsed.q = searchQuery
-    }
-    parsed.start = start
-    const queryString = Qr.stringify(parsed)
+  //   if (searchQuery.length) {
+  //     parsed.q = searchQuery
+  //   }
+  //   parsed.start = start
+  //   const queryString = Qr.stringify(parsed)
 
-    const ot = !ordersType || ordersType == 'all' ? '' : `/${ordersType}`
+  //   const ot = !ordersType || ordersType == 'all' ? '' : `/${ordersType}`
 
-    const pushUrl = `/orders${ot}?${queryString}`
-    history.pushState(null, null, pushUrl)
-  }
+  //   const pushUrl = `/orders${ot}?${queryString}`
+  //   history.pushState(null, null, pushUrl)
+  // }
 
   resetPagination() {
-    this.setState({ activePage: 1 })
+    this.setState({ activePage: 1, pageOffset: 0 })
+  }
+
+  filterOrdersData(filter) {
+    const { actions } = this.props
+    const postData = {
+      limit: this.pagesLimit,
+      offset: this.pageOffset,
+      filter_by: filter
+    }
+
+    actions.fetchLiveOrders(postData)    
   }
 
   handlePageChange(pageNumber) {
     let offset = this.pagesLimit * (pageNumber - 1)
     const { actions } = this.props
-    const { searchAPI, fetchAPI, searchQuery } = this.state
+    const { searchQuery, ordersType } = this.state
 
     this.setState({ activePage: pageNumber, pageOffset: offset })
 
-    const postData = {
-      offset: offset,
-      limit: this.pagesLimit
-    }
-
-    this.setQueryString(searchQuery, offset)
+    // this.setQueryString(searchQuery, offset)
 
     if(searchQuery.length) {
-      postData.query = searchQuery
-      actions.fetchOrdersData(postData, searchAPI)
+      this.searchOrdersData(searchQuery, offset)
       return
     }
-    actions.fetchOrdersData(postData, fetchAPI)
+    this.fetchOrdersData(ordersType, offset)
   }
 
   handleFilterChange(filter) {
-    console.log(filter);
-    // Filter orders list with applied filter
-    // actions.filterOrdersData()
+    this.resetPagination()
+    // const { actions } = this.props
+    // const postData = {
+    //   limit: this.pagesLimit,
+    //   offset: 0,
+    //   where: {
+    //     type: 'status',
+    //     value: ''
+    //   }
+    // }
+    this.filterOrdersData(filter)
   }
 
+  handleClearFilter() {
+    const { ordersType, pageOffset } = this.state
+    this.fetchOrdersData(ordersType, pageOffset)
+  }
+
+  // handleDateChange(dateType) {
+  //   console.log(dateType)
+  //   switch (dateType) {
+  //     case 'custom':
+  //       mountModal(DatePicker())
+  //       break
+  //   }
+  // }
+  handleChooseDate() {
+    mountModal(DatePicker())
+  }
   // onMapCreated(map) {
   //   map.setOptions({
   //     disableDefaultUI: true
@@ -241,9 +359,9 @@ class OrderPage extends Component {
 
     // const timeMap = {
     //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.orderPlacedTime),
+    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.notifiedTime),
     //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.orderPlacedTime),
+    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.notifiedTime),
     //   'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
     //   'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
     //   'OrderDelivered': '',
@@ -261,13 +379,17 @@ class OrderPage extends Component {
     } = this.state
 
 
-    const listWrapperInlineStyle = { overflow: shouldListScroll ? 'auto' : 'hidden' }
     const { actions } = this.props
+    !shouldListScroll
+    ? document.querySelector('body').className = 'no-scroll'
+    : document.querySelector('body').className = ''
 
     return (
       <div>
         <NavBar
-          search={actions.fetchOrdersData}
+          handleRouteChange={this.fetchOrdersData}
+          canAccess={canAccess}
+          search={this.searchOrdersData}
           searchQuery={searchQuery}
           searchAPI={searchAPI}
           setQueryString={this.setQueryString}
@@ -277,34 +399,51 @@ class OrderPage extends Component {
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
         />
-        <SideMenu
+        {/* <SideMenu
+          resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
-          handleRouteChange={this.handleRouteChange}
-        />
-        <div className='order-wrapper' style={listWrapperInlineStyle}>
+          handleRouteChange={this.fetchOrdersData}
+        /> */}
+        <div className='body-container'>
           <div className='orders-filter'>
+            { ordersType !== 'history' ? <label>Filter by</label> : '' }
             {
               ordersType !== 'history'
               ? <Dropdown
+                  handleClearFilter={this.handleClearFilter}
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : <input type='date' />
+              : /*<button onClick={this.handleChooseDate}>Choose date</button>*/ ''
             }
+            <SearchInput
+              search={this.searchOrdersData}
+              setQueryString={this.setQueryString}
+              setSearchQuery={this.setSearchQuery}
+              pagesLimit={this.pagesLimit}
+              pageOffset={pageOffset}
+              resetPagination={this.resetPagination}
+              unmountOrderDetail={this.unmountOrderDetail}
+              searchQuery={searchQuery}
+            />
           </div>
-          <OrdersList
-            loadingOrdersList={loadingOrdersList}
-            orders={orders}
-            unmountOrderDetail={this.unmountOrderDetail}
-            mountOrderDetail={this.mountOrderDetail}
-            // titleMap={titleMap}
-            // articleMap={articleMap}
-            // timeMap={timeMap}
-            // epilogueMap={epilogueMap}
-            state={state}
-          />
           {
-            !loadingOrdersList
+            orders
+            ? <OrdersList
+              canAccess={canAccess}
+              loadingOrdersList={loadingOrdersList}
+              orders={orders}
+              ordersType={ordersType}
+              unmountOrderDetail={this.unmountOrderDetail}
+              mountOrderDetail={this.mountOrderDetail}
+              actions={actions}
+              state={state}
+            />
+            : ''
+          }
+          
+          {
+            !loadingOrdersList && ordersCount > 0
             ? <Pagination
               activePage={activePage}
               itemsCountPerPage={this.pagesLimit}
@@ -317,6 +456,8 @@ class OrderPage extends Component {
           {
             shouldMountOrderDetail
             ? <OrderDetail
+              ordersType={ordersType}
+              canAccess={canAccess}
               retailer={retailer}
               customer={customer}
               deliverer={deliverer}
@@ -328,22 +469,9 @@ class OrderPage extends Component {
             />
             : ''
           }
-        </div>
+          </div>
         <div>
-          {/* <select style={{position: 'fixed', top: '65px', right: '0px'}} onChange={this.onStateChange}>
-            {
-              Object.keys(ActionTypes).map((item, i) => {
-                return (
-                  <option
-                    key={i + 1}
-                    value={ActionTypes[item]}
-                    >
-                    {ActionTypes[item]}
-                  </option>
-                )
-              })
-            }
-          </select> */}
+
         </div>
       </div>
     )

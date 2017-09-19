@@ -23,11 +23,82 @@ export const fetchOrdersData = (data, api = '/deliveryStatus/liveOrders') => ({
   api: api
 })
 
+export const fetchLiveOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_LIVE_ORDERS,
+  data
+})
+
+export const fetchLiveAssignedOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_LIVE_ASSIGNED_ORDERS,
+  data
+})
+
+export const fetchLiveUnassignedOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_LIVE_UNASSIGNED_ORDERS,
+  data
+})
+
+export const fetchHistoryOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_HISTORY_ORDERS,
+  data
+})
+
+export const searchLiveOrders = (data) => ({
+  type: ActionTypes.REQUEST_SEARCH_LIVE_ORDERS,
+  data
+})
+
+export const searchLiveAssignedOrders = (data) => ({
+  type: ActionTypes.REQUEST_SEARCH_LIVE_ASSIGNED_ORDERS,
+  data
+})
+
+export const searchLiveUnassignedOrders = (data) => ({
+  type: ActionTypes.REQUEST_SEARCH_LIVE_UNASSIGNED_ORDERS,
+  data
+})
+
+export const searchHistoryOrders = (data) => ({
+  type: ActionTypes.REQUEST_SEARCH_HISTORY_ORDERS,
+  data
+})
+
 export const assignOrder = (data) => ({
   type: ActionTypes.REQUEST_ASSIGN_ORDER,
   data: data
 })
 
-export const forceRedeem = () => ({
-  type: ActionTypes.REQUEST_FORCE_REDEEM
+export const skipRetailer = (data) => ({
+  type: ActionTypes.REQUEST_SKIP_RETAILER,
+  data: data
 })
+
+export const skipDeliverer = (data) => ({
+  type: ActionTypes.REQUEST_SKIP_DELIVERER,
+  data: data
+})
+
+export const cancelOrder = (data) => ({
+  type: ActionTypes.REQUEST_CANCEL_ORDER,
+  data: data
+})
+
+export const forceRedeem = (data) => ({
+  type: ActionTypes.REQUEST_FORCE_REDEEM,
+  data: data
+})
+
+export const confirmRetailer = (data) => ({
+  type: ActionTypes.REQUEST_CONFIRM_RETAILER,
+  data: data
+})
+
+export const confirmDeliverer = (data) => ({
+  type: ActionTypes.REQUEST_CONFIRM_DELIVERER,
+  data: data
+})
+
+export const setLoadingOrderDetail = () => ({
+  type: ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL
+})
+

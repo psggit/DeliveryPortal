@@ -80,25 +80,13 @@ const rules = [
     ],
   },
   {
-    test: /\.svg$/,
-    use: [
-      {
-        loader: 'svg-sprite-loader',
-        options: {
-          extract: true,
-          spriteFilename: 'icons-sprite.svg',
-        },
-      },
-      'svgo-loader',
-    ],
-    include: iconPath,
-  },
-  {
     test: /\.(png|gif|jpg|svg)$/,
-    include: imgPath,
+    include: iconPath,
     use: 'url-loader?limit=20480&name=assets/[name]-[hash].[ext]',
   },
 ];
+
+// console.log(nodeEnv)
 
 if (isProduction) {
   // Production plugins
@@ -183,7 +171,7 @@ module.exports = {
   },
   plugins,
   devServer: {
-    contentBase: isProduction ? buildPath : sourcePath,
+    contentBase: isProduction ? sourcePath : sourcePath,
     historyApiFallback: true,
     port: 3000,
     compress: isProduction,

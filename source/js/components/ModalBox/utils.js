@@ -7,8 +7,7 @@ export function unMountModal() {
 }
 
 export function mountModal(Component) {
-  console.log(<Component />);
-  document.body.setAttribute('class', 'noScroll')
+  document.body.setAttribute('class', 'no-scroll')
   render(
     <Component />, document.getElementById('confirm-modal')
   )

@@ -2,6 +2,7 @@ import React from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import './index.scss'
+import { getIcon } from './../utils'
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Dropdown extends React.Component {
     this.handleClick = this.handleClick.bind(this)
     this.setOptions = this.setOptions.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleClearFilter = this.handleClearFilter.bind(this)
   }
   componentDidMount() {
     document.addEventListener('click', this.closeDropdownFromDoc, false)
@@ -69,6 +71,10 @@ class Dropdown extends React.Component {
       this.setState({ options: loadOptions(e.target.value, this.setOptions) })
     }
   }
+  handleClearFilter() {
+    this.setState({ selected: '', isActive: false })
+    this.props.handleClearFilter()
+  }
   closeDropdownFromDoc(e) {
     if (e.target.className !== 'dropdown-input') {
       this.setState({ isActive: false })
@@ -79,6 +85,7 @@ class Dropdown extends React.Component {
     const { isActive, selected, options, activeItem } = this.state
     return (
       <div className={`dropdown-container ${isActive ? 'is-active' : ''}`}>
+      { selected ? <span onClick={this.handleClearFilter} className='clear-search'>{ getIcon('cross') }</span> : ''}
         <input
           className='dropdown-input'
           type='text'

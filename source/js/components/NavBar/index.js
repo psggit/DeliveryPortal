@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import SearchInput from './../SearchInput'
+import { NavLink } from 'react-router-dom';
+// import { routeCodes } from './../../App';
 
 import './index.scss'
 
@@ -8,9 +10,11 @@ class NavBar extends Component {
   constructor() {
     super()
     this.state = {
-      shouldDeliever: true
+      shouldDeliever: true,
+      ordersType: 'all'
     }
     this.handleClick = this.handleClick.bind(this)
+    this.handleNavigation = this.handleNavigation.bind(this)
   }
 
   handleLogout() {
@@ -23,16 +27,39 @@ class NavBar extends Component {
     this.setState({ shouldDeliever: !shouldDeliever })
   }
 
+  handleNavigation(ordersType) {
+    $('body').animate({
+      scrollTop: 0
+    }, 500)
+    this.setState({ ordersType })
+    this.props.resetPagination()
+    this.props.handleRouteChange(ordersType, 0)
+    this.props.unmountOrderDetail()
+  }
+
   render() {
     const { shouldDeliever } = this.state
-
+    const menuItems = [
+      { value: 'all', label: 'in progress orders' },
+      { value: 'assigned', label: 'assigned orders'},
+      { value: 'unassigned', label: 'unassigned orders'},
+      { value: 'history', label: 'order history' }
+    ]
+    if (!this.props.canAccess('other-orders')) {
+      menuItems.splice(1, 2)
+    }
     return (
       <header>
         <ul>
           <li className="logo">
-            <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
+            <a href='/orders'>
+              <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
+            </a>
           </li>
-          <li className="resume-pause">
+          {
+            this.props.canAccess('resume-pause')
+            ? (
+              <li className="resume-pause">
               <span>
                 {
                   shouldDeliever
@@ -48,19 +75,20 @@ class NavBar extends Component {
                 }
               </span>
           </li>
-          <li>
-            <SearchInput
-              search={this.props.search}
-              searchAPI={this.props.searchAPI}
-              setQueryString={this.props.setQueryString}
-              setSearchQuery={this.props.setSearchQuery}
-              pagesLimit={this.props.pagesLimit}
-              pageOffset={this.props.pageOffset}
-              resetPagination={this.props.resetPagination}
-              unmountOrderDetail={this.props.unmountOrderDetail}
-              searchQuery={this.props.searchQuery}
-            />
-          </li>
+            )
+            : ''
+          }
+          {
+            menuItems.map((item, i) => {
+              return (
+                <NavLink key={`nav-link-${i}`} exact to={ 'orders' }>
+                  <li className={`menu-item ${this.state.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleNavigation(item.value) }}>
+                    { item.label }
+                  </li>
+                </NavLink>
+              )
+            })
+          }
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>

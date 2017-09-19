@@ -3,6 +3,12 @@ import './index.scss'
 import { unmountComponentAtNode } from 'react-dom'
 
 class ModalBox extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      width: "46%"
+    }
+  }
   handleClick(e) {
     if (e.keyCode == 27) {
       unmountComponentAtNode(document.getElementById('confirm-modal'))
@@ -17,6 +23,10 @@ class ModalBox extends React.Component {
       }
   }
 
+  setModalContainerWidth(width) {
+    this.setState({ width })
+  }
+
   componentDidMount() {
     window.addEventListener('keyup', this.handleClick)
     document.addEventListener('click', this.handlePress)
@@ -28,7 +38,7 @@ class ModalBox extends React.Component {
   render () {
     return (
       <div className='modal-overlay'>
-        <div className='modal-container'>
+        <div className='modal-container' style={{width: this.state.width}}>
           { this.props.children }
         </div>
       </div>

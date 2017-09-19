@@ -7,42 +7,67 @@ class OrdersList extends Component {
     super()
     this.handleClick = this.handleClick.bind(this)
   }
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.ordersType !== this.props.ordersType) {
-  //     this.props.unmountOrderDetail()
-  //     // TODO: fetch orders list and filters (if required) based on ordersType (assigned, history etc.)
-  //   }
-  // }
-  componentDidMount() {
 
-  }
-  handleClick(e) {
-    const target = e.target
-    const orderId = target.id
-    if (target.className === 'orders-list-item') {
-      this.props.mountOrderDetail(parseInt(orderId))
-    }
+  handleClick(orderId) {
+    this.props.mountOrderDetail(orderId)
   }
   render() {
     const { orders, state, loadingOrdersList } = this.props
     // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
-      <div className='orders-list' onClick={this.handleClick}>
-        {
-          !loadingOrdersList
-          ? (
-            orders.map((item, i) => {
-              return <OrderListItem
-                key={`${i+1}${item.order_id}`}
-                id={item.order_id}
-                consumerName={item.consumer_name}
-                orderStatus={item.status}
-              />
-            })
-          )
-          : <div className='loader'></div>
-        }
+      <div className='order-list-container'>
+        <table className='orders-list'>
+        <thead>
+          <tr>
+            <td>Order Id</td>
+            <td>Order status</td>
+            <td>Consumer Id</td>
+            { this.props.canAccess('consumer-col') ? <td>Consumer name</td> : '' }
+            { this.props.canAccess('consumer-col') ? <td>Consumer phone</td> : '' }
+            { this.props.canAccess('consumer-col') ? <td>Assigned to</td> : '' }
+            <td>Order placed time</td>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loadingOrdersList
+            ? (
+              orders.map((item, i) => {
+                return (
+                  <OrderListItem
+                    ordersType={this.props.ordersType}
+                    key={`order-list-item-${i}`}
+                    id={item.order_id}
+                    consumerName={item.consumer_name}
+                    consumerId={item.consumer_id}
+                    retailer_notified_time={item.retailer_notified_time}
+                    dp_delivered_time={item.dp_delivered_time}
+                    dp_picked_up_time={item.dp_picked_up_time}
+                    dp_notified_time={item.dp_notified_time}
+                    dp_arrived_at_store_time={item.dp_arrived_at_store_time}
+                    dp_accepted_time={item.dp_accepted_time}
+                    dp_confirmation_time={item.dp_confirmation_time}
+                    dp_reached_to_consumer_time={item.dp_reached_to_consumer_time}
+                    retailer_accepted_time={item.retailer_confirmation_time}
+                    cancellation_time={item.cancelled_time}
+                    orderPlacedTime={item.order_placed_time}
+                    cancellation_return_time={item.cancellation_return_time}
+                    orderStatus={item.status}
+                    handleClick={this.handleClick}
+                    assignedTo={item.assigned_to}
+                    assignedToId={item.assigned_to_id}
+                    consumerPhone={item.consumer_phone}
+                    actions={this.props.actions}
+                    canAccess={this.props.canAccess}
+                />
+                )
+              })
+            )
+            : <tr className='loader'></tr>
+          }
+        </tbody>
+      </table>
       </div>
     )
   }
