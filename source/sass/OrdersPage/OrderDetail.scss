@@ -50,11 +50,14 @@ hr {
     padding: 20px;
     box-shadow: 0 0px 2px 0 #9b9b9b;
   }
-  position: absolute;
+  position: fixed;
   top: 65px;
-  left: 0;
+  left: 50%;
   width: 100%;
+  max-width: 1440px;
   height: 100%;
+  background: #f6f6f6;
+  transform: translateX(-50%);
   // padding-top: 20px;
   background: #f6f6f6;
 

@@ -49,7 +49,7 @@ class Order extends Component {
   openCancelOrder() {
     const { order } = this.props
     mountModal(ConfirmModal({
-      heading: `Cancel order #${order.id}`,
+      heading: `Cancel order (#${order.id})`,
       confirmMessage: 'Are you sure you want to cancel this order?',
       handleConfirm: this.handleCancelOrder,
     }))
