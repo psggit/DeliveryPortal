@@ -30,100 +30,31 @@ class ConsumerDetail extends Component {
       customer
     } = this.props
 
-    const isKYCconfirmed = true
-    const isDeliveryVerified = true
-
-    const DigitInput = styled.input`
-      height: 32px;
-      width: 32px;
-      padding: 0;
-      border-style: none;
-      margin-right: 10px;
-      border: 1px solid #D0D0D0;
-      border-radius: 6px;	background-color: #F7F7F7;
-      box-shadow: inset 0 2px 2px 0 rgba(188,188,188,0.5);
-      text-align: center;
-      &:focus {
-        outline: 0;
-      }
-    `
-
     return (
-      <div className='order detail-card'>
-        <h4>Consumer</h4>
-        <div className='personal-info'>
-          <p className='name'>{customer.name}</p>
-          <p className='address'>
-            {customer.address}
-          </p>
-          <div className='chips'>
-            { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
-            { isDeliveryVerified ? getIcon('delivery_verified') : '' }
-          </div>
-          {customer.phone ? <p className='phone'>{customer.phone}</p> : ''}
-          <p className='order-status'>
-            Awaiting retailer confirmation for
-            { ' 54 mins.' }
-          </p>
+      <div className='card'>
+        <div className='card-head'>
+          <h4>Consumer</h4>
+          { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
         </div>
-
-        <div className='order-info'>
-          <p><b>Items (4)</b></p>
-          <ul>
-            {
-              [1, 2, 3, 4].map((item, i) => {
-                return (
-                  <li key={`alco-item-${i}`}>
-                    <span>[2] Jack Daniels - 180ml</span>
-                    <span>INR 750</span>
-                  </li>
-                )
-              })
-            }
-          </ul>
+        <div className='card-body'>
           {
-            deliveryCharge
-            ? (
-              <p className='delivery-charge'>
-                Delievery fee: <span>{deliveryCharge}</span>
+            customer.className
+            ? <p>
+                <span><b>Name: </b></span>
+                <span>{customer.name}</span>
               </p>
-            )
-            : ''
+            : ''  
           }
-          <div>
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <DigitInput
-              maxLength='1'
-              onKeyDown={this.handleChange}
-            />
-            <button
-              onClick={this.handleForceRedeem}
-              className='btn btn-black'>
-              Force redeem
-            </button>
-          </div>
-        </div>
-
-        <hr />
-        <div>
-          <button className='btn btn-blue'>Skip order</button>
-          <button
-            className='btn btn-green'
-            disabled={isOrderAssigned}
-            onClick={openAssignOrderModal}>
-            { isOrderAssigned ? 'Assigned' : 'Assign me' }
-          </button>
+          {
+            customer.phone
+            ? <p>
+                <span><b>Phone: </b></span>
+                <span>{customer.phone}</span>
+              </p>
+            : ''  
+          }
+          <p className='subhead'>Address:</p>
+          <p>{customer.address}</p>
         </div>
       </div>
     )

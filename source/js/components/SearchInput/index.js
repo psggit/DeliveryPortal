@@ -7,8 +7,10 @@ class SearchInput extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handlePress = this.handlePress.bind(this)
+    this.handleClearSearch = this.handleClearSearch.bind(this)
     this.state = {
-      searchQuery: props.searchQuery
+      searchQuery: props.searchQuery,
+      searched: false
     }
   }
 
@@ -16,19 +18,26 @@ class SearchInput extends Component {
     this.setState({ searchQuery: nextProps.searchQuery })
   }
 
+  handleClearSearch() {
+    this.setState({
+      searchQuery: '',
+      searched: false
+    })
+    
+    this.props.setSearchQuery('')
+    this.search('', 0)
+  }
+
   search(searchQuery) {
+    console.log(searchQuery)
     const { searchAPI, pagesLimit, pageOffset } = this.props
 
-    this.props.setQueryString(searchQuery, 0)
+    // this.props.setQueryString(searchQuery, 0)
     this.props.setSearchQuery(searchQuery)
     this.props.resetPagination()
     this.props.unmountOrderDetail()
     
-    this.props.search({
-      offset: 0,
-      limit: pagesLimit,
-      query: searchQuery
-    }, searchAPI)
+    this.props.search(searchQuery, 0)
   }
 
   handleChange(e) {
@@ -40,6 +49,7 @@ class SearchInput extends Component {
   handlePress(e) {
     const { searchQuery } = this.state
     if (e.keyCode === 13 && searchQuery.length) {
+      this.setState({ searched: true })
       this.search(searchQuery)
     }
   }
@@ -54,7 +64,8 @@ class SearchInput extends Component {
           onKeyDown={this.handlePress}
           value={searchQuery}
         />
-        <span>{ getIcon('search')}</span>
+        { this.state.searchQuery ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
+        <span>{ getIcon('search') }</span>
       </div>
     )
   }

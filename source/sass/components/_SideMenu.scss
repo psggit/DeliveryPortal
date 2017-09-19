@@ -1,10 +1,15 @@
 .side-menu {
-  border-right: 1px solid #dfdfdf;
-  width: 20%;
-  height: calc(100vh - 65px);
-  position: fixed;
-  top: 65px;
-  left: 0;
+  // border-right: 1px solid #dfdfdf;
+  box-shadow: 0 0 2px 0 #9b9b9b;
+  background: #fff;
+  width: 260px;
+  height: calc(100vh - 125px);
+  display: inline-block;
+  vertical-align: top;
+  margin: 20px 0 0 20px;
+  // position: fixed;
+  // top: 85px;
+  // left: 20px;
   overflow: auto;
   ul {
     margin: 0;
@@ -28,5 +33,10 @@
     box-sizing: border-box;
     text-transform: capitalize;
     border-bottom: 1px solid #dfdfdf;
+    &.active {
+      background: #333;
+      color: #fff;
+    }
   }
 }
+

@@ -1,112 +1,96 @@
-import React, { Component } from 'react'
-import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
-const customerImg = '../../../../assets/icons/customer.png';
-const delivererImg = '../../../../assets/icons/deliverer.png';
-const outletImg = '../../../../assets/icons/outlet.png';
-// import { Map } from 'immutable';
+import React, { Component } from 'react';
+import GoogleMapReact from 'google-map-react';
+const customerImg = '../assets/icons/customer.svg';
+const delivererImg = '../assets/icons/deliverer.svg';
+const outletImg = '../assets/icons/retailer.svg';
 
-const params = {v: '3.exp', key: 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'};
+const AnyReactComponent = ({ img }) => <div><img src={img} /></div>;
 
 class Gmap extends Component {
-  constructor() {
-    super()
-    this.state = {
-      dx: 13.009563,
-      dy: 80.254907
-    }
-  }
-  // // Initial Customer State
-  // const customer = {
-  //   state: null,
-  //   id: null,
-  //   name: null,
-  //   address: null,
-  //   phone: null,
-  //   x: null,
-  //   y: null
-  // }
+  // static defaultProps = {
+  //   center: {lat: 59.95, lng: 30.33},
+  //   zoom: 12
+  // };
 
-  // // Initial Deliverer State
-  // const deliverer = {
-  //   state: null,
-  //   id: null,
-  //   name: null,
-  //   phone: null,
-  //   orderPlacedTime: null,
-  //   vehicleNo: null,
-  //   orderAcceptedTime: null,
-  //   deliveredTime: null,
-  //   x: null,
-  //   y: null
-  // }
-
-  // // Initial Retailer State
-  // const retailer = {
-  //   state: null,
-  //   id: null,
-  //   name: null,
-  //   phone: null,
-  //   cancelled: null,
-  //   orderPlacedTime: null,
-  //   orderAcceptedTime: null,
-  //   dispatchedTime: null,
-  //   x: null,
-  //   y: null
-  // }
-  render() {
-    // var socket = io('https://livered.hearsay81.hasura-app.io/', {
-    //   path: '/pool'
-    // })
-    
-    // console.log(socket)
-    
-    // socket.on('status', function (data) {
-    //   console.log(data);
-    //   socket.emit('subscribe', {"order_id": '43'});
-    // });
-    
-    // socket.on('subscribed', function(data) {
-    //   console.log(data)
-    // })
-    
-    // socket.on('live_data', function(res) {
-    //   console.log(res)
-    //   // this.setState({
-    //   //   dx: res.gps.split(',')[0],
-    //   //   dy: res.gps.split(',')[1]
-    //   // })
-    // })
-    
-    const { customer, retailer, deliverer } = this.props
+  constructor(props) {
+    const { customer, retailer, deliverer } = props
     const cx = parseFloat(customer.gps.split(',')[0])
     const cy = parseFloat(customer.gps.split(',')[1])
     const rx = parseFloat(retailer.gps.split(',')[0])
     const ry = parseFloat(retailer.gps.split(',')[1])
-    const { dx, dy } = this.state
+    super(props)
+    this.state = {
+      center: { lat: cx, lng: cy },
+      zoom: 16,
+      cx,
+      cy,
+      rx,
+      ry,
+      dx: 13.009563,
+      dy: 80.254907
+    }
+  }
+
+  componentDidMount() {
+    document.querySelector('.modal-container').style.width = '70%'
+    document.querySelector('.modal-container').style.height = '80%'
+    const { orderId } = this.props
+    const _self = this
+    var socket = io('https://livered.bulwarks78.hasura-app.io/', {
+      path: '/pool'
+    })
+    socket.on('status', function (data) {
+      console.log(data);
+      socket.emit('subscribe', {"order_id": orderId });
+    });
+    
+    socket.on('subscribed', function(data) {
+      console.log(data)
+    })
+    
+    socket.on('live_data', function(res) {
+      console.log(res)
+      _self.setState({
+        dx: res.gps_coordinates[0],
+        dy: res.gps_coordinates[1]
+      })
+    })
+  }
+  componentWillUnmount() {
+    document.querySelector('.modal-container').style.width = '46%'
+    document.querySelector('.modal-container').style.height = 'auto'
+  }
+
+  handleZoomStart(e) {
+    console.log(e)
+  }
+  render() {
+    const { dx, dy, cx, cy, rx, ry } = this.state
 
     return (
       <div className='MapWrapper'>
-        <Gmaps
-          style={{width: '100%', height: '100vh'}}
+        <GoogleMapReact
+        style={{width: '100%', height: '100%'}}
+        defaultCenter={this.state.center}
+        defaultZoom={this.state.zoom}
+        onZoomAnimationStart={this.handleZoomStart}
+      >
+        <AnyReactComponent
+          lat={cx}
+          lng={cy}
+          img={customerImg}
+        />
+        <AnyReactComponent
+          lat={rx}
+          lng={ry}
+          img={outletImg}
+        />
+        <AnyReactComponent
           lat={dx}
           lng={dy}
-          zoom={12}
-          loadingMessage={'Loading...'}
-          params={params}
-          >
-          <Marker
-            icon={customerImg}
-            lat={cx}
-            lng={cy} />
-          <Marker
-            icon={delivererImg}
-            lat={dx}
-            lng={dy} />
-          <Marker
-            icon={outletImg}
-          lat={rx}
-          lng={ry} />
-        </Gmaps>
+          img={delivererImg}
+        />
+      </GoogleMapReact>
       </div>
     )
   }
