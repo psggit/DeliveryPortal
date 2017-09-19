@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import SearchInput from './../SearchInput'
-import { NavLink } from 'react-router-dom';
+import ToggleButton from './../ToggleButton'
+import { NavLink } from 'react-router-dom'
 // import { routeCodes } from './../../App';
 
 import './index.scss'
@@ -60,24 +61,28 @@ class NavBar extends Component {
             this.props.canAccess('resume-pause')
             ? (
               <li className="resume-pause">
-              <span>
-                {
-                  shouldDeliever
-                  ? 'Pause Delieveries'
-                  : 'Continue Delieveries'
-                }
-              </span>
-              <span onClick={this.handleClick}>
-                {
-                  shouldDeliever
-                  ? getIcon('pause')
-                  : getIcon('play')
-                }
-              </span>
-          </li>
+                <span>
+                  {
+                    shouldDeliever
+                    ? 'Pause Delieveries'
+                    : 'Continue Delieveries'
+                  }
+                </span>
+                <span onClick={this.handleClick}>
+                  {
+                    shouldDeliever
+                    ? getIcon('pause')
+                    : getIcon('play')
+                  }
+                </span>
+            </li>
             )
             : ''
           }
+          <li>
+            <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
+            <ToggleButton />
+          </li>
           {
             menuItems.map((item, i) => {
               return (
