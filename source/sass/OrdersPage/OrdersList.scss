@@ -28,6 +28,25 @@ body.no-scroll {
   padding: 40px 6%;
   height: 100vh;
 }
+button {
+  padding: 5px 20px;
+  border: 1px solid #dfdfdf;
+  border-radius: 2px;
+  background-color: #f2f2f2;
+  color: #757575;
+  font-weight: 600;
+  
+  &:focus {
+    outline: 0;
+  }
+  &:hover {
+    border-color: #c6c6c6;
+    background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1);
+    background-color: #f8f8f8;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    color: #333;
+  }
+}
 
 .order-list-container {
   margin-bottom: 20px;
@@ -84,7 +103,8 @@ table.orders-list {
   thead {
     font-size: 14px;
     font-weight: 600;
-    background: #1a4f86;
+    background-color: rgba(0,0,0,0.74);
+    background-image: url("https://www.transparenttextures.com/patterns/az-subtle.png");
     text-transform: uppercase;
     border: 0;
   }
@@ -130,18 +150,23 @@ table.orders-list {
   
   &:hover {
     background: #eaeaea;
-  }
-  &.danger {
-    animation-name: blink;
-    animation-timing-function: linear;
-    animation-duration: 0.5s;
-    animation-iteration-count: infinite;
-    background: #f8d7da;
-    &:hover {
-      background: #eaeaea;
-    }
     td {
-      color: #721c24;
+      background: #eaeaea !important;
+    }
+  }
+  td {
+    &.danger {
+      animation-name: blink;
+      animation-timing-function: linear;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      background: #f8d7da;
+      // &:hover {
+      //   background: #eaeaea;
+      // }
+      td {
+        color: #721c24;
+      }
     }
   }
 }

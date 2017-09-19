@@ -8,8 +8,10 @@ class OrdersList extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(orderId) {
-    this.props.mountOrderDetail(orderId)
+  handleClick(orderId, e) {
+    if (e.target.nodeName !== 'BUTTON') {
+      this.props.mountOrderDetail(orderId)
+    }
   }
   render() {
     const { orders, state, loadingOrdersList } = this.props
@@ -36,6 +38,7 @@ class OrdersList extends Component {
               orders.map((item, i) => {
                 return (
                   <OrderListItem
+                    unmountOrderDetail={this.props.unmountOrderDetail}
                     ordersType={this.props.ordersType}
                     key={`order-list-item-${i}`}
                     id={item.order_id}

@@ -91,6 +91,10 @@ class OrderPage extends Component {
       case 'history':
         actions.fetchHistoryOrders(postData)
         break
+
+      case 'cancellation': 
+        actions.fetchCancellationOrders(postData)  
+        break;
         
       default:
         actions.fetchLiveOrders(postData)

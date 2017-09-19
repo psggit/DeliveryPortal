@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-import { getHasuraRole } from './../utils'
+import { getHasuraRole, getHasuraId } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 
@@ -27,6 +27,7 @@ class OrderListItem extends Component {
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
   }
   openAssignOrderModal() {
+    this.props.unmountOrderDetail()
     mountModal(ConfirmModal({
       heading: 'Assign order',
       confirmMessage: 'Are your sure you want to assign this order?',
@@ -37,7 +38,7 @@ class OrderListItem extends Component {
   handleConfirmAssign() {
     const { actions, id } = this.props
     const postData = {
-      support_id: 1,
+      support_id: parseInt(getHasuraId()),
       order_id: id
     }
     actions.assignOrder(postData)
@@ -89,22 +90,22 @@ class OrderListItem extends Component {
     // console.log(formula)
     
     return (
-      <tr
-      onClick={() => {this.props.handleClick(id)} }
-      className={
-        `orders-list-item ${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
+      <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(id, e)} }>
+        <td
+        className={
+        `${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
         ? 'danger'
         : ''}`
-        }>
-        <td>{id}</td>
+        }
+        >{id}</td>
         <td style={statusStyle} className='order-status'>
           {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
         </td>
         <td>{consumerId}</td>
         { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
         { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
-        { this.props.canAccess('consumer-col') ? <td>{!assignedTo ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedTo}</td> : '' }
-        <td>{Moment(orderPlacedTime).format('MMM Do YY, h:mm a')}</td>
+        { this.props.canAccess('consumer-col') ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
+        <td title={Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}>{`${getTimeDiff(orderPlacedTime)} mins ago`}</td>
       </tr>
     )
   }

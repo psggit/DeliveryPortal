@@ -49,6 +49,15 @@ function* fetchHistoryOrders(action) {
   }
 }
 
+function* fetchCancellationOrders(action) {
+  try {
+    const data = yield call(Api.fetchCancellationOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 function* searchLiveOrders(action) {
   try {
     const data = yield call(Api.searchLiveOrders, action)
@@ -253,6 +262,12 @@ export function* watchFetchLiveUnassignedOrders() {
 export function* watchFetchHistoryOrders() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_HISTORY_ORDERS, fetchHistoryOrders)
+  }
+}
+
+export function* watchFetchCancellationOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_CANCELLATION_ORDERS, fetchCancellationOrders)
   }
 }
 

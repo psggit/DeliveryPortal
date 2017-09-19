@@ -72,8 +72,8 @@ class RetailerDetail extends Component {
           ordersType !== 'history' && this.props.canAccess('action-buttons')
           ? (
             <div className='card-footer'>
-              <button onClick={this.openSkipRetailer}>Skip</button>
-              { !retailer.confirmationTime ? <button onClick={this.openConfirmRetailer}>Confirm</button> : '' }
+              <button className='btn btn-red' onClick={this.openSkipRetailer}>Skip</button>
+              { !retailer.confirmationTime ? <button className='btn btn-green' onClick={this.openConfirmRetailer}>Confirm</button> : '' }
             </div>
           )
           : ''

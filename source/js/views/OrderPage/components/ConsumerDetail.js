@@ -38,7 +38,7 @@ class ConsumerDetail extends Component {
         </div>
         <div className='card-body'>
           {
-            customer.className
+            customer.name
             ? <p>
                 <span><b>Name: </b></span>
                 <span>{customer.name}</span>

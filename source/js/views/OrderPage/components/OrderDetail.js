@@ -37,6 +37,7 @@ class OrderDetail extends Component {
     this.openGmap = this.openGmap.bind(this)
     this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
     this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
+    this.handleRefersh = this.handleRefersh.bind(this)
   }
 
   handleClick() {
@@ -80,7 +81,7 @@ class OrderDetail extends Component {
   handleConfirmAssign(id) {
     const { currentOrderId, actions } = this.props
     const postData = {
-      support_id: getHasuraId(),
+      support_id: parseInt(getHasuraId()),
       order_id: currentOrderId
     }
     actions.assignOrder(postData)
@@ -91,6 +92,11 @@ class OrderDetail extends Component {
     // console.log(confirmModal());
   }
 
+  handleRefersh() {
+    const { actions, currentOrderId } = this.props
+    actions.fetchOrderDetail(currentOrderId)
+  }
+
   render() {
     const itemStyle = {
       display: 'flex',
@@ -99,7 +105,7 @@ class OrderDetail extends Component {
     }
 
     const trackBtnStyle = {
-      marginLeft: '20px'
+      margin: '0 60px 0 20px'
     }
 
     const delivererStatus = 'confirmed'
@@ -141,6 +147,15 @@ class OrderDetail extends Component {
       const retailer_notified_time = retailer.notifiedTime
     // }
 
+    const refershStyle = {
+      verticalAlign: 'middle',
+      position: 'absolute',
+      right: '20px',
+      cursor: 'pointer',
+      display: 'inline-block',
+      height: '30px'
+    }
+
     return (
       <div className='order-detail'>
         <div className='order-detail-head'>
@@ -157,7 +172,9 @@ class OrderDetail extends Component {
             : ''
           }
           </span>
-          {/* <div style={{marginLeft: '20px'}}> */}
+          <span style={refershStyle} onClick={this.handleRefersh}>{getIcon('refresh')}</span>
+          
+          <div style={{marginLeft: '30px', marginTop: '18px', position: 'relative', top: '5px'}}>
             {
               deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
               ? <button
@@ -170,7 +187,7 @@ class OrderDetail extends Component {
             }
             {
               order.retailers.length
-              ? <button id='show-retailers' style={{marginLeft: '20px'}} onClick={this.showNotifiedRetailers}>Show notified retailers</button>
+              ? <button id='show-retailers' onClick={this.showNotifiedRetailers}>Show notified retailers</button>
               : ''
             }
             {
@@ -178,7 +195,7 @@ class OrderDetail extends Component {
               ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotifiedDeliverers}>Show notified deliverers</button>
               : ''
             }
-            {/* </div> */}
+            </div>
         </div>
         {/* <hr /> */}
 

@@ -81,25 +81,44 @@ button {
     opacity: 0.3;
   }
   &.btn {
-    border-style: none;
+    background-image: none;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 1px;
     border-radius: 2px;
     padding: 5px 20px;
     color: #fff;
+    transition: all 0.1s ease-in;
     &:focus {
       outline: 0;
     }
   }
   &.btn-green {
-    background: #3ea03e;
+    border-color: #3ea03e;
+    color: darken(#3ea03e, 10%);
+    &:hover {
+      background-color: #3ea03e;
+      color: #fff;
+    }
   }
   &.btn-red {
-    background: #c72f2a;
+    border-color: #ef5e5e; 
+    color: darken(#ef5e5e, 10%);
+    &:hover {
+      background-color: #ef5e5e;
+      color: #fff;
+    }
   }
   &.btn-orange {
 
   }
   &.btn-blue {
-    background: #00b3ff;
+    border-color: #00b3ff;
+    color: darken(#00b3ff, 10%);
+    &:hover {
+      background-color: #00b3ff;
+      color: #fff;
+    }
   }
   &.btn-black {
     background: #222;

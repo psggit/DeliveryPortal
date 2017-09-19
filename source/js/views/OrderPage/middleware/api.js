@@ -45,6 +45,15 @@ export function fetchHistoryOrders(action) {
   .then(json => json)
 }
 
+export function fetchCancellationOrders(action) {
+  return POST({
+    api: `/deliveryStatus/cancellationOrders`,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+  .then(json => json)
+}
+
 export function searchLiveOrders(action) {
   return POST({
     api: `/deliveryStatus/searchLiveOrders`,
@@ -94,6 +103,7 @@ export function fetchOrderDetail(action) {
 export function assignOrder(action) {
   return POST({
     api: `/deliveryStatus/assignSupport`,
+    handleError: true,
     apiBase: 'gremlinUrl',
     data: action.data,
 
