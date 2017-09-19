@@ -102,3 +102,9 @@ export const setLoadingOrderDetail = () => ({
   type: ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL
 })
 
+export const autoPilot = (data, CB) => ({
+  type: ActionTypes.REQUEST_AUTO_PILOT,
+  data: data,
+  CB: CB
+})
+

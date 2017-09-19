@@ -148,3 +148,12 @@ export function confirmDeliverer(action) {
     data: action.data
   })
 }
+
+export function autoPilot(action) {
+  return POST({
+    api: `/deliveryStatus/autoPilot`,
+    handleError: true,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+}

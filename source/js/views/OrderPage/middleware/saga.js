@@ -86,6 +86,7 @@ function* searchHistoryOrders(action) {
 }
 
 function* fetchOrderDetail(action) {
+  console.log(action)
   try {
     const data = yield call(Api.fetchOrderDetail, action)
     yield put({type: ActionTypes.SUCCESS_FETCH_ORDER_DETAIL, data})
@@ -181,7 +182,7 @@ function* confirmRetailer(action) {
     if (data.errorCode) {
       Notify(data.message, "warning")
     } else {
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
       Notify("Successfully confirmed the retailer", "success")
     }
   } catch (err) {
@@ -192,7 +193,7 @@ function* confirmRetailer(action) {
 function* confirmDeliverer(action) {
   try {
     const data = yield call(Api.confirmDeliverer, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
     Notify("Successfully confirmed the deliverer", "success")
   } catch (err) {
     console.log(err)
@@ -207,6 +208,20 @@ function* setLoadingOrderDetail() {
     console.log(err)
   }
 }
+
+function* autoPilot(action) {
+  try {
+    const data = yield call(Api.autoPilot, action)
+    yield put({type: ActionTypes.SUCCESS_AUTO_PILOT})
+    action.CB(action.data.status)
+    Notify(`Switched to ${action.data.status ? 'auto' : 'manual'}`, "success")
+  } catch (err) {
+    console.log(err)
+    action.CB(!action.data.status)
+  }
+}
+
+
 
 /**
  * Watchers
@@ -322,5 +337,11 @@ export function* watchConfirmDeliverer() {
 export function* watchSetLoadingOrderDetail() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, setLoadingOrderDetail)
+  }
+}
+
+export function* watchAutoPilot() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_AUTO_PILOT, autoPilot)
   }
 }

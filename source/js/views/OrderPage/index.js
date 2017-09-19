@@ -62,6 +62,7 @@ class OrderPage extends Component {
     this.searchOrdersData = this.searchOrdersData.bind(this)
     this.filterOrdersData = this.filterOrdersData.bind(this)
     this.handleClearFilter = this.handleClearFilter.bind(this)
+    this.handleAutoPilot = this.handleAutoPilot.bind(this)
   }
 
   fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
@@ -292,6 +293,14 @@ class OrderPage extends Component {
     this.fetchOrdersData(ordersType, pageOffset)
   }
 
+  handleAutoPilot(status, CB) {
+    const { actions } = this.props
+    const postData = {
+      status
+    }
+    actions.autoPilot(postData, CB)
+  }
+
   // handleDateChange(dateType) {
   //   console.log(dateType)
   //   switch (dateType) {
@@ -387,6 +396,7 @@ class OrderPage extends Component {
     return (
       <div>
         <NavBar
+          autoPilot={this.handleAutoPilot}
           handleRouteChange={this.fetchOrdersData}
           canAccess={canAccess}
           search={this.searchOrdersData}
