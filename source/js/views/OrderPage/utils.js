@@ -25,8 +25,8 @@ export function getIcon(name) {
       )  
     case 'refresh':
       return (
-        <svg fill="#9b9b9b" version="1.1" id="Capa_1"  x="0px" y="0px"
-        width="30px" height="30px" viewBox="0 0 561 561">
+        <svg style={{pointerEvents: 'none'}} fill="#9b9b9b" version="1.1" id="Capa_1"  x="0px" y="0px"
+        width="50px" height="50px" viewBox="0 0 561 561">
         <g>
           <g id="loop">
             <path d="M280.5,76.5V0l-102,102l102,102v-76.5c84.15,0,153,68.85,153,153c0,25.5-7.65,51-17.85,71.4l38.25,38.25

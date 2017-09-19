@@ -148,12 +148,15 @@ class OrderDetail extends Component {
     // }
 
     const refershStyle = {
-      verticalAlign: 'middle',
       position: 'absolute',
       right: '20px',
+      top: '50%',
+      transform: 'translateY(-50%)',
       cursor: 'pointer',
       display: 'inline-block',
-      height: '30px'
+      width: '50px',
+      zIndex: '1',
+      height: '50px'
     }
 
     return (
@@ -174,7 +177,7 @@ class OrderDetail extends Component {
           </span>
           <span style={refershStyle} onClick={this.handleRefersh}>{getIcon('refresh')}</span>
           
-          <div style={{marginLeft: '30px', marginTop: '18px', position: 'relative', top: '5px'}}>
+          <div style={{marginLeft: '30px', position: 'relative', top: '5px'}}>
             {
               deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
               ? <button

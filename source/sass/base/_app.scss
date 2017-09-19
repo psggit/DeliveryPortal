@@ -28,7 +28,7 @@ body {
 
 .main-wrapper {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1366px;
   margin: 0 auto;
 }
 
@@ -84,6 +84,7 @@ button {
     background-image: none;
     background-color: #fff;
     border-style: solid;
+    border-color: transparent;
     border-width: 1px;
     border-radius: 2px;
     padding: 5px 20px;
@@ -109,9 +110,7 @@ button {
       color: #fff;
     }
   }
-  &.btn-orange {
 
-  }
   &.btn-blue {
     border-color: #00b3ff;
     color: darken(#00b3ff, 10%);
