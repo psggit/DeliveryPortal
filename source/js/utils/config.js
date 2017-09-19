@@ -37,7 +37,7 @@
 // }
 
 function getAPIObj() {
-  if (window.location.href.split(':')[1] === '//localhost' || window.location.href.split(':')[1] === '//127.0.0.1' || window.location.href.split(':')[1] === '//192.168.10.131') {
+  if (window.location.href.split(':')[1] === '//localhost' || window.location.href.split(':')[1] === '//192.168.10.131') {
     let scheme = 'https'
     let baseHost = '.hearsay81.hasura-app.io'
     let appName = 'hearsay81'
@@ -45,7 +45,8 @@ function getAPIObj() {
     return {
       authUrl: 'https://auth.' + appName + '.hasura-app.io',
       blogicUrl: 'https://api1.' + appName + '.hasura-app.io',
-      gremlinUrl: scheme + '://gremlin' + baseHost
+      gremlinUrl: scheme + '://gremlin' + baseHost,
+      socketUrl: 'https://livered' + baseHost
     }
   } else {
     let scheme = window.location.href.split(':')[0]
@@ -54,7 +55,8 @@ function getAPIObj() {
     return {
       authUrl: scheme + '://auth' + baseHost,
       blogicUrl: scheme + '://api1' + baseHost,
-      gremlinUrl: scheme + '://gremlin' + baseHost
+      gremlinUrl: scheme + '://gremlin' + baseHost,
+      socketUrl: scheme + '://livered' + baseHost
     }
   }
 }

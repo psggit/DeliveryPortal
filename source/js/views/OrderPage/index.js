@@ -60,6 +60,8 @@ class OrderPage extends Component {
     this.setSearchQuery = this.setSearchQuery.bind(this)
     this.fetchOrdersData = this.fetchOrdersData.bind(this)
     this.searchOrdersData = this.searchOrdersData.bind(this)
+    this.filterOrdersData = this.filterOrdersData.bind(this)
+    this.handleClearFilter = this.handleClearFilter.bind(this)
   }
 
   fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
@@ -197,7 +199,7 @@ class OrderPage extends Component {
       // } else {
       //   timeOutId = setTimeout(pollOrdersData, 30000)
       // }
-      // setTimeout(pollOrdersData, 30000)
+      setTimeout(pollOrdersData, 30000)
     })()
   }
 
@@ -244,6 +246,17 @@ class OrderPage extends Component {
     this.setState({ activePage: 1, pageOffset: 0 })
   }
 
+  filterOrdersData(filter) {
+    const { actions } = this.props
+    const postData = {
+      limit: this.pagesLimit,
+      offset: this.pageOffset,
+      filter_by: filter
+    }
+
+    actions.fetchLiveOrders(postData)    
+  }
+
   handlePageChange(pageNumber) {
     let offset = this.pagesLimit * (pageNumber - 1)
     const { actions } = this.props
@@ -262,16 +275,21 @@ class OrderPage extends Component {
 
   handleFilterChange(filter) {
     this.resetPagination()
-    const { actions } = this.props
-    const postData = {
-      limit: this.pagesLimit,
-      offset: 0,
-      where: {
-        type: 'status',
-        value: ''
-      }
-    }
-    fetchOrdersData(this.state.ordersType, 0)
+    // const { actions } = this.props
+    // const postData = {
+    //   limit: this.pagesLimit,
+    //   offset: 0,
+    //   where: {
+    //     type: 'status',
+    //     value: ''
+    //   }
+    // }
+    this.filterOrdersData(filter)
+  }
+
+  handleClearFilter() {
+    const { ordersType, pageOffset } = this.state
+    this.fetchOrdersData(ordersType, pageOffset)
   }
 
   // handleDateChange(dateType) {
@@ -388,14 +406,15 @@ class OrderPage extends Component {
         /> */}
         <div className='body-container'>
           <div className='orders-filter'>
-            <label>Filter by</label>
+            { ordersType !== 'history' ? <label>Filter by</label> : '' }
             {
               ordersType !== 'history'
               ? <Dropdown
+                  handleClearFilter={this.handleClearFilter}
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : <button onClick={this.handleChooseDate}>Choose date</button>
+              : /*<button onClick={this.handleChooseDate}>Choose date</button>*/ ''
             }
             <SearchInput
               search={this.searchOrdersData}
@@ -414,6 +433,7 @@ class OrderPage extends Component {
               canAccess={canAccess}
               loadingOrdersList={loadingOrdersList}
               orders={orders}
+              ordersType={ordersType}
               unmountOrderDetail={this.unmountOrderDetail}
               mountOrderDetail={this.mountOrderDetail}
               actions={actions}
@@ -423,7 +443,7 @@ class OrderPage extends Component {
           }
           
           {
-            !loadingOrdersList
+            !loadingOrdersList && ordersCount > 0
             ? <Pagination
               activePage={activePage}
               itemsCountPerPage={this.pagesLimit}

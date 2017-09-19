@@ -6,15 +6,14 @@ import ModalBox from '@components/ModalBox'
 import { unMountModal } from '@components/ModalBox/utils'
 // import '@sass/OrdersPage/ShowNotified.scss'
 // import Moment from 'moment'
-import Gmap from './Gmap'
+import Gmap from './gmap-old'
 
-export default function showNotified (data) {
-  return class showNotified extends React.Component {
+export default function showGmap (data) {
+  return class showGmap extends React.Component {
     constructor () {
       super()
     }
     render () {
-      console.log(data)
       return (
         <ModalBox>
           <ModalHeader>{ data.heading }</ModalHeader>

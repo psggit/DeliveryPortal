@@ -83,7 +83,7 @@ export function searchHistoryOrders(action) {
 
 export function fetchOrderDetail(action) {
   return POST({
-    api: `/deliveryStatus/orderStatus/`,
+    api: `/deliveryStatus/orderStatus`,
     apiBase: 'gremlinUrl',
     data: action.data
   })

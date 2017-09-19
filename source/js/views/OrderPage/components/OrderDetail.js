@@ -10,6 +10,7 @@ import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
 import ShowGmap from './ShowGmap'
 import moment from 'moment'
+import { getHasuraId } from './../utils'
 import '@sass/OrdersPage/OrderDetail.scss'
 
 function getTimeDiff(d2) {
@@ -79,7 +80,7 @@ class OrderDetail extends Component {
   handleConfirmAssign(id) {
     const { currentOrderId, actions } = this.props
     const postData = {
-      support_id: 1,
+      support_id: getHasuraId(),
       order_id: currentOrderId
     }
     actions.assignOrder(postData)
@@ -113,7 +114,7 @@ class OrderDetail extends Component {
     } = this.props
 
     const isOrderConfirmed = false
-    const supportId = 1
+    const supportId = getHasuraId()
     const isOrderAssigned = supportId == order.assignedToId
 
     const { actions } = this.props
@@ -132,6 +133,7 @@ class OrderDetail extends Component {
       const dp_notified_time = deliverer.notifiedTime
       const dp_arrived_at_store_time = deliverer.arrivedAtStoreTime
       const dp_accepted_time = deliverer.acceptedTime
+      const dp_confirmation_time = deliverer.confirmationTime
     // }
 
     // if (retailer) {

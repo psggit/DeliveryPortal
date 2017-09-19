@@ -9,7 +9,7 @@ class OrdersList extends Component {
   }
 
   handleClick(orderId) {
-    this.props.mountOrderDetail(parseInt(orderId))
+    this.props.mountOrderDetail(orderId)
   }
   render() {
     const { orders, state, loadingOrdersList } = this.props
@@ -36,6 +36,7 @@ class OrdersList extends Component {
               orders.map((item, i) => {
                 return (
                   <OrderListItem
+                    ordersType={this.props.ordersType}
                     key={`order-list-item-${i}`}
                     id={item.order_id}
                     consumerName={item.consumer_name}
@@ -46,6 +47,7 @@ class OrdersList extends Component {
                     dp_notified_time={item.dp_notified_time}
                     dp_arrived_at_store_time={item.dp_arrived_at_store_time}
                     dp_accepted_time={item.dp_accepted_time}
+                    dp_confirmation_time={item.dp_confirmation_time}
                     dp_reached_to_consumer_time={item.dp_reached_to_consumer_time}
                     retailer_accepted_time={item.retailer_confirmation_time}
                     cancellation_time={item.cancelled_time}

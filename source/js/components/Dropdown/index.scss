@@ -8,6 +8,23 @@
   display: inline-block;
   vertical-align: middle;
   position: relative;
+  .clear-search {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      fill: #4a4a4a;
+      width: 20px;
+      width: 20px;
+    }
+  }
   input {
     color: #4a4a4a;
     border-radius: 2px;
