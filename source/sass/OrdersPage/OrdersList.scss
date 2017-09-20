@@ -28,6 +28,7 @@ body.no-scroll {
   position: relative;
   padding: 40px 6%;
   height: 100vh;
+  overflow: auto;
 }
 button {
   padding: 5px 20px;
@@ -169,5 +170,11 @@ table.orders-list {
         color: #721c24;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 1390px) {
+  .body-container {
+    padding: 40px 2%;
   }
 }

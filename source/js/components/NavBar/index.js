@@ -41,10 +41,10 @@ class NavBar extends Component {
   render() {
     const { shouldDeliever } = this.state
     const menuItems = [
-      { value: 'all', label: 'in progress orders' },
-      { value: 'assigned', label: 'assigned orders'},
-      { value: 'unassigned', label: 'unassigned orders'},
-      { value: 'history', label: 'order history' },
+      { value: 'all', label: 'in progress' },
+      { value: 'assigned', label: 'assigned'},
+      { value: 'unassigned', label: 'unassigned'},
+      { value: 'history', label: 'history' },
       { value: 'cancellation', label: 'Need to be canelled'}
     ]
     if (!this.props.canAccess('other-orders')) {
@@ -65,8 +65,8 @@ class NavBar extends Component {
                 <span>
                   {
                     shouldDeliever
-                    ? 'Pause Delieveries'
-                    : 'Continue Delieveries'
+                    ? 'Pause Deliveries'
+                    : 'Continue Deliveries'
                   }
                 </span>
                 <span onClick={this.handleClick}>

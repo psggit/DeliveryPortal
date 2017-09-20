@@ -161,3 +161,12 @@ hr {
 hr {
   opacity: 0.3;
 }
+
+@media only screen and (max-width: 1390px) {
+  .order-detail-container {
+    margin: 1px 2%;
+  }
+  .order-detail .order-detail-head {
+    margin: 0 2%;
+  }
+}
