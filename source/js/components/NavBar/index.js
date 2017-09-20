@@ -80,13 +80,19 @@ class NavBar extends Component {
             )
             : ''
           }
-          <li>
-            <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
-            <ToggleButton
-              autoPilotStatus={this.props.autoPilotStatus}
-              autoPilot={this.props.autoPilot}
-            />
-          </li>
+          {
+            this.props.canAccess('auto-pilot')
+            ? (
+              <li>
+                <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
+                <ToggleButton
+                  autoPilotStatus={this.props.autoPilotStatus}
+                  autoPilot={this.props.autoPilot}
+                />
+              </li>
+            )
+            : ''
+          }
           {
             menuItems.map((item, i) => {
               return (
