@@ -2,13 +2,16 @@ import React from 'react'
 import '@sass/components/_Toggle-button.scss'
 
 class ToggleButton extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
     this.handleChange = this.handleChange.bind(this)
     this.toggle = this.toggle.bind(this)
     this.state = {
-      toggled: false
+      toggled: props.autoPilotStatus
     }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ toggled: nextProps.autoPilotStatus })
   }
   toggle(success) {
     this.setState({ toggled: success })

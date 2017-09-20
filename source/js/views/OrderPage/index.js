@@ -63,6 +63,7 @@ class OrderPage extends Component {
     this.filterOrdersData = this.filterOrdersData.bind(this)
     this.handleClearFilter = this.handleClearFilter.bind(this)
     this.handleAutoPilot = this.handleAutoPilot.bind(this)
+    // this.handlefetchAutoPilotStatus = this.handlefetchAutoPilotStatus.bind(this)
   }
 
   fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
@@ -130,6 +131,7 @@ class OrderPage extends Component {
         break
     }
   }
+
 
   // handleRouteChange(ordersType, calledBy) {
   //   this.setState({ ordersType })
@@ -199,6 +201,7 @@ class OrderPage extends Component {
       ? _self.searchOrdersData(searchQuery, pageOffset)
       : _self.fetchOrdersData(ordersType, pageOffset)
 
+      actions.fetchAutoPilotStatus({ city_id: 5 })
       // if (ordersType !== 'all') {
       //   clearTimeout(timeOutId)
       // } else {
@@ -305,6 +308,7 @@ class OrderPage extends Component {
     actions.autoPilot(postData, CB)
   }
 
+
   // handleDateChange(dateType) {
   //   console.log(dateType)
   //   switch (dateType) {
@@ -331,6 +335,7 @@ class OrderPage extends Component {
       retailer,
       deliverer,
       customer,
+      autoPilotStatus,
       loadingOrdersList,
       loadingOrderDetail,
       match
@@ -401,6 +406,7 @@ class OrderPage extends Component {
       <div>
         <NavBar
           autoPilot={this.handleAutoPilot}
+          autoPilotStatus={autoPilotStatus}
           handleRouteChange={this.fetchOrdersData}
           canAccess={canAccess}
           search={this.searchOrdersData}
@@ -494,6 +500,7 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
+  autoPilotStatus: state.OrderPage.autoPilotStatus,
   loadingOrdersList: state.OrderPage.loadingOrdersList,
   orders: state.OrderPage.orders,
   ordersCount: state.OrderPage.ordersCount,

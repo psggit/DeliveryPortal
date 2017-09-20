@@ -167,3 +167,12 @@ export function autoPilot(action) {
     data: action.data
   })
 }
+
+export function fetchAutoPilotStatus(action) {
+  return POST({
+    api: `/deliveryStatus/autoPilotStatus`,
+    handleError: true,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+}

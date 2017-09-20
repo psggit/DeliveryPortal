@@ -82,7 +82,10 @@ class NavBar extends Component {
           }
           <li>
             <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
-            <ToggleButton autoPilot={this.props.autoPilot} />
+            <ToggleButton
+              autoPilotStatus={this.props.autoPilotStatus}
+              autoPilot={this.props.autoPilot}
+            />
           </li>
           {
             menuItems.map((item, i) => {

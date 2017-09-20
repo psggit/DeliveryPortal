@@ -113,3 +113,8 @@ export const autoPilot = (data, CB) => ({
   CB: CB
 })
 
+export const fetchAutoPilotStatus = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_AUTO_PILOT_STATUS,
+  data
+})
+

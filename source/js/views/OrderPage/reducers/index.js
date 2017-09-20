@@ -29,6 +29,7 @@ const initialOrderState = {
     loadingOrderDetail: true,
     state: 'SearchingRetailer',
     loadingOrdersList: true,
+    autoPilotStatus: false,
     orders: [],
     ordersCount: 0,
     order: {
@@ -121,6 +122,12 @@ const actionsMap = {
       loadingOrdersList: false,
       orders: action.data.orders,
       ordersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_AUTO_PILOT_STATUS]: (state, action) => {
+    return Object.assign({}, state, {
+      autoPilotStatus: action.data.autoPilotStatus
     })
   },
 
