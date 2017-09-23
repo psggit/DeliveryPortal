@@ -76,7 +76,8 @@ export function canAccess(feature) {
   const accessObj = {
     "admin": [],
     "support_admin": [],
-    "support_person": ['resume-pause'],
+    "support_master": [],
+    "delivery_support_person": ['resume-pause'],
     "support_team_leader": ['force-redeem', 'skip'],
     "excise_person": ['action-buttons', 'assign', 'consumer-col', 'resume-pause', 'other-orders', 'auto-pilot']
   } 
