@@ -338,6 +338,7 @@ class OrderPage extends Component {
       autoPilotStatus,
       loadingOrdersList,
       loadingOrderDetail,
+      plotData,
       match
     } = this.props
 
@@ -476,6 +477,7 @@ class OrderPage extends Component {
           {
             shouldMountOrderDetail
             ? <OrderDetail
+              plotData={plotData}
               ordersType={ordersType}
               canAccess={canAccess}
               retailer={retailer}
@@ -500,6 +502,7 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
+  plotData: state.OrderPage.plotData,
   autoPilotStatus: state.OrderPage.autoPilotStatus,
   loadingOrdersList: state.OrderPage.loadingOrdersList,
   orders: state.OrderPage.orders,

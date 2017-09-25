@@ -23,6 +23,9 @@ export default function showGmap (data) {
                 customer={data.customer}
                 deliverer={data.deliverer}
                 retailer={data.retailer}
+                actions={data.actions}
+                ordersType={data.ordersType}
+                plotData={data.plotData}
               />
             </ModalBody>
           <ModalFooter>

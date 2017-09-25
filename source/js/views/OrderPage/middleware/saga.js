@@ -233,10 +233,19 @@ function* autoPilot(action) {
 function* fetchAutoPilotStatus(action) {
   try {
     const data = yield call(Api.fetchAutoPilotStatus, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_AUTO_PILOT_STATUS})
+    yield put({type: ActionTypes.SUCCESS_FETCH_AUTO_PILOT_STATUS, data})
   } catch (err) {
     console.log(err)
     // Notify('Autopilot status fetching problem', 'warning')
+  }
+}
+
+function* fetchPlotData(action) {
+  try {
+    const data = yield call(Api.fetchPlotData, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_PLOT_DATA, data})
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -374,5 +383,11 @@ export function* watchAutoPilot() {
 export function* watchFetchAutoPilotStatus() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_AUTO_PILOT_STATUS, fetchAutoPilotStatus)
+  }
+}
+
+export function* watchFetchPlotData() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_PLOT_DATA, fetchPlotData)
   }
 }

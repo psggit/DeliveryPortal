@@ -45,12 +45,15 @@ class OrderDetail extends Component {
   }
 
   openGmap() {
-    const { order, retailer, deliverer, customer } = this.props
+    const { order, retailer, deliverer, customer, plotData, actions, ordersType } = this.props
     mountModal(ShowGmap({
       id: order.id,
+      ordersType,
+      actions,
       retailer,
       deliverer,
-      customer
+      customer,
+      plotData
     }))
   }
 
@@ -89,7 +92,10 @@ class OrderDetail extends Component {
   }
 
   componentDidMount() {
-    // console.log(confirmModal());
+    const { actions, currentOrderId } = this.props
+    actions.fetchPlotData({
+      order_id: currentOrderId
+    })
   }
 
   handleRefersh() {
@@ -179,7 +185,7 @@ class OrderDetail extends Component {
           
           <div style={{marginLeft: '30px', position: 'relative', top: '5px'}}>
             {
-              deliverer.confirmationTime && ordersType !== 'history' && this.props.canAccess('map')
+              deliverer.confirmationTime && this.props.canAccess('map')
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}

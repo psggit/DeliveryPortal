@@ -31,6 +31,7 @@ const initialOrderState = {
     loadingOrdersList: true,
     autoPilotStatus: false,
     orders: [],
+    plotData: [],
     ordersCount: 0,
     order: {
       id: '',
@@ -127,7 +128,19 @@ const actionsMap = {
 
   [ActionTypes.SUCCESS_FETCH_AUTO_PILOT_STATUS]: (state, action) => {
     return Object.assign({}, state, {
-      autoPilotStatus: action.data.autoPilotStatus
+      autoPilotStatus: action.data.status
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_PLOT_DATA]: (state, action) => {
+    const plotData = action.data.location_history.map(item => {
+      return {
+        lat: item.gps_coordinates[0],
+        lng: item.gps_coordinates[1]
+      }
+    })
+    return Object.assign({}, state, {
+      plotData: plotData
     })
   },
 

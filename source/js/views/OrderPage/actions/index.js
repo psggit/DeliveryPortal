@@ -118,3 +118,8 @@ export const fetchAutoPilotStatus = (data) => ({
   data
 })
 
+export const fetchPlotData = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_PLOT_DATA,
+  data
+})
+

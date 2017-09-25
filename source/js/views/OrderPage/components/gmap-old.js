@@ -13,45 +13,82 @@ import { getIcon } from './../utils'
 const params = {v: '3.exp', key: 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'};
 
 class Gmap extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       dx: null,
       dy: null,
-      zoom: 18
+      zoom: 18,
+      plotData: props.plotData || []
     }
     this.handleMapCreated = this.handleMapCreated.bind(this)
     this.handleZoomChanged = this.handleZoomChanged.bind(this)
   }
   
+  componentWillReceiveProps(nextProps) {
+    this.setState({ plotData: nextProps.plotData })
+  }
+
   componentDidMount() {
     document.querySelector('.modal-container').style.width = '70%'
     document.querySelector('.modal-container').style.height = '80%'
-    const { orderId } = this.props
+
+
+    const { orderId, actions, ordersType } = this.props
+    
     const _self = this
-    var socket = io(Api.socketUrl, {
-      path: '/pool'
-    })
-    socket.on('status', function (data) {
-      console.log(data);
-      socket.emit('subscribe', {"order_id": orderId });
-    });
-    
-    socket.on('subscribed', function(data) {
-      console.log(data)
-    })
-    
-    socket.on('live_data', function(res) {
-      console.log(res)
-      _self.setState({
-        dx: res.gps_coordinates[0],
-        dy: res.gps_coordinates[1]
+    if (ordersType !== 'history') {
+      var socket = io(Api.socketUrl, {
+        path: '/pool'
       })
-    })
+      socket.on('status', function (data) {
+        console.log(data);
+        socket.emit('subscribe', {"order_id": orderId });
+      });
+      
+      socket.on('subscribed', function(data) {
+        console.log(data)
+      })
+      
+      socket.on('live_data', function(res) {
+        console.log(res)
+        let dx = res.gps_coordinates[0]
+        let dy = res.gps_coordinates[1]
+        _self.setState({
+          dx: dx,
+          dy: dy
+        })
+        
+        _self.state.plotData.push({lat: dx, lng: dy})
+      })
+    }
   }
 
   handleMapCreated(map) {
     this.setState({ map })
+    const { plotData } = this.state
+    // this.setState({
+    //   dx: plotData[plotData.length - 1].lat,
+    //   dy: plotData[plotData.length - 1].lng
+    // })
+    var trafficLayer = new google.maps.TrafficLayer()
+    
+    // const flightPlanCoordinates = [
+    //   {lat: 37.772, lng: -122.214},
+    //   {lat: 21.291, lng: -157.821},
+    //   {lat: -18.142, lng: 178.431},
+    //   {lat: -27.467, lng: 153.027},
+    // ]
+    const deliveryPath = new google.maps.Polyline({
+      path: plotData,
+      geodesic: true,
+      strokeColor: '#4990e2',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    })
+    
+    trafficLayer.setMap(map)
+    deliveryPath.setMap(map)
   }
   handleZoomChanged() {
     const { map, zoom } = this.state
@@ -107,10 +144,10 @@ class Gmap extends Component {
   render() {
     
     const { customer, retailer, deliverer } = this.props
-    const cx = parseFloat(customer.gps.split(',')[0])
-    const cy = parseFloat(customer.gps.split(',')[1])
-    const rx = parseFloat(retailer.gps.split(',')[0])
-    const ry = parseFloat(retailer.gps.split(',')[1])
+    const cx = customer.gps ? parseFloat(customer.gps.split(',')[0]) : null
+    const cy = customer.gps ? parseFloat(customer.gps.split(',')[1]) : null
+    const rx = retailer.gps ? parseFloat(retailer.gps.split(',')[0]) : null
+    const ry = retailer.gps ? parseFloat(retailer.gps.split(',')[1]) : null
     const { dx, dy } = this.state
 
     return (
