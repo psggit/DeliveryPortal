@@ -67,10 +67,10 @@ class Gmap extends Component {
   handleMapCreated(map) {
     this.setState({ map })
     const { plotData } = this.state
-    // this.setState({
-    //   dx: plotData[plotData.length - 1].lat,
-    //   dy: plotData[plotData.length - 1].lng
-    // })
+    this.setState({
+      dx: plotData[plotData.length - 1].lat,
+      dy: plotData[plotData.length - 1].lng
+    })
     var trafficLayer = new google.maps.TrafficLayer()
     
     // const flightPlanCoordinates = [

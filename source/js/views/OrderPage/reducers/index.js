@@ -133,10 +133,10 @@ const actionsMap = {
   },
 
   [ActionTypes.SUCCESS_FETCH_PLOT_DATA]: (state, action) => {
-    const plotData = action.data.location_history.map(item => {
+    const plotData = action.data.location_history.snappedPoints.map(item => {
       return {
-        lat: item.gps_coordinates[0],
-        lng: item.gps_coordinates[1]
+        lat: item.location.latitude,
+        lng: item.location.longitude
       }
     })
     return Object.assign({}, state, {
