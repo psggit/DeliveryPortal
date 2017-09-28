@@ -26,6 +26,7 @@ class Gmap extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
     this.setState({ plotData: nextProps.plotData })
   }
 
@@ -37,7 +38,7 @@ class Gmap extends Component {
     const { orderId, actions, ordersType } = this.props
     
     const _self = this
-    if (ordersType !== 'history') {
+    // if (ordersType !== 'history') {
       var socket = io(Api.socketUrl, {
         path: '/pool'
       })
@@ -61,16 +62,16 @@ class Gmap extends Component {
         
         _self.state.plotData.push({lat: dx, lng: dy})
       })
-    }
+    // }
   }
 
   handleMapCreated(map) {
     this.setState({ map })
-    const { plotData } = this.state
-    this.setState({
-      dx: plotData[plotData.length - 1].lat,
-      dy: plotData[plotData.length - 1].lng
-    })
+    // const { plotData } = this.state
+    // this.setState({
+    //   dx: plotData[plotData.length - 1].lat,
+    //   dy: plotData[plotData.length - 1].lng
+    // })
     var trafficLayer = new google.maps.TrafficLayer()
     
     // const flightPlanCoordinates = [
@@ -79,16 +80,16 @@ class Gmap extends Component {
     //   {lat: -18.142, lng: 178.431},
     //   {lat: -27.467, lng: 153.027},
     // ]
-    const deliveryPath = new google.maps.Polyline({
-      path: plotData,
-      geodesic: true,
-      strokeColor: '#4990e2',
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-    })
+    // const deliveryPath = new google.maps.Polyline({
+    //   path: plotData,
+    //   geodesic: true,
+    //   strokeColor: '#4990e2',
+    //   strokeOpacity: 1.0,
+    //   strokeWeight: 2,
+    // })
     
     trafficLayer.setMap(map)
-    deliveryPath.setMap(map)
+    // deliveryPath.setMap(map)
   }
   handleZoomChanged() {
     const { map, zoom } = this.state

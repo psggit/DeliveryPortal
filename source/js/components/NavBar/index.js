@@ -49,6 +49,7 @@ class NavBar extends Component {
     ]
     if (!this.props.canAccess('other-orders')) {
       menuItems.splice(1, 2)
+      menuItems.pop()
     }
     return (
       <header>

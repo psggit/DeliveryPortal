@@ -92,10 +92,10 @@ class OrderDetail extends Component {
   }
 
   componentDidMount() {
-    const { actions, currentOrderId } = this.props
-    actions.fetchPlotData({
-      order_id: currentOrderId
-    })
+    // const { actions, currentOrderId } = this.props
+    // actions.fetchPlotData({
+    //   order_id: currentOrderId
+    // })
   }
 
   handleRefersh() {
@@ -185,7 +185,7 @@ class OrderDetail extends Component {
           
           <div style={{marginLeft: '30px', position: 'relative', top: '5px'}}>
             {
-              deliverer.confirmationTime && this.props.canAccess('map')
+              deliverer.confirmationTime && this.props.canAccess('map') && ordersType !== 'history'
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}

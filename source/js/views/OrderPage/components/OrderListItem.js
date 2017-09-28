@@ -105,7 +105,7 @@ class OrderListItem extends Component {
         { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
         { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
         { this.props.canAccess('consumer-col') ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
-        <td title={Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}>{`${getTimeDiff(orderPlacedTime)} mins ago`}</td>
+         <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td>
       </tr>
     )
   }
