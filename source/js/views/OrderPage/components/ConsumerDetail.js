@@ -34,9 +34,16 @@ class ConsumerDetail extends Component {
       <div className='card'>
         <div className='card-head'>
           <h4>Consumer</h4>
-          { customer.isAgeVerified ? getIcon('kyc_confirmed') : '' }
         </div>
         <div className='card-body'>
+          {
+            customer.id
+            ? <p>
+                <span><b>ID: </b></span>
+                <span>{customer.id}</span>
+              </p>
+            : ''  
+          }
           {
             customer.name
             ? <p>
