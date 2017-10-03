@@ -37,7 +37,7 @@
 // }
 
 function getAPIObj() {
-  if (window.location.href.split(':')[1] === '//localhost' || window.location.href.split(':')[1] === '//192.168.10.131') {
+  if (window.location.href.split(':')[1] === '//localhost') {
     let scheme = 'https'
     let baseHost = '.hearsay81.hasura-app.io'
     let appName = 'hearsay81'
