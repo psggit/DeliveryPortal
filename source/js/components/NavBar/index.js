@@ -45,7 +45,7 @@ class NavBar extends Component {
       { value: 'assigned', label: 'assigned'},
       { value: 'unassigned', label: 'unassigned'},
       { value: 'history', label: 'history' },
-      { value: 'cancellation', label: 'Need to be canelled'}
+      { value: 'cancellation', label: 'Need to be cancelled'}
     ]
     if (!this.props.canAccess('other-orders')) {
       menuItems.splice(1, 2)

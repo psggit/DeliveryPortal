@@ -37,6 +37,14 @@ class ConsumerDetail extends Component {
         </div>
         <div className='card-body'>
           {
+            customer.id
+            ? <p>
+                <span><b>ID: </b></span>
+                <span>{customer.id}</span>
+              </p>
+            : ''  
+          }
+          {
             customer.name
             ? <p>
                 <span><b>Name: </b></span>
