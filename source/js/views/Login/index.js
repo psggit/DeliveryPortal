@@ -8,7 +8,7 @@ class Login extends React.Component {
 
   render() {
     const subUrl = 'excise'
-    let fieldLabel1 = 'EMAIL'
+    let fieldLabel1 = 'USERNAME'
     let fieldLabel2 = 'PASSWORD'
 
     if (subUrl !== 'excise') {
