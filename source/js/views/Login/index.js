@@ -1,29 +1,28 @@
 import React from 'react'
-import LoginForm from './form'
+import SupportLoginForm from './SupportLoginForm'
+import ExciseLoginForm from './ExciseLoginForm'
+import { createSession } from './utils'
 
 class Login extends React.Component {
+  constructor() {
+    super()
+  }
   componentWillMount() {
     if (!location.href.split('/')[3].length) history.pushState(null, null, '/login')
   }
 
   render() {
-    const subUrl = 'excise'
-    let fieldLabel1 = 'USERNAME'
-    let fieldLabel2 = 'PASSWORD'
-
-    if (subUrl !== 'excise') {
-      fieldLabel1 = 'PHONE NO.'
-      fieldLabel2 = 'OTP'
-    }
+    const subdomain = window.location.hostname.match(/.*?(\..*)/)[1]
 
     return (
       <div>
         {
           !localStorage.getItem('_hipbaru')
-          ? <LoginForm
-            fieldLabel1={fieldLabel1}
-            fieldLabel2={fieldLabel2}
-            />
+          ? (
+            subdomain == 'excise'
+            ? <ExciseLoginForm createSession={createSession} />
+            : <SupportLoginForm createSession={createSession} /> 
+          )
           : location.href = '/orders'
         } 
       </div>

@@ -3,7 +3,7 @@ import { unmountComponentAtNode } from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import NotFound from 'views/NotFound';
+// import NotFound from 'views/NotFound';
 import OrderPage from './../OrderPage';
 import Login from './../Login';
 
@@ -38,7 +38,7 @@ export default class App extends Component {
               <Route exact path={ routeCodes.history } component={ OrderPage } />
               <Route exact path={ routeCodes.gmap } component={ Gmap } /> */}
               {/* <Route path={ routeCodes.DASHBOARD} component={ DashBoard } /> */}
-              <Route path='*' component={ NotFound } />
+              {/* <Route path='*' component={ NotFound } /> */}
             </Switch>
           </div>
         </div>

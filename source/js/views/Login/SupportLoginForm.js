@@ -3,7 +3,7 @@ import "whatwg-fetch"
 import '@sass/login.scss'
 import { Api } from './../../utils/config'
 
-class LoginForm extends React.Component {
+class SupportLoginForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -29,66 +29,9 @@ class LoginForm extends React.Component {
     }
   }
 
-  getHasuraRole(data) {
-    const hasuraRoles = data.hasura_roles
-    // const hasuraRoles = ["user", "support_person", "excise", "support_admin"]
-    const rolesMap = {
-      "user": 1,
-      "admin": 6,
-      "support_person": 3,
-      "support_admin": 5,
-      "support_team_leader": 4,
-      "excise_person": 2,
-      "support_master": 6,
-      "delivery_support_person": 3
-    }
-    let maxRole = rolesMap["user"]
-    let xHasuraRole = "user"
-    for(let i=0; i<hasuraRoles.length; i++) {
-      if (maxRole < rolesMap[hasuraRoles[i]]) {
-        maxRole = rolesMap[hasuraRoles[i]]
-        xHasuraRole = hasuraRoles[i]
-      }
-    }
-    return xHasuraRole
-  }
-
-  getAuthToken(data) {
-    const token = data.auth_token
-    return token
-  }
-
-  getHasuraId(data) {
-    const hasuraId = data.hasura_id
-    return hasuraId
-  }
-
-  setCookie(cname, cvalue, exdays = 365) {
-    const d = new Date()
-    d.setTime(d.getTime() + (exdays*24*60*60*1000))
-    const expires = "expires=" + d.toUTCString()
-    document.cookie = `${cname}=${cvalue}; ${expires}`
-  }
-
-  createSession(data) {
-    localStorage.setItem('x-hasura-role', this.getHasuraRole(data))
-    localStorage.setItem('auth-token', this.getAuthToken(data))
-    localStorage.setItem('hasura-id', this.getHasuraId(data))
-    // this.setCookie('dinoisses', this.getAuthToken(data))
-    // function getCookie(cname) {
-    //   var name = cname + "="
-    //   var ca = document.cookie.split(';')
-    //   for(var i=0; i<ca.length; i++) {
-    //       var c = ca[i]
-    //       while (c.charAt(0)==' ') c = c.substring(1)
-    //       if (c.indexOf(name) == 0) return c.substring(name.length,c.length)
-    //   }
-    //   return ""
-    // }
-  }
-
   handleSubmit () {
     const { username, password } = this.state
+    const { createSession } = this.props
     const formData = {
       username,
       password
@@ -121,7 +64,7 @@ class LoginForm extends React.Component {
         }
         response.json().then(function(data) {
           localStorage.setItem('_hipbaru', JSON.stringify(data))
-          _self.createSession(data)
+          createSession(data)
           location.href = '/orders'
         })
       }
@@ -132,7 +75,6 @@ class LoginForm extends React.Component {
   })
   }
   render () {
-    const { fieldLabel1, fieldLabel2 } = this.props
     const { isSubmitting, showError, error } = this.state
     const style = isSubmitting
                   ? { cursor: 'progress', opacity: '0.5', boxShadow: '0 2px 4px 0 #333'}
@@ -147,7 +89,7 @@ class LoginForm extends React.Component {
           </div>
           <div className='form-wrapper'>
             <div className='form-group'>
-              <label>{fieldLabel1}</label><br/>
+              <label>EMAIL</label><br/>
               <input
                 type='text'
                 onChange={this.handleChange}
@@ -156,7 +98,7 @@ class LoginForm extends React.Component {
               />
             </div>
             <div className='form-group'>
-              <label>{fieldLabel2}</label><br/>
+              <label>PASSWORD</label><br/>
               <input
                 type='password'
                 onChange={this.handleChange}
@@ -178,4 +120,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm
+export default SupportLoginForm
