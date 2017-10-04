@@ -185,7 +185,7 @@ class OrderDetail extends Component {
           
           <div style={{marginLeft: '30px', position: 'relative', top: '5px'}}>
             {
-              deliverer.confirmationTime && this.props.canAccess('map') && ordersType !== 'history'
+              this.props.canAccess('map') && ordersType !== 'history'
               ? <button
                   style={trackBtnStyle}
                   onClick={this.openGmap}
