@@ -51,9 +51,12 @@ function getAPIObj() {
   } else {
     let scheme = window.location.href.split(':')[0]
     let baseHost = window.location.hostname.match(/.*?(\..*)/)[1]
-
+    let subdomain = window.location.hostname.split('.')[0]
+    let authUrl = subdomain === 'support'
+                  ? scheme + '://auth' + baseHost
+                  : scheme + '://gremlin' + baseHost
     return {
-      authUrl: scheme + '://auth' + baseHost,
+      authUrl: authUrl,
       blogicUrl: scheme + '://api1' + baseHost,
       gremlinUrl: scheme + '://gremlin' + baseHost,
       socketUrl: scheme + '://livered' + baseHost

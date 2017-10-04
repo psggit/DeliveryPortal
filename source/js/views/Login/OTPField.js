@@ -22,7 +22,7 @@ class OTPField extends React.Component {
 
   handleSubmit () {
     const { otp } = this.state
-    const { createSession, phone } = this.props
+    const { createSession, phone, Api } = this.props
     const formData = {
       mobile: phone,
       otp
@@ -44,7 +44,7 @@ class OTPField extends React.Component {
 
     this.setState({isSubmitting: true})
 
-    fetch(`https://gremlin.hearsay81.hasura-app.io/excise-person/auth/otp-login`, fetchOptions)
+    fetch(`${Api.authUrl}/excise-person/auth/otp-login`, fetchOptions)
       .then(
         function(response) {
           console.log(response.headers)

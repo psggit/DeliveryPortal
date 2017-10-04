@@ -12,7 +12,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const subdomain = 'support'
+    const subdomain = window.location.hostname.split('.')[0]
 
     return (
       <div>

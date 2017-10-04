@@ -1,7 +1,7 @@
 import React from 'react'
 import "whatwg-fetch"
 import '@sass/login.scss'
-// import { Api } from './../../utils/config'
+import { Api } from './../../utils/config'
 import PhoneField from './PhoneField'
 import OTPField from './OTPField'
 
@@ -45,12 +45,14 @@ class ExciseLoginForm extends React.Component {
           </div>
            <div>
             <PhoneField
+              Api={Api}
               style={style}
               activeForm={activeForm}
               handleNext={this.handleNext}
               setPhoneNo={this.setPhoneNo}
             />
             <OTPField
+              Api={Api}
               createSession={createSession}
               style={style}
               activeForm={activeForm}
