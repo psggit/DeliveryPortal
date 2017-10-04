@@ -1,4 +1,5 @@
 import React from 'react'
+import "whatwg-fetch"
 
 class OTPField extends React.Component {
   constructor(props) {

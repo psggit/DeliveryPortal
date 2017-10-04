@@ -1,5 +1,6 @@
 import React from 'react'
 import Notify from '@components/Notification'
+import "whatwg-fetch"
 
 class PhoneField extends React.Component {
   constructor(props) {
