@@ -73,6 +73,7 @@ export function getHasuraId() {
 export function canAccess(feature) {
   // console.log(feature)
   const hasuraRole = getHasuraRole()
+  if (!hasuraRole) return;
   const accessObj = {
     "admin": [],
     "support_admin": [],
