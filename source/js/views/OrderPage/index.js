@@ -78,7 +78,6 @@ class OrderPage extends Component {
   }
 
   fetchOrdersData(ordersType, offset = this.state.pageOffset) {
-    this.setState({ ordersType, offset })
     this.setSearchQuery('')
     const { actions } = this.props
     const postData = {
@@ -89,39 +88,40 @@ class OrderPage extends Component {
       //   value: filterValue
       // }
     }
-
-    switch (ordersType) {
-      case 'assigned':
-        postData.support_id = 1
-        actions.fetchLiveAssignedOrders(postData)
-        break
-
-      case 'unassigned':
-        actions.fetchLiveUnassignedOrders(postData)
-        break
-
-      case 'history':
-        actions.fetchHistoryOrders(postData)
-        break
-
-      case 'cancellation': 
-        actions.fetchCancellationOrders(postData)  
-        break
-      
-      case 'attempted':
-        postData.to = this.state.toDate
-        postData.from = this.state.fromDate
-        actions.fetchAttemptedOrders(postData)
-        break
-
-      default:
-        actions.fetchLiveOrders(postData)
-        // console.log("fwfewfdfewewbnfjq")
-        // if (this.isTimeOutCleared) {
-        //   this.pollOrdersData(ordersType)
-        // }
-        break
-    }
+    this.setState({ ordersType, offset }, function() {
+      switch (ordersType) {
+        case 'assigned':
+          postData.support_id = 1
+          actions.fetchLiveAssignedOrders(postData)
+          break
+  
+        case 'unassigned':
+          actions.fetchLiveUnassignedOrders(postData)
+          break
+  
+        case 'history':
+          actions.fetchHistoryOrders(postData)
+          break
+  
+        case 'cancellation': 
+          actions.fetchCancellationOrders(postData)  
+          break
+        
+        case 'attempted':
+          postData.to = this.state.toDate
+          postData.from = this.state.fromDate
+          actions.fetchAttemptedOrders(postData)
+          break
+  
+        default:
+          actions.fetchLiveOrders(postData)
+          // console.log("fwfewfdfewewbnfjq")
+          // if (this.isTimeOutCleared) {
+          //   this.pollOrdersData()
+          // }
+          break
+      }
+    })
   }
   
   searchOrdersData(searchQuery, offset) {
@@ -513,7 +513,7 @@ class OrderPage extends Component {
             }
             {
               ordersType == 'attempted' &&
-                <button onClick={this.handleChooseDate}>
+                <button style={{textTransform: 'capitalize'}} onClick={this.handleChooseDate}>
                   {
                     !dateChanged
                     ? 'Choose date'
