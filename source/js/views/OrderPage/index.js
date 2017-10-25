@@ -52,8 +52,8 @@ class OrderPage extends Component {
       fetchAPI: '/deliveryStatus/liveOrders',
       pageOffset: 0,
       ordersType: 'all',
-      toDate: today.toISOString(),
-      fromDate: tommorrow.toISOString(),
+      toDate: tommorrow.toISOString(),
+      fromDate: today.toISOString(),
       dateChanged: false
     }
     // this.onStateChange = this.onStateChange.bind(this)
