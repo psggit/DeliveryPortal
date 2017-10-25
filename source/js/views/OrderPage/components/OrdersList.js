@@ -9,7 +9,7 @@ class OrdersList extends Component {
   }
 
   handleClick(orderId, e) {
-    if (e.target.nodeName !== 'BUTTON') {
+    if (e.target.nodeName !== 'BUTTON' && ordersType !== 'attempted') {
       this.props.mountOrderDetail(orderId)
     }
   }
