@@ -48,6 +48,11 @@ export const fetchCancellationOrders = (data) => ({
   data
 })
 
+export const fetchAttemptedOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_ATTEMPTED_ORDERS,
+  data
+})
+
 export const searchLiveOrders = (data) => ({
   type: ActionTypes.REQUEST_SEARCH_LIVE_ORDERS,
   data

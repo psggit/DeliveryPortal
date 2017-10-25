@@ -54,6 +54,15 @@ export function fetchCancellationOrders(action) {
   .then(json => json)
 }
 
+export function fetchAttemptedOrders(action) {
+  return POST({
+    api: `/deliveryStatus/attemptedOrders`,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+  .then(json => json)
+}
+
 export function searchLiveOrders(action) {
   return POST({
     api: `/deliveryStatus/searchLiveOrders`,

@@ -15,7 +15,7 @@ export const routeCodes = {
   DASHBOARD: `${ publicPath }dashboard`,
   all: `${ publicPath }orders`,
   assigned: `${ publicPath }orders/assigned`,
-  history: `${ publicPath }orders/history`,
+  history: `${ publicPath }orders/history`,OrderPage,
   LOGIN: `${ publicPath }login`
 };
 

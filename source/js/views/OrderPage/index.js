@@ -21,7 +21,7 @@ import Qr from 'query-string'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import DatePicker from './components/DatePicker'
 import SearchInput from '@components/SearchInput'
-// import Store from './../../'
+import Moment from 'moment'
 
 class OrderPage extends Component {
 
@@ -36,8 +36,12 @@ class OrderPage extends Component {
 
   constructor() {
     super()
-
+    const today = new Date()
+    const tommorrow = new Date(today.getTime())
+    tommorrow.setDate(tommorrow.getDate() + 1)
     this.pagesLimit = 40
+    this.timeOutId = null
+    this.isTimeOutCleared = false
     this.state = {
       shouldMountOrderDetail: false,
       shouldListScroll: true,
@@ -47,9 +51,13 @@ class OrderPage extends Component {
       searchAPI: '/deliveryStatus/searchLiveOrders',
       fetchAPI: '/deliveryStatus/liveOrders',
       pageOffset: 0,
-      ordersType: 'all'
+      ordersType: 'all',
+      toDate: today.toISOString(),
+      fromDate: tommorrow.toISOString(),
+      dateChanged: false
     }
     // this.onStateChange = this.onStateChange.bind(this)
+    this.pollOrdersData = this.pollOrdersData.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleFilterChange = this.handleFilterChange.bind(this)
@@ -63,10 +71,13 @@ class OrderPage extends Component {
     this.filterOrdersData = this.filterOrdersData.bind(this)
     this.handleClearFilter = this.handleClearFilter.bind(this)
     this.handleAutoPilot = this.handleAutoPilot.bind(this)
+    this.setDate = this.setDate.bind(this)
+    this.handleChooseDate = this.handleChooseDate.bind(this)
+    this.handleClearDate = this.handleClearDate.bind(this)
     // this.handlefetchAutoPilotStatus = this.handlefetchAutoPilotStatus.bind(this)
   }
 
-  fetchOrdersData(ordersType, offset = this.state.pageOffset, filterType = '', filterValue = '') {
+  fetchOrdersData(ordersType, offset = this.state.pageOffset) {
     this.setState({ ordersType, offset })
     this.setSearchQuery('')
     const { actions } = this.props
@@ -95,10 +106,20 @@ class OrderPage extends Component {
 
       case 'cancellation': 
         actions.fetchCancellationOrders(postData)  
-        break;
-        
+        break
+      
+      case 'attempted':
+        postData.to = this.state.toDate
+        postData.from = this.state.fromDate
+        actions.fetchAttemptedOrders(postData)
+        break
+
       default:
         actions.fetchLiveOrders(postData)
+        // console.log("fwfewfdfewewbnfjq")
+        // if (this.isTimeOutCleared) {
+        //   this.pollOrdersData(ordersType)
+        // }
         break
     }
   }
@@ -194,21 +215,44 @@ class OrderPage extends Component {
 
     let timeOutId
 
-    ;(function pollOrdersData() {
-      const { pageOffset, ordersType, searchQuery } = _self.state
-
-      searchQuery.length 
-      ? _self.searchOrdersData(searchQuery, pageOffset)
-      : _self.fetchOrdersData(ordersType, pageOffset)
-
+    ;(function pollAutoPilotStatus() {
       actions.fetchAutoPilotStatus({ city_id: 5 })
-      // if (ordersType !== 'all') {
-      //   clearTimeout(timeOutId)
-      // } else {
-      //   timeOutId = setTimeout(pollOrdersData, 30000)
-      // }
-      setTimeout(pollOrdersData, 30000)
+      setTimeout(pollAutoPilotStatus, 30000)
     })()
+
+    // ;(function pollOrdersData(timeOutId) {
+    //   const { pageOffset, ordersType, searchQuery } = _self.state
+    //   console.log(timeOutId)
+    //   searchQuery.length 
+    //   ? _self.searchOrdersData(searchQuery, pageOffset)
+    //   : _self.fetchOrdersData(ordersType, pageOffset)
+
+    //   console.log(ordersType)
+    //   if (ordersType !== 'all') {
+    //     clearTimeout(timeOutId)
+    //   } else {
+    //     timeOutId = setTimeout(pollOrdersData, 3000)
+    //   }
+    //   // setTimeout(pollOrdersData, 3000)
+    // })(timeOutId)
+    // this.pollOrdersData()
+  }
+
+  pollOrdersData() {
+    const { actions } = this.props
+    const { pageOffset, ordersType, searchQuery } = this.state
+    
+    searchQuery.length 
+    ? this.searchOrdersData(searchQuery, pageOffset)
+    : this.fetchOrdersData(ordersType, pageOffset)
+
+    // if (ordersType !== 'all') {
+    //   clearTimeout(this.timeOutId)
+    //   this.isTimeOutCleared = true
+    // } else {
+    //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
+    // }
+    setTimeout(this.pollOrdersData, 3000)
   }
 
   mountOrderDetail(orderId) {
@@ -232,6 +276,16 @@ class OrderPage extends Component {
 
   setSearchQuery(searchQuery) {
     this.setState({ searchQuery })
+  }
+
+  setDate(fromDate, toDate) {
+    this.setState({
+      fromDate,
+      toDate,
+      dateChanged: true
+    }, function() {
+      this.fetchOrdersData('attempted', 0)
+    })
   }
 
   // setQueryString(searchQuery = this.state, start = 0) {
@@ -317,8 +371,26 @@ class OrderPage extends Component {
   //       break
   //   }
   // }
+
+  handleClearDate() {
+    const today = new Date()
+    const tommorrow = new Date(today.getTime())
+    tommorrow.setDate(tommorrow.getDate() + 1)
+
+    this.setState({
+      fromDate: today,
+      toDate: tommorrow,
+      dateChanged: false
+    }, function() {
+      this.fetchOrdersData('attempted', 0)
+    })
+  }
+
   handleChooseDate() {
-    mountModal(DatePicker())
+    mountModal(DatePicker({
+      setDate: this.setDate,
+      apply: this.fetchOrdersData
+    }))
   }
   // onMapCreated(map) {
   //   map.setOptions({
@@ -394,7 +466,10 @@ class OrderPage extends Component {
       activePage,
       pageOffset,
       searchAPI,
-      searchQuery
+      searchQuery,
+      dateChanged,
+      fromDate,
+      toDate
     } = this.state
 
 
@@ -429,14 +504,34 @@ class OrderPage extends Component {
           <div className='orders-filter'>
             { ordersType !== 'history' ? <label>Filter by</label> : '' }
             {
-              ordersType !== 'history'
-              ? <Dropdown
+              ordersType !== 'history' && ordersType !== 'attempted' &&
+                <Dropdown
                   handleClearFilter={this.handleClearFilter}
                   options={filterOptions}
                   onChange={this.handleFilterChange}
                 />
-              : /*<button onClick={this.handleChooseDate}>Choose date</button>*/ ''
             }
+            {
+              ordersType == 'attempted' &&
+                <button onClick={this.handleChooseDate}>
+                  {
+                    !dateChanged
+                    ? 'Choose date'
+                    : `${new Date(fromDate).toJSON().slice(0, 10)} to ${new Date(toDate).toJSON().slice(0, 10)}`
+                  }    
+                </button>
+            }
+            {
+              dateChanged
+              ? <button onClick={this.handleClearDate}>
+                  <span
+                    style={{position: 'relative', top: '4px', left: '0px'}}>
+                      {getIcon('cross')}
+                  </span>
+                </button>
+              : ''
+            }
+                
             <SearchInput
               search={this.searchOrdersData}
               setQueryString={this.setQueryString}

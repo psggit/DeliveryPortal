@@ -22,13 +22,14 @@ class OrdersList extends Component {
         <table className='orders-list'>
         <thead>
           <tr>
-            <td>Order Id</td>
-            <td>Order status</td>
+            <td>{ this.props.ordersType === 'attempted' ? 'Cart value' : 'Order Id' }</td>
+            { this.props.ordersType !== 'attempted' ? <td>Order status</td> : '' }
             <td>Consumer Id</td>
             { this.props.canAccess('consumer-col') ? <td>Consumer name</td> : '' }
             { this.props.canAccess('consumer-col') ? <td>Consumer phone</td> : '' }
-            { this.props.canAccess('consumer-col') ? <td>Assigned to</td> : '' }
-            <td>Order placed time</td>
+            { this.props.ordersType == 'attempted' ? <td>Consumer Address</td> : '' }
+            { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
+            <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
           </tr>
         </thead>
         <tbody>
@@ -55,12 +56,16 @@ class OrdersList extends Component {
                     retailer_accepted_time={item.retailer_confirmation_time}
                     cancellation_time={item.cancelled_time}
                     orderPlacedTime={item.order_placed_time}
+                    orderAttemptedTime={item.order_attempted_time}
+                    consumerAddress={item.consumer_address}
+                    cartValue={item.cart_value}
                     cancellation_return_time={item.cancellation_return_time}
                     orderStatus={item.status}
                     handleClick={this.handleClick}
                     assignedTo={item.assigned_to}
                     assignedToId={item.assigned_to_id}
                     consumerPhone={item.consumer_phone}
+                    consumerAddress={item.consumer_address}
                     actions={this.props.actions}
                     canAccess={this.props.canAccess}
                 />

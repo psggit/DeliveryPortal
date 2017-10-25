@@ -52,6 +52,8 @@ class OrderListItem extends Component {
       id, consumerId,
       orderStatus,
       orderPlacedTime,
+      orderAttemptedTime,
+      cartValue,
       retailer_notified_time,
       dp_delivered_time,
       retailer_accepted_time,
@@ -65,7 +67,8 @@ class OrderListItem extends Component {
       dp_confirmation_time,
       assignedTo,
       assignedToId,
-      consumerPhone
+      consumerPhone,
+      consumerAddress,
     } = this.props
 
     const supportId = 1
@@ -73,39 +76,59 @@ class OrderListItem extends Component {
     
 
 
-    const orderChar = orderStatus.split('::')[0]
-    const formula = orderStatus.split('::')[1]
-    const article = orderStatus.split('::')[2]
+    let orderChar = null
+    let formula = null
+    let article = null
+    let time = null
+    if (orderStatus) {
+      orderChar = orderStatus.split('::')[0]
+      formula = orderStatus.split('::')[1]
+      article = orderStatus.split('::')[2]
+      time = eval(formula)
+    }
 
-    const time = eval(formula)
+    let orderPlacedWaitingTime = null
     
+    if (orderPlacedTime) {
+      orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
+    }
     
-    const orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
-    
-    const statusStyle = {
-      color: time >=5 && !cancellation_time && getHasuraRole() != 'excise_person'? '#ff3b34' : '',
-      fontStyle: 'italic',
+    let statusStyle = {}
+    if (cancellation_time) {
+      statusStyle = {
+        color: time >=5 && !cancellation_time && getHasuraRole() != 'excise_person'? '#ff3b34' : '',
+        fontStyle: 'italic',
+      }
     }
 
     // console.log(formula)
     
     return (
       <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(id, e)} }>
-        <td
-        className={
-        `${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
-        ? 'danger'
-        : ''}`
+        {
+          ordersType !== 'attempted'
+          ? <td
+            className={
+            `${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
+            ? 'danger'
+            : ''}`
+            }
+            >{id}</td>
+          : <td>{cartValue}</td>  
         }
-        >{id}</td>
-        <td style={statusStyle} className='order-status'>
-          {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
-        </td>
+        {
+          ordersType !== 'attempted'
+          ? <td style={statusStyle} className='order-status'>
+              {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
+            </td>
+          : ''  
+        }
         <td>{consumerId}</td>
         { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
         { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
-        { this.props.canAccess('consumer-col') ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
-         <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td>
+        { ordersType == 'attempted' ? <td>{consumerAddress}</td> : '' }
+        { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
+        { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
       </tr>
     )
   }

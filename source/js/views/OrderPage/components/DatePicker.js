@@ -8,7 +8,7 @@ import Moment from 'moment'
 import DayPicker from 'react-day-picker'
 import '@sass/components/_date-picker.scss'
 
-export default function DatePicker () {
+export default function DatePicker (data) {
   return class DatePicker extends React.Component {
     constructor () {
       super()
@@ -24,6 +24,8 @@ export default function DatePicker () {
       const { fromDate, toDate } = this.state
       if (fromDate && toDate) {
         // this.props.setQueryString()
+        // console.log(fromDate.toISOString(), toDate)
+        data.setDate(fromDate.toISOString(), toDate.toISOString())
         unMountModal()
       } else {
         this.setState({error: true})
