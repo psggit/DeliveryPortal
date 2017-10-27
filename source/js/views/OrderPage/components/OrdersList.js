@@ -28,6 +28,7 @@ class OrdersList extends Component {
             { this.props.canAccess('consumer-col') ? <td>Consumer name</td> : '' }
             { this.props.canAccess('consumer-col') ? <td>Consumer phone</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Consumer Address</td> : '' }
+            { this.props.ordersType == 'attempted' ? <td>Nearby retailers</td> : '' }
             { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
             <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
           </tr>
@@ -66,6 +67,7 @@ class OrdersList extends Component {
                     assignedToId={item.assigned_to_id}
                     consumerPhone={item.consumer_phone}
                     consumerAddress={item.consumer_address}
+                    closestRetailers={item.retailer_list}
                     actions={this.props.actions}
                     canAccess={this.props.canAccess}
                 />
