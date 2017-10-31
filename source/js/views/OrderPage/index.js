@@ -522,7 +522,7 @@ class OrderPage extends Component {
                 </button>
             }
             {
-              dateChanged
+              dateChanged && ordersType == 'attempted'
               ? <button onClick={this.handleClearDate}>
                   <span
                     style={{position: 'relative', top: '4px', left: '0px'}}>
