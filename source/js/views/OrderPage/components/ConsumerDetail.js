@@ -63,7 +63,7 @@ class ConsumerDetail extends Component {
           {
             customer.flatNo
             ? <p>
-                <span><b>Flat no.: </b></span>
+                <span><b>Flat no: </b></span>
                 <span>{customer.flatNo}</span>
               </p>
             : ''  

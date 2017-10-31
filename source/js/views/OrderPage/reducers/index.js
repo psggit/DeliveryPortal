@@ -191,7 +191,7 @@ const actionsMap = {
         id: orderStatus.consumer_id,
         address: orderStatus.consumer_address,
         landmark: orderStatus.landmark,
-        flatNo: orderStatus.flat_no,
+        flatNo: orderStatus.flat_number,
         name: orderStatus.consumer_name,
         gps: orderStatus.consumer_gps,
         isAgeVerified: true,
