@@ -60,6 +60,22 @@ class ConsumerDetail extends Component {
               </p>
             : ''  
           }
+          {
+            customer.flatNo
+            ? <p>
+                <span><b>Flat no.: </b></span>
+                <span>{customer.flatNo}</span>
+              </p>
+            : ''  
+          }
+          {
+            customer.landmark
+            ? <p>
+                <span><b>Landmark: </b></span>
+                <span>{customer.landmark}</span>
+              </p>
+            : ''  
+          }
           <p className='subhead'>Address:</p>
           <p>{customer.address}</p>
         </div>

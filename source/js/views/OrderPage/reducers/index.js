@@ -190,6 +190,8 @@ const actionsMap = {
       customer: {
         id: orderStatus.consumer_id,
         address: orderStatus.consumer_address,
+        landmark: orderStatus.landmark,
+        flatNo: orderStatus.flat_no,
         name: orderStatus.consumer_name,
         gps: orderStatus.consumer_gps,
         isAgeVerified: true,
