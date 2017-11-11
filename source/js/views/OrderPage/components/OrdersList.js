@@ -29,6 +29,7 @@ class OrdersList extends Component {
             { this.props.canAccess('consumer-col') ? <td>Consumer phone</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Consumer Address</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Reason</td> : '' }
+            { this.props.ordersType == 'attempted' ? <td>Cart Details</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Nearby retailers</td> : '' }
             { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
             <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
@@ -56,6 +57,7 @@ class OrdersList extends Component {
                     dp_confirmation_time={item.dp_confirmation_time}
                     dp_reached_to_consumer_time={item.dp_reached_to_consumer_time}
                     reason={item.reason}
+                    cartDetails={item.cart_details}
                     retailer_accepted_time={item.retailer_confirmation_time}
                     cancellation_time={item.cancelled_time}
                     orderPlacedTime={item.order_placed_time}
