@@ -93,7 +93,6 @@ class OrderPage extends Component {
         case 'assigned':
           postData.support_id = 1
           actions.fetchLiveAssignedOrders(postData)
-          this.pollOrdersData()
           break
 
         case 'unassigned':
@@ -212,7 +211,6 @@ class OrderPage extends Component {
     const { ordersType } = this.state
     const _self = this
     // this.fetchDataFromQueryParams()
-    this.fetchOrdersData('all', 0)
 
     let timeOutId
 
@@ -237,7 +235,10 @@ class OrderPage extends Component {
     //   // setTimeout(pollOrdersData, 3000)
     // })(timeOutId)
     if (!this.props.match.params.ordersType) {
+      this.fetchOrdersData('all', 0)
       this.pollOrdersData()
+    } else {
+      this.fetchOrdersData(this.props.match.params.ordersType, 0)
     }
   }
 
@@ -254,7 +255,7 @@ class OrderPage extends Component {
     // } else {
     //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
     // }
-    setTimeout(this.pollOrdersData, 30000)
+    setTimeout(this.pollOrdersData, 3000)
   }
 
   mountOrderDetail(orderId) {
