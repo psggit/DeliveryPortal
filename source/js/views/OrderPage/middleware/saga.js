@@ -79,7 +79,7 @@ function* searchLiveOrders(action) {
 function* searchLiveAssignedOrders(action) {
   try {
     const data = yield call(Api.searchLiveAssignedOrders, action)
-    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ASSIGNED_ORDERS, data})
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -88,7 +88,7 @@ function* searchLiveAssignedOrders(action) {
 function* searchLiveUnassignedOrders(action) {
   try {
     const data = yield call(Api.searchLiveUnassignedOrders, action)
-    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_UNASSIGNED_ORDERS, data})
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -97,7 +97,7 @@ function* searchLiveUnassignedOrders(action) {
 function* searchHistoryOrders(action) {
   try {
     const data = yield call(Api.searchHistoryOrders, action)
-    yield put({type: ActionTypes.SUCCESS_SEARCH_HISTORY_ORDERS, data})
+    yield put({type: ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
