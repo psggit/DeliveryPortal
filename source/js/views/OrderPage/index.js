@@ -93,26 +93,27 @@ class OrderPage extends Component {
         case 'assigned':
           postData.support_id = 1
           actions.fetchLiveAssignedOrders(postData)
+          this.pollOrdersData()
           break
-  
+
         case 'unassigned':
           actions.fetchLiveUnassignedOrders(postData)
           break
-  
+
         case 'history':
           actions.fetchHistoryOrders(postData)
           break
-  
-        case 'cancellation': 
-          actions.fetchCancellationOrders(postData)  
+
+        case 'cancellation':
+          actions.fetchCancellationOrders(postData)
           break
-        
+
         case 'attempted':
           postData.to = this.state.toDate
           postData.from = this.state.fromDate
           actions.fetchAttemptedOrders(postData)
           break
-  
+
         default:
           actions.fetchLiveOrders(postData)
           // console.log("fwfewfdfewewbnfjq")
@@ -123,7 +124,7 @@ class OrderPage extends Component {
       }
     })
   }
-  
+
   searchOrdersData(searchQuery, offset) {
     const { actions } = this.props
     const { ordersType } = this.state
@@ -132,7 +133,7 @@ class OrderPage extends Component {
       limit: this.pagesLimit,
       query: searchQuery
     }
-    
+
     switch (ordersType) {
       case 'assigned':
         postData.support_id = 1
@@ -223,7 +224,7 @@ class OrderPage extends Component {
     // ;(function pollOrdersData(timeOutId) {
     //   const { pageOffset, ordersType, searchQuery } = _self.state
     //   console.log(timeOutId)
-    //   searchQuery.length 
+    //   searchQuery.length
     //   ? _self.searchOrdersData(searchQuery, pageOffset)
     //   : _self.fetchOrdersData(ordersType, pageOffset)
 
@@ -235,24 +236,25 @@ class OrderPage extends Component {
     //   }
     //   // setTimeout(pollOrdersData, 3000)
     // })(timeOutId)
-    this.pollOrdersData()
+    if (!this.props.match.params.ordersType) {
+      this.pollOrdersData()
+    }
   }
 
   pollOrdersData() {
     const { actions } = this.props
     const { pageOffset, ordersType, searchQuery } = this.state
-    
-    searchQuery.length 
+
+    searchQuery.length
     ? this.searchOrdersData(searchQuery, pageOffset)
     : this.fetchOrdersData(ordersType, pageOffset)
 
     // if (ordersType !== 'all') {
     //   clearTimeout(this.timeOutId)
-    //   this.isTimeOutCleared = true
     // } else {
     //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
     // }
-    setTimeout(this.pollOrdersData, 30000)
+    setTimeout(this.pollOrdersData, 3000)
   }
 
   mountOrderDetail(orderId) {
@@ -316,7 +318,7 @@ class OrderPage extends Component {
       filter_by: filter
     }
 
-    actions.fetchLiveOrders(postData)    
+    actions.fetchLiveOrders(postData)
   }
 
   handlePageChange(pageNumber) {
@@ -518,7 +520,7 @@ class OrderPage extends Component {
                     !dateChanged
                     ? 'Choose date'
                     : `${new Date(fromDate).toJSON().slice(0, 10)} to ${new Date(toDate).toJSON().slice(0, 10)}`
-                  }    
+                  }
                 </button>
             }
             {
@@ -531,7 +533,7 @@ class OrderPage extends Component {
                 </button>
               : ''
             }
-                
+
             <SearchInput
               search={this.searchOrdersData}
               setQueryString={this.setQueryString}
@@ -557,7 +559,7 @@ class OrderPage extends Component {
             />
             : ''
           }
-          
+
           {
             !loadingOrdersList && ordersCount > 0
             ? <Pagination

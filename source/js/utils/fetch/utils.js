@@ -50,6 +50,7 @@ function constructBody({ type, data }) {
  * Error handling helpers
  */
 export function checkStatus(response) {
+  console.log(response)
   if (response.status >= 200 && response.status < 305) {
     return response
   } else {

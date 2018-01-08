@@ -41,7 +41,7 @@ class NavBar extends Component {
   render() {
     const { shouldDeliever } = this.state
     const menuItems = [
-      { value: 'all', label: 'in progress' },
+      { value: '', label: 'in progress' },
       { value: 'assigned', label: 'assigned'},
       { value: 'unassigned', label: 'unassigned'},
       { value: 'history', label: 'history' },
@@ -98,11 +98,11 @@ class NavBar extends Component {
           {
             menuItems.map((item, i) => {
               return (
-                <NavLink key={`nav-link-${i}`} exact to={ 'orders' }>
-                  <li className={`menu-item ${this.state.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleNavigation(item.value) }}>
+                <a key={`nav-link-${i}`} href={`/orders/${item.value}`}>
+                  <li className={`menu-item ${this.state.ordersType === item.value ? 'active' : ''}`}>
                     { item.label }
                   </li>
-                </NavLink>
+                </a>
               )
             })
           }
