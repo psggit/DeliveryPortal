@@ -255,7 +255,7 @@ class OrderPage extends Component {
     // } else {
     //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
     // }
-    setTimeout(this.pollOrdersData, 3000)
+    setTimeout(this.pollOrdersData, 30000)
   }
 
   mountOrderDetail(orderId) {
