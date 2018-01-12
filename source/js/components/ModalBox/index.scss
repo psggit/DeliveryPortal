@@ -19,6 +19,7 @@
     font-family: "Source Sans Pro", sans-serif;
     padding: 20px 35px;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.24);
+
     .modal-header {
       p {
         padding: 20px 0 14px 0;
@@ -32,13 +33,14 @@
       }
     }
     .modal-body {
-      height: 100%;
+      max-height: 560px;
       padding: 15px 0;
       p {
         color: #4a4a4a;
         line-height: 1.7;
         font-size: 16px;
       }
+      overflow-y: auto;
     }
     .modal-footer {
       text-align: right;

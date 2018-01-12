@@ -6,7 +6,8 @@ class ModalBox extends React.Component {
   constructor() {
     super()
     this.state = {
-      width: "46%"
+      width: "46%",
+      maxHeight: '95vh'
     }
   }
   handleClick(e) {
@@ -38,7 +39,7 @@ class ModalBox extends React.Component {
   render () {
     return (
       <div className='modal-overlay'>
-        <div className='modal-container' style={{width: this.state.width}}>
+        <div className='modal-container' style={{ width: this.state.width, maxHeight: this.state.maxHeight }}>
           { this.props.children }
         </div>
       </div>
