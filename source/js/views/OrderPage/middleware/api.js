@@ -197,3 +197,25 @@ export function fetchPlotData(action) {
   .then(json => json)
   return data
 }
+
+export function addItemToCart(action) {
+  const data = POST({
+    api: `/support/cart/add`,
+    handleError: true,
+    apiBase: 'ordermanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}
+
+export function deleteItemFromCart(action) {
+  const data = POST({
+    api: `/support/cart/delete`,
+    handleError: true,
+    apiBase: 'ordermanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

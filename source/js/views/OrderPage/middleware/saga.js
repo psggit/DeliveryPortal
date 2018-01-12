@@ -258,6 +258,26 @@ function* fetchPlotData(action) {
   }
 }
 
+function* deleteItemFromCart(action) {
+  try {
+    const data = yield call(Api.deleteItemFromCart, action)
+    yield put({ type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully deleted item from cart", "success")
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* addItemToCart(action) {
+  try {
+    const data = yield call(Api.addItemToCart, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully added item to cart", "success")
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 
 
 /**
@@ -404,5 +424,17 @@ export function* watchFetchAutoPilotStatus() {
 export function* watchFetchPlotData() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_PLOT_DATA, fetchPlotData)
+  }
+}
+
+export function* watchDeleteItemFromCart() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_DELETE_ITEM_FROM_CART, deleteItemFromCart)
+  }
+}
+
+export function* watchAddItemToCart() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ADD_ITEM_TO_CART, addItemToCart)
   }
 }

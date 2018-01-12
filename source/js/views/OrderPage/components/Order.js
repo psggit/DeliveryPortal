@@ -3,7 +3,7 @@ import { getIcon } from './../utils'
 import { validateNumType, checkCtrlA } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
-// import Notify from '@components/Notification'
+import showCatalogue from './ShowCatalogue'
 
 class Order extends Component {
   constructor() {
@@ -13,13 +13,15 @@ class Order extends Component {
     this.handleCancelOrder = this.handleCancelOrder.bind(this)
     this.openCancelOrder = this.openCancelOrder.bind(this)
     this.validateForceRedeem = this.validateForceRedeem.bind(this)
+    this.showCatalogue = this.showCatalogue.bind(this)
+    this.increaseProductQuantity = this.increaseProductQuantity.bind(this)
+    this.decreaseProductQuantity = this.decreaseProductQuantity.bind(this)
     this.state = {
-      forceRedeemKey: 0,
+      forceRedeemKey: 0
     }
   }
 
   handleChange(e) {
-    console.log(e.target.value)
     if (validateNumType(e.keyCode) || checkCtrlA(e)) {
       this.setState({ forceRedeemKey: parseInt(e.target.value) })
     } else {
@@ -55,19 +57,56 @@ class Order extends Component {
     }))
   }
 
-  handleCancelOrder() {{
+  handleCancelOrder() {
     const { actions, order, unmountOrderDetail } = this.props
     actions.cancelOrder({ order_id: order.id })
     unMountModal()
     unmountOrderDetail()
-  }}
+  }
+
+  increaseProductQuantity(id) {
+    const { actions, order } = this.props
+    actions.addItemToCart({
+      delivery_order_id: order.id,
+      product_id: id,
+      type: 'normal'
+    })
+  }
+
+  decreaseProductQuantity(id) {
+    const { actions, order } = this.props
+    actions.deleteItemFromCart({
+      delivery_order_id: order.id,
+      product_id: id,
+      type: 'normal'
+    })
+  }
+
+  deleteItemFromCart(id) {
+    const { actions, order } = this.props
+    actions.deleteItemFromCart({
+      delivery_order_id: order.id,
+      product_id: id,
+      type: 'normal',
+    })
+  }
+
+  showCatalogue() {
+    const { order, actions, gps } = this.props
+    mountModal(showCatalogue({
+      heading: 'Browse catalogue',
+      gps,
+      id: order.id
+    }))
+  }
 
   render() {
     const {
       ordersType,
       openAssignOrderModal,
       order,
-      isOrderAssigned
+      isOrderAssigned,
+      actions
     } = this.props
 
     const isKYCconfirmed = true
@@ -91,9 +130,20 @@ class Order extends Component {
         </div>
         <div className='card-body'>
           <p className='subhead'>Ordered items ({ order.cartItems.length })</p>
+          <button
+            onClick={this.showCatalogue}
+            title="Show catalogue"
+            style={{
+              float: 'right',
+              cursor: 'pointer',
+              padding: '2px 20px'
+            }}>
+            Add Item
+          </button>
           <table>
             <thead>
               <tr>
+                <td></td>
                 <td>Brand</td>
                 <td>Volume</td>
                 <td>Price</td>
@@ -105,10 +155,43 @@ class Order extends Component {
                 order.cartItems.map((item, i) => {
                   return (
                     <tr key={item.product_id}>
+                      <td>
+                        <span
+                          onClick={() => { this.deleteItemFromCart(item.product_id) }}
+                          style={{
+                            cursor: 'pointer'
+                          }}>
+                          {getIcon('dustbin')}
+                        </span>
+                      </td>
                       <td>{item.brand_name}</td>
                       <td>{`${item.total_volume} ml`}</td>
                       <td>{`INR ${item.total_price}`}</td>
-                      <td>{item.count}</td>
+                      <td>
+                        <span
+                          onClick={() => { this.decreaseProductQuantity(item.product_id) }}
+                          style={{
+                            cursor: 'pointer'
+                          }}>
+                          {getIcon('minus')}
+                        </span>
+
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            verticalAlign: 'top',
+                            padding: '0 10px' }}>
+                            {item.count}
+                        </span>
+
+                        <span
+                          onClick={() => { this.increaseProductQuantity(item.product_id) }}
+                          style={{
+                            cursor: 'pointer'
+                          }}>{
+                            getIcon('plus')}
+                        </span>
+                      </td>
                     </tr>
                   )
                 })
