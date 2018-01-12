@@ -37,7 +37,7 @@ button {
   background-color: #f2f2f2;
   color: #757575;
   font-weight: 600;
-  
+
   &:focus {
     outline: 0;
   }
@@ -101,7 +101,7 @@ button {
 table.orders-list {
   box-shadow: 0 0 4px 0 #9b9b9b;
   width: 100%;
-  
+
   thead {
     font-size: 14px;
     font-weight: 600;
@@ -132,6 +132,18 @@ table.orders-list {
   }
 }
 
+table.table--hovered {
+  tbody tr:not(.accordian-row):hover {
+    background: #f6f6f6;
+  }
+}
+
+table {
+  .accordian-row {
+    border: 0;
+  }
+}
+
 .orders-list-item {
   cursor: pointer;
   font-size: 16px;
@@ -149,7 +161,7 @@ table.orders-list {
     color: #4990ef;
     text-decoration: underline;
   }
-  
+
   &:hover {
     background: #eaeaea;
     td {
