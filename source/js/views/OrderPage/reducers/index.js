@@ -29,6 +29,7 @@ const initialOrderState = {
     loadingOrderDetail: true,
     state: 'SearchingRetailer',
     loadingOrdersList: true,
+    loadingGenres: true,
     autoPilotStatus: false,
     orders: [],
     plotData: [],
@@ -203,6 +204,13 @@ const actionsMap = {
   [ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL]: (state, action) => {
     return Object.assign({}, state, {
       loadingOrderDetail: true
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_GENRES]: (state, action) => {
+    return Object.assign({}, state, {
+      genres: action.data.map(item => item.genre_name),
+      loadingGenres: false
     })
   }
 };
