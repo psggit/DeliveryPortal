@@ -25,6 +25,7 @@ rules:
   class-methods-use-this: 0
   func-names: 0
   indent: 2
+  semi: 0
   new-cap: 0
   no-plusplus: 0
   no-return-assign: 0
@@ -32,7 +33,7 @@ rules:
   template-curly-spacing: [2, "always"]
   comma-dangle: ["error", {
     "arrays": "always-multiline",
-    "objects": "always-multiline",
+    "objects": "never",
     "imports": "always-multiline",
     "exports": "always-multiline",
     "functions": "never"
