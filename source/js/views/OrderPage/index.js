@@ -2,7 +2,7 @@
   !!! Beware of over abstraction while writing any function !!!
 */
 
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as Actions from './actions'
@@ -124,11 +124,13 @@ class OrderPage extends Component {
     })
   }
 
-  searchOrdersData(searchQuery, offset) {
+  searchOrdersData(searchQuery) {
+    this.resetPagination()
+    this.unmountOrderDetail()
     const { actions } = this.props
     const { ordersType } = this.state
     const postData = {
-      offset,
+      offset: 0,
       limit: this.pagesLimit,
       query: searchQuery
     }
@@ -508,11 +510,14 @@ class OrderPage extends Component {
             { ordersType !== 'history' ? <label>Filter by</label> : '' }
             {
               ordersType !== 'history' && ordersType !== 'attempted' &&
-                <Dropdown
-                  handleClearFilter={this.handleClearFilter}
-                  options={filterOptions}
-                  onChange={this.handleFilterChange}
-                />
+                <Fragment>
+                  <Dropdown
+                    handleClearFilter={this.handleClearFilter}
+                    options={filterOptions}
+                    onChange={this.handleFilterChange}
+                  />
+                  <div style={{ width: '40px' }}></div>
+                </Fragment>
             }
             {
               ordersType == 'attempted' &&
@@ -537,12 +542,7 @@ class OrderPage extends Component {
 
             <SearchInput
               search={this.searchOrdersData}
-              setQueryString={this.setQueryString}
               setSearchQuery={this.setSearchQuery}
-              pagesLimit={this.pagesLimit}
-              pageOffset={pageOffset}
-              resetPagination={this.resetPagination}
-              unmountOrderDetail={this.unmountOrderDetail}
               searchQuery={searchQuery}
             />
           </div>
