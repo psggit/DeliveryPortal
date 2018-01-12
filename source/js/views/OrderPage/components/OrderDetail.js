@@ -119,7 +119,7 @@ class OrderDetail extends Component {
       ordersType,
       currentOrderId,
       order,
-      customer, 
+      customer,
       deliverer,
       retailer,
       loadingOrderDetail
@@ -135,7 +135,7 @@ class OrderDetail extends Component {
       const orderChar = order.status.split('::')[0]
       const formula = order.status.split('::')[1]
       const article = order.status.split('::')[2]
-  
+
       const dp_delivered_time = order.deliveredTime
       const dp_reached_to_consumer_time = deliverer.reachedToConsumerTime
       const cancellation_time = order.cancellationTime
@@ -182,7 +182,7 @@ class OrderDetail extends Component {
           }
           </span>
           <span style={refershStyle} onClick={this.handleRefersh}>{getIcon('refresh')}</span>
-          
+
           <div style={{marginLeft: '30px', position: 'relative', top: '5px'}}>
             {
               this.props.canAccess('map') && ordersType !== 'history'
@@ -192,7 +192,7 @@ class OrderDetail extends Component {
                   className=''>
                   Track this order
                 </button>
-              : '' 
+              : ''
             }
             {
               order.retailers.length
@@ -216,7 +216,8 @@ class OrderDetail extends Component {
                 {
                   order
                   ? <Order
-                      canAccess={this.props.canAccess} 
+                      gps={customer.gps}
+                      canAccess={this.props.canAccess}
                       order={order}
                       actions={actions}
                       openAssignOrderModal={this.openAssignOrderModal}
@@ -231,7 +232,7 @@ class OrderDetail extends Component {
                 {
                   customer && this.props.canAccess('consumer')
                   ? <ConsumerDetail
-                      canAccess={this.props.canAccess} 
+                      canAccess={this.props.canAccess}
                       ordersType={ordersType}
                       customer={customer}
                       actions={actions}
@@ -240,11 +241,11 @@ class OrderDetail extends Component {
                     />
                   : ''
                 }
-  
+
                 {
                   retailer.id && this.props.canAccess('retailer')
                   ? <RetailerDetail
-                      canAccess={this.props.canAccess} 
+                      canAccess={this.props.canAccess}
                       ordersType={ordersType}
                       actions={actions}
                       notifiedRetailers={order.retailers}
@@ -252,14 +253,14 @@ class OrderDetail extends Component {
                       isOrderConfirmed={isOrderConfirmed}
                       orderId={order.id}
                     />
-                  : ''  
+                  : ''
                 }
                 {
                   deliverer.id && this.props.canAccess('deliverer')
                   ? <DelivererDetail
                       canAccess={this.props.canAccess}
                       ordersType={ordersType}
-                      actions={actions}                      
+                      actions={actions}
                       notifiedDeliverers={order.deliverers}
                       deliverer={deliverer}
                       isOrderConfirmed={isOrderConfirmed}
@@ -267,7 +268,7 @@ class OrderDetail extends Component {
                     />
                   : ''
                 }
-                
+
               </div>
             </div>
           )
