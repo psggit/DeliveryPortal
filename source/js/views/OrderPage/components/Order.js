@@ -82,15 +82,6 @@ class Order extends Component {
     })
   }
 
-  deleteItemFromCart(id) {
-    const { actions, order } = this.props
-    actions.deleteItemFromCart({
-      delivery_order_id: order.id,
-      product_id: id,
-      type: 'normal',
-    })
-  }
-
   showCatalogue() {
     const { order, actions, gps } = this.props
     mountModal(showCatalogue({
@@ -143,7 +134,6 @@ class Order extends Component {
           <table>
             <thead>
               <tr>
-                <td></td>
                 <td>Brand</td>
                 <td>Volume</td>
                 <td>Price</td>
@@ -155,15 +145,6 @@ class Order extends Component {
                 order.cartItems.map((item, i) => {
                   return (
                     <tr key={item.product_id}>
-                      <td>
-                        <span
-                          onClick={() => { this.deleteItemFromCart(item.product_id) }}
-                          style={{
-                            cursor: 'pointer'
-                          }}>
-                          {getIcon('dustbin')}
-                        </span>
-                      </td>
                       <td>{item.brand_name}</td>
                       <td>{`${item.total_volume} ml`}</td>
                       <td>{`INR ${item.total_price}`}</td>
