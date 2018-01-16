@@ -47,10 +47,13 @@ export default function showCatalogue(data) {
       } else {
         this.setState({
           activeAccordian: i,
-          isAccordianOpen: true
+          isAccordianOpen: true,
+          loadingSKU: true
         })
+        this.listSKUUsingBrand(this.brands[i].shortName)
       }
-      this.listSKUUsingBrand('budweiser-pint')
+
+      // this.listSKUUsingBrand(this.brands[i].shortName)
     }
 
     listSKUUsingBrand(brand) {
@@ -68,10 +71,11 @@ export default function showCatalogue(data) {
         }
       })
       .then(json => {
-        this.brands = json.brands.map(item => {
+        this.skus = json.brand.skus.map(item => {
           return {
-            id: item.id,
-            brand: item.brand_name
+            id: item.sku_pricing_id,
+            volume: item.volume,
+            price: item.price
           }
         })
         this.setState({ loadingSKU: false })
@@ -96,7 +100,8 @@ export default function showCatalogue(data) {
         this.brands = json.brands.map(item => {
           return {
             id: item.id,
-            brand: item.brand_name
+            brand: item.brand_name,
+            shortName: item.short_name
           }
         })
         this.setState({ loadingBrands: false })
@@ -231,23 +236,33 @@ export default function showCatalogue(data) {
                             <tr className='accordian-row'>
                               <td>
                                 <table>
+                                  {/* <thead>
+                                    <tr>
+                                      <th>Volume</th>
+                                      <th>Price</th>
+                                      <th></th>
+                                    </tr>
+                                  </thead> */}
                                   <tbody>
                                     {
-                                      [1, 2, 3].map(item => (
-                                        <tr>
-                                          <td>750 ml</td>
-                                          <td>
-                                            <button
-                                              onClick={() => { this.addItemToCart(item.id) }}
-                                              style={{
-                                                padding: '2px 20px'
-                                              }}
-                                            >
-                                              add
-                                            </button>
-                                          </td>
-                                        </tr>
-                                      ))
+                                      !this.state.loadingSKU && (
+                                        this.skus.map(item => (
+                                          <tr key={ item.id }>
+                                            <td>{`${item.volume} ml`}</td>
+                                            <td>{ item.price }</td>
+                                            <td>
+                                              <button
+                                                onClick={() => { this.addItemToCart(item.id) }}
+                                                style={{
+                                                  padding: '2px 20px'
+                                                }}
+                                              >
+                                                add
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        ))
+                                      )
                                     }
                                   </tbody>
                                 </table>
