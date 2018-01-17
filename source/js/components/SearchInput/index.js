@@ -30,16 +30,15 @@ class SearchInput extends Component {
 
   search(searchQuery) {
     this.props.setSearchQuery(searchQuery)
-    // this.props.resetPagination()
-    // this.props.unmountOrderDetail()
-
     this.props.search(searchQuery)
   }
 
   handleChange(e) {
     const searchQuery = e.target.value
     this.setState({ searchQuery })
-    // this.search(searchQueryString)
+    if (!searchQuery.length) {
+      this.search('')
+    }
   }
 
   handlePress(e) {
