@@ -64,21 +64,21 @@ class Order extends Component {
     unmountOrderDetail()
   }
 
-  increaseProductQuantity(id) {
+  increaseProductQuantity(id, type) {
     const { actions, order } = this.props
     actions.addItemToCart({
       delivery_order_id: order.id,
       product_id: id,
-      type: 'normal'
+      type
     })
   }
 
-  decreaseProductQuantity(id) {
+  decreaseProductQuantity(id, type) {
     const { actions, order } = this.props
     actions.deleteItemFromCart({
       delivery_order_id: order.id,
       product_id: id,
-      type: 'normal'
+      type
     })
   }
 
@@ -87,7 +87,8 @@ class Order extends Component {
     mountModal(showCatalogue({
       heading: 'Browse catalogue',
       gps,
-      id: order.id
+      id: order.id,
+      addItemToCart: this.increaseProductQuantity
     }))
   }
 
@@ -121,16 +122,19 @@ class Order extends Component {
         </div>
         <div className='card-body'>
           <p className='subhead'>Ordered items ({ order.cartItems.length })</p>
-          <button
-            onClick={this.showCatalogue}
-            title="Show catalogue"
-            style={{
-              float: 'right',
-              cursor: 'pointer',
-              padding: '2px 20px'
-            }}>
-            Add Item
-          </button>
+          {
+            ordersType !== 'history' &&
+            <button
+              onClick={this.showCatalogue}
+              title="Show catalogue"
+              style={{
+                float: 'right',
+                cursor: 'pointer',
+                padding: '2px 20px'
+              }}>
+              Add Item
+            </button>
+          }
           <table>
             <thead>
               <tr>
@@ -149,13 +153,16 @@ class Order extends Component {
                       <td>{`${item.total_volume} ml`}</td>
                       <td>{`INR ${item.total_price}`}</td>
                       <td>
-                        <span
-                          onClick={() => { this.decreaseProductQuantity(item.product_id) }}
-                          style={{
-                            cursor: 'pointer'
-                          }}>
-                          {getIcon('minus')}
-                        </span>
+                        {
+                          ordersType !== 'history' &&
+                          <span
+                            onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
+                            style={{
+                              cursor: 'pointer'
+                            }}>
+                            {getIcon('minus')}
+                          </span>
+                        }
 
                         <span
                           style={{
@@ -165,13 +172,16 @@ class Order extends Component {
                             {item.count}
                         </span>
 
-                        <span
-                          onClick={() => { this.increaseProductQuantity(item.product_id) }}
-                          style={{
-                            cursor: 'pointer'
-                          }}>{
-                            getIcon('plus')}
-                        </span>
+                        {
+                          ordersType !== 'history' &&
+                          <span
+                            onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
+                            style={{
+                              cursor: 'pointer'
+                            }}>{
+                              getIcon('plus')}
+                          </span>
+                        }
                       </td>
                     </tr>
                   )
