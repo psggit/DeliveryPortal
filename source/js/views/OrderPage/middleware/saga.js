@@ -265,7 +265,7 @@ function* deleteItemFromCart(action) {
     Notify("Successfully deleted item from cart", "success")
     action.CB()
   } catch (err) {
-    console.log(err)
+    err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
   }
 }
