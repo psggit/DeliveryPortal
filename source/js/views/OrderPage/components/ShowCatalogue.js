@@ -14,6 +14,7 @@ export default function showCatalogue(data) {
     constructor() {
       super()
       this.shortNamesMap = {}
+      this.skus = []
       this.state = {
         genre: 'Beer',
         genreShortName: 'beer',
@@ -65,17 +66,22 @@ export default function showCatalogue(data) {
           from: 0,
           size: 9999,
           km: '40km',
-          gps: '12.9705214,77.5794326',
+          gps: data.gps,
           is_featured: false,
-          stateName: 'KA'
+          stateName: 'TN'
         }
       })
       .then(json => {
+        let id
+        let type
         this.skus = json.brand.skus.map(item => {
+          id = item.offer ? item.offer.cash_back_offer_id : item.sku_pricing_id
+          type = item.offer ? 'cashback' : 'normal'
           return {
-            id: item.sku_pricing_id,
+            id,
             volume: item.volume,
-            price: item.price
+            price: item.price,
+            type
           }
         })
         this.setState({ loadingSKU: false })
@@ -91,9 +97,9 @@ export default function showCatalogue(data) {
           from: 0,
           size: 9999,
           km: '40km',
-          gps: '12.9705214,77.5794326',
+          gps: data.gps,
           is_featured: false,
-          stateName: 'KA'
+          stateName: 'TN'
         }
       })
       .then(json => {
@@ -126,18 +132,9 @@ export default function showCatalogue(data) {
       })
     }
 
-    addItemToCart() {
-      POST({
-        api: '/support/cart/add/',
-        handleError: true,
-        apiBase: 'orderman',
-        data: {
-          delivery_cart_id: data.id,
-          type: 'normal',
-          product_id: null
-        }
-      })
-      .then(json => json)
+    addItemToCart(productId, type) {
+      data.addItemToCart(productId, type)
+      unMountModal()
     }
 
     searchBrands(searchText) {
@@ -180,6 +177,7 @@ export default function showCatalogue(data) {
     }
 
     render() {
+      console.log(this.skus);
       return (
         <ModalBox>
           <ModalHeader>Browse Catalogue</ModalHeader>
@@ -252,7 +250,7 @@ export default function showCatalogue(data) {
                                             <td>{ item.price }</td>
                                             <td>
                                               <button
-                                                onClick={() => { this.addItemToCart(item.id) }}
+                                                onClick={() => { this.addItemToCart(item.id, item.type) }}
                                                 style={{
                                                   padding: '2px 20px'
                                                 }}
