@@ -150,9 +150,9 @@ export default function showCatalogue(data) {
           data: {
             searchText,
             km: '40km',
-            gps: '12.9705214,77.5794326',
+            gps: data.gps,
             is_featured: false,
-            stateName: 'KA'
+            stateName: 'TN'
           }
         })
         .then(json => {
