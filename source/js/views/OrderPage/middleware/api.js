@@ -1,4 +1,4 @@
-import { GET, POST } from '@utils/fetch'
+import { GET, POST, DELETE } from '@utils/fetch'
 
 export function fetchOrdersData(action) {
   return POST({
@@ -200,7 +200,7 @@ export function fetchPlotData(action) {
 
 export function addItemToCart(action) {
   const data = POST({
-    api: `/support/cart/add`,
+    api: `/support/portal/cart/add`,
     handleError: true,
     apiBase: 'ordermanUrl',
     data: action.data
@@ -210,8 +210,8 @@ export function addItemToCart(action) {
 }
 
 export function deleteItemFromCart(action) {
-  const data = POST({
-    api: `/support/cart/delete`,
+  const data = DELETE({
+    api: `/support/portal/cart/delete`,
     handleError: true,
     apiBase: 'ordermanUrl',
     data: action.data
