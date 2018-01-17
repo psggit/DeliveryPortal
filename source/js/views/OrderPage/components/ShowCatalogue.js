@@ -74,14 +74,17 @@ export default function showCatalogue(data) {
       .then(json => {
         let id
         let type
+        let cashbackTitle
         this.skus = json.brand.skus.map(item => {
           id = item.offer ? item.offer.cash_back_offer_id : item.sku_pricing_id
           type = item.offer ? 'cashback' : 'normal'
+          cashbackTitle = item.offer ? item.offer.title : ''
           return {
             id,
             volume: item.volume,
             price: item.price,
-            type
+            type,
+            cashbackTitle
           }
         })
         this.setState({ loadingSKU: false })
@@ -138,7 +141,7 @@ export default function showCatalogue(data) {
     }
 
     searchBrands(searchText) {
-      this.setState({ loadingBrands: true })
+      this.setState({ loadingBrands: true, isAccordianOpen: false, activeAccordian: -1 })
       if (searchText.length) {
         POST({
           api: '/consumer/browse/search',
@@ -246,7 +249,19 @@ export default function showCatalogue(data) {
                                       !this.state.loadingSKU && (
                                         this.skus.map(item => (
                                           <tr key={ item.id }>
-                                            <td>{`${item.volume} ml`}</td>
+                                            <td>
+                                              {`${item.volume} ml`}
+                                              <br />
+                                              <span
+                                                style={{
+                                                  fontStyle: 'italic',
+                                                  color: '#9b9b9b',
+                                                  fontSize: '14px'
+                                                }}
+                                              >
+                                                { item.cashbackTitle }
+                                              </span>
+                                            </td>
                                             <td>{ item.price }</td>
                                             <td>
                                               <button
