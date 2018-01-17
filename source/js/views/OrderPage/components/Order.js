@@ -68,38 +68,40 @@ class Order extends Component {
   }
 
   increaseProductQuantity(id, type) {
-    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
     mountModal(ConfirmModal({
       heading: 'Add item to cart',
       confirmMessage: 'Are you sure you want to add this product?',
       handleConfirm: () => {
+        this.setState({ canChangeQuantity: false })
         actions.addItemToCart({
           delivery_order_id: order.id,
           product_id: id,
           type
         }, this.callbackUpdate)
+        unMountModal()
       }
     }))
   }
 
   callbackUpdate() {
-    unMountModal()
+    this.setState({ canChangeQuantity: true })
   }
 
   decreaseProductQuantity(id, type) {
-    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
 
     mountModal(ConfirmModal({
       heading: 'Delete item from cart',
       confirmMessage: 'Are you sure you want to delete this product?',
       handleConfirm: () => {
+        this.setState({ canChangeQuantity: false })
         actions.deleteItemFromCart({
           delivery_order_id: order.id,
           product_id: id,
           type
         }, this.callbackUpdate)
+        unMountModal()
       }
     }))
   }
@@ -176,37 +178,41 @@ class Order extends Component {
                       <td>{`INR ${item.total_price}`}</td>
                       <td>
                         {
-                          <Fragment>
-                            {
-                              ordersType !== 'history' &&
-                              <span
-                                onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
-                                style={{
-                                  cursor: 'pointer'
-                                }}>
-                                {getIcon('minus')}
-                              </span>
-                            }
+                          this.state.canChangeQuantity
+                          ? (
+                            <Fragment>
+                              {
+                                ordersType !== 'history' &&
+                                <span
+                                  onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
+                                  style={{
+                                    cursor: 'pointer'
+                                  }}>
+                                  {getIcon('minus')}
+                                </span>
+                              }
 
-                            <span
-                              style={{
-                                display: 'inline-block',
-                                verticalAlign: 'top',
-                                padding: '0 10px' }}>
-                                {item.count}
-                            </span>
-
-                            {
-                              ordersType !== 'history' &&
                               <span
-                                onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
                                 style={{
-                                  cursor: 'pointer'
-                                }}>{
-                                  getIcon('plus')}
+                                  display: 'inline-block',
+                                  verticalAlign: 'top',
+                                  padding: '0 10px' }}>
+                                  {item.count}
                               </span>
-                            }
-                          </Fragment>
+
+                              {
+                                ordersType !== 'history' &&
+                                <span
+                                  onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
+                                  style={{
+                                    cursor: 'pointer'
+                                  }}>{
+                                    getIcon('plus')}
+                                </span>
+                              }
+                            </Fragment>
+                          )
+                          : <div className='rolling-loader'></div>
                         }
                       </td>
                     </tr>
