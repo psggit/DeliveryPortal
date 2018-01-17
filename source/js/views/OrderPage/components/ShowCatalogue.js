@@ -66,9 +66,9 @@ export default function showCatalogue(data) {
           from: 0,
           size: 9999,
           km: '40km',
-          gps: data.gps,
+          gps: '12.9705214,77.5794326',
           is_featured: false,
-          stateName: 'TN'
+          stateName: 'KA'
         }
       })
       .then(json => {
@@ -100,9 +100,9 @@ export default function showCatalogue(data) {
           from: 0,
           size: 9999,
           km: '40km',
-          gps: data.gps,
+          gps: '12.9705214,77.5794326',
           is_featured: false,
-          stateName: 'TN'
+          stateName: 'KA'
         }
       })
       .then(json => {
