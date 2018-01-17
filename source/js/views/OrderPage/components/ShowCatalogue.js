@@ -39,7 +39,7 @@ export default function showCatalogue(data) {
       this.listBrandsUsingGenre('beer')
     }
 
-    setActiveAccordian(i) {
+    setActiveAccordian(i, genreShortName, brandName) {
       if (this.state.activeAccordian === i) {
         this.setState({
           isAccordianOpen: false,
@@ -51,15 +51,15 @@ export default function showCatalogue(data) {
           isAccordianOpen: true,
           loadingSKU: true
         })
-        this.listSKUUsingBrand(this.brands[i].shortName)
+        this.listSKUUsingBrand(genreShortName, brandName)
       }
 
       // this.listSKUUsingBrand(this.brands[i].shortName)
     }
 
-    listSKUUsingBrand(brand) {
+    listSKUUsingBrand(genreShortName, brandName) {
       POST({
-        api: `/consumer/browse/stores/${this.state.genreShortName}/${brand}`,
+        api: `/consumer/browse/stores/${genreShortName}/${brandName}`,
         handleError: true,
         apiBase: 'gremlinUrl',
         data: {
@@ -110,7 +110,8 @@ export default function showCatalogue(data) {
           return {
             id: item.id,
             brand: item.brand_name,
-            shortName: item.short_name
+            shortName: item.short_name,
+            genreShortName: item.category.genre_short.short_name
           }
         })
         this.setState({ loadingBrands: false })
@@ -159,7 +160,9 @@ export default function showCatalogue(data) {
           this.brands = json.brands.map(item => {
             return {
               id: item.id,
-              brand: item.brand_name
+              brand: item.brand_name,
+              shortName: item.short_name,
+              genreShortName: item.category.genre_short.short_name
             }
           })
           this.setState({ loadingBrands: false })
@@ -226,7 +229,7 @@ export default function showCatalogue(data) {
                     this.brands.map((item, i) => (
                       <Fragment key={item.id}>
                         <tr
-                          onClick={() => { this.setActiveAccordian(i) }}
+                          onClick={() => {this.setActiveAccordian(i, item.genreShortName, item.shortName) }}
                           style={{ cursor: 'pointer' }} key={ i }
                         >
                           <td>{item.brand}</td>
