@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getIcon } from './../utils'
 import { validateNumType, checkCtrlA } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
+import '@sass/components/_spinner.scss'
 import showCatalogue from './ShowCatalogue'
 
 class Order extends Component {
@@ -16,8 +17,10 @@ class Order extends Component {
     this.showCatalogue = this.showCatalogue.bind(this)
     this.increaseProductQuantity = this.increaseProductQuantity.bind(this)
     this.decreaseProductQuantity = this.decreaseProductQuantity.bind(this)
+    this.callbackUpdate = this.callbackUpdate.bind(this)
     this.state = {
-      forceRedeemKey: 0
+      forceRedeemKey: 0,
+      canChangeQuantity: true
     }
   }
 
@@ -65,21 +68,40 @@ class Order extends Component {
   }
 
   increaseProductQuantity(id, type) {
+    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
-    actions.addItemToCart({
-      delivery_order_id: order.id,
-      product_id: id,
-      type
-    })
+    mountModal(ConfirmModal({
+      heading: 'Add item to cart',
+      confirmMessage: 'Are you sure you want to add this product?',
+      handleConfirm: () => {
+        actions.addItemToCart({
+          delivery_order_id: order.id,
+          product_id: id,
+          type
+        }, this.callbackUpdate)
+      }
+    }))
+  }
+
+  callbackUpdate() {
+    unMountModal()
   }
 
   decreaseProductQuantity(id, type) {
+    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
-    actions.deleteItemFromCart({
-      delivery_order_id: order.id,
-      product_id: id,
-      type
-    })
+
+    mountModal(ConfirmModal({
+      heading: 'Delete item from cart',
+      confirmMessage: 'Are you sure you want to delete this product?',
+      handleConfirm: () => {
+        actions.deleteItemFromCart({
+          delivery_order_id: order.id,
+          product_id: id,
+          type
+        }, this.callbackUpdate)
+      }
+    }))
   }
 
   showCatalogue() {
@@ -154,33 +176,37 @@ class Order extends Component {
                       <td>{`INR ${item.total_price}`}</td>
                       <td>
                         {
-                          ordersType !== 'history' &&
-                          <span
-                            onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
-                            style={{
-                              cursor: 'pointer'
-                            }}>
-                            {getIcon('minus')}
-                          </span>
-                        }
+                          <Fragment>
+                            {
+                              ordersType !== 'history' &&
+                              <span
+                                onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
+                                style={{
+                                  cursor: 'pointer'
+                                }}>
+                                {getIcon('minus')}
+                              </span>
+                            }
 
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            verticalAlign: 'top',
-                            padding: '0 10px' }}>
-                            {item.count}
-                        </span>
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                verticalAlign: 'top',
+                                padding: '0 10px' }}>
+                                {item.count}
+                            </span>
 
-                        {
-                          ordersType !== 'history' &&
-                          <span
-                            onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
-                            style={{
-                              cursor: 'pointer'
-                            }}>{
-                              getIcon('plus')}
-                          </span>
+                            {
+                              ordersType !== 'history' &&
+                              <span
+                                onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
+                                style={{
+                                  cursor: 'pointer'
+                                }}>{
+                                  getIcon('plus')}
+                              </span>
+                            }
+                          </Fragment>
                         }
                       </td>
                     </tr>

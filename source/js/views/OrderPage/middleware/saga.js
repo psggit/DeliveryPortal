@@ -263,8 +263,10 @@ function* deleteItemFromCart(action) {
     const data = yield call(Api.deleteItemFromCart, action)
     yield put({ type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     Notify("Successfully deleted item from cart", "success")
+    action.CB()
   } catch (err) {
     console.log(err)
+    action.CB()
   }
 }
 
@@ -273,8 +275,10 @@ function* addItemToCart(action) {
     const data = yield call(Api.addItemToCart, action)
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     Notify("Successfully added item to cart", "success")
+    action.CB()
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
+    action.CB()
   }
 }
 
