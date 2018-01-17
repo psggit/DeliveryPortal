@@ -138,7 +138,7 @@ export default function showCatalogue(data) {
 
     addItemToCart(productId, type) {
       data.addItemToCart(productId, type)
-      unMountModal()
+      // unMountModal()
     }
 
     searchBrands(searchText) {
