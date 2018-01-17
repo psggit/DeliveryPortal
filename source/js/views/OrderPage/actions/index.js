@@ -128,12 +128,14 @@ export const fetchPlotData = (data) => ({
   data
 })
 
-export const deleteItemFromCart = (data) => ({
+export const deleteItemFromCart = (data, CB) => ({
   type: ActionTypes.REQUEST_DELETE_ITEM_FROM_CART,
-  data
+  data,
+  CB
 })
 
-export const addItemToCart = (data) => ({
+export const addItemToCart = (data, CB) => ({
   type: ActionTypes.REQUEST_ADD_ITEM_TO_CART,
-  data
+  data,
+  CB
 })

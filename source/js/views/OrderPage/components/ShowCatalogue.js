@@ -255,7 +255,7 @@ export default function showCatalogue(data) {
                                               <span
                                                 style={{
                                                   fontStyle: 'italic',
-                                                  color: '#9b9b9b',
+                                                  color: '#ff3b34',
                                                   fontSize: '14px'
                                                 }}
                                               >
