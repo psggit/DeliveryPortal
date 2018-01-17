@@ -68,27 +68,40 @@ class Order extends Component {
   }
 
   increaseProductQuantity(id, type) {
-    this.setState({ canChangeQuantity: false })
+    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
-    actions.addItemToCart({
-      delivery_order_id: order.id,
-      product_id: id,
-      type
-    }, this.callbackUpdate)
+    mountModal(ConfirmModal({
+      heading: 'Add item to cart',
+      confirmMessage: 'Are you sure you want to add this product?',
+      handleConfirm: () => {
+        actions.addItemToCart({
+          delivery_order_id: order.id,
+          product_id: id,
+          type
+        }, this.callbackUpdate)
+      }
+    }))
   }
 
   callbackUpdate() {
-    this.setState({ canChangeQuantity: true })
+    unMountModal()
   }
 
   decreaseProductQuantity(id, type) {
-    this.setState({ canChangeQuantity: false })
+    // this.setState({ canChangeQuantity: false })
     const { actions, order } = this.props
-    actions.deleteItemFromCart({
-      delivery_order_id: order.id,
-      product_id: id,
-      type
-    }, this.callbackUpdate)
+
+    mountModal(ConfirmModal({
+      heading: 'Delete item from cart',
+      confirmMessage: 'Are you sure you want to delete this product?',
+      handleConfirm: () => {
+        actions.deleteItemFromCart({
+          delivery_order_id: order.id,
+          product_id: id,
+          type
+        }, this.callbackUpdate)
+      }
+    }))
   }
 
   showCatalogue() {
@@ -163,8 +176,7 @@ class Order extends Component {
                       <td>{`INR ${item.total_price}`}</td>
                       <td>
                         {
-                          this.state.canChangeQuantity
-                          ? <Fragment>
+                          <Fragment>
                             {
                               ordersType !== 'history' &&
                               <span
@@ -195,7 +207,6 @@ class Order extends Component {
                               </span>
                             }
                           </Fragment>
-                        : <div className='rolling-loader' />
                         }
                       </td>
                     </tr>
