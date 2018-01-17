@@ -7,6 +7,7 @@ import ModalBox from '@components/ModalBox'
 import { GET, POST } from '@utils/fetch'
 import Search from '@components/SearchInput'
 import '@sass/OrdersPage/ShowNotified.scss'
+import '@sass/components/_spinner.scss'
 import { getIcon } from './../utils'
 
 export default function showCatalogue(data) {
@@ -249,7 +250,7 @@ export default function showCatalogue(data) {
                                   </thead> */}
                                   <tbody>
                                     {
-                                      !this.state.loadingSKU && (
+                                      !this.state.loadingSKU ? (
                                         this.skus.map(item => (
                                           <tr key={ item.id }>
                                             <td>
@@ -279,6 +280,7 @@ export default function showCatalogue(data) {
                                           </tr>
                                         ))
                                       )
+                                      : <div className='rolling-loader'></div>
                                     }
                                   </tbody>
                                 </table>
