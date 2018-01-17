@@ -274,7 +274,7 @@ function* addItemToCart(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     Notify("Successfully added item to cart", "success")
   } catch (err) {
-    console.log(err)
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
