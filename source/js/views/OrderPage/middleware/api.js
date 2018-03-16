@@ -219,3 +219,25 @@ export function deleteItemFromCart(action) {
   .then(json => json)
   return data
 }
+
+export function assignNewRetailerToOrder(action) {
+  const data = POST({
+    api: `/support/assignRetailer`,
+    handleError: true,
+    apiBase: 'deliverymanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}
+
+export function assignNewDeliveryAgentToOrder(action) {
+  const data = POST({
+    api: `/support/assignDp`,
+    handleError: true,
+    apiBase: 'deliverymanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

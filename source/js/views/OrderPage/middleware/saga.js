@@ -219,9 +219,9 @@ function* confirmDeliverer(action) {
   }
 }
 
-function* setLoadingOrderDetail() {
+function* setLoading(action) {
   try {
-    yield put({type: ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL})
+    yield put({ type: ActionTypes.SUCCESS_SET_LOADING, data: action.data })
   } catch (err) {
     console.log(err)
   }
@@ -279,6 +279,27 @@ function* addItemToCart(action) {
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
+  }
+}
+
+function* assignNewRetailerToOrder(action) {
+  try {
+    const data = yield call(Api.assignNewRetailerToOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully assigned new retailer", "success")
+  } catch (err) {
+    // console.log(err.response.json());
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* assignNewDeliveryAgentToOrder(action) {
+  try {
+    const data = yield call(Api.assignNewDeliveryAgentToOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully assigned new delivery agent", "success")
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
@@ -407,9 +428,9 @@ export function* watchConfirmDeliverer() {
   }
 }
 
-export function* watchSetLoadingOrderDetail() {
+export function* watchSetLoading() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, setLoadingOrderDetail)
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING, setLoading)
   }
 }
 
@@ -440,5 +461,17 @@ export function* watchDeleteItemFromCart() {
 export function* watchAddItemToCart() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_ADD_ITEM_TO_CART, addItemToCart)
+  }
+}
+
+export function* watchAssignNewRetailerToOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER, assignNewRetailerToOrder)
+  }
+}
+
+export function* watchAssignNewDeliveryAgentToOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER, assignNewDeliveryAgentToOrder)
   }
 }

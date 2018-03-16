@@ -201,9 +201,9 @@ const actionsMap = {
     })
   },
 
-  [ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL]: (state, action) => {
+  [ActionTypes.SUCCESS_SET_LOADING]: (state, action) => {
     return Object.assign({}, state, {
-      loadingOrderDetail: true
+      [action.data]: true
     })
   },
 

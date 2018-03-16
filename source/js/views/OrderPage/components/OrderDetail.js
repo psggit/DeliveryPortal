@@ -4,6 +4,7 @@ import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ShowNotifiedRetailers from './ShowNotifiedRetailers'
 import ShowNotifiedDeliverers from './ShowNotifiedDeliverers'
+import ShowAssignableRetailers from './ShowAssignableRetailers'
 import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
@@ -37,6 +38,7 @@ class OrderDetail extends Component {
     this.openGmap = this.openGmap.bind(this)
     this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
     this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
+    this.showAssignableRetailers = this.showAssignableRetailers.bind(this)
     this.handleRefersh = this.handleRefersh.bind(this)
   }
 
@@ -54,6 +56,17 @@ class OrderDetail extends Component {
       deliverer,
       customer,
       plotData
+    }))
+  }
+
+  showAssignableRetailers() {
+    const { order, actions } = this.props
+    mountModal(ShowAssignableRetailers({
+      heading: 'Assign new retailer',
+      content: order.retailers,
+      orderId: order.id,
+      assignNewRetailerToOrder: actions.assignNewRetailerToOrder,
+      setLoading: actions.setLoading
     }))
   }
 
@@ -203,6 +216,11 @@ class OrderDetail extends Component {
               order.deliverers.length
               ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotifiedDeliverers}>Show notified deliverers</button>
               : ''
+            }
+
+            {
+              ordersType !== 'history' &&
+              <button style={{ marginRight: '80px', float: 'right' }} onClick={this.showAssignableRetailers}>Assign new retailer</button>
             }
             </div>
         </div>

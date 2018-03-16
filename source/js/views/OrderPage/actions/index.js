@@ -108,8 +108,9 @@ export const confirmDeliverer = (data) => ({
   data: data
 })
 
-export const setLoadingOrderDetail = () => ({
-  type: ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL
+export const setLoading = (data) => ({
+  type: ActionTypes.REQUEST_SET_LOADING,
+  data
 })
 
 export const autoPilot = (data, CB) => ({
@@ -138,4 +139,14 @@ export const addItemToCart = (data, CB) => ({
   type: ActionTypes.REQUEST_ADD_ITEM_TO_CART,
   data,
   CB
+})
+
+export const assignNewRetailerToOrder = (data) => ({
+  type: ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER,
+  data
+})
+
+export const assignNewDeliveryAgentToOrder = (data) => ({
+  type: ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER,
+  data
 })

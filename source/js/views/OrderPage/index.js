@@ -276,7 +276,7 @@ class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     })
-    this.props.actions.setLoadingOrderDetail()
+    this.props.actions.setLoading('loadingOrderDetail')
   }
 
   setSearchQuery(searchQuery) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
+import ShowAssignableDeliveryAgents from './ShowAssignableDeliveryAgents'
 
 class RetailerDetail extends Component {
   constructor() {
@@ -10,7 +11,20 @@ class RetailerDetail extends Component {
     this.openSkipRetailer = this.openSkipRetailer.bind(this)
     this.handleConfirmRetailer = this.handleConfirmRetailer.bind(this)
     this.openConfirmRetailer = this.openConfirmRetailer.bind(this)
+    this.showAssignableDeliveryAgents = this.showAssignableDeliveryAgents.bind(this)
   }
+  showAssignableDeliveryAgents() {
+    const { orderId, actions, notifiedRetailers, retailer } = this.props
+    mountModal(ShowAssignableDeliveryAgents({
+      heading: 'Assign new delivery agent',
+      content: notifiedRetailers,
+      orderId,
+      retailerId: retailer.id,
+      assignNewDeliveryAgentToOrder: actions.assignNewDeliveryAgentToOrder,
+      setLoading: actions.setLoading
+    }))
+  }
+
   openSkipRetailer() {
     mountModal(ConfirmModal({
       heading: 'Skip retailer',
@@ -42,7 +56,7 @@ class RetailerDetail extends Component {
       order_id: orderId,
       retailer_id: retailer.id
     })
-    
+
     unMountModal()
     // actions.fetchOrderDetail(orderId)
   }
@@ -65,7 +79,7 @@ class RetailerDetail extends Component {
                 <span><b>Phone: </b></span>
                 <span>{retailer.phone}</span>
               </p>
-            : ''  
+            : ''
           }
         </div>
         {
@@ -74,6 +88,7 @@ class RetailerDetail extends Component {
             <div className='card-footer'>
               <button className='btn btn-red' onClick={this.openSkipRetailer}>Skip</button>
               { !retailer.confirmationTime ? <button className='btn btn-green' onClick={this.openConfirmRetailer}>Confirm</button> : '' }
+              { retailer.confirmationTime && <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button> }
             </div>
           )
           : ''
