@@ -61,7 +61,7 @@ class RetailerDetail extends Component {
     // actions.fetchOrderDetail(orderId)
   }
   render() {
-    const { isOrderConfirmed, ordersType, retailer } = this.props
+    const { isOrderConfirmed, ordersType, retailer, dpConfirmationTime } = this.props
     return (
       <div className='card'>
         <div className='card-head'>
@@ -88,7 +88,7 @@ class RetailerDetail extends Component {
             <div className='card-footer'>
               <button className='btn btn-red' onClick={this.openSkipRetailer}>Skip</button>
               { !retailer.confirmationTime ? <button className='btn btn-green' onClick={this.openConfirmRetailer}>Confirm</button> : '' }
-              { retailer.confirmationTime && <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button> }
+              { retailer.confirmationTime && !dpConfirmationTime && <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button> }
             </div>
           )
           : ''

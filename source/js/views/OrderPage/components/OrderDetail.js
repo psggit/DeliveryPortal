@@ -219,7 +219,7 @@ class OrderDetail extends Component {
             }
 
             {
-              ordersType !== 'history' &&
+              ordersType !== 'history' && !deliverer.confirmationTime &&
               <button style={{ marginRight: '80px', float: 'right' }} onClick={this.showAssignableRetailers}>Assign new retailer</button>
             }
             </div>
@@ -267,6 +267,7 @@ class OrderDetail extends Component {
                       ordersType={ordersType}
                       actions={actions}
                       notifiedRetailers={order.retailers}
+                      dpConfirmationTime={deliverer.confirmationTime}
                       retailer={retailer}
                       isOrderConfirmed={isOrderConfirmed}
                       orderId={order.id}
