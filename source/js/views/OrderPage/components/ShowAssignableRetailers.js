@@ -68,8 +68,8 @@ export default function showNotified(data) {
                 </thead>
                 <tbody>
                   {
-                    !this.state.loadingRetailers && this.retailers
-                    ? this.retailers.map((item, i) => {
+                    !this.state.loadingRetailers && this.retailers &&
+                    this.retailers.map((item, i) => {
                       return (
                         <tr key={item.id}>
                           <td>{item.id}</td>
@@ -87,7 +87,10 @@ export default function showNotified(data) {
                         </tr>
                       )
                     })
-                    : 'Loading....'
+                  }
+                  {
+                    this.state.loadingRetailers &&
+                    'Loading...'
                   }
                   {
                     !this.state.loadingRetailers && (!this.retailers || !this.retailers.length) &&
