@@ -176,7 +176,7 @@ class OrderDetail extends Component {
 
     // if (retailer) {
       const retailer_accepted_time = retailer.confirmationTime
-      const retailer_notifieded_time = retailer.notifiedTime
+      const retailer_notified_time = retailer.notifiedTime
     // }
 
     const refershStyle = {

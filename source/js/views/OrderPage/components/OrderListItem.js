@@ -54,7 +54,7 @@ class OrderListItem extends Component {
       orderPlacedTime,
       orderAttemptedTime,
       cartValue,
-      retailer_notifieded_time,
+      retailer_notified_time,
       dp_delivered_time,
       retailer_accepted_time,
       cancellation_time,
