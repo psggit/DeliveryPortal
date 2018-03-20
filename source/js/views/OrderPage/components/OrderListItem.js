@@ -54,7 +54,7 @@ class OrderListItem extends Component {
       orderPlacedTime,
       orderAttemptedTime,
       cartValue,
-      retailer_notified_time,
+      retailer_notifieded_time,
       dp_delivered_time,
       retailer_accepted_time,
       cancellation_time,
@@ -76,7 +76,7 @@ class OrderListItem extends Component {
 
     const supportId = 1
     const isOrderAssigned = supportId == assignedToId
-    
+
 
 
     let orderChar = null
@@ -91,11 +91,11 @@ class OrderListItem extends Component {
     }
 
     let orderPlacedWaitingTime = null
-    
+
     if (orderPlacedTime) {
       orderPlacedWaitingTime = getTimeDiff(orderPlacedTime)
     }
-    
+
     let statusStyle = {}
     if (cancellation_time) {
       statusStyle = {
@@ -105,7 +105,7 @@ class OrderListItem extends Component {
     }
 
     // console.log(formula)
-    
+
     return (
       <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(id, e)} }>
         {
@@ -117,14 +117,14 @@ class OrderListItem extends Component {
             : ''}`
             }
             >{id}</td>
-          : <td>{cartValue}</td>  
+          : <td>{cartValue}</td>
         }
         {
           ordersType !== 'attempted'
           ? <td style={statusStyle} className='order-status'>
               {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
             </td>
-          : ''  
+          : ''
         }
         <td>{consumerId}</td>
         { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }

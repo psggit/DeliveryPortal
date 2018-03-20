@@ -29,12 +29,13 @@ class DelivererDetail extends Component {
 
   handleConfirmDeliverer() {
     const { deliverer, actions, orderId } = this.props
-    
+
     actions.confirmDeliverer({
       dp_id: deliverer.id,
       delivery_order_id: orderId
     })
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   handleSkipDeliverer() {
@@ -43,8 +44,9 @@ class DelivererDetail extends Component {
     actions.skipDeliverer({
       order_id: orderId,
     })
-    
+
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   render() {
@@ -66,7 +68,7 @@ class DelivererDetail extends Component {
                 <span><b>Phone: </b></span>
                 <span>{deliverer.phone}</span>
               </p>
-            : ''  
+            : ''
           }
         </div>
         {

@@ -6,7 +6,6 @@ import ModalBox from '@components/ModalBox'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import '@sass/OrdersPage/ShowNotified.scss'
-import Moment from 'moment'
 import { POST } from '@utils/fetch'
 
 export default function showNotified(data) {
@@ -69,8 +68,8 @@ export default function showNotified(data) {
                 </thead>
                 <tbody>
                   {
-                    !this.state.loadingRetailers && this.retailers &&
-                    this.retailers.map((item, i) => {
+                    !this.state.loadingRetailers && this.retailers
+                    ? this.retailers.map((item, i) => {
                       return (
                         <tr key={item.id}>
                           <td>{item.id}</td>
@@ -88,6 +87,7 @@ export default function showNotified(data) {
                         </tr>
                       )
                     })
+                    : 'Loading....'
                   }
                 </tbody>
               </table>

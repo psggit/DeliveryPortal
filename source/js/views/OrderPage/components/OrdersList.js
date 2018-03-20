@@ -48,7 +48,7 @@ class OrdersList extends Component {
                     id={item.order_id}
                     consumerName={item.consumer_name}
                     consumerId={item.consumer_id}
-                    retailer_notified_time={item.retailer_notified_time}
+                    retailer_notifieded_time={item.retailer_notified_time}
                     dp_delivered_time={item.dp_delivered_time}
                     dp_picked_up_time={item.dp_picked_up_time}
                     dp_notified_time={item.dp_notified_time}

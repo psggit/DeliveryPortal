@@ -124,7 +124,8 @@ function* forceRedeem(action) {
       Notify("Successfully redeemed the order", "success")
     }
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -147,7 +148,7 @@ function* assignOrder(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully assigned the order", "success")
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Something went wrong", "warning")
   }
 }
@@ -162,7 +163,8 @@ function* skipRetailer(action) {
       yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     }
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -176,7 +178,8 @@ function* skipDeliverer(action) {
       yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     }
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -190,7 +193,8 @@ function* cancelOrder(action) {
       yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     }
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -204,7 +208,8 @@ function* confirmRetailer(action) {
       Notify("Successfully confirmed the retailer", "success")
     }
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
+    Notify("Something went wrong", "warning")
   }
 }
 
@@ -214,7 +219,7 @@ function* confirmDeliverer(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
     Notify("Successfully confirmed the deliverer", "success")
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
     Notify("Something went wrong", "warning")
   }
 }
@@ -265,6 +270,7 @@ function* deleteItemFromCart(action) {
     Notify("Successfully deleted item from cart", "success")
     action.CB()
   } catch (err) {
+    yield put({ type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
   }
@@ -277,6 +283,7 @@ function* addItemToCart(action) {
     Notify("Successfully added item to cart", "success")
     action.CB()
   } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
   }
@@ -288,7 +295,7 @@ function* assignNewRetailerToOrder(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     Notify("Successfully assigned new retailer", "success")
   } catch (err) {
-    // console.log(err.response.json());
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
@@ -299,6 +306,7 @@ function* assignNewDeliveryAgentToOrder(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     Notify("Successfully assigned new delivery agent", "success")
   } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }

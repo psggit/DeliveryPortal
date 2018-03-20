@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { getIcon } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
-import ShowAssignableDeliveryAgents from './ShowAssignableDeliveryAgents'
 
 class RetailerDetail extends Component {
   constructor() {
@@ -11,18 +10,6 @@ class RetailerDetail extends Component {
     this.openSkipRetailer = this.openSkipRetailer.bind(this)
     this.handleConfirmRetailer = this.handleConfirmRetailer.bind(this)
     this.openConfirmRetailer = this.openConfirmRetailer.bind(this)
-    this.showAssignableDeliveryAgents = this.showAssignableDeliveryAgents.bind(this)
-  }
-  showAssignableDeliveryAgents() {
-    const { orderId, actions, notifiedRetailers, retailer } = this.props
-    mountModal(ShowAssignableDeliveryAgents({
-      heading: 'Assign new delivery agent',
-      content: notifiedRetailers,
-      orderId,
-      retailerId: retailer.id,
-      assignNewDeliveryAgentToOrder: actions.assignNewDeliveryAgentToOrder,
-      setLoading: actions.setLoading
-    }))
   }
 
   openSkipRetailer() {
@@ -47,6 +34,7 @@ class RetailerDetail extends Component {
       delivery_order_id: orderId
     }, )
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   handleSkipRetailer() {
@@ -58,6 +46,7 @@ class RetailerDetail extends Component {
     })
 
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   render() {
@@ -88,7 +77,6 @@ class RetailerDetail extends Component {
             <div className='card-footer'>
               <button className='btn btn-red' onClick={this.openSkipRetailer}>Skip</button>
               { !retailer.confirmationTime ? <button className='btn btn-green' onClick={this.openConfirmRetailer}>Confirm</button> : '' }
-              { retailer.confirmationTime && !dpConfirmationTime && <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button> }
             </div>
           )
           : ''

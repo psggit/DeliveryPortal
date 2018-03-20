@@ -5,6 +5,7 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ShowNotifiedRetailers from './ShowNotifiedRetailers'
 import ShowNotifiedDeliverers from './ShowNotifiedDeliverers'
 import ShowAssignableRetailers from './ShowAssignableRetailers'
+import ShowAssignableDeliveryAgents from './ShowAssignableDeliveryAgents'
 import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
@@ -39,6 +40,7 @@ class OrderDetail extends Component {
     this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
     this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
     this.showAssignableRetailers = this.showAssignableRetailers.bind(this)
+    this.showAssignableDeliveryAgents = this.showAssignableDeliveryAgents.bind(this)
     this.handleRefersh = this.handleRefersh.bind(this)
   }
 
@@ -59,11 +61,21 @@ class OrderDetail extends Component {
     }))
   }
 
+  showAssignableDeliveryAgents() {
+    const { order, actions, retailer } = this.props
+    mountModal(ShowAssignableDeliveryAgents({
+      heading: 'Assign new delivery agent',
+      orderId: order.id,
+      retailerId: retailer.id,
+      assignNewDeliveryAgentToOrder: actions.assignNewDeliveryAgentToOrder,
+      setLoading: actions.setLoading
+    }))
+  }
+
   showAssignableRetailers() {
     const { order, actions } = this.props
     mountModal(ShowAssignableRetailers({
       heading: 'Assign new retailer',
-      content: order.retailers,
       orderId: order.id,
       assignNewRetailerToOrder: actions.assignNewRetailerToOrder,
       setLoading: actions.setLoading
@@ -163,7 +175,7 @@ class OrderDetail extends Component {
 
     // if (retailer) {
       const retailer_accepted_time = retailer.confirmationTime
-      const retailer_notified_time = retailer.notifiedTime
+      const retailer_notifieded_time = retailer.notifiedTime
     // }
 
     const refershStyle = {
@@ -219,9 +231,15 @@ class OrderDetail extends Component {
             }
 
             {
-              ordersType !== 'history' && !deliverer.confirmationTime &&
-              <button style={{ marginRight: '80px', float: 'right' }} onClick={this.showAssignableRetailers}>Assign new retailer</button>
+              ordersType !== 'history' &&
+              <button style={{marginLeft: '40px'}} onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button>
             }
+
+            {
+              ordersType !== 'history' &&
+              <button style={{marginLeft: '20px'}} onClick={this.showAssignableRetailers}>Assign new retailer</button>
+            }
+
             </div>
         </div>
         {/* <hr /> */}
