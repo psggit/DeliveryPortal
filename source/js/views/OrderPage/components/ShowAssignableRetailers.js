@@ -89,6 +89,10 @@ export default function showNotified(data) {
                     })
                     : 'Loading....'
                   }
+                  {
+                    !this.state.loadingRetailers && (!this.retailers || !this.retailers.length) &&
+                    'No retailers available'
+                  }
                 </tbody>
               </table>
             </ModalBody>
