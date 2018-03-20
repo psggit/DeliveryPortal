@@ -125,6 +125,7 @@ class OrderDetail extends Component {
 
   handleRefersh() {
     const { actions, currentOrderId } = this.props
+    actions.setLoading('loadingOrderDetail')
     actions.fetchOrderDetail(currentOrderId)
   }
 
