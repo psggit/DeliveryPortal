@@ -92,6 +92,10 @@ export default function showNotified(data) {
                     })
                   }
                   {
+                    this.state.loadingDP &&
+                    'Loading...'
+                  }
+                  {
                     !this.state.loadingDP && !this.DP &&
                     'No retailer is confirmed'
                   }
