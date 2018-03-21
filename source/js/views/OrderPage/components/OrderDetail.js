@@ -231,15 +231,17 @@ class OrderDetail extends Component {
               : ''
             }
 
-            {
-              ordersType !== 'history' &&
-              <button style={{marginLeft: '40px'}} onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button>
-            }
+            <span style={{ float: 'right', marginRight: '80px' }}>
+              {
+                ordersType !== 'history' &&
+                <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button>
+              }
 
-            {
-              ordersType !== 'history' &&
-              <button style={{marginLeft: '20px'}} onClick={this.showAssignableRetailers}>Assign new retailer</button>
-            }
+              {
+                ordersType !== 'history' &&
+                <button style={{marginLeft: '20px'}} onClick={this.showAssignableRetailers}>Assign new retailer</button>
+              }
+            </span>
 
             </div>
         </div>
