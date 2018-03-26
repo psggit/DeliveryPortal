@@ -5,6 +5,7 @@ export function getHasuraRole(data) {
     "user": 1,
     "admin": 6,
     "support_person": 3,
+    "business_team": 5,
     "support_admin": 5,
     "support_team_leader": 4,
     "excise_person": 2,

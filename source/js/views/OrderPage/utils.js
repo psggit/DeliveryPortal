@@ -172,6 +172,7 @@ export function canAccess(feature) {
     "support_admin": [],
     "support_master": [],
     "support_person": [],
+    "business_team": [],
     "delivery_support_person": ['resume-pause'],
     "support_team_leader": ['force-redeem', 'skip'],
     "excise_person": ['action-buttons', 'assign', 'consumer-col', 'resume-pause', 'other-orders', 'auto-pilot']

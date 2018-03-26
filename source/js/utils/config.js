@@ -46,6 +46,7 @@ function getAPIObj() {
       authUrl: 'https://auth.' + appName + '.hasura-app.io',
       blogicUrl: 'https://api1.' + appName + '.hasura-app.io',
       gremlinUrl: scheme + '://gremlin' + baseHost,
+      catman: scheme + '://catman' + baseHost,
       ordermanUrl: scheme + '://orderman' + baseHost,
       deliverymanUrl: scheme + '://deliveryman' + baseHost,
       socketUrl: 'https://livered' + baseHost
@@ -63,6 +64,7 @@ function getAPIObj() {
       blogicUrl: scheme + '://api1' + baseHost,
       gremlinUrl: scheme + '://gremlin' + baseHost,
       ordermanUrl: scheme + '://orderman' + baseHost,
+      catman: scheme + '://catman' + baseHost,
       deliverymanUrl: scheme + '://deliveryman' + baseHost,
       socketUrl: scheme + '://livered' + baseHost
     }

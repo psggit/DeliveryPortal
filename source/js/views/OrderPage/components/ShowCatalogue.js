@@ -60,9 +60,9 @@ export default function showCatalogue(data) {
 
     listSKUUsingBrand(genreShortName, brandName) {
       POST({
-        api: `/consumer/browse/stores/${genreShortName}/${brandName}`,
+        api: `/support/browse/stores/${genreShortName}/${brandName}`,
         handleError: true,
-        apiBase: 'gremlinUrl',
+        apiBase: 'catman',
         data: {
           from: 0,
           size: 9999,
@@ -94,9 +94,9 @@ export default function showCatalogue(data) {
 
     listBrandsUsingGenre(genre) {
       POST({
-        api: `/consumer/browse/stores/${genre}`,
+        api: `/support/browse/genre/${genre}`,
         handleError: true,
-        apiBase: 'gremlinUrl',
+        apiBase: 'catman',
         data: {
           from: 0,
           size: 9999,
@@ -107,12 +107,12 @@ export default function showCatalogue(data) {
         }
       })
       .then(json => {
-        this.brands = json.brands.map(item => {
+        this.brands = json.map(item => {
           return {
             id: item.id,
             brand: item.brand_name,
-            shortName: item.short_name,
-            genreShortName: item.category.genre_short.short_name
+            shortName: item.brand_short_name,
+            genreShortName: item.genre_short_name
           }
         })
         this.setState({ loadingBrands: false })
@@ -120,10 +120,13 @@ export default function showCatalogue(data) {
     }
 
     listGenres() {
-      GET({
-        api: '/consumer/browse/stores',
+      POST({
+        api: '/support/browse/stores',
         handleError: true,
-        apiBase: 'gremlinUrl'
+        apiBase: 'catman',
+        data: {
+          gps: data.gps
+        }
       })
       .then(json => {
         this.genres = json.data.map(item => {
@@ -184,7 +187,7 @@ export default function showCatalogue(data) {
     }
 
     render() {
-      console.log(this.skus);
+      console.log(this.brands);
       return (
         <ModalBox>
           <ModalHeader>Browse Catalogue</ModalHeader>

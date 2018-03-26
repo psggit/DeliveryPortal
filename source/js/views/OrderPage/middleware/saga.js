@@ -117,15 +117,11 @@ function* fetchOrderDetail(action) {
 function* forceRedeem(action) {
   try {
     const data = yield call(Api.forceRedeem, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-      Notify("Successfully redeemed the order", "success")
-    }
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Successfully redeemed the order", "success")
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
@@ -149,67 +145,52 @@ function* assignOrder(action) {
     Notify("Successfully assigned the order", "success")
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* skipRetailer(action) {
   try {
     const data = yield call(Api.skipRetailer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully skipped the retailer", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
+    Notify("Successfully skipped the retailer", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* skipDeliverer(action) {
   try {
     const data = yield call(Api.skipDeliverer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully skipped the deliverer", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
+    Notify("Successfully skipped the deliverer", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* cancelOrder(action) {
   try {
     const data = yield call(Api.cancelOrder, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully cancelled the order", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Successfully cancelled the order", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     }
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* confirmRetailer(action) {
   try {
     const data = yield call(Api.confirmRetailer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
-      Notify("Successfully confirmed the retailer", "success")
-    }
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
+    Notify("Successfully confirmed the retailer", "success")
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
@@ -220,7 +201,7 @@ function* confirmDeliverer(action) {
     Notify("Successfully confirmed the deliverer", "success")
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
-    Notify("Something went wrong", "warning")
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
