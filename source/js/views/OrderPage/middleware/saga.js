@@ -176,7 +176,6 @@ function* cancelOrder(action) {
     const data = yield call(Api.cancelOrder, action)
     Notify("Successfully cancelled the order", "success")
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     err.response.json().then(json => { Notify(json.message, "warning") })
