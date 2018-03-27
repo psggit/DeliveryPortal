@@ -54,7 +54,7 @@ export default class Notification extends Component {
                 getIcon(type)
               }
             </span>
-            <span>{ message }</span>
+            <span style={{ marginLeft: '10px' }}>{ message }</span>
           </div>
         }
       </Motion>

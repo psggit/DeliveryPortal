@@ -8,9 +8,8 @@
     top: 65px;
     right: -320px;
     padding: 20px;
-    padding-left: 0px;
     min-width: 300px;
-    max-width: 440px;
+    max-width: 420px;
     /* z-index: 0; */
     border-radius: 2px;
     /* text-align: left; */
@@ -71,8 +70,9 @@
     }
   }
   span {
+    display: inline-block;
     vertical-align: top;
-    padding-left: 20px;
+    font-size: 16px;
   }
 }
 
