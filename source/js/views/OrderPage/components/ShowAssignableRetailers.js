@@ -63,6 +63,7 @@ export default function showNotified(data) {
                   <tr>
                     <td>ID</td>
                     <td>NAME</td>
+                    <td style={{ textAlign: 'center' }}>Inventory available</td>
                     <td></td>
                   </tr>
                 </thead>
@@ -74,6 +75,7 @@ export default function showNotified(data) {
                         <tr key={item.id}>
                           <td>{item.id}</td>
                           <td>{item.org_name}</td>
+                          <td style={{ textAlign: 'center' }}>{item.check ? 'Yes' : 'No' }</td>
                           <td>
                             <button
                               onClick={() => { this.assignNewRetailer(item.id) }}
