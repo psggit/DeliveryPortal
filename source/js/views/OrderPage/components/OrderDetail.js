@@ -299,7 +299,9 @@ class OrderDetail extends Component {
                   : ''
                 }
                 {
-                  deliverer.id && this.props.canAccess('deliverer')
+                  order.deliverers.findIndex(item =>
+                    item.status === 'notified' || item.status === 'accepted'
+                  ) > -1 && this.props.canAccess('deliverer')
                   ? <DelivererDetail
                       canAccess={this.props.canAccess}
                       ordersType={ordersType}
