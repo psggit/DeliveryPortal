@@ -71,7 +71,10 @@ class OrderListItem extends Component {
       consumerAddress,
       reason,
       cartDetails,
-      closestRetailers
+      closestRetailers,
+      primeRetailer,
+      unavailableProduct,
+      localityName
     } = this.props
 
     const supportId = 1
@@ -133,6 +136,9 @@ class OrderListItem extends Component {
         { ordersType == 'attempted' ? <td>{reason}</td> : '' }
         { ordersType == 'attempted' ? <td>{cartDetails}</td> : '' }
         { ordersType == 'attempted' ? <td>{closestRetailers}</td> : '' }
+        { ordersType == 'attempted' ? <td>{unavailableProduct}</td> : '' }
+        { ordersType == 'attempted' ? <td>{primeRetailer}</td> : '' }
+        { ordersType == 'attempted' ? <td>{localityName}</td> : '' }
         { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
         { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
       </tr>

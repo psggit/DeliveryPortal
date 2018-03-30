@@ -31,6 +31,9 @@ class OrdersList extends Component {
             { this.props.ordersType == 'attempted' ? <td>Reason</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Cart Details</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Nearby retailers</td> : '' }
+            { this.props.ordersType == 'attempted' ? <td>Unavailable product</td> : '' }
+            { this.props.ordersType == 'attempted' ? <td>Prime retailer</td> : '' }
+            { this.props.ordersType == 'attempted' ? <td>Locality name</td> : '' }
             { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
             <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
           </tr>
@@ -72,6 +75,9 @@ class OrdersList extends Component {
                     consumerPhone={item.consumer_phone}
                     consumerAddress={item.consumer_address}
                     closestRetailers={item.retailer_list}
+                    unavailableProduct={item.unavailable_product}
+                    primeRetailer={item.prime_retailer}
+                    localityName={item.locality_name}
                     actions={this.props.actions}
                     canAccess={this.props.canAccess}
                 />
