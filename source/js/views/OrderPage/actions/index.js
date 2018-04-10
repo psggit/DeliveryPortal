@@ -150,3 +150,8 @@ export const assignNewDeliveryAgentToOrder = (data) => ({
   type: ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER,
   data
 })
+
+export const createNote = data => ({
+  type: ActionTypes.REQUEST_CREATE_NOTE,
+  data
+})

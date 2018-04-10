@@ -10,6 +10,7 @@ import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
+import Notes from './Notes'
 import ShowGmap from './ShowGmap'
 import moment from 'moment'
 import { getHasuraId } from './../utils'
@@ -259,12 +260,17 @@ class OrderDetail extends Component {
                       canAccess={this.props.canAccess}
                       order={order}
                       actions={actions}
+                      consumerId={customer.id}
                       openAssignOrderModal={this.openAssignOrderModal}
                       isOrderAssigned={isOrderAssigned}
                       ordersType={ordersType}
                       unmountOrderDetail={this.props.unmountOrderDetail}
                     />
                   : ''
+                }
+                {
+                  order.notes.length &&
+                  <Notes data={order.notes} />
                 }
               </div>
               <div className='right'>

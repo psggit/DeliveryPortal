@@ -259,3 +259,14 @@ export function assignNewDeliveryAgentToOrder(action) {
   .then(json => json)
   return data
 }
+
+export function createNote(action) {
+  const data = POST({
+    api: `/deliveryStatus/notes`,
+    handleError: true,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

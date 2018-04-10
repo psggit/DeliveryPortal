@@ -48,6 +48,7 @@ const initialOrderState = {
       assignedToId: '',
       isFreelancer: '',
       cartItems: '',
+      notes: [],
       retailers: [],
       deliverers: [],
       orderPlacedTime: ''
@@ -165,6 +166,7 @@ const actionsMap = {
         assignedToId: orderStatus.assigned_to_id,
         isFreelancer: orderStatus.is_freelancer,
         cartItems: orderStatus.cart_items,
+        notes: orderStatus.notes,
         retailers: orderStatus.retailers,
         deliverers: orderStatus.deliverers,
         orderPlacedTime: orderStatus.order_placed_time

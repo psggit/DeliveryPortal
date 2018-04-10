@@ -291,6 +291,17 @@ function* assignNewDeliveryAgentToOrder(action) {
   }
 }
 
+function* createNote(action) {
+  try {
+    const data = yield call(Api.createNote, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.order_id } })
+    Notify("Successfully created the note", "success")
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.order_id } })
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
 
 
 /**
@@ -461,5 +472,11 @@ export function* watchAssignNewRetailerToOrder() {
 export function* watchAssignNewDeliveryAgentToOrder() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER, assignNewDeliveryAgentToOrder)
+  }
+}
+
+export function* watchCreateNote() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_CREATE_NOTE, createNote)
   }
 }
