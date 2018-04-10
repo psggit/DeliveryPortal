@@ -145,7 +145,7 @@ function* assignOrder(action) {
     Notify("Successfully assigned the order", "success")
   } catch (err) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    err.response.json().then(json => { Notify(json.message, "warning") })
+    err.response.json().then(json => { Notify(json.status, "warning") })
   }
 }
 
