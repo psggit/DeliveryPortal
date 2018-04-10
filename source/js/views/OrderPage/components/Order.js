@@ -278,7 +278,7 @@ class Order extends Component {
           ordersType !== 'history' && this.props.canAccess('action-buttons')
           ? (
             <div className='card-footer'>
-              { !isOrderAssigned ? <button className='btn btn-green' onClick={openAssignOrderModal}>Assign to me</button> : '' }
+              <button className='btn btn-green' onClick={openAssignOrderModal}>Assign to me</button>
               <button className='btn btn-red' onClick={this.openCancelOrder}>Cancel order</button>
               {
                 this.props.canAccess('force-redeem')

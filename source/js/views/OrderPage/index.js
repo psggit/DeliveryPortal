@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import * as Actions from './actions'
-import { getIcon, getTimeDiff, canAccess } from './utils'
+import { getIcon, getTimeDiff, canAccess, getHasuraId } from './utils'
 import * as ActionTypes from './constants/actions'
 import NavBar from '@components/NavBar'
 import SideMenu from './components/SideMenu'
@@ -91,7 +91,7 @@ class OrderPage extends Component {
     this.setState({ ordersType, offset }, function() {
       switch (ordersType) {
         case 'assigned':
-          postData.support_id = 1
+          postData.support_id = parseInt(getHasuraId())
           actions.fetchLiveAssignedOrders(postData)
           break
 
