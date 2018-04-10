@@ -153,7 +153,8 @@ class OrderDetail extends Component {
     } = this.props
 
     const isOrderConfirmed = false
-    const supportId = getHasuraId()
+    const supportId = parseInt(getHasuraId())
+    console.log(supportId, order.assignedToId);
     const isOrderAssigned = supportId == order.assignedToId
 
     const { actions } = this.props

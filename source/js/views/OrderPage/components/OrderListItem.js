@@ -139,8 +139,9 @@ class OrderListItem extends Component {
         { ordersType == 'attempted' ? <td>{unavailableProduct}</td> : '' }
         { ordersType == 'attempted' ? <td>{primeRetailer}</td> : '' }
         { ordersType == 'attempted' ? <td>{localityName}</td> : '' }
-        { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{!parseInt(assignedTo) ? <button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button> : assignedToId}</td> : '' }
+        { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{assignedToId}</td> : '' }
         { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
+        { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button disabled={isOrderAssigned} onClick={this.openAssignOrderModal}>Assign</button></td> : ''}
       </tr>
     )
   }

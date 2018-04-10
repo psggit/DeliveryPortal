@@ -36,6 +36,7 @@ class OrdersList extends Component {
             { this.props.ordersType == 'attempted' ? <td>Locality name</td> : '' }
             { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
             <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
+            { ['attempted', 'history', 'cancellation'].indexOf(this.props.ordersType) === -1 ? <td></td> : '' }
           </tr>
         </thead>
         <tbody>
