@@ -260,7 +260,6 @@ class OrderDetail extends Component {
                       canAccess={this.props.canAccess}
                       order={order}
                       actions={actions}
-                      consumerId={customer.id}
                       openAssignOrderModal={this.openAssignOrderModal}
                       isOrderAssigned={isOrderAssigned}
                       ordersType={ordersType}

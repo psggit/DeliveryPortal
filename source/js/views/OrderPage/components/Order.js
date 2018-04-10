@@ -110,13 +110,12 @@ class Order extends Component {
   }
 
   createNote(note) {
-    const { order, actions, consumerId } = this.props
+    const { order, actions } = this.props
     mountModal(ConfirmModal({
       heading: 'Create note',
       confirmMessage: 'Are you sure you want to create the note?',
       handleConfirm: () => {
         actions.createNote({
-          consumer_id: consumerId,
           order_id: order.id,
           support_id: parseInt(getHasuraId()),
           notes: note
