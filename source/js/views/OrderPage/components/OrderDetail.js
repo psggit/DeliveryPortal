@@ -269,8 +269,9 @@ class OrderDetail extends Component {
                   : ''
                 }
                 {
-                  order.notes.length &&
-                  <Notes data={order.notes} />
+                  order.notes.length
+                  ? <Notes data={order.notes} />
+                  : ''
                 }
               </div>
               <div className='right'>
