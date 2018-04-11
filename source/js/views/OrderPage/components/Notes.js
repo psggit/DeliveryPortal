@@ -2,7 +2,7 @@ import React from 'react'
 import Moment from 'moment'
 
 const Notes = ({ data }) => (
-  <div className='card'>
+  <div className='card' style={{ height: '400px', overflow: 'auto' }}>
     <div className='card-head'>
       <h4>Notes</h4>
     </div>
@@ -16,12 +16,23 @@ const Notes = ({ data }) => (
         </thead>
         <tbody>
           {
-            data.map((item, i) => (
-              <tr>
-                <td>{ item.note }</td>
-                <td>{`Support id: ${item.support_id} at ${Moment(item.created_at).format('MMM Do YY, h:mm a')}`}</td>
-              </tr>
-            ))
+            data.map((item, i) => {
+              const note = item.note.trim().split('\n')
+              return (
+                <tr>
+                  <td>
+                    <ul>
+                      {
+                        note.map(el => (
+                          <li>{ el }</li>
+                        ))
+                      }
+                    </ul>
+                  </td>
+                  <td>{`Support id: ${item.support_id} on ${Moment(item.created_at).format('MMM Do, YYYY')} at ${Moment(item.created_at).format('h:mm a')}`}</td>
+                </tr>
+              )
+            })
           }
         </tbody>
       </table>

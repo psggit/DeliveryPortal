@@ -36,6 +36,8 @@ export default function showTakeNotes(data) {
           <ModalHeader>Take note</ModalHeader>
           <ModalBody>
             <textarea
+              cols="60"
+              rows="5"
               style={{
                 width: '100%',
                 height: '200px',
