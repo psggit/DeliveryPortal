@@ -282,6 +282,7 @@ class OrderDetail extends Component {
                       ordersType={ordersType}
                       customer={customer}
                       actions={actions}
+                      orderId={order.id}
                       isOrderAssigned={isOrderAssigned}
                       openAssignOrderModal={this.openAssignOrderModal}
                     />

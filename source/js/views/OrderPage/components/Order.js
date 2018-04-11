@@ -5,7 +5,6 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import '@sass/components/_spinner.scss'
 import showCatalogue from './ShowCatalogue'
-import showTakeNotes from './ShowTakeNotes'
 
 class Order extends Component {
   constructor() {
@@ -19,8 +18,7 @@ class Order extends Component {
     this.increaseProductQuantity = this.increaseProductQuantity.bind(this)
     this.decreaseProductQuantity = this.decreaseProductQuantity.bind(this)
     this.callbackUpdate = this.callbackUpdate.bind(this)
-    this.createNote = this.createNote.bind(this)
-    this.showTakeNotes = this.showTakeNotes.bind(this)
+
     this.state = {
       forceRedeemKey: 0,
       canChangeQuantity: true
@@ -109,30 +107,6 @@ class Order extends Component {
     }))
   }
 
-  createNote(data) {
-    const { order, actions } = this.props
-    mountModal(ConfirmModal({
-      heading: 'Create note',
-      confirmMessage: 'Are you sure you want to create the note?',
-      handleConfirm: () => {
-        actions.createNote({
-          order_id: order.id,
-          support_id: parseInt(getHasuraId()),
-          notes: data.note,
-          issue_name: data.issueName
-        })
-        unMountModal()
-      }
-    }))
-  }
-
-  showTakeNotes() {
-    mountModal(showTakeNotes({
-      heading: 'Take notes',
-      createNote: this.createNote
-    }))
-  }
-
   showCatalogue() {
     const { order, actions, gps } = this.props
     mountModal(showCatalogue({
@@ -185,20 +159,6 @@ class Order extends Component {
                 padding: '2px 20px'
               }}>
               Add Item
-            </button>
-          }
-          {
-            ordersType !== 'history' &&
-            <button
-              onClick={this.showTakeNotes}
-              title="Show catalogue"
-              style={{
-                float: 'right',
-                marginRight: '5px',
-                cursor: 'pointer',
-                padding: '2px 20px'
-              }}>
-              Take notes
             </button>
           }
           <table>

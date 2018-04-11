@@ -17,7 +17,7 @@ export default function showTakeNotes(data) {
       this.issues = []
       this.state = {
         notesData: '',
-        issueName: 'GENERAL',
+        issueName: '',
         loadingIssues: true
       }
       this.handleChange = this.handleChange.bind(this)
@@ -38,7 +38,7 @@ export default function showTakeNotes(data) {
       })
       .then(json => {
         this.issues = json.issues
-        this.setState({ loadingIssues: false })
+        this.setState({ loadingIssues: false, issueName: json.issues[0].issue_name })
       })
     }
 
@@ -52,10 +52,12 @@ export default function showTakeNotes(data) {
 
     handleAddNote() {
       const { notesData, issueName } = this.state
-      data.createNote({
-        issueName,
-        note: notesData
-      })
+      if (notesData.length) {
+        data.createNote({
+          issueName,
+          note: notesData
+        })
+      }
     }
 
 

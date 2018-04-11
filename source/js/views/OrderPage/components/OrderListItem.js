@@ -59,9 +59,10 @@ class OrderListItem extends Component {
   handleShowNotes(e) {
     const { actions, id } = this.props
     const posObj = e.target.getBoundingClientRect()
+    // console.log(posObj);
     const notesBoxPosition = {
-      top: posObj.top,
-      left: posObj.left
+      top: posObj.top + 19,
+      left: posObj.left - 150
     }
 
     actions.fetchNotes({ id })

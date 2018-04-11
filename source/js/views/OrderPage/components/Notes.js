@@ -49,12 +49,11 @@ class Notes extends React.Component{
         className='card'
         style={{
         width: position ? '400px' : '',
-        maxHeight: '400px',
-        overflow: 'auto',
         position: position ? 'fixed' : 'static',
         top: position ? position.top : '',
         left: position ? position.left : '',
-        transform: position ? 'translateX(-50%)' : 'none'
+        transform: position ? 'translateX(-50%)' : 'none',
+        zIndex: position ? '1' : '0'
       }}>
         <div className='card-head'>
           <h4>Notes</h4>
@@ -71,7 +70,12 @@ class Notes extends React.Component{
           </span>
           }
         </div>
-        <div className='card-body'>
+        <div
+          style={{
+            maxHeight: '400px',
+            overflow: 'auto'
+          }}
+          className='card-body'>
           <div>
             {
               position &&
