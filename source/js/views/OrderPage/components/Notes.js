@@ -19,7 +19,7 @@ const Notes = ({ data }) => (
             data.map((item, i) => (
               <tr>
                 <td>{ item.note }</td>
-                <td>{`Support id: ${item.support_id} at ${Moment(item.created_at).format('MMM Do YY', 'h:mm a')}`}</td>
+                <td>{`Support id: ${item.support_id} at ${Moment(item.created_at).format('MMM Do YY, h:mm a')}`}</td>
               </tr>
             ))
           }
