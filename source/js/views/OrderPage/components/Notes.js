@@ -21,13 +21,11 @@ const Notes = ({ data }) => (
               return (
                 <tr>
                   <td>
-                    <ul>
-                      {
-                        note.map(el => (
-                          <li>{ el }</li>
-                        ))
-                      }
-                    </ul>
+                    {
+                      note.map(el => (
+                        <span>{ el }<br/></span>
+                      ))
+                    }
                   </td>
                   <td>{`Support id: ${item.support_id} on ${Moment(item.created_at).format('MMM Do, YYYY')} at ${Moment(item.created_at).format('h:mm a')}`}</td>
                 </tr>
