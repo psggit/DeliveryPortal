@@ -3,7 +3,7 @@ import Moment from 'moment'
 import showTakeNotes from './ShowTakeNotes'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
-import { getHasuraId } from './../utils'
+import { getIcon, getHasuraId } from './../utils'
 
 
 class Notes extends React.Component{
@@ -11,7 +11,8 @@ class Notes extends React.Component{
     super()
     this.showTakeNotes = this.showTakeNotes.bind(this)
     this.createNote = this.createNote.bind(this)
-  }
+    this.handleCloseNotes = this.handleCloseNotes.bind(this)
+   }
 
   createNote(data) {
     const { createNote, id } = this.props
@@ -36,12 +37,18 @@ class Notes extends React.Component{
       createNote: this.createNote
     }))
   }
+
+  handleCloseNotes() {
+    this.props.unmountNotesBox()
+  }
+
   render() {
     const { data, position, id, loadingNotes } = this.props
     return (
       <div
         className='card'
         style={{
+        width: position ? '400px' : '',
         maxHeight: '400px',
         overflow: 'auto',
         position: position ? 'fixed' : 'static',
@@ -51,6 +58,18 @@ class Notes extends React.Component{
       }}>
         <div className='card-head'>
           <h4>Notes</h4>
+          {
+            position &&
+            <span
+              onClick={this.handleCloseNotes}
+              style={{
+              float: 'right',
+              marginTop: '2px',
+              cursor: 'pointer'
+            }}>
+            {getIcon('cross')}
+          </span>
+          }
         </div>
         <div className='card-body'>
           <div>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import { getHasuraRole, getHasuraId, getIcon } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
@@ -31,6 +31,7 @@ class OrderListItem extends Component {
     this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
     this.handleShowNotes = this.handleShowNotes.bind(this)
+    this.unmountNotesBox = this.unmountNotesBox.bind(this)
   }
   openAssignOrderModal() {
     this.props.unmountOrderDetail()
@@ -49,6 +50,10 @@ class OrderListItem extends Component {
     }
     actions.assignOrder(postData)
     unMountModal()
+  }
+
+  unmountNotesBox() {
+    this.setState({ shouldMountNotesBox: false })
   }
 
   handleShowNotes(e) {
@@ -131,44 +136,53 @@ class OrderListItem extends Component {
     // console.log(formula)
 
     return (
-      <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(id, e)} }>
-        {
-          ordersType !== 'attempted'
-          ? <td
-            className={
-            `${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
-            ? 'danger'
-            : ''}`
-            }
-            >{id}</td>
-          : <td>{cartValue}</td>
-        }
-        {
-          ordersType !== 'attempted'
-          ? <td style={statusStyle} className='order-status'>
-              {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
-            </td>
-          : ''
-        }
-        <td>{consumerId}</td>
-        { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
-        { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
-        { ordersType == 'attempted' ? <td>{consumerAddress}</td> : '' }
-        { ordersType == 'attempted' ? <td>{reason}</td> : '' }
-        { ordersType == 'attempted' ? <td>{cartDetails}</td> : '' }
-        { ordersType == 'attempted' ? <td>{closestRetailers}</td> : '' }
-        { ordersType == 'attempted' ? <td>{unavailableProduct}</td> : '' }
-        { ordersType == 'attempted' ? <td>{primeRetailer}</td> : '' }
-        { ordersType == 'attempted' ? <td>{localityName}</td> : '' }
-        { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{assignedToId}</td> : '' }
-        { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
+      <Fragment>
+        <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(id, e)} }>
+          {
+            ordersType !== 'attempted'
+            ? <td
+              className={
+              `${orderPlacedWaitingTime >=60 && ordersType !== 'history' && getHasuraRole() != 'excise_person'
+              ? 'danger'
+              : ''}`
+              }
+              >{id}</td>
+            : <td>{cartValue}</td>
+          }
+          {
+            ordersType !== 'attempted'
+            ? <td style={statusStyle} className='order-status'>
+                {`${orderChar} ${ time ? time : ''} ${article ? article : ''}`}
+              </td>
+            : ''
+          }
+          <td>{consumerId}</td>
+          { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
+          { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
+          { ordersType == 'attempted' ? <td>{consumerAddress}</td> : '' }
+          { ordersType == 'attempted' ? <td>{reason}</td> : '' }
+          { ordersType == 'attempted' ? <td>{cartDetails}</td> : '' }
+          { ordersType == 'attempted' ? <td>{closestRetailers}</td> : '' }
+          { ordersType == 'attempted' ? <td>{unavailableProduct}</td> : '' }
+          { ordersType == 'attempted' ? <td>{primeRetailer}</td> : '' }
+          { ordersType == 'attempted' ? <td>{localityName}</td> : '' }
+          { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{assignedToId}</td> : '' }
+          { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
         { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button onClick={this.openAssignOrderModal}>Assign</button></td> : ''}
         { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button onClick={this.handleShowNotes}>Notes</button></td> : '' }
-        {
-          this.state.shouldMountNotesBox &&
-          <Notes data={notesData} createNote={this.props.actions.createNote} id={id} loadingNotes={loadingNotes} position={this.state.notesBoxPosition} />
-        }
       </tr>
+      {
+        this.state.shouldMountNotesBox &&
+        <Notes
+          data={notesData}
+          createNote={this.props.actions.createNote}
+          id={id}
+          loadingNotes={loadingNotes}
+          position={this.state.notesBoxPosition}
+          unmountNotesBox={this.unmountNotesBox}
+        />
+      }
+      </Fragment>
     )
   }
 }
