@@ -14,11 +14,36 @@ export default function showTakeNotes(data) {
   return class ShowTakeNotes extends React.Component {
     constructor() {
       super()
+      this.issues = []
       this.state = {
-        notesData: ''
+        notesData: '',
+        issueName: 'GENERAL',
+        loadingIssues: true
       }
       this.handleChange = this.handleChange.bind(this)
       this.handleAddNote = this.handleAddNote.bind(this)
+      this.getNoteIssues = this.getNoteIssues.bind(this)
+      this.handleChangeIssueName = this.handleChangeIssueName.bind(this)
+    }
+
+    componentDidMount() {
+      this.getNoteIssues()
+    }
+
+    getNoteIssues() {
+      GET({
+        api: `/deliveryStatus/orderIssue`,
+        handleError: true,
+        apiBase: 'gremlinUrl'
+      })
+      .then(json => {
+        this.issues = json.issues
+        this.setState({ loadingIssues: false })
+      })
+    }
+
+    handleChangeIssueName(e) {
+      this.setState({ issueName: e.target.value })
     }
 
     handleChange(e) {
@@ -26,7 +51,11 @@ export default function showTakeNotes(data) {
     }
 
     handleAddNote() {
-      data.createNote(this.state.notesData)
+      const { notesData, issueName } = this.state
+      data.createNote({
+        issueName,
+        note: notesData
+      })
     }
 
 
@@ -34,13 +63,27 @@ export default function showTakeNotes(data) {
       return (
         <ModalBox>
           <ModalHeader>Take note</ModalHeader>
+          <select
+            value={this.state.issueName}
+            onChange={this.handleChangeIssueName}
+            style={{ marginTop: '15px' }}
+            disabled={this.state.loadingIssues }
+          >
+            {
+              this.issues.map((item, i) => {
+                return (
+                  <option value={item.issue_name}>{ item.issue_name }</option>
+                )
+              })
+            }
+          </select>
           <ModalBody>
             <textarea
+              disabled={this.state.loadingIssues}
               cols="60"
               rows="5"
               style={{
                 width: '100%',
-                height: '200px',
                 borderRadius: '2px',
                 borderColor: '#dfdfdf'
               }}

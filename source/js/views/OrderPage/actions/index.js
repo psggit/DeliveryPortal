@@ -155,3 +155,8 @@ export const createNote = data => ({
   type: ActionTypes.REQUEST_CREATE_NOTE,
   data
 })
+
+export const fetchNotes = data => ({
+  type: ActionTypes.REQUEST_FETCH_NOTES,
+  data
+})

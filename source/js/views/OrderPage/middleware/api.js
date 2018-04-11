@@ -270,3 +270,14 @@ export function createNote(action) {
   .then(json => json)
   return data
 }
+
+export function fetchNotes(action) {
+  const data = POST({
+    api: `/deliveryStatus/fetchNotes`,
+    handleError: true,
+    apiBase: 'gremlinUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

@@ -416,6 +416,8 @@ class OrderPage extends Component {
       loadingOrdersList,
       loadingOrderDetail,
       plotData,
+      notesData,
+      loadingNotes,
       match
     } = this.props
 
@@ -556,6 +558,8 @@ class OrderPage extends Component {
               unmountOrderDetail={this.unmountOrderDetail}
               mountOrderDetail={this.mountOrderDetail}
               actions={actions}
+              notesData={notesData}
+              loadingNotes={loadingNotes}
               state={state}
             />
             : ''
@@ -600,6 +604,8 @@ class OrderPage extends Component {
 
 const mapStateToProps = (state) => ({
   state: state.OrderPage.state,
+  loadingNotes: state.OrderPage.loadingNotes,
+  notesData: state.OrderPage.notesData,
   plotData: state.OrderPage.plotData,
   autoPilotStatus: state.OrderPage.autoPilotStatus,
   loadingOrdersList: state.OrderPage.loadingOrdersList,

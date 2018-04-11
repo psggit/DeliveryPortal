@@ -30,9 +30,11 @@ const initialOrderState = {
     state: 'SearchingRetailer',
     loadingOrdersList: true,
     loadingGenres: true,
+    loadingNotes: true,
     autoPilotStatus: false,
     orders: [],
     plotData: [],
+    notesData: [],
     ordersCount: 0,
     order: {
       id: '',
@@ -213,6 +215,13 @@ const actionsMap = {
     return Object.assign({}, state, {
       genres: action.data.map(item => item.genre_name),
       loadingGenres: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_NOTES]: (state, action) => {
+    return Object.assign({}, state, {
+      notesData: action.data.Notes,
+      loadingNotes: false
     })
   }
 };

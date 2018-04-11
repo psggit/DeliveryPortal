@@ -14,7 +14,7 @@ class OrdersList extends Component {
     }
   }
   render() {
-    const { orders, state, loadingOrdersList } = this.props
+    const { orders, state, loadingOrdersList, notesData, loadingNotes } = this.props
     // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
 
     return (
@@ -36,6 +36,7 @@ class OrdersList extends Component {
             { this.props.ordersType == 'attempted' ? <td>Locality name</td> : '' }
             { this.props.canAccess('consumer-col') && this.props.ordersType !== 'attempted' ? <td>Assigned to</td> : '' }
             <td>{ this.props.ordersType !== 'attempted' ? 'Order placed time' : 'Order attempted time' }</td>
+            { ['attempted', 'history', 'cancellation'].indexOf(this.props.ordersType) === -1 ? <td></td> : '' }
             { ['attempted', 'history', 'cancellation'].indexOf(this.props.ordersType) === -1 ? <td></td> : '' }
           </tr>
         </thead>
@@ -80,6 +81,8 @@ class OrdersList extends Component {
                     primeRetailer={item.prime_retailer}
                     localityName={item.locality_name}
                     actions={this.props.actions}
+                    loadingNotes={loadingNotes}
+                    notesData={notesData}
                     canAccess={this.props.canAccess}
                 />
                 )

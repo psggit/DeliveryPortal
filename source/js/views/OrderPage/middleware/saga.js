@@ -302,6 +302,15 @@ function* createNote(action) {
   }
 }
 
+function* fetchNotes(action) {
+  try {
+    const data = yield call(Api.fetchNotes, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_NOTES, data})
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
 
 
 /**
@@ -478,5 +487,11 @@ export function* watchAssignNewDeliveryAgentToOrder() {
 export function* watchCreateNote() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_CREATE_NOTE, createNote)
+  }
+}
+
+export function* watchFetchNotes() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_NOTES, fetchNotes)
   }
 }

@@ -270,7 +270,7 @@ class OrderDetail extends Component {
                 }
                 {
                   order.notes.length
-                  ? <Notes data={order.notes} />
+                  ? <Notes loadingNotes={false} data={order.notes} />
                   : ''
                 }
               </div>
