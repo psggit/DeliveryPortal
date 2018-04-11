@@ -5,6 +5,7 @@ import { validateNumType, checkCtrlA } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showTakeNotes from './ShowTakeNotes'
+import * as ActionTypes from './../constants/actions'
 
 class ConsumerDetail extends Component {
   constructor() {
@@ -37,7 +38,7 @@ class ConsumerDetail extends Component {
           support_id: parseInt(getHasuraId()),
           notes: data.note,
           issue_name: data.issueName
-        })
+        }, ActionTypes.REQUEST_FETCH_ORDER_DETAIL)
         unMountModal()
       }
     }))

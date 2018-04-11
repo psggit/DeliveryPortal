@@ -3,7 +3,6 @@ import moment from 'moment'
 import { getHasuraRole, getHasuraId, getIcon } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
-import Notes from './Notes'
 
 function getTimeDiff(d2) {
   const d1 = new Date()
@@ -24,14 +23,8 @@ function Moment(time) {
 class OrderListItem extends Component {
   constructor() {
     super()
-    this.state = {
-      shouldMountNotesBox: false,
-      notesBoxPosition: {}
-    }
     this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
-    this.handleShowNotes = this.handleShowNotes.bind(this)
-    this.unmountNotesBox = this.unmountNotesBox.bind(this)
   }
   openAssignOrderModal() {
     this.props.unmountOrderDetail()
@@ -50,23 +43,6 @@ class OrderListItem extends Component {
     }
     actions.assignOrder(postData)
     unMountModal()
-  }
-
-  unmountNotesBox() {
-    this.setState({ shouldMountNotesBox: false })
-  }
-
-  handleShowNotes(e) {
-    const { actions, id } = this.props
-    const posObj = e.target.getBoundingClientRect()
-    // console.log(posObj);
-    const notesBoxPosition = {
-      top: posObj.top + 19,
-      left: posObj.left - 150
-    }
-
-    actions.fetchNotes({ id })
-    this.setState({ notesBoxPosition, shouldMountNotesBox: true })
   }
 
   render() {
@@ -99,9 +75,7 @@ class OrderListItem extends Component {
       closestRetailers,
       primeRetailer,
       unavailableProduct,
-      localityName,
-      loadingNotes,
-      notesData
+      localityName
     } = this.props
 
     const supportId = 1
@@ -170,19 +144,8 @@ class OrderListItem extends Component {
           { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{assignedToId}</td> : '' }
           { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
         { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button onClick={this.openAssignOrderModal}>Assign</button></td> : ''}
-        { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button onClick={this.handleShowNotes}>Notes</button></td> : '' }
+        { ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 ? <td><button onClick={(e) => { this.props.handleShowNotes(e, id) }}>Notes</button></td> : '' }
       </tr>
-      {
-        this.state.shouldMountNotesBox &&
-        <Notes
-          data={notesData}
-          createNote={this.props.actions.createNote}
-          id={id}
-          loadingNotes={loadingNotes}
-          position={this.state.notesBoxPosition}
-          unmountNotesBox={this.unmountNotesBox}
-        />
-      }
       </Fragment>
     )
   }

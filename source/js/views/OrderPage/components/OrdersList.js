@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import OrderListItem from './OrderListItem'
 import '@sass/OrdersPage/OrdersList.scss'
+import Notes from './Notes'
 
 class OrdersList extends Component {
   constructor() {
     super()
+    this.orderId = null
+    this.state = {
+      shouldMountNotesBox: false,
+      notesBoxPosition: {}
+    }
     this.handleClick = this.handleClick.bind(this)
+    this.handleShowNotes = this.handleShowNotes.bind(this)
+    this.unmountNotesBox = this.unmountNotesBox.bind(this)
   }
 
   handleClick(orderId, e) {
@@ -13,6 +21,27 @@ class OrdersList extends Component {
       this.props.mountOrderDetail(orderId)
     }
   }
+
+  unmountNotesBox() {
+    this.setState({ shouldMountNotesBox: false })
+  }
+
+  handleShowNotes(e, id) {
+    this.orderId = id
+    const { actions } = this.props
+    const posObj = e.target.getBoundingClientRect()
+    // console.log(posObj);
+    const notesBoxPosition = {
+      top: posObj.top + 19,
+      left: posObj.left - 150
+    }
+
+    actions.fetchNotes({ id })
+    this.setState({ shouldMountNotesBox: false }, () => {
+      this.setState({ notesBoxPosition, shouldMountNotesBox: true })
+    })
+  }
+
   render() {
     const { orders, state, loadingOrdersList, notesData, loadingNotes } = this.props
     // const orderStatus = `${titleMap[state]}${articleMap[state]}${timeMap[state]}${epilogueMap[state]}`
@@ -81,8 +110,7 @@ class OrdersList extends Component {
                     primeRetailer={item.prime_retailer}
                     localityName={item.locality_name}
                     actions={this.props.actions}
-                    loadingNotes={loadingNotes}
-                    notesData={notesData}
+                    handleShowNotes={this.handleShowNotes}
                     canAccess={this.props.canAccess}
                 />
                 )
@@ -92,6 +120,17 @@ class OrdersList extends Component {
           }
         </tbody>
       </table>
+      {
+        this.state.shouldMountNotesBox &&
+        <Notes
+          data={notesData}
+          createNote={this.props.actions.createNote}
+          id={this.orderId}
+          loadingNotes={loadingNotes}
+          position={this.state.notesBoxPosition}
+          unmountNotesBox={this.unmountNotesBox}
+        />
+      }
       </div>
     )
   }

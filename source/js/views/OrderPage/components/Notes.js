@@ -4,6 +4,7 @@ import showTakeNotes from './ShowTakeNotes'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getIcon, getHasuraId } from './../utils'
+import * as ActionTypes from './../constants/actions'
 
 
 class Notes extends React.Component{
@@ -25,7 +26,7 @@ class Notes extends React.Component{
           support_id: parseInt(getHasuraId()),
           notes: data.note,
           issue_name: data.issueName
-        })
+        }, ActionTypes.REQUEST_FETCH_NOTES)
         unMountModal()
       }
     }))

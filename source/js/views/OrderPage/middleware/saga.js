@@ -294,10 +294,10 @@ function* assignNewDeliveryAgentToOrder(action) {
 function* createNote(action) {
   try {
     const data = yield call(Api.createNote, action)
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.order_id } })
+    yield put({type: action.postAction, data: { id: action.data.order_id } })
     Notify("Successfully created the note", "success")
   } catch (err) {
-    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.order_id } })
+    yield put({type: action.postAction, data: { id: action.data.order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }

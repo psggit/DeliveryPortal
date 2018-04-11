@@ -151,9 +151,10 @@ export const assignNewDeliveryAgentToOrder = (data) => ({
   data
 })
 
-export const createNote = data => ({
+export const createNote = (data, postAction) => ({
   type: ActionTypes.REQUEST_CREATE_NOTE,
-  data
+  data,
+  postAction
 })
 
 export const fetchNotes = data => ({
