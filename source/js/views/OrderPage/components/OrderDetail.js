@@ -235,12 +235,12 @@ class OrderDetail extends Component {
 
             <span style={{ float: 'right', marginRight: '80px' }}>
               {
-                ordersType !== 'history' &&
+                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                 <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button>
               }
 
               {
-                ordersType !== 'history' &&
+                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                 <button style={{marginLeft: '20px'}} onClick={this.showAssignableRetailers}>Assign new retailer</button>
               }
             </span>
@@ -269,7 +269,7 @@ class OrderDetail extends Component {
                   : ''
                 }
                 {
-                  order.notes.length
+                  order.notes !== null && order.notes.length
                   ? <Notes loadingNotes={false} data={order.notes} />
                   : ''
                 }

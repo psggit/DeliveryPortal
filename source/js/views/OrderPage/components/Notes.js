@@ -50,14 +50,14 @@ class Notes extends React.Component{
         className='card'
         style={{
         width: position ? '400px' : '',
-        position: position ? 'fixed' : 'static',
+        position: position ? 'absolute' : 'static',
         top: position ? position.top : '',
         left: position ? position.left : '',
         transform: position ? 'translateX(-50%)' : 'none',
         zIndex: position ? '1' : '0'
       }}>
         <div className='card-head'>
-          <h4>Notes</h4>
+          <h4>Notes { position && `(Order id:${id})` }</h4>
           {
             position &&
             <span

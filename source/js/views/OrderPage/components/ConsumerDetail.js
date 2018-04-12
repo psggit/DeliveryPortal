@@ -67,7 +67,7 @@ class ConsumerDetail extends Component {
         </div>
         <div className='card-body'>
           {
-            ordersType !== 'history' &&
+            ordersType !== 'history' && this.props.canAccess('action-buttons') &&
             <button
               onClick={this.showTakeNotes}
               title="Show catalogue"

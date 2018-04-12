@@ -149,7 +149,7 @@ class Order extends Component {
           <p className='subhead'>Ordered items ({ order.cartItems.length })</p>
 
           {
-            ordersType !== 'history' &&
+            ordersType !== 'history' && this.props.canAccess('action-buttons') &&
             <button
               onClick={this.showCatalogue}
               title="Show catalogue"
