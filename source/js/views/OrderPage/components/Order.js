@@ -184,7 +184,7 @@ class Order extends Component {
                           ? (
                             <Fragment>
                               {
-                                ordersType !== 'history' &&
+                                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                                 <span
                                   onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
                                   style={{
@@ -203,7 +203,7 @@ class Order extends Component {
                               </span>
 
                               {
-                                ordersType !== 'history' &&
+                                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                                 <span
                                   onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
                                   style={{
