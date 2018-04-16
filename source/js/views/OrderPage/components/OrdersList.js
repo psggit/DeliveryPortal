@@ -60,6 +60,7 @@ class OrdersList extends Component {
             { this.props.ordersType == 'attempted' ? <td>Reason</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Cart Details</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Nearby retailers</td> : '' }
+            <td>Delivery agent</td>
             { this.props.ordersType == 'attempted' ? <td>Unavailable product</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Prime retailer</td> : '' }
             { this.props.ordersType == 'attempted' ? <td>Locality name</td> : '' }
@@ -106,6 +107,7 @@ class OrdersList extends Component {
                     consumerPhone={item.consumer_phone}
                     consumerAddress={item.consumer_address}
                     closestRetailers={item.retailer_list}
+                    deliveryAgentName={item.dp_name}
                     unavailableProduct={item.unavailable_product}
                     primeRetailer={item.prime_retailer}
                     localityName={item.locality_name}

@@ -75,7 +75,8 @@ class OrderListItem extends Component {
       closestRetailers,
       primeRetailer,
       unavailableProduct,
-      localityName
+      localityName,
+      deliveryAgentName
     } = this.props
 
     const supportId = 1
@@ -132,17 +133,18 @@ class OrderListItem extends Component {
             : ''
           }
           <td>{consumerId}</td>
-          { this.props.canAccess('consumer-col') ? <td>{consumerName}</td> : '' }
-          { this.props.canAccess('consumer-col') ? <td>{consumerPhone}</td> : '' }
+          { this.props.canAccess('consumer-col') ? <td style={{ textAlign: 'center' }}>{consumerName}</td> : '' }
+          { this.props.canAccess('consumer-col') ? <td style={{ textAlign: 'center' }}>{consumerPhone}</td> : '' }
           { ordersType == 'attempted' ? <td>{consumerAddress}</td> : '' }
           { ordersType == 'attempted' ? <td>{reason}</td> : '' }
           { ordersType == 'attempted' ? <td>{cartDetails}</td> : '' }
           { ordersType == 'attempted' ? <td>{closestRetailers}</td> : '' }
+          <td style={{ textAlign: 'center' }}>{deliveryAgentName}</td>
           { ordersType == 'attempted' ? <td>{unavailableProduct}</td> : '' }
           { ordersType == 'attempted' ? <td>{primeRetailer}</td> : '' }
           { ordersType == 'attempted' ? <td>{localityName}</td> : '' }
-          { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td>{assignedToId}</td> : '' }
-          { ordersType !== 'attempted' ? <td>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
+          { this.props.canAccess('consumer-col') && ordersType !== 'attempted' ? <td style={{ textAlign: 'center' }}>{assignedToId}</td> : '' }
+          { ordersType !== 'attempted' ? <td style={{ textAlign: 'center' }}>{Moment(orderPlacedTime).format('MMM Do YY', 'h:mm a')}</td> : <td>{Moment(orderAttemptedTime).format('MMM Do YY', 'h:mm a')}</td>}
           {
             ['attempted', 'history', 'cancellation'].indexOf(ordersType) === -1 && this.props.canAccess('action-buttons')
             ? <td><button onClick={this.openAssignOrderModal}>Assign</button></td>
