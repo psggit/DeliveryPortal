@@ -37,8 +37,10 @@ class OrderPage extends Component {
   constructor() {
     super()
     const today = new Date()
+    today.setUTCHours(0, 0, 0, 0)
     const tommorrow = new Date(today.getTime())
     tommorrow.setDate(tommorrow.getDate() + 1)
+    tommorrow.setUTCHours(0, 0, 0, 0)
     this.pagesLimit = 40
     this.timeOutId = null
     this.isTimeOutCleared = false
