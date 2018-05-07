@@ -59,6 +59,10 @@ class RetailerDetail extends Component {
         </div>
         <div className='card-body'>
           <p>
+            <span><b>Id: </b></span>
+            <span>{retailer.id}</span>
+          </p>
+          <p>
             <span><b>Name: </b></span>
             <span>{retailer.name}</span>
           </p>

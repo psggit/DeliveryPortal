@@ -59,6 +59,10 @@ class DelivererDetail extends Component {
         </div>
         <div className='card-body'>
           <p>
+            <span><b>Id: </b></span>
+            <span>{deliverer.id}</span>
+          </p>
+          <p>
             <span><b>Name: </b></span>
             <span>{deliverer.name}</span>
           </p>
