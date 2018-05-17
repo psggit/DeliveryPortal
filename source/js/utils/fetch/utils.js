@@ -10,7 +10,7 @@ import { Api } from "./../config"
  */
 
 const getToken = () => ({
-  "Authorization": `Bearer ${localStorage.getItem('auth-token')}`,
+  // "Authorization": `Bearer ${localStorage.getItem('auth-token')}`,
   "x-hasura-role": `${localStorage.getItem('x-hasura-role')}`
 })
 
@@ -75,6 +75,7 @@ export function constructFetchUtility(options) {
   let fetchOptions = {
     method,
     headers: getHeaders(type),
+    credentials: 'include'
   }
 
   if(cors) fetchOptions.mode = 'cors'

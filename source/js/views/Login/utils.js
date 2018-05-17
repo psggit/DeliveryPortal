@@ -23,10 +23,10 @@ export function getHasuraRole(data) {
   return xHasuraRole
 }
 
-export function getAuthToken(data) {
-  const token = data.auth_token
-  return token
-}
+// export function getAuthToken(data) {
+//   const token = data.auth_token
+//   return token
+// }
 
 export function getHasuraId(data) {
   const hasuraId = data.hasura_id
@@ -42,7 +42,7 @@ export function getHasuraId(data) {
 
 export function createSession(data) {
   localStorage.setItem('x-hasura-role', getHasuraRole(data))
-  localStorage.setItem('auth-token', getAuthToken(data))
+  // localStorage.setItem('auth-token', getAuthToken(data))
   localStorage.setItem('hasura-id', getHasuraId(data))
   // this.setCookie('dinoisses', this.getAuthToken(data))
   // function getCookie(cname) {

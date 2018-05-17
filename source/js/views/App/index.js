@@ -31,7 +31,7 @@ export default class App extends Component {
         <div className='App'>
           <div className='Page'>
             <Switch>
-              <Route exact path={ publicPath } component={ Login } />
+              <Route exact path={ publicPath } component={ OrderPage } />
               <Route exact path={ routeCodes.LOGIN } component={ Login } />
               <Route exact path={ routeCodes.all } component={ OrderPage } />
               <Route exact path='/orders/:ordersType' component={ OrderPage } />
