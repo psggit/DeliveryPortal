@@ -13,7 +13,8 @@
     "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
     "preview": "rm -rf ./build && NODE_ENV=\"production\" webpack-dashboard -t 'Preview Mode - Marvin' -- webpack-dev-server",
     "hook-add": "prepush install",
-    "hook-remove": "prepush remove"
+    "hook-remove": "prepush remove",
+    "deploy:prod": "node prod-deploy.js"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.3",
@@ -75,6 +76,7 @@
     "redux": "^3.6.0",
     "redux-saga": "^0.15.6",
     "redux-thunk": "^2.2.0",
+    "shelljs": "^0.8.2",
     "styled-components": "^2.4.0",
     "whatwg-fetch": "^2.0.3"
   },
