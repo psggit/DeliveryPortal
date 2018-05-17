@@ -35,11 +35,14 @@ class NavBar extends Component {
           return
         }
         response.json().then((data) => {
+          localStorage.clear()
           location.href = '/login'
         })
       })
       .catch((err) => {
         console.log('Fetch Error :-S', err)
+        localStorage.clear()
+        location.href = '/login'
       })
   }
 
