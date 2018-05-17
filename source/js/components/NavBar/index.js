@@ -20,7 +20,6 @@ class NavBar extends Component {
   }
 
   handleLogout() {
-    localStorage.clear()
     const fetchOptions = {
       method: 'get',
       credentials: 'include',
@@ -32,6 +31,8 @@ class NavBar extends Component {
       .then((response) => {
         if (response.status !== 200) {
           console.log(`Looks like there was a problem. Status Code: ${response.status}`)
+          localStorage.clear()
+          location.href = '/login'
           return
         }
         response.json().then((data) => {
