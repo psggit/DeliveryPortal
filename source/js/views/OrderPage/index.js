@@ -205,10 +205,10 @@ class OrderPage extends Component {
   //   actions.fetchOrdersData(postData)
   // }
 
-  componentWillMount() {
-    if (!localStorage.getItem('_hipbaru'))
-    location.href = '/login'
-  }
+  // componentWillMount() {
+  //   if (!localStorage.getItem('_hipbaru'))
+  //   location.href = '/login'
+  // }
 
   componentDidMount() {
     const { actions } = this.props

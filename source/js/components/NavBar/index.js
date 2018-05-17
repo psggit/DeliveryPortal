@@ -3,6 +3,7 @@ import { getIcon } from './../utils'
 import SearchInput from './../SearchInput'
 import ToggleButton from './../ToggleButton'
 import { NavLink } from 'react-router-dom'
+import { Api } from './../../utils/config'
 // import { routeCodes } from './../../App';
 
 import './index.scss'
@@ -20,7 +21,26 @@ class NavBar extends Component {
 
   handleLogout() {
     localStorage.clear()
-    location.href = '/login'
+    const fetchOptions = {
+      method: 'get',
+      credentials: 'include',
+      mode: 'cors',
+      'x-hasura-role': 'user'
+    }
+
+    fetch(`${Api.authUrl}/user/logout`, fetchOptions)
+      .then((response) => {
+        if (response.status !== 200) {
+          console.log(`Looks like there was a problem. Status Code: ${response.status}`)
+          return
+        }
+        response.json().then((data) => {
+          location.href = '/login'
+        })
+      })
+      .catch((err) => {
+        console.log('Fetch Error :-S', err)
+      })
   }
 
   handleClick() {
