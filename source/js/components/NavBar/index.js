@@ -48,8 +48,7 @@ class NavBar extends Component {
   }
 
   handleClick() {
-    const { shouldDeliever } = this.state
-    this.setState({ shouldDeliever: !shouldDeliever })
+    history.pushState(null, null, )
   }
 
   handleNavigation(ordersType) {
@@ -79,7 +78,7 @@ class NavBar extends Component {
     return (
       <header>
         <ul>
-          <li className="logo">
+          {/* <li className="logo">
             <a href='/orders'>
               <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
             </a>
@@ -118,7 +117,7 @@ class NavBar extends Component {
               </li>
             )
             : ''
-          }
+          } */}
           {
             menuItems.map((item, i) => {
               return (
