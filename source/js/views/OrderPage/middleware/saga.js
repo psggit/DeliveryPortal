@@ -67,6 +67,15 @@ function* fetchAttemptedOrders(action) {
   }
 }
 
+function* fetchUnavailableDp(action) {
+  try {
+    const data = yield call(Api.fetchUnavailableDp, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_UNAVAILABLE_DP, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 function* searchLiveOrders(action) {
   try {
     const data = yield call(Api.searchLiveOrders, action)
@@ -355,6 +364,12 @@ export function* watchFetchCancellationOrders() {
 export function* watchFetchAttemptedOrders() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_ATTEMPTED_ORDERS, fetchAttemptedOrders)
+  }
+}
+
+export function* watchUnavailableDp() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP, fetchUnavailableDp)
   }
 }
 

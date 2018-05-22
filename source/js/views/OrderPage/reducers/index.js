@@ -31,11 +31,13 @@ const initialOrderState = {
     loadingOrdersList: true,
     loadingGenres: true,
     loadingNotes: true,
+    loadingUnavailableDp: true,
     autoPilotStatus: false,
     orders: [],
     plotData: [],
     notesData: [],
     ordersCount: 0,
+    unavailableDpsData: [],
     order: {
       id: '',
       status: '',
@@ -222,6 +224,14 @@ const actionsMap = {
     return Object.assign({}, state, {
       notesData: action.data.Notes,
       loadingNotes: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_UNAVAILABLE_DP]: (state, action) => {
+    return Object.assign({}, state, {
+      unavailableDpsData: action.data.dps.dps,
+      unavailableDpsDataCount: action.data.dps.count,
+      loadingUnavailableDp: false
     })
   }
 };

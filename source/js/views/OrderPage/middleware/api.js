@@ -281,3 +281,14 @@ export function fetchNotes(action) {
   .then(json => json)
   return data
 }
+
+export function fetchUnavailableDp(action) {
+  const data = POST({
+    api: `/support/unavailableDps`,
+    handleError: true,
+    apiBase: 'deliverymanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

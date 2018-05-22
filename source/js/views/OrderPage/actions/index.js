@@ -161,3 +161,8 @@ export const fetchNotes = data => ({
   type: ActionTypes.REQUEST_FETCH_NOTES,
   data
 })
+
+export const fetchUnavailableDp = data => ({
+  type: ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP,
+  data
+})

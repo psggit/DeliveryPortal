@@ -22,6 +22,7 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import DatePicker from './components/DatePicker'
 import SearchInput from '@components/SearchInput'
 import Moment from 'moment'
+import UnavailableDpList from './components/UnavailableDpList'
 
 class OrderPage extends Component {
 
@@ -551,7 +552,7 @@ class OrderPage extends Component {
             />
           </div>
           {
-            orders
+            orders && ordersType !== 'unavailable-deliverers'
             ? <OrdersList
               canAccess={canAccess}
               loadingOrdersList={loadingOrdersList}
@@ -568,7 +569,12 @@ class OrderPage extends Component {
           }
 
           {
-            !loadingOrdersList && ordersCount > 0
+            ordersType === 'unavailable-deliverers' &&
+            <UnavailableDpList />
+          }
+
+          {
+            !loadingOrdersList && ordersCount > 0 && ordersType !== 'unavailable-deliverers'
             ? <Pagination
               activePage={activePage}
               itemsCountPerPage={this.pagesLimit}
