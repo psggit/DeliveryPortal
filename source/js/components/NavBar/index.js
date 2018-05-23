@@ -83,7 +83,7 @@ class NavBar extends Component {
             <a href='/orders'>
               <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
             </a>
-          </li>
+          </li> */}
           {
             this.props.canAccess('resume-pause')
             ? (
@@ -118,8 +118,8 @@ class NavBar extends Component {
               </li>
             )
             : ''
-          } */}
-          {
+          }
+          {/* {
             menuItems.map((item, i) => {
               return (
                 <a key={`nav-link-${i}`} href={`/orders/${item.value}`}>
@@ -129,7 +129,7 @@ class NavBar extends Component {
                 </a>
               )
             })
-          }
+          } */}
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>
