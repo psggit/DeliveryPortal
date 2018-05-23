@@ -57,7 +57,8 @@ class OrderPage extends Component {
       ordersType: 'all',
       toDate: tommorrow.toISOString(),
       fromDate: today.toISOString(),
-      dateChanged: false
+      dateChanged: false,
+      isSideMenuOpen: false
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.pollOrdersData = this.pollOrdersData.bind(this)
@@ -77,6 +78,7 @@ class OrderPage extends Component {
     this.setDate = this.setDate.bind(this)
     this.handleChooseDate = this.handleChooseDate.bind(this)
     this.handleClearDate = this.handleClearDate.bind(this)
+    this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
     // this.handlefetchAutoPilotStatus = this.handlefetchAutoPilotStatus.bind(this)
   }
 
@@ -261,6 +263,11 @@ class OrderPage extends Component {
     //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
     // }
     setTimeout(this.pollOrdersData, 30000)
+  }
+
+  setSideMenuToggle() {
+    const { isSideMenuOpen } = this.state
+    this.setState({ isSideMenuOpen: !isSideMenuOpen })
   }
 
   mountOrderDetail(orderId) {
@@ -491,6 +498,7 @@ class OrderPage extends Component {
     return (
       <div>
         <NavBar
+          isSideMenuOpen={this.state.isSideMenuOpen}
           autoPilot={this.handleAutoPilot}
           autoPilotStatus={autoPilotStatus}
           handleRouteChange={this.fetchOrdersData}
@@ -504,8 +512,10 @@ class OrderPage extends Component {
           pageOffset={pageOffset}
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
+          setSideMenuToggle={this.setSideMenuToggle}
         />
         <SideMenu
+          isOpen={this.state.isSideMenuOpen}
           ordersType={this.state.ordersType}
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
@@ -571,7 +581,7 @@ class OrderPage extends Component {
 
           {
             ordersType === 'unavailable-deliverers' &&
-            <UnavailableDpList />
+            <UnavailableDpList mountOrderDetail={this.mountOrderDetail} />
           }
 
           {

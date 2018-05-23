@@ -15,8 +15,9 @@ class NavBar extends Component {
       shouldDeliever: true,
       ordersType: 'all'
     }
-    this.handleClick = this.handleClick.bind(this)
+    // this.handleClick = this.handleClick.bind(this)
     this.handleNavigation = this.handleNavigation.bind(this)
+    this.handleSideMenuToggle = this.handleSideMenuToggle.bind(this)
   }
 
   handleLogout() {
@@ -47,8 +48,17 @@ class NavBar extends Component {
       })
   }
 
-  handleClick() {
-    history.pushState(null, null, )
+  componentDidMount() {
+    document.addEventListener('click', (e) => {
+      if (e.target.className === 'side-menu-overlay') {
+        this.props.setSideMenuToggle()
+      }
+    })
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 27 && this.props.isSideMenuOpen) {
+        this.props.setSideMenuToggle()
+      }
+    })
   }
 
   handleNavigation(ordersType) {
@@ -59,6 +69,10 @@ class NavBar extends Component {
     this.props.resetPagination()
     this.props.handleRouteChange(ordersType, 0)
     this.props.unmountOrderDetail()
+  }
+
+  handleSideMenuToggle() {
+    this.props.setSideMenuToggle()
   }
 
   render() {
@@ -84,6 +98,9 @@ class NavBar extends Component {
               <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
             </a>
           </li> */}
+          <li style={{ cursor: 'pointer' }} onClick={this.handleSideMenuToggle}>
+            { getIcon('menu')}
+          </li>
           {
             this.props.canAccess('resume-pause')
             ? (

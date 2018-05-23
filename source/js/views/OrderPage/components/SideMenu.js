@@ -4,8 +4,8 @@ import { routeCodes } from './../../App';
 import '@sass/components/_SideMenu.scss'
 
 class SideMenu extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       ordersType: 'all'
@@ -21,6 +21,7 @@ class SideMenu extends Component {
   }
 
   render() {
+    const { isOpen } = this.props
     const menuItems = [
       { value: 'all', label: 'in progress orders' },
       { value: 'assigned', label: 'assigned orders'},
@@ -30,13 +31,16 @@ class SideMenu extends Component {
     ]
     return (
       <Fragment>
-        <div className={`side-menu`} style={{ boxShadow: '0px 0px 10px 2px #333'}}>
+        <div
+          className={`side-menu ${isOpen ? 'side-menu--open' : 'side-menu--close'}`}
+          style={{ boxShadow: '0px 0px 10px 2px #333'}}
+        >
           <ul>
             <li style={{
               background: '#333',
               color: '#fff',
               height: '65px'
-            }} className='menu-item'>Delivery support</li>
+            }} className='menu-item'>DELIVERY SUPPORT</li>
             {
               menuItems.map((item, i) => {
                 return (
@@ -53,11 +57,14 @@ class SideMenu extends Component {
         <div
           className='side-menu-overlay'
           style={{
+            display: isOpen ? 'block' :'none',
             background: 'rgba(0, 0, 0, 0.4)',
             height: '100vh',
             width: '100%',
-            zIndex: '1',
-            position: 'fixed'
+            zIndex: 3,
+            position: 'fixed',
+            top: '0',
+            left: '0'
           }}
         />
       </Fragment>

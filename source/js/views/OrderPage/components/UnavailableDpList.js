@@ -14,6 +14,11 @@ class UnavailableDpList extends React.Component {
       pageOffset: 0
     }
     this.handlePageChange = this.handlePageChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(orderId) {
+    this.props.mountOrderDetail(orderId)
   }
 
   handlePageChange(pageNumber) {
@@ -49,10 +54,15 @@ class UnavailableDpList extends React.Component {
             </thead>
             <tbody>
               {
-                !this.props.loadingUnavailableDp && this.props.unavailableDpsData.length &&
-                this.props.unavailableDpsData.map(item => (
-                  <UnavailableDpListItem key={item.dp_id} data={item}/>
+                !this.props.loadingUnavailableDp && this.props.unavailableDpsData.length
+                ? this.props.unavailableDpsData.map(item => (
+                  <UnavailableDpListItem
+                    handleClick={this.handleClick}
+                    key={item.dp_id}
+                    data={item}
+                  />
                 ))
+                : ''
               }
             </tbody>
           </table>

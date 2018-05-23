@@ -3,7 +3,7 @@ import Moment from 'moment'
 
 const UnavailableDpListItem = ({ data }) => {
   return (
-    <tr className='orders-list-item'>
+    <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(data.order_id, e)} }>
       <td>{ data.dp_id }</td>
       <td>{ data.order_status }</td>
       <td>{ data.dp_name }</td>
