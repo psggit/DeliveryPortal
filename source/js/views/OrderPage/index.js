@@ -504,11 +504,12 @@ class OrderPage extends Component {
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
         />
-        {/* <SideMenu
+        <SideMenu
+          ordersType={this.state.ordersType}
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
           handleRouteChange={this.fetchOrdersData}
-        /> */}
+        />
         <div className='body-container'>
           <div className='orders-filter'>
             { ordersType !== 'history' ? <label>Filter by</label> : '' }
