@@ -31,7 +31,7 @@ class SearchInput extends Component {
 
   search(searchQuery, ordersType) {
     this.props.setSearchQuery(searchQuery, ordersType)
-    this.props.search(searchQuery)
+    this.props.search(searchQuery, 0)
   }
 
   handleChange(e) {

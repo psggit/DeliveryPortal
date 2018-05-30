@@ -127,13 +127,15 @@ class OrderPage extends Component {
     })
   }
 
-  searchOrdersData(searchQuery) {
-    this.resetPagination()
+  searchOrdersData(searchQuery, offset) {
+    if (offset === 0) {
+      this.resetPagination()
+    }
     this.unmountOrderDetail()
     const { actions } = this.props
     const { ordersType } = this.state
     const postData = {
-      offset: 0,
+      offset,
       limit: this.pagesLimit,
       query: searchQuery
     }
