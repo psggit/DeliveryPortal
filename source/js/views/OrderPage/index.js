@@ -229,7 +229,7 @@ class OrderPage extends Component {
     if (ordersType !== 'live') {
       clearTimeout(this.timeOutId)
     } else {
-      this.timeOutId = setTimeout(this.pollOrdersData, 1000)
+      this.timeOutId = setTimeout(this.pollOrdersData, 30000)
     }
     // setTimeout(this.pollOrdersData, 1000)
   }
