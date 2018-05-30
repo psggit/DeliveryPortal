@@ -27,7 +27,9 @@ class SideMenu extends Component {
       { value: 'assigned', label: 'assigned orders'},
       { value: 'unassigned', label: 'unassigned orders'},
       { value: 'history', label: 'order history' },
-      { value: 'unavailable-deliverers', label: 'Unavailable delivery agents'}
+      { value: 'unavailable-deliverers', label: 'Unavailable delivery agents'},
+      { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
+      { value: 'attempted', label: 'Attempted orders'}
     ]
     return (
       <Fragment>

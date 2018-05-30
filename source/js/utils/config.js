@@ -39,12 +39,12 @@
 function getAPIObj() {
   if (window.location.href.split(':')[1] === '//localhost') {
     let scheme = 'https'
-    let baseHost = '.hipbar-dev.com'
-    let appName = 'hipbar-dev'
+    let baseHost = '.amebae21.hasura-app.io'
+    let appName = 'amebae21'
 
     return {
-      authUrl: 'https://auth.' + appName + '.com',
-      blogicUrl: 'https://api1.' + appName + '.com',
+      authUrl: 'https://auth.' + appName + '.hasura-app.io',
+      blogicUrl: 'https://api1.' + appName + '.hasura-app.io',
       gremlinUrl: scheme + '://gremlin' + baseHost,
       catman: scheme + '://catman' + baseHost,
       ordermanUrl: scheme + '://orderman' + baseHost,
