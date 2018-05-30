@@ -9,7 +9,7 @@ class SideMenu extends Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
-      ordersType: 'all'
+      ordersType: 'live'
     }
   }
 
@@ -39,11 +39,16 @@ class SideMenu extends Component {
             {
               menuItems.map((item, i) => {
                 return (
-                  <NavLink key={`nav-link-${i}`} exact to={ routeCodes.all }>
-                    <li className={`menu-item ${this.props.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
-                      { item.label }
-                    </li>
-                  </NavLink>
+                  <Fragment>
+                    {
+                      item.value !== 'all' &&
+                      <NavLink key={`nav-link-${i}`} exact to={ routeCodes.live }>
+                        <li className={`menu-item ${this.props.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
+                          { item.label }
+                        </li>
+                      </NavLink>
+                    }
+                  </Fragment>
                 )
               })
             }

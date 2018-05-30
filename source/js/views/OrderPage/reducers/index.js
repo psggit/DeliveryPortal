@@ -32,12 +32,14 @@ const initialOrderState = {
     loadingGenres: true,
     loadingNotes: true,
     loadingUnavailableDp: true,
+    loadingReturningOrders: true,
     autoPilotStatus: false,
     orders: [],
     plotData: [],
     notesData: [],
     ordersCount: 0,
     unavailableDpsData: [],
+    returningOrders: [],
     order: {
       id: '',
       status: '',
@@ -232,6 +234,14 @@ const actionsMap = {
       unavailableDpsData: action.data.dps.dps,
       unavailableDpsDataCount: action.data.dps.count,
       loadingUnavailableDp: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_RETURNING_ORDERS]: (state, action) => {
+    return Object.assign({}, state, {
+      returningOrders: action.data.orderDetails,
+      returningOrdersCount: action.data.count,
+      loadingReturningOrders: false
     })
   }
 };

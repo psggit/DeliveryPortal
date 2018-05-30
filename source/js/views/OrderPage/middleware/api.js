@@ -292,3 +292,25 @@ export function fetchUnavailableDp(action) {
   .then(json => json)
   return data
 }
+
+export function fetchReturningOrders(action) {
+  const data = POST({
+    api: `/support/returningOrders`,
+    handleError: true,
+    apiBase: 'deliverymanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}
+
+export function restockOrder(action) {
+  const data = POST({
+    api: `/support/restock`,
+    handleError: true,
+    apiBase: 'deliverymanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

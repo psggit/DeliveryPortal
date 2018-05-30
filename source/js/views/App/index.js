@@ -13,7 +13,7 @@ export const routeCodes = {
   DASHBOARD: publicPath,
   gmap: `${ publicPath }orders/track/:id`,
   DASHBOARD: `${ publicPath }dashboard`,
-  all: `${ publicPath }orders`,
+  live: `${ publicPath }orders`,
   assigned: `${ publicPath }orders/assigned`,
   history: `${ publicPath }orders/history`,
   LOGIN: `${ publicPath }login`
@@ -23,6 +23,19 @@ export const routeCodes = {
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      key: 0
+    }
+    this.changeAppKey = this.changeAppKey.bind(this)
+  }
+
+  changeAppKey() {
+    const { key } = this.state
+    this.setState({ key: key + 1})
   }
 
   componentWillMount() {
@@ -58,15 +71,16 @@ export default class App extends Component {
   }
 
   render() {
+    const { key } = this.state
     return (
       <BrowserRouter>
         <div className='App'>
           <div className='Page'>
             <Switch>
-              <Route exact path={ publicPath } component={ OrderPage } />
+              <Route exact path={ publicPath } render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
               <Route exact path={ routeCodes.LOGIN } component={ Login } />
-              <Route exact path={ routeCodes.all } component={ OrderPage } />
-              <Route exact path='/orders/:ordersType' component={ OrderPage } />
+              <Route exact path={ routeCodes.live } render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
+              <Route exact path='/orders/:ordersType' render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
               {/* <Route exact path={ routeCodes.assigned } component={ OrderPage } />
               <Route exact path={ routeCodes.history } component={ OrderPage } />
               <Route exact path={ routeCodes.gmap } component={ Gmap } /> */}

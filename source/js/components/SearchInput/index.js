@@ -25,11 +25,12 @@ class SearchInput extends Component {
     })
 
     this.props.setSearchQuery('')
-    this.search('')
+    // this.search('', 'all')
+    this.props.changeAppKey()
   }
 
-  search(searchQuery) {
-    this.props.setSearchQuery(searchQuery)
+  search(searchQuery, ordersType) {
+    this.props.setSearchQuery(searchQuery, ordersType)
     this.props.search(searchQuery)
   }
 
@@ -37,7 +38,7 @@ class SearchInput extends Component {
     const searchQuery = e.target.value
     this.setState({ searchQuery })
     if (!searchQuery.length) {
-      this.search('')
+      this.search('', 'all')
     }
   }
 
@@ -45,7 +46,7 @@ class SearchInput extends Component {
     const { searchQuery } = this.state
     if (e.keyCode === 13 && searchQuery.length) {
       this.setState({ searched: true })
-      this.search(searchQuery)
+      this.search(searchQuery, 'all')
     }
   }
 

@@ -166,3 +166,13 @@ export const fetchUnavailableDp = data => ({
   type: ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP,
   data
 })
+
+export const fetchReturningOrders = data => ({
+  type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS,
+  data
+})
+
+export const restockOrder = data => ({
+  type: ActionTypes.REQUEST_RESTOCK_ORDER,
+  data
+})

@@ -76,6 +76,26 @@ function* fetchUnavailableDp(action) {
   }
 }
 
+function* fetchReturningOrders(action) {
+  try {
+    const data = yield call(Api.fetchReturningOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_RETURNING_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* restockOrder(action) {
+  try {
+    const data = yield call(Api.restockOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, data: { offset: 0, limit: 40 } })
+    Notify("Successfully restocked the order", "success")
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, data: { offset: 0, limit: 40 } })
+    err.response.json().then(json => { Notify(json.status, "warning") })
+  }
+}
+
 function* searchLiveOrders(action) {
   try {
     const data = yield call(Api.searchLiveOrders, action)
@@ -370,6 +390,18 @@ export function* watchFetchAttemptedOrders() {
 export function* watchUnavailableDp() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP, fetchUnavailableDp)
+  }
+}
+
+export function* watchFetchReturningOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, fetchReturningOrders)
+  }
+}
+
+export function* watchRestockOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_RESTOCK_ORDER, restockOrder)
   }
 }
 

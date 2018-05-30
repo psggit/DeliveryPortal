@@ -56,7 +56,7 @@ class OrderPage extends Component {
       searchAPI: '/deliveryStatus/searchLiveOrders',
       fetchAPI: '/deliveryStatus/liveOrders',
       pageOffset: 0,
-      ordersType: 'all',
+      ordersType: 'live',
       toDate: tommorrow.toISOString(),
       fromDate: today.toISOString(),
       dateChanged: false,
@@ -142,24 +142,26 @@ class OrderPage extends Component {
       query: searchQuery
     }
 
-    switch (ordersType) {
-      case 'assigned':
-        postData.support_id = 1
-        actions.searchLiveAssignedOrders(postData)
-        break
+    actions.searchLiveOrders(postData)
 
-      case 'unassigned':
-        actions.searchLiveUnassignedOrders(postData)
-        break
-
-      case 'history':
-        actions.searchHistoryOrders(postData)
-        break
-
-      default:
-        actions.searchLiveOrders(postData)
-        break
-    }
+    // switch (ordersType) {
+    //   case 'assigned':
+    //     postData.support_id = 1
+    //     actions.searchLiveAssignedOrders(postData)
+    //     break
+    //
+    //   case 'unassigned':
+    //     actions.searchLiveUnassignedOrders(postData)
+    //     break
+    //
+    //   case 'history':
+    //     actions.searchHistoryOrders(postData)
+    //     break
+    //
+    //   default:
+    //     actions.searchLiveOrders(postData)
+    //     break
+    // }
   }
 
 
@@ -244,7 +246,7 @@ class OrderPage extends Component {
     //   // setTimeout(pollOrdersData, 3000)
     // })(timeOutId)
     if (!this.props.match.params.ordersType) {
-      this.fetchOrdersData('all', 0)
+      this.fetchOrdersData('live', 0)
       this.pollOrdersData()
     } else {
       this.fetchOrdersData(this.props.match.params.ordersType, 0)
@@ -291,8 +293,13 @@ class OrderPage extends Component {
     this.props.actions.setLoading('loadingOrderDetail')
   }
 
-  setSearchQuery(searchQuery) {
-    this.setState({ searchQuery })
+  setSearchQuery(searchQuery, ordersType) {
+    console.log(ordersType);
+    if (ordersType) {
+      this.setState({ searchQuery, ordersType })
+    } else {
+      this.setState({ searchQuery, ordersType: this.props.match.params.ordersType})
+    }
   }
 
   setDate(fromDate, toDate) {
@@ -568,6 +575,8 @@ class OrderPage extends Component {
               search={this.searchOrdersData}
               setSearchQuery={this.setSearchQuery}
               searchQuery={searchQuery}
+              ordersType={ordersType}
+              changeAppKey={this.props.changeAppKey}
             />
           </div>
           <div style={{
@@ -587,7 +596,7 @@ class OrderPage extends Component {
             </h3>
           </div>
           {
-            orders && ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'
+            orders && (searchQuery.length || (ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'))
             ? <OrdersList
               canAccess={canAccess}
               loadingOrdersList={loadingOrdersList}
@@ -604,12 +613,12 @@ class OrderPage extends Component {
           }
 
           {
-            ordersType === 'busy-delivery-agents' &&
+            ordersType === 'busy-delivery-agents' && !searchQuery.length &&
             <UnavailableDpList mountOrderDetail={this.mountOrderDetail} />
           }
 
           {
-            ordersType === 'returning' &&
+            ordersType === 'returning' && !searchQuery.length &&
             <ReturningOrdersList mountOrderDetail={this.mountOrderDetail} />
           }
 
