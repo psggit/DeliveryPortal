@@ -70,7 +70,7 @@ class ReturningOrdersList extends React.Component {
                     data={item}
                   />
                 ))
-                : ''
+                : <tr className='loader2' />
               }
             </tbody>
           </table>

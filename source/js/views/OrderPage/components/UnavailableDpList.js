@@ -62,7 +62,7 @@ class UnavailableDpList extends React.Component {
                     data={item}
                   />
                 ))
-                : ''
+                : <tr className='loader' />
               }
             </tbody>
           </table>
