@@ -14,11 +14,14 @@ class SideMenu extends Component {
   }
 
   handleClick(ordersType) {
-    // this.setState({ ordersType })
-    location.href = `/orders/${ordersType}`
+    // history.pushState(null, null, `/orders/${ordersType}`)
+    // this.props.changeAppKey()
+    this.setState({ ordersType })
+    // location.href = `/orders/${ordersType}`
     this.props.resetPagination()
     this.props.handleRouteChange(ordersType)
     this.props.unmountOrderDetail()
+    this.props.setSideMenuToggle()
   }
 
   render() {
@@ -42,7 +45,7 @@ class SideMenu extends Component {
                   <Fragment>
                     {
                       item.value !== 'all' &&
-                      <NavLink key={`nav-link-${i}`} exact to={ routeCodes.live }>
+                      <NavLink key={`nav-link-${i}`} exact to={ routeCodes[item.value] }>
                         <li className={`menu-item ${this.props.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
                           { item.label }
                         </li>

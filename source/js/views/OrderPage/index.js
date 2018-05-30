@@ -219,38 +219,25 @@ class OrderPage extends Component {
 
   componentDidMount() {
     const { actions } = this.props
-    const { ordersType } = this.state
+    // const { ordersType } = this.state
     const _self = this
     // this.fetchDataFromQueryParams()
+    const ordersType = this.props.match.params.ordersType || 'live'
+    this.setState({ ordersType }, () => {
+      let timeOutId
 
-    let timeOutId
+      ;(function pollAutoPilotStatus() {
+        actions.fetchAutoPilotStatus({ city_id: 5 })
+        setTimeout(pollAutoPilotStatus, 30000)
+      })()
 
-    ;(function pollAutoPilotStatus() {
-      actions.fetchAutoPilotStatus({ city_id: 5 })
-      setTimeout(pollAutoPilotStatus, 30000)
-    })()
-
-    // ;(function pollOrdersData(timeOutId) {
-    //   const { pageOffset, ordersType, searchQuery } = _self.state
-    //   console.log(timeOutId)
-    //   searchQuery.length
-    //   ? _self.searchOrdersData(searchQuery, pageOffset)
-    //   : _self.fetchOrdersData(ordersType, pageOffset)
-
-    //   console.log(ordersType)
-    //   if (ordersType !== 'all') {
-    //     clearTimeout(timeOutId)
-    //   } else {
-    //     timeOutId = setTimeout(pollOrdersData, 3000)
-    //   }
-    //   // setTimeout(pollOrdersData, 3000)
-    // })(timeOutId)
-    if (!this.props.match.params.ordersType) {
-      this.fetchOrdersData('live', 0)
-      this.pollOrdersData()
-    } else {
-      this.fetchOrdersData(this.props.match.params.ordersType, 0)
-    }
+      if (ordersType === 'live') {
+        this.fetchOrdersData('live', 0)
+        this.pollOrdersData()
+      } else {
+        this.fetchOrdersData(ordersType, 0)
+      }
+    })
   }
 
   pollOrdersData() {
@@ -261,12 +248,12 @@ class OrderPage extends Component {
     ? this.searchOrdersData(searchQuery, pageOffset)
     : this.fetchOrdersData(ordersType, pageOffset)
 
-    // if (ordersType !== 'all') {
-    //   clearTimeout(this.timeOutId)
-    // } else {
-    //   this.timeOutId = setTimeout(this.pollOrdersData, 3000)
-    // }
-    setTimeout(this.pollOrdersData, 30000)
+    if (ordersType !== 'live') {
+      clearTimeout(this.timeOutId)
+    } else {
+      this.timeOutId = setTimeout(this.pollOrdersData, 30000)
+    }
+    // setTimeout(this.pollOrdersData, 1000)
   }
 
   setSideMenuToggle() {
@@ -530,6 +517,8 @@ class OrderPage extends Component {
           setSideMenuToggle={this.setSideMenuToggle}
         />
         <SideMenu
+          changeAppKey={this.props.changeAppKey}
+          setSideMenuToggle={this.setSideMenuToggle}
           isOpen={this.state.isSideMenuOpen}
           ordersType={this.state.ordersType}
           resetPagination={this.resetPagination}

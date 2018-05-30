@@ -44,7 +44,7 @@ class UnavailableDpList extends React.Component {
             <thead>
               <tr>
                 <td>Deliverer Id</td>
-                <td>Order status</td>
+                <td style={{ textAlign: 'center' }}>Order status</td>
                 <td>Name</td>
                 <td style={{ textAlign: 'center' }}>Contact no.</td>
                 <td>Locality name</td>

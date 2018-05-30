@@ -37,6 +37,9 @@ export default function showNotified(data) {
         this.DP = json.Dps
         this.setState({ loadingDP: false })
       })
+      .catch(err => {
+        err.response.json().then(json => alert(json.message))
+      })
     }
 
     assignNewDeliveryAgent(deliveryAgentId) {

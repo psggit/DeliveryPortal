@@ -14,7 +14,12 @@ export const routeCodes = {
   gmap: `${ publicPath }orders/track/:id`,
   DASHBOARD: `${ publicPath }dashboard`,
   live: `${ publicPath }orders`,
+  unassigned: `${ publicPath }orders/unassigned`,
   assigned: `${ publicPath }orders/assigned`,
+  'busy-delivery-agents': `${ publicPath }orders/busy-delivery-agents`,
+  'need-to-be-cancelled': `${ publicPath }orders/need-to-be-cancelled`,
+  attempted: `${ publicPath }orders/attempted`,
+  returning: `${ publicPath }orders/returning`,
   history: `${ publicPath }orders/history`,
   LOGIN: `${ publicPath }login`
 };
