@@ -118,7 +118,7 @@ class OrdersList extends Component {
                 )
               })
             )
-            : <tr className='loader'></tr>
+            : <tr className='loader2' />
           }
         </tbody>
       </table>

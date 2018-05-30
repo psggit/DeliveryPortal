@@ -53,7 +53,7 @@ const initialOrderState = {
       assignedTo: '',
       assignedToId: '',
       isFreelancer: '',
-      cartItems: '',
+      cartItems: [],
       notes: [],
       retailers: [],
       deliverers: [],

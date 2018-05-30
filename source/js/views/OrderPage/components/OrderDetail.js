@@ -325,7 +325,7 @@ class OrderDetail extends Component {
               </div>
             </div>
           )
-          : <div className='loader'></div>
+          : <div style={{ top: '30%', left: '48%' }} className='loader2'></div>
         }
 
       </div>
