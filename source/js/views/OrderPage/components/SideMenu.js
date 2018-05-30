@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { NavLink } from 'react-router-dom';
 import { routeCodes } from './../../App';
+import { menuItems } from './../constants/strings'
 import '@sass/components/_SideMenu.scss'
 
 class SideMenu extends Component {
@@ -22,15 +23,7 @@ class SideMenu extends Component {
 
   render() {
     const { isOpen } = this.props
-    const menuItems = [
-      { value: 'all', label: 'in progress orders' },
-      { value: 'assigned', label: 'assigned orders'},
-      { value: 'unassigned', label: 'unassigned orders'},
-      { value: 'history', label: 'order history' },
-      { value: 'unavailable-deliverers', label: 'Unavailable delivery agents'},
-      { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
-      { value: 'attempted', label: 'Attempted orders'}
-    ]
+
     return (
       <Fragment>
         <div

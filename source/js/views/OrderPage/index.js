@@ -23,6 +23,7 @@ import DatePicker from './components/DatePicker'
 import SearchInput from '@components/SearchInput'
 import Moment from 'moment'
 import UnavailableDpList from './components/UnavailableDpList'
+import { menuItems } from './constants/strings'
 
 class OrderPage extends Component {
 
@@ -495,6 +496,12 @@ class OrderPage extends Component {
     ? document.querySelector('body').className = 'no-scroll'
     : document.querySelector('body').className = ''
 
+    const menuItemsMap = {}
+    menuItems.reduce((menuItemsMap, item) => {
+      menuItemsMap[item.value] = item.label
+      return menuItemsMap
+    }, menuItemsMap)
+
     return (
       <div>
         <NavBar
@@ -561,6 +568,22 @@ class OrderPage extends Component {
               setSearchQuery={this.setSearchQuery}
               searchQuery={searchQuery}
             />
+          </div>
+          <div style={{
+            marginTop: '10px',
+            padding: '10px',
+            background: '#f6f6f6',
+            position: 'sticky',
+            top: '65px',
+            boxShadow: '0px 1px 2px 0px #ddd'
+          }}>
+            <h3 style={{
+              textTransform: 'uppercase',
+              margin: '0',
+              textAlign: 'center'
+            }}>
+              { menuItemsMap[ordersType] }
+            </h3>
           </div>
           {
             orders && ordersType !== 'unavailable-deliverers'

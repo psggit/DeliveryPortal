@@ -17,3 +17,13 @@ export const dateOptions = [
   { value: 'tomorrow', label: 'Tomorrow' },
   { value: 'custom', label: 'Custom date' }
 ]
+
+export const menuItems = [
+  { value: 'all', label: 'In-progress orders' },
+  { value: 'assigned', label: 'Assigned orders'},
+  { value: 'unassigned', label: 'Unassigned orders'},
+  { value: 'history', label: 'Order history' },
+  { value: 'unavailable-deliverers', label: 'Unavailable delivery agents'},
+  { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
+  { value: 'attempted', label: 'Attempted orders'}
+]
