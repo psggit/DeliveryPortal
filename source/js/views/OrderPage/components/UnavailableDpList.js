@@ -26,7 +26,7 @@ class UnavailableDpList extends React.Component {
     this.setState({ activePage: pageNumber, pageOffset: offset })
     this.props.actions.fetchUnavailableDp({
       limit: this.pagesLimit,
-      offset: this.state.pageOffset
+      offset
     })
   }
 
