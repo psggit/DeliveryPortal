@@ -162,6 +162,7 @@ class OrderPage extends Component {
 
 
   handleRouteChange(ordersType) {
+    this.props.actions.setLoadingAll()
     this.fetchOrdersData(ordersType)
     this.setState({ ordersType }, () => {
       this.pollOrdersData()
@@ -228,7 +229,7 @@ class OrderPage extends Component {
     if (ordersType !== 'live') {
       clearTimeout(this.timeOutId)
     } else {
-      this.timeOutId = setTimeout(this.pollOrdersData, 30000)
+      this.timeOutId = setTimeout(this.pollOrdersData, 1000)
     }
     // setTimeout(this.pollOrdersData, 1000)
   }

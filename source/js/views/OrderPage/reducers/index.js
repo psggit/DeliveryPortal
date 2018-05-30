@@ -215,6 +215,16 @@ const actionsMap = {
     })
   },
 
+  [ActionTypes.SUCCESS_SET_LOADING_ALL]: (state, action) => {
+    return Object.assign({}, state, {
+      loadingOrdersList: true,
+      loadingGenres: true,
+      loadingNotes: true,
+      loadingUnavailableDp: true,
+      loadingReturningOrders: true
+    })
+  },
+
   [ActionTypes.SUCCESS_FETCH_GENRES]: (state, action) => {
     return Object.assign({}, state, {
       genres: action.data.map(item => item.genre_name),

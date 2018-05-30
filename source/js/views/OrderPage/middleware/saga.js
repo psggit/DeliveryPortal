@@ -241,6 +241,14 @@ function* setLoading(action) {
   }
 }
 
+function* setLoadingAll(action) {
+  try {
+    yield put({ type: ActionTypes.SUCCESS_SET_LOADING_ALL, data: action.data })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 function* autoPilot(action) {
   try {
     const data = yield call(Api.autoPilot, action)
@@ -486,6 +494,12 @@ export function* watchConfirmDeliverer() {
 export function* watchSetLoading() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_SET_LOADING, setLoading)
+  }
+}
+
+export function* watchSetLoadingAll() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ALL, setLoadingAll)
   }
 }
 

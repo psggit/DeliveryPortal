@@ -113,6 +113,11 @@ export const setLoading = (data) => ({
   data
 })
 
+export const setLoadingAll = (data) => ({
+  type: ActionTypes.REQUEST_SET_LOADING_ALL,
+  data
+})
+
 export const autoPilot = (data, CB) => ({
   type: ActionTypes.REQUEST_AUTO_PILOT,
   data: data,
