@@ -67,7 +67,7 @@ class OrderPage extends Component {
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.handleFilterChange = this.handleFilterChange.bind(this)
-    // this.handleRouteChange = this.handleRouteChange.bind(this)
+    this.handleRouteChange = this.handleRouteChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
     // this.setQueryString = this.setQueryString.bind(this)
     this.resetPagination = this.resetPagination.bind(this)
@@ -122,10 +122,6 @@ class OrderPage extends Component {
 
         default:
           actions.fetchLiveOrders(postData)
-          // console.log("fwfewfdfewewbnfjq")
-          // if (this.isTimeOutCleared) {
-          //   this.pollOrdersData()
-          // }
           break
       }
     })
@@ -165,32 +161,12 @@ class OrderPage extends Component {
   }
 
 
-  // handleRouteChange(ordersType, calledBy) {
-  //   this.setState({ ordersType })
-  //   let fetchAPI = '/deliveryStatus/liveOrders'
-  //   let searchAPI = '/deliveryStatus/searchLiveOrders'
-  //   switch (ordersType) {
-  //     case 'assigned':
-  //       fetchAPI = '/deliveryStatus/liveAssignedOrders'
-  //       searchAPI = 'deliveryStatus/searchAssignedOrders'
-  //       break
-
-  //     case 'history':
-  //       fetchAPI = '/deliveryStatus/liveOrders'
-  //       searchAPI = '/deliveryStatus/searchLiveOrders'
-  //       break
-  //   }
-  //   this.setState({ fetchAPI, searchAPI, activePage: 1 })
-  //   // if(calledBy !== 'componentDidMount') {
-  //   //   this.resetPagination()
-  //   //   this.setSearchQuery('')
-  //   // }
-  //   this.props.actions.fetchOrdersData({
-  //     support_id: 1,
-  //     offset: 0,
-  //     limit: this.pagesLimit,
-  //   }, fetchAPI)
-  // }
+  handleRouteChange(ordersType) {
+    this.fetchOrdersData(ordersType)
+    this.setState({ ordersType }, () => {
+      this.pollOrdersData()
+    })
+  }
 
   // fetchDataFromQueryParams() {
   //   const queryString = location.search
@@ -241,9 +217,10 @@ class OrderPage extends Component {
   }
 
   pollOrdersData() {
+    console.log('987yt6rfghvbjnkhgv');
     const { actions } = this.props
     const { pageOffset, ordersType, searchQuery } = this.state
-
+    console.log("ordersType" + ordersType);
     searchQuery.length
     ? this.searchOrdersData(searchQuery, pageOffset)
     : this.fetchOrdersData(ordersType, pageOffset)
@@ -523,7 +500,7 @@ class OrderPage extends Component {
           ordersType={this.state.ordersType}
           resetPagination={this.resetPagination}
           unmountOrderDetail={this.unmountOrderDetail}
-          handleRouteChange={this.fetchOrdersData}
+          handleRouteChange={this.handleRouteChange}
         />
         <div className='body-container'>
           <div className='orders-filter'>
