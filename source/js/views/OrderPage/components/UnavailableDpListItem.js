@@ -1,9 +1,9 @@
 import React from 'react'
 import Moment from 'moment'
 
-const UnavailableDpListItem = ({ data }) => {
+const UnavailableDpListItem = ({ data, handleClick }) => {
   return (
-    <tr className='orders-list-item' onClick={(e) => {this.props.handleClick(data.order_id, e)} }>
+    <tr className='orders-list-item' onClick={(e) => {handleClick(data.order_id, e)} }>
       <td>{ data.dp_id }</td>
       <td>{ data.order_status }</td>
       <td>{ data.dp_name }</td>

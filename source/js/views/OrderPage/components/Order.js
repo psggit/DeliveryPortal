@@ -161,6 +161,7 @@ class Order extends Component {
               Add Item
             </button>
           }
+          <hr />
           <table>
             <thead>
               <tr>
@@ -178,7 +179,7 @@ class Order extends Component {
                       <td>{item.brand_name}</td>
                       <td>{`${item.total_volume} ml`}</td>
                       <td>{`INR ${item.total_price}`}</td>
-                      <td>
+                      <td style={{ width: '80px' }}>
                         {
                           this.state.canChangeQuantity
                           ? (

@@ -23,7 +23,8 @@ export const menuItems = [
   { value: 'assigned', label: 'Assigned orders'},
   { value: 'unassigned', label: 'Unassigned orders'},
   { value: 'history', label: 'Order history' },
-  { value: 'unavailable-deliverers', label: 'Unavailable delivery agents'},
+  { value: 'busy-delivery-agents', label: 'Busy delivery agents'},
   { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
-  { value: 'attempted', label: 'Attempted orders'}
+  { value: 'attempted', label: 'Attempted orders'},
+  { value: 'returning', label: 'Returning orders'}
 ]

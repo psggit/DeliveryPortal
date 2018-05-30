@@ -23,6 +23,7 @@ import DatePicker from './components/DatePicker'
 import SearchInput from '@components/SearchInput'
 import Moment from 'moment'
 import UnavailableDpList from './components/UnavailableDpList'
+import ReturningOrdersList from './components/ReturningOrdersList'
 import { menuItems } from './constants/strings'
 
 class OrderPage extends Component {
@@ -586,7 +587,7 @@ class OrderPage extends Component {
             </h3>
           </div>
           {
-            orders && ordersType !== 'unavailable-deliverers'
+            orders && ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'
             ? <OrdersList
               canAccess={canAccess}
               loadingOrdersList={loadingOrdersList}
@@ -603,12 +604,18 @@ class OrderPage extends Component {
           }
 
           {
-            ordersType === 'unavailable-deliverers' &&
+            ordersType === 'busy-delivery-agents' &&
             <UnavailableDpList mountOrderDetail={this.mountOrderDetail} />
           }
 
           {
-            !loadingOrdersList && ordersCount > 0 && ordersType !== 'unavailable-deliverers'
+            ordersType === 'returning' &&
+            <ReturningOrdersList mountOrderDetail={this.mountOrderDetail} />
+          }
+
+          {
+            !loadingOrdersList && ordersCount > 0 &&
+            ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'
             ? <Pagination
               activePage={activePage}
               itemsCountPerPage={this.pagesLimit}
