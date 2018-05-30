@@ -54,7 +54,7 @@ class UnavailableDpList extends React.Component {
             </thead>
             <tbody>
               {
-                !this.props.loadingUnavailableDp && this.props.unavailableDpsData.length
+                !this.props.loadingUnavailableDp
                 ? this.props.unavailableDpsData.map(item => (
                   <UnavailableDpListItem
                     handleClick={this.handleClick}
@@ -62,18 +62,23 @@ class UnavailableDpList extends React.Component {
                     data={item}
                   />
                 ))
-                : <tr className='loader' />
+                : <tr className='loader2' />
               }
             </tbody>
           </table>
         </div>
-        <Pagination
-          activePage={this.state.activePage}
-          itemsCountPerPage={this.pagesLimit}
-          totalItemsCount={this.props.unavailableDpsDataCount}
-          pageRangeDisplayed={5}
-          onChange={this.handlePageChange}
-        />
+        {
+          !this.props.loadingReturningOrders && this.props.returningOrders.length
+          ? <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={this.pagesLimit}
+            totalItemsCount={this.props.unavailableDpsDataCount}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
+          : ''
+        }
+
       </Fragment>
     )
   }

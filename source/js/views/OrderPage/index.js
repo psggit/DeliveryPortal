@@ -165,10 +165,14 @@ class OrderPage extends Component {
 
   handleRouteChange(ordersType) {
     this.props.actions.setLoadingAll()
-    this.fetchOrdersData(ordersType)
-    this.setState({ ordersType }, () => {
-      this.pollOrdersData()
-    })
+    if (['busy-delivery-agents', 'returning'].indexOf(ordersType) === -1) {
+      this.fetchOrdersData(ordersType)
+      this.setState({ ordersType }, () => {
+        this.pollOrdersData()
+      })
+    } else {
+      this.setState({ ordersType })
+    }
   }
 
   // fetchDataFromQueryParams() {

@@ -61,7 +61,7 @@ class ReturningOrdersList extends React.Component {
             </thead>
             <tbody>
               {
-                !this.props.loadingReturningOrders && this.props.returningOrders.length
+                !this.props.loadingReturningOrders
                 ? this.props.returningOrders.map(item => (
                   <ReturningOrdersListItem
                     handleClick={this.handleClick}
@@ -75,13 +75,18 @@ class ReturningOrdersList extends React.Component {
             </tbody>
           </table>
         </div>
-        <Pagination
-          activePage={this.state.activePage}
-          itemsCountPerPage={this.pagesLimit}
-          totalItemsCount={this.props.returningOrdersCount}
-          pageRangeDisplayed={5}
-          onChange={this.handlePageChange}
-        />
+
+        {
+          !this.props.loadingReturningOrders && this.props.returningOrders.length
+          ? <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={this.pagesLimit}
+            totalItemsCount={this.props.returningOrdersCount}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+          />
+          : ''
+        }
       </Fragment>
     )
   }
