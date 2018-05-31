@@ -43,8 +43,8 @@ export const fetchHistoryOrders = (data) => ({
   data
 })
 
-export const fetchCancellationOrders = (data) => ({
-  type: ActionTypes.REQUEST_FETCH_CANCELLATION_ORDERS,
+export const fetchNeedToBeCancelledOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS,
   data
 })
 

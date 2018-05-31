@@ -9,21 +9,18 @@ class SideMenu extends Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
-      ordersType: 'live'
+      currentRoute: 'live'
     }
   }
 
-  handleClick(ordersType) {
+  handleClick(nextroute) {
     // history.pushState(null, null, `/orders/${ordersType}`)
-    this.setState({ ordersType })
+    this.setState({ currentRoute: nextroute })
     // location.href = `/orders/${ordersType}`
-    this.props.resetPagination()
-    this.props.handleRouteChange(ordersType)
-    this.props.unmountOrderDetail()
+    // this.props.resetPagination()
+    this.props.handleRouteChange(nextroute)
+    // this.props.unmountOrderDetail()
     this.props.setSideMenuToggle()
-    setTimeout(() => {
-      this.props.changeOrderpageKey()
-    }, 1000)
   }
 
   render() {
@@ -48,7 +45,7 @@ class SideMenu extends Component {
                     {
                       item.value !== 'all' &&
                       <NavLink key={`nav-link-${i}`} exact to={ routeCodes[item.value] }>
-                        <li className={`menu-item ${this.props.ordersType === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
+                        <li className={`menu-item ${this.props.currentRoute === item.value ? 'active' : ''}`} onClick={() => { this.handleClick(item.value) }}>
                           { item.label }
                         </li>
                       </NavLink>

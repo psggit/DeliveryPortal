@@ -1,42 +1,57 @@
 /*
-  !!! Beware of over abstraction while writing any function !!!
+  Please read this before writing anything:
+  ========================================
 */
 
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import * as Actions from './actions'
-import { getIcon, getTimeDiff, canAccess, getHasuraId } from './utils'
-import * as ActionTypes from './constants/actions'
-import NavBar from '@components/NavBar'
-import SideMenu from './components/SideMenu'
-import OrdersList from './components/OrdersList'
-import Dropdown from '@components/Dropdown'
-import OrderDetail from './components/OrderDetail'
-import { filterOptions, dateOptions } from './constants/strings'
 import { bindActionCreators } from 'redux'
-import Pagination from 'react-js-pagination'
-import '@sass/components/_pagination.scss'
-import Qr from 'query-string'
-import { mountModal, unMountModal } from '@components/ModalBox/utils'
-import DatePicker from './components/DatePicker'
-import SearchInput from '@components/SearchInput'
-import Moment from 'moment'
-import UnavailableDpList from './components/UnavailableDpList'
+import * as Actions from './actions'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Router } from 'react-router'
+import createHistory from 'history/createBrowserHistory'
+import LiveOrdersList from './components/LiveOrdersList'
+import LiveAssignedOrdersList from './components/LiveAssignedOrdersList'
+import LiveUnAssignedOrdersList from './components/LiveUnAssignedOrdersList'
+import HistoryOrdersList from './components/HistoryOrdersList'
+import NeedToBeCancelledOrdersList from './components/NeedToBeCancelledOrdersList'
+import AttemptedOrdersList from './components/AttemptedOrdersList'
+import BusyDeliveryAgentsList from './components/UnavailableDpList'
 import ReturningOrdersList from './components/ReturningOrdersList'
+import SearchOrdersList from './components/SearchOrdersList'
+import SideMenu from './components/SideMenu'
 import { menuItems } from './constants/strings'
+import OrderDetail from './components/OrderDetail'
+import { canAccess } from './utils'
 
-class OrderPage extends Component {
+import NavBar from '@components/NavBar'
+import SearchInput from '@components/SearchInput'
 
-  static propTypes = {
-    state: PropTypes.string,
-    order: PropTypes.object,
-    retailer: PropTypes.object,
-    deliverer: PropTypes.object,
-    customer: PropTypes.object,
-    dispatch: PropTypes.func,
-  }
+import '@sass/components/_pagination.scss'
+import '@sass/OrdersPage/OrdersList.scss'
+// import { getIcon, getTimeDiff, canAccess, getHasuraId } from './utils'
+// import * as ActionTypes from './constants/actions'
+// import NavBar from '@components/NavBar'
+// import SideMenu from './components/SideMenu'
+// import OrdersList from './components/OrdersList'
+// import Dropdown from '@components/Dropdown'
+// import OrderDetail from './components/OrderDetail'
+// import { filterOptions, dateOptions } from './constants/strings'
+// import Pagination from 'react-js-pagination'
+// import '@sass/components/_pagination.scss'
+// import '@sass/OrdersPage/OrdersList.scss'
+// import Qr from 'query-string'
+// import { mountModal, unMountModal } from '@components/ModalBox/utils'
+// import DatePicker from './components/DatePicker'
+// import SearchInput from '@components/SearchInput'
+// import Moment from 'moment'
+// import UnavailableDpList from './components/UnavailableDpList'
+// import ReturningOrdersList from './components/ReturningOrdersList'
+// import { menuItems } from './constants/strings'
 
+const history = createHistory()
+
+class Home extends Component {
   constructor() {
     super()
     const today = new Date()
@@ -47,214 +62,65 @@ class OrderPage extends Component {
     this.pagesLimit = 40
     this.timeOutId = null
     this.isTimeOutCleared = false
+    this.menuItemsMap = {}
     this.state = {
-      shouldMountOrderDetail: false,
-      shouldListScroll: true,
-      currentOrderId: null,
-      activePage: 1,
-      searchQuery: '',
-      searchAPI: '/deliveryStatus/searchLiveOrders',
-      fetchAPI: '/deliveryStatus/liveOrders',
-      pageOffset: 0,
-      ordersType: 'live',
-      toDate: tommorrow.toISOString(),
-      fromDate: today.toISOString(),
-      dateChanged: false,
       isSideMenuOpen: false,
-      key: 0
+      currentRoute: location.pathname.split('/')[3] || 'live',
+      shouldMountOrderDetail: false,
+      currentOrderId: null
     }
-    // this.onStateChange = this.onStateChange.bind(this)
-    this.pollOrdersData = this.pollOrdersData.bind(this)
+
+    this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
+    this.handleRouteChange = this.handleRouteChange.bind(this)
     this.mountOrderDetail = this.mountOrderDetail.bind(this)
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
-    this.handleFilterChange = this.handleFilterChange.bind(this)
-    this.handleRouteChange = this.handleRouteChange.bind(this)
-    this.handlePageChange = this.handlePageChange.bind(this)
-    // this.setQueryString = this.setQueryString.bind(this)
-    this.resetPagination = this.resetPagination.bind(this)
-    this.setSearchQuery = this.setSearchQuery.bind(this)
-    this.fetchOrdersData = this.fetchOrdersData.bind(this)
-    this.searchOrdersData = this.searchOrdersData.bind(this)
-    this.filterOrdersData = this.filterOrdersData.bind(this)
-    this.handleClearFilter = this.handleClearFilter.bind(this)
-    this.handleAutoPilot = this.handleAutoPilot.bind(this)
-    this.setDate = this.setDate.bind(this)
-    this.handleChooseDate = this.handleChooseDate.bind(this)
-    this.handleClearDate = this.handleClearDate.bind(this)
-    this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
-    this.changeKey =this.changeKey.bind(this)
+    this.searchOrders = this.searchOrders.bind(this)
+    this.clearSearchOrders = this.clearSearchOrders.bind(this)
+    // this.onStateChange = this.onStateChange.bind(this)
+    // this.pollOrdersData = this.pollOrdersData.bind(this)
+    // this.mountOrderDetail = this.mountOrderDetail.bind(this)
+    // this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
+    // this.handleFilterChange = this.handleFilterChange.bind(this)
+    // this.handleRouteChange = this.handleRouteChange.bind(this)
+    // this.handlePageChange = this.handlePageChange.bind(this)
+    // // this.setQueryString = this.setQueryString.bind(this)
+    // this.resetPagination = this.resetPagination.bind(this)
+    // this.setSearchQuery = this.setSearchQuery.bind(this)
+    // this.fetchOrdersData = this.fetchOrdersData.bind(this)
+    // this.searchOrdersData = this.searchOrdersData.bind(this)
+    // this.filterOrdersData = this.filterOrdersData.bind(this)
+    // this.handleClearFilter = this.handleClearFilter.bind(this)
+    // this.handleAutoPilot = this.handleAutoPilot.bind(this)
+    // this.setDate = this.setDate.bind(this)
+    // this.handleChooseDate = this.handleChooseDate.bind(this)
+    // this.handleClearDate = this.handleClearDate.bind(this)
+    // this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
+    // this.changeKey =this.changeKey.bind(this)
     // this.handlefetchAutoPilotStatus = this.handlefetchAutoPilotStatus.bind(this)
   }
 
-  fetchOrdersData(ordersType, offset = this.state.pageOffset) {
-    this.setSearchQuery('')
-    const { actions } = this.props
-    const postData = {
-      offset,
-      limit: this.pagesLimit
-      // where: {
-      //   type: filterType,
-      //   value: filterValue
-      // }
-    }
-    // this.setState({ ordersType, offset }, function() {
-      switch (ordersType) {
-        case 'assigned':
-          postData.support_id = parseInt(getHasuraId())
-          actions.fetchLiveAssignedOrders(postData)
-          break
-
-        case 'unassigned':
-          actions.fetchLiveUnassignedOrders(postData)
-          break
-
-        case 'history':
-          actions.fetchHistoryOrders(postData)
-          break
-
-        case 'cancellation':
-          actions.fetchCancellationOrders(postData)
-          break
-
-        case 'attempted':
-          postData.to = this.state.toDate
-          postData.from = this.state.fromDate
-          actions.fetchAttemptedOrders(postData)
-          break
-
-        default:
-          actions.fetchLiveOrders(postData)
-          break
-      }
-    // })
-  }
-
-  searchOrdersData(searchQuery, offset) {
-    if (offset === 0) {
-      this.resetPagination()
-    }
-    this.unmountOrderDetail()
-    const { actions } = this.props
-    const { ordersType } = this.state
-    const postData = {
-      offset,
-      limit: this.pagesLimit,
-      query: searchQuery
-    }
-
-    actions.searchLiveOrders(postData)
-
-    // switch (ordersType) {
-    //   case 'assigned':
-    //     postData.support_id = 1
-    //     actions.searchLiveAssignedOrders(postData)
-    //     break
-    //
-    //   case 'unassigned':
-    //     actions.searchLiveUnassignedOrders(postData)
-    //     break
-    //
-    //   case 'history':
-    //     actions.searchHistoryOrders(postData)
-    //     break
-    //
-    //   default:
-    //     actions.searchLiveOrders(postData)
-    //     break
-    // }
-  }
-
-  changeKey() {
-    const { key } = this.state
-    this.setState({ key: key + 1 })
-  }
-
-  handleRouteChange(ordersType) {
-    console.log(ordersType);
-    // this.setState({ ordersType })
-    this.props.actions.setLoadingAll()
-    if (['busy-delivery-agents', 'returning'].indexOf(ordersType) === -1) {
-      // this.props.actions.setLoadingAll()
-      this.setState({ ordersType }, () => {
-        this.fetchOrdersData(ordersType)
-        if (ordersType === 'live') {
-          this.pollOrdersData()
-        }
-      })
-    } else {
-      this.setState({ ordersType })
-    }
-  }
-
-  // fetchDataFromQueryParams() {
-  //   const queryString = location.search
-  //   const parsed = Qr.parse(queryString)
-  //   const { actions } = this.props
-  //   const pageNumber = Math.floor(parsed.start / this.pagesLimit) + 1
-  //   const postData = {
-  //     offset: parseInt(parsed.start) ? parseInt(parsed.start): 0,
-  //     limit: this.pagesLimit
-  //   }
-
-  //   this.setState({ activePage: pageNumber ? pageNumber : 1 })
-  //   if(parsed.q) {
-  //     const { searchAPI } = this.state
-  //     postData.query = parsed.q
-  //     actions.fetchOrdersData(postData, searchAPI)
-  //     return
-  //   }
-  //   actions.fetchOrdersData(postData)
-  // }
-
-  // componentWillMount() {
-  //   if (!localStorage.getItem('_hipbaru'))
-  //   location.href = '/login'
-  // }
-
-  componentDidMount() {
-    const { actions } = this.props
-    // const { ordersType } = this.state
-    const _self = this
-
-    ;(function pollAutoPilotStatus() {
-      actions.fetchAutoPilotStatus({ city_id: 5 })
-      setTimeout(pollAutoPilotStatus, 30000)
-    })()
-
-    const ordersType = this.props.match.params.ordersType || 'live'
-
-    this.setState({ ordersType }, () => {
-      let timeOutId
-      if (ordersType === 'live') {
-        this.fetchOrdersData('live', 0)
-        this.pollOrdersData()
-      } else {
-        this.fetchOrdersData(ordersType, 0)
-      }
+  searchOrders(query) {
+    this.props.actions.searchLiveOrders({
+      query,
+      offset: 0,
+      limit: 40
     })
+    history.push(`/home/orders/search?q=${query}`, null)
   }
 
-  pollOrdersData() {
-    console.log('polling started');
-    const { actions } = this.props
-    const { pageOffset, ordersType, searchQuery } = this.state
-    this.fetchOrdersData(ordersType, pageOffset)
-
-    // searchQuery.length
-    // ? this.searchOrdersData(searchQuery, pageOffset)
-    // : this.fetchOrdersData(ordersType, pageOffset)
-
-    if (ordersType !== 'live') {
-      clearTimeout(this.timeOutId)
-    } else {
-      this.timeOutId = setTimeout(this.pollOrdersData, 1000)
-    }
-    // setTimeout(this.pollOrdersData, 1000)
+  clearSearchOrders() {
+    const { currentRoute } = this.state
+    history.push(`/home/orders/${currentRoute}`, null)
   }
 
   setSideMenuToggle() {
     const { isSideMenuOpen } = this.state
     this.setState({ isSideMenuOpen: !isSideMenuOpen })
+  }
+
+  handleRouteChange(nextroute) {
+    this.setState({ currentRoute: nextroute })
+    this.props.actions.setLoadingAll()
   }
 
   mountOrderDetail(orderId) {
@@ -263,8 +129,6 @@ class OrderPage extends Component {
       shouldListScroll: false,
       currentOrderId: orderId
     })
-    const { actions } = this.props
-    actions.fetchOrderDetail(orderId)
   }
 
   unmountOrderDetail() {
@@ -273,24 +137,38 @@ class OrderPage extends Component {
       shouldListScroll: true,
       currentOrderId: null
     })
-    this.props.actions.setLoading('loadingOrderDetail')
   }
 
-  setSearchQuery(searchQuery, ordersType) {
-    if (ordersType) {
-      this.setState({ searchQuery, ordersType })
-    }
+  componentDidMount() {
+    this.menuItemsMap = {}
+    menuItems.reduce((menuItemsMap, item) => {
+      menuItemsMap[item.value] = item.label
+      return menuItemsMap
+    }, this.menuItemsMap)
+
+    const _self = this
+
+    ;(function pollAutoPilotStatus() {
+      _self.props.actions.fetchAutoPilotStatus({ city_id: 5 })
+      setTimeout(pollAutoPilotStatus, 30000)
+    })()
   }
 
-  setDate(fromDate, toDate) {
-    this.setState({
-      fromDate,
-      toDate,
-      dateChanged: true
-    }, function() {
-      this.fetchOrdersData('attempted', 0)
-    })
-  }
+  // setSearchQuery(searchQuery, ordersType) {
+  //   if (ordersType) {
+  //     this.setState({ searchQuery, ordersType })
+  //   }
+  // }
+  //
+  // setDate(fromDate, toDate) {
+  //   this.setState({
+  //     fromDate,
+  //     toDate,
+  //     dateChanged: true
+  //   }, function() {
+  //     this.fetchOrdersData('attempted', 0)
+  //   })
+  // }
 
   // setQueryString(searchQuery = this.state, start = 0) {
   //   const { ordersType } = this.state
@@ -308,63 +186,48 @@ class OrderPage extends Component {
   //   history.pushState(null, null, pushUrl)
   // }
 
-  resetPagination() {
-    this.setState({ activePage: 1, pageOffset: 0 })
-  }
+  // resetPagination() {
+  //   this.setState({ activePage: 1, pageOffset: 0 })
+  // }
+  //
+  // filterOrdersData(filter) {
+  //   const { actions } = this.props
+  //   const postData = {
+  //     limit: this.pagesLimit,
+  //     offset: this.pageOffset,
+  //     filter_by: filter
+  //   }
+  //
+  //   actions.fetchLiveOrders(postData)
+  // }
+  //
+  //
+  // handleFilterChange(filter) {
+  //   this.resetPagination()
+  //   // const { actions } = this.props
+  //   // const postData = {
+  //   //   limit: this.pagesLimit,
+  //   //   offset: 0,
+  //   //   where: {
+  //   //     type: 'status',
+  //   //     value: ''
+  //   //   }
+  //   // }
+  //   this.filterOrdersData(filter)
+  // }
 
-  filterOrdersData(filter) {
-    const { actions } = this.props
-    const postData = {
-      limit: this.pagesLimit,
-      offset: this.pageOffset,
-      filter_by: filter
-    }
-
-    actions.fetchLiveOrders(postData)
-  }
-
-  handlePageChange(pageNumber) {
-    let offset = this.pagesLimit * (pageNumber - 1)
-    const { actions } = this.props
-    const { searchQuery, ordersType } = this.state
-
-    this.setState({ activePage: pageNumber, pageOffset: offset })
-
-    // this.setQueryString(searchQuery, offset)
-
-    if(searchQuery.length) {
-      this.searchOrdersData(searchQuery, offset)
-      return
-    }
-    this.fetchOrdersData(ordersType, offset)
-  }
-
-  handleFilterChange(filter) {
-    this.resetPagination()
-    // const { actions } = this.props
-    // const postData = {
-    //   limit: this.pagesLimit,
-    //   offset: 0,
-    //   where: {
-    //     type: 'status',
-    //     value: ''
-    //   }
-    // }
-    this.filterOrdersData(filter)
-  }
-
-  handleClearFilter() {
-    const { ordersType, pageOffset } = this.state
-    this.fetchOrdersData(ordersType, pageOffset)
-  }
-
-  handleAutoPilot(status, CB) {
-    const { actions } = this.props
-    const postData = {
-      status
-    }
-    actions.autoPilot(postData, CB)
-  }
+  // handleClearFilter() {
+  //   const { ordersType, pageOffset } = this.state
+  //   this.fetchOrdersData(ordersType, pageOffset)
+  // }
+  //
+  // handleAutoPilot(status, CB) {
+  //   const { actions } = this.props
+  //   const postData = {
+  //     status
+  //   }
+  //   actions.autoPilot(postData, CB)
+  // }
 
 
   // handleDateChange(dateType) {
@@ -376,26 +239,26 @@ class OrderPage extends Component {
   //   }
   // }
 
-  handleClearDate() {
-    const today = new Date()
-    const tommorrow = new Date(today.getTime())
-    tommorrow.setDate(tommorrow.getDate() + 1)
+  // handleClearDate() {
+  //   const today = new Date()
+  //   const tommorrow = new Date(today.getTime())
+  //   tommorrow.setDate(tommorrow.getDate() + 1)
+  //
+  //   this.setState({
+  //     fromDate: today,
+  //     toDate: tommorrow,
+  //     dateChanged: false
+  //   }, function() {
+  //     this.fetchOrdersData('attempted', 0)
+  //   })
+  // }
 
-    this.setState({
-      fromDate: today,
-      toDate: tommorrow,
-      dateChanged: false
-    }, function() {
-      this.fetchOrdersData('attempted', 0)
-    })
-  }
-
-  handleChooseDate() {
-    mountModal(DatePicker({
-      setDate: this.setDate,
-      apply: this.fetchOrdersData
-    }))
-  }
+  // handleChooseDate() {
+  //   mountModal(DatePicker({
+  //     setDate: this.setDate,
+  //     apply: this.fetchOrdersData
+  //   }))
+  // }
   // onMapCreated(map) {
   //   map.setOptions({
   //     disableDefaultUI: true
@@ -403,164 +266,39 @@ class OrderPage extends Component {
   // }
 
   render() {
-    const {
-      state,
-      orders,
-      ordersCount,
-      order,
-      retailer,
-      deliverer,
-      customer,
-      autoPilotStatus,
-      loadingOrdersList,
-      loadingOrderDetail,
-      plotData,
-      notesData,
-      loadingNotes,
-      match
-    } = this.props
-
-
-    // const titleMap = {
-    //   'SearchingRetailer': 'Searching For Retailers',
-    //   'AwaitingRetailerConfirmation': 'Awaiting Retailer Confirmation',
-    //   'SearchingDeliverer': 'Searching For Deliverer',
-    //   'AwaitingDelivererConfirmation': 'Awaiting Deliverer Confirmation',
-    //   'DelivererConfirmed': 'Deliverer on way to pick up the order',
-    //   'OrderDispatched': 'Order Picked Up and On way',
-    //   'OrderDelivered': 'Order Delivered',
-    //   'OrderCancelled': 'Order Cancelled',
-    // }
-
-    // const articleMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': 'for',
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': 'for',
-    //   'DelivererConfirmed': '',
-    //   'OrderDispatched': '',
-    //   'OrderDelivered': '',
-    //   'OrderCancelled': 'at',
-    // }
-
-    // const epilogueMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': 'Min.',
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': 'Min.',
-    //   'DelivererConfirmed': 'Min Ago',
-    //   'OrderDispatched': 'Min Ago',
-    //   'OrderDelivered': '',
-    //   'OrderCancelled': order.cancelledTime,
-    // }
-
-    // const timeMap = {
-    //   'SearchingRetailer': '',
-    //   'AwaitingRetailerConfirmation': getTimeDiff((new Date()) - retailer.notifiedTime),
-    //   'SearchingDeliverer': '',
-    //   'AwaitingDelivererConfirmation': getTimeDiff((new Date()) - deliverer.notifiedTime),
-    //   'DelivererConfirmed': getTimeDiff((new Date()), deliverer.orderAcceptedTime),
-    //   'OrderDispatched': getTimeDiff((new Date()), retailer.dispatchedTime),
-    //   'OrderDelivered': '',
-    // }
-
-    const {
-      shouldMountOrderDetail,
-      currentOrderId,
-      shouldListScroll,
-      ordersType,
-      activePage,
-      pageOffset,
-      searchAPI,
-      searchQuery,
-      dateChanged,
-      fromDate,
-      toDate
-    } = this.state
-
-
-    const { actions } = this.props
-    !shouldListScroll
-    ? document.querySelector('body').className = 'no-scroll'
-    : document.querySelector('body').className = ''
-
-    const menuItemsMap = {}
-    menuItems.reduce((menuItemsMap, item) => {
-      menuItemsMap[item.value] = item.label
-      return menuItemsMap
-    }, menuItemsMap)
-
     return (
-      <div key={this.state.key}>
-        <NavBar
-          isSideMenuOpen={this.state.isSideMenuOpen}
-          autoPilot={this.handleAutoPilot}
-          autoPilotStatus={autoPilotStatus}
-          handleRouteChange={this.fetchOrdersData}
-          canAccess={canAccess}
-          search={this.searchOrdersData}
-          searchQuery={searchQuery}
-          searchAPI={searchAPI}
-          setQueryString={this.setQueryString}
-          setSearchQuery={this.setSearchQuery}
-          pagesLimit={this.pagesLimit}
-          pageOffset={pageOffset}
-          resetPagination={this.resetPagination}
-          unmountOrderDetail={this.unmountOrderDetail}
-          setSideMenuToggle={this.setSideMenuToggle}
-        />
-        <SideMenu
-          changeOrderpageKey={this.changeKey}
-          changeAppKey={this.props.changeAppKey}
-          setSideMenuToggle={this.setSideMenuToggle}
-          isOpen={this.state.isSideMenuOpen}
-          ordersType={this.state.ordersType}
-          resetPagination={this.resetPagination}
-          unmountOrderDetail={this.unmountOrderDetail}
-          handleRouteChange={this.handleRouteChange}
-        />
-        <div className='body-container'>
-          <div className='orders-filter'>
-            { ordersType !== 'history' ? <label>Filter by</label> : '' }
-            {
-              ordersType !== 'history' && ordersType !== 'attempted' &&
-                <Fragment>
-                  <Dropdown
-                    handleClearFilter={this.handleClearFilter}
-                    options={filterOptions}
-                    onChange={this.handleFilterChange}
-                  />
-                  <div style={{ width: '40px' }}></div>
-                </Fragment>
-            }
-            {
-              ordersType == 'attempted' &&
-                <button style={{textTransform: 'capitalize'}} onClick={this.handleChooseDate}>
-                  {
-                    !dateChanged
-                    ? 'Choose date'
-                    : `${new Date(fromDate).toJSON().slice(0, 10)} to ${new Date(toDate).toJSON().slice(0, 10)}`
-                  }
-                </button>
-            }
-            {
-              dateChanged && ordersType == 'attempted'
-              ? <button onClick={this.handleClearDate}>
-                  <span
-                    style={{position: 'relative', top: '4px', left: '0px'}}>
-                      {getIcon('cross')}
-                  </span>
-                </button>
-              : ''
-            }
+      <Router history={history}>
+        <div>
+          <NavBar
+            isSideMenuOpen={this.state.isSideMenuOpen}
+            autoPilot={this.handleAutoPilot}
+            autoPilotStatus={false}
+            setSideMenuToggle={this.setSideMenuToggle}
+          />
 
+          <SideMenu
+            setSideMenuToggle={this.setSideMenuToggle}
+            isOpen={this.state.isSideMenuOpen}
+            currentRoute={this.state.currentRoute}
+            resetPagination={this.resetPagination}
+            unmountOrderDetail={this.unmountOrderDetail}
+            handleRouteChange={this.handleRouteChange}
+          />
+          <div className='body-container'>
             <SearchInput
-              search={this.searchOrdersData}
-              setSearchQuery={this.setSearchQuery}
-              searchQuery={searchQuery}
-              ordersType={ordersType}
-              changeAppKey={this.props.changeAppKey}
+              clearSearch={this.clearSearchOrders}
+              search={this.searchOrders}
+              placeholder='Search all orders...'
             />
+            {
+              this.state.shouldMountOrderDetail &&
+              <OrderDetail
+                ordersType={this.state.currentRoute}
+                canAccess={canAccess}
+                currentOrderId={this.state.currentOrderId}
+                unmountOrderDetail={this.unmountOrderDetail}
+              />
+            }
           </div>
           <div style={{
             marginTop: '10px',
@@ -575,89 +313,205 @@ class OrderPage extends Component {
               margin: '0',
               textAlign: 'center'
             }}>
-              { menuItemsMap[ordersType] }
+              { location.search ? 'All orders' : this.menuItemsMap[this.state.currentRoute] }
             </h3>
           </div>
-          {
-            orders && (searchQuery.length || (ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'))
-            ? <OrdersList
-              canAccess={canAccess}
-              loadingOrdersList={loadingOrdersList}
-              orders={orders}
-              ordersType={ordersType}
-              unmountOrderDetail={this.unmountOrderDetail}
-              mountOrderDetail={this.mountOrderDetail}
-              actions={actions}
-              notesData={notesData}
-              loadingNotes={loadingNotes}
-              state={state}
-            />
-            : ''
-          }
-
-          {
-            ordersType === 'busy-delivery-agents' && !searchQuery.length &&
-            <UnavailableDpList mountOrderDetail={this.mountOrderDetail} />
-          }
-
-          {
-            ordersType === 'returning' && !searchQuery.length &&
-            <ReturningOrdersList mountOrderDetail={this.mountOrderDetail} />
-          }
-
-          {
-            !loadingOrdersList && ordersCount > 0 &&
-            ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'
-            ? <Pagination
-              activePage={activePage}
-              itemsCountPerPage={this.pagesLimit}
-              totalItemsCount={ordersCount}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange}
-            />
-            : ''
-          }
-          {
-            shouldMountOrderDetail
-            ? <OrderDetail
-              plotData={plotData}
-              ordersType={ordersType}
-              canAccess={canAccess}
-              retailer={retailer}
-              customer={customer}
-              deliverer={deliverer}
-              loadingOrderDetail={loadingOrderDetail}
-              actions={actions}
-              order={order}
-              currentOrderId={currentOrderId}
-              unmountOrderDetail={this.unmountOrderDetail}
-            />
-            : ''
-          }
-          </div>
-        <div>
-
+          <Switch>
+            <Route exact path='/home/orders' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/live' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/assigned' render={ props => <LiveAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/unassigned' render={ props => <LiveUnAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/history' render={ props => <HistoryOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/need-to-be-cancelled' render={ props => <NeedToBeCancelledOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/attempted' render={ props => <AttemptedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/busy-delivery-agents' render={ props => <BusyDeliveryAgentsList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/returning' render={ props => <ReturningOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/search' render={ props => <SearchOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+          </Switch>
         </div>
-      </div>
+      </Router>
     )
+
+    // const {
+    //   shouldMountOrderDetail,
+    //   currentOrderId,
+    //   shouldListScroll,
+    //   ordersType,
+    //   activePage,
+    //   pageOffset,
+    //   searchAPI,
+    //   searchQuery,
+    //   dateChanged,
+    //   fromDate,
+    //   toDate
+    // } = this.state
+    //
+    //
+    // const { actions } = this.props
+    // !shouldListScroll
+    // ? document.querySelector('body').className = 'no-scroll'
+    // : document.querySelector('body').className = ''
+    //
+    // const menuItemsMap = {}
+    // menuItems.reduce((menuItemsMap, item) => {
+    //   menuItemsMap[item.value] = item.label
+    //   return menuItemsMap
+    // }, menuItemsMap)
+    //
+    // return (
+    //   <div key={this.state.key}>
+        // <NavBar
+        //   isSideMenuOpen={this.state.isSideMenuOpen}
+        //   autoPilot={this.handleAutoPilot}
+        //   autoPilotStatus={autoPilotStatus}
+        //   handleRouteChange={this.fetchOrdersData}
+        //   canAccess={canAccess}
+        //   search={this.searchOrdersData}
+        //   searchQuery={searchQuery}
+        //   searchAPI={searchAPI}
+        //   setQueryString={this.setQueryString}
+        //   setSearchQuery={this.setSearchQuery}
+        //   pagesLimit={this.pagesLimit}
+        //   pageOffset={pageOffset}
+        //   resetPagination={this.resetPagination}
+        //   unmountOrderDetail={this.unmountOrderDetail}
+        //   setSideMenuToggle={this.setSideMenuToggle}
+        // />
+    //     <SideMenu
+    //       changeOrderpageKey={this.changeKey}
+    //       changeAppKey={this.props.changeAppKey}
+    //       setSideMenuToggle={this.setSideMenuToggle}
+    //       isOpen={this.state.isSideMenuOpen}
+    //       ordersType={this.state.ordersType}
+    //       resetPagination={this.resetPagination}
+    //       unmountOrderDetail={this.unmountOrderDetail}
+    //       handleRouteChange={this.handleRouteChange}
+    //     />
+    //     <div className='body-container'>
+    //       <div className='orders-filter'>
+    //         { ordersType !== 'history' ? <label>Filter by</label> : '' }
+    //         {
+    //           ordersType !== 'history' && ordersType !== 'attempted' &&
+    //             <Fragment>
+    //               <Dropdown
+    //                 handleClearFilter={this.handleClearFilter}
+    //                 options={filterOptions}
+    //                 onChange={this.handleFilterChange}
+    //               />
+    //               <div style={{ width: '40px' }}></div>
+    //             </Fragment>
+    //         }
+    //         {
+    //           ordersType == 'attempted' &&
+    //             <button style={{textTransform: 'capitalize'}} onClick={this.handleChooseDate}>
+    //               {
+    //                 !dateChanged
+    //                 ? 'Choose date'
+    //                 : `${new Date(fromDate).toJSON().slice(0, 10)} to ${new Date(toDate).toJSON().slice(0, 10)}`
+    //               }
+    //             </button>
+    //         }
+    //         {
+    //           dateChanged && ordersType == 'attempted'
+    //           ? <button onClick={this.handleClearDate}>
+    //               <span
+    //                 style={{position: 'relative', top: '4px', left: '0px'}}>
+    //                   {getIcon('cross')}
+    //               </span>
+    //             </button>
+    //           : ''
+    //         }
+    //
+    //         <SearchInput
+    //           search={this.searchOrdersData}
+    //           setSearchQuery={this.setSearchQuery}
+    //           searchQuery={searchQuery}
+    //           ordersType={ordersType}
+    //           changeAppKey={this.props.changeAppKey}
+    //         />
+    //       </div>
+          // <div style={{
+          //   marginTop: '10px',
+          //   padding: '10px',
+          //   background: '#f6f6f6',
+          //   position: 'sticky',
+          //   top: '65px',
+          //   boxShadow: '0px 1px 2px 0px #ddd'
+          // }}>
+          //   <h3 style={{
+          //     textTransform: 'uppercase',
+          //     margin: '0',
+          //     textAlign: 'center'
+          //   }}>
+          //     { menuItemsMap[ordersType] }
+          //   </h3>
+          // </div>
+    //       {
+    //         orders && (searchQuery.length || (ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'))
+    //         ? <OrdersList
+    //           canAccess={canAccess}
+    //           loadingOrdersList={loadingOrdersList}
+    //           orders={orders}
+    //           ordersType={ordersType}
+    //           unmountOrderDetail={this.unmountOrderDetail}
+    //           mountOrderDetail={this.mountOrderDetail}
+    //           actions={actions}
+    //           notesData={notesData}
+    //           loadingNotes={loadingNotes}
+    //           state={state}
+    //         />
+    //         : ''
+    //       }
+    //
+    //       {
+    //         ordersType === 'busy-delivery-agents' && !searchQuery.length &&
+    //         <UnavailableDpList mountOrderDetail={this.mountOrderDetail} />
+    //       }
+    //
+    //       {
+    //         ordersType === 'returning' && !searchQuery.length &&
+    //         <ReturningOrdersList mountOrderDetail={this.mountOrderDetail} />
+    //       }
+    //
+    //       {
+    //         !loadingOrdersList && ordersCount > 0 &&
+    //         ordersType !== 'busy-delivery-agents' && ordersType !== 'returning'
+    //         ? <Pagination
+    //           activePage={activePage}
+    //           itemsCountPerPage={this.pagesLimit}
+    //           totalItemsCount={ordersCount}
+    //           pageRangeDisplayed={5}
+    //           onChange={this.handlePageChange}
+    //         />
+    //         : ''
+    //       }
+    //       {
+    //         shouldMountOrderDetail
+    //         ? <OrderDetail
+    //           plotData={plotData}
+    //           ordersType={ordersType}
+    //           canAccess={canAccess}
+    //           retailer={retailer}
+    //           customer={customer}
+    //           deliverer={deliverer}
+    //           loadingOrderDetail={loadingOrderDetail}
+    //           actions={actions}
+    //           order={order}
+    //           currentOrderId={currentOrderId}
+    //           unmountOrderDetail={this.unmountOrderDetail}
+    //         />
+    //         : ''
+    //       }
+    //       </div>
+    //     <div>
+    //
+    //     </div>
+    //   </div>
+    // )
   }
 }
-
-const mapStateToProps = (state) => ({
-  state: state.OrderPage.state,
-  loadingNotes: state.OrderPage.loadingNotes,
-  notesData: state.OrderPage.notesData,
-  plotData: state.OrderPage.plotData,
-  autoPilotStatus: state.OrderPage.autoPilotStatus,
-  loadingOrdersList: state.OrderPage.loadingOrdersList,
-  orders: state.OrderPage.orders,
-  ordersCount: state.OrderPage.ordersCount,
-  order: state.OrderPage.order,
-  retailer: state.OrderPage.retailer,
-  deliverer: state.OrderPage.deliverer,
-  customer: state.OrderPage.customer,
-  loadingOrderDetail: state.OrderPage.loadingOrderDetail
-})
+//
+const mapStateToProps = state => state.OrderPage
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(Actions, dispatch)
@@ -667,4 +521,6 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrderPage)
+)(Home)
+
+// export default Home

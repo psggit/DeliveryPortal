@@ -1,37 +1,36 @@
-import React, { Component } from 'react';
-import { unmountComponentAtNode } from 'react-dom'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
 import { Api } from './../../utils/config'
-// import NotFound from 'views/NotFound';
-import OrderPage from './../OrderPage';
-import Login from './../Login';
+import Login from './../Login'
+import Home from './../OrderPage'
 
 const publicPath = '/';
 
 export const routeCodes = {
   DASHBOARD: publicPath,
   gmap: `${ publicPath }orders/track/:id`,
-  DASHBOARD: `${ publicPath }dashboard`,
-  live: `${ publicPath }orders`,
-  unassigned: `${ publicPath }orders/unassigned`,
-  assigned: `${ publicPath }orders/assigned`,
-  'busy-delivery-agents': `${ publicPath }orders/busy-delivery-agents`,
-  'need-to-be-cancelled': `${ publicPath }orders/need-to-be-cancelled`,
-  attempted: `${ publicPath }orders/attempted`,
-  returning: `${ publicPath }orders/returning`,
-  history: `${ publicPath }orders/history`,
+  live: `${ publicPath }home/orders/live`,
+  unassigned: `${ publicPath }home/orders/unassigned`,
+  assigned: `${ publicPath }home/orders/assigned`,
+  'busy-delivery-agents': `${ publicPath }home/orders/busy-delivery-agents`,
+  'need-to-be-cancelled': `${ publicPath }home/orders/need-to-be-cancelled`,
+  attempted: `${ publicPath }home/orders/attempted`,
+  returning: `${ publicPath }home/orders/returning`,
+  history: `${ publicPath }home/orders/history`,
   LOGIN: `${ publicPath }login`
 };
 
 
 export default class App extends Component {
   static propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.object
   }
 
   constructor(props) {
     super(props)
+    this.menuItemsMap = {}
     this.state = {
       key: 0
     }
@@ -76,21 +75,13 @@ export default class App extends Component {
   }
 
   render() {
-    const { key } = this.state
     return (
       <BrowserRouter>
         <div className='App'>
           <div className='Page'>
             <Switch>
-              <Route exact path={ publicPath } render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
-              <Route exact path={ routeCodes.LOGIN } component={ Login } />
-              <Route exact path={ routeCodes.live } render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
-              <Route exact path='/orders/:ordersType' render={ props => <OrderPage key={key} changeAppKey={this.changeAppKey} {...props} /> } />
-              {/* <Route exact path={ routeCodes.assigned } component={ OrderPage } />
-              <Route exact path={ routeCodes.history } component={ OrderPage } />
-              <Route exact path={ routeCodes.gmap } component={ Gmap } /> */}
-              {/* <Route path={ routeCodes.DASHBOARD} component={ DashBoard } /> */}
-              {/* <Route path='*' component={ NotFound } /> */}
+              <Route exact path='/login' component={ Login } />
+              <Route path='/home/*' component={ Home } />
             </Switch>
           </div>
         </div>

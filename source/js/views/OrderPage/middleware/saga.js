@@ -49,10 +49,10 @@ function* fetchHistoryOrders(action) {
   }
 }
 
-function* fetchCancellationOrders(action) {
+function* fetchNeedToBeCancelledOrders(action) {
   try {
-    const data = yield call(Api.fetchCancellationOrders, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+    const data = yield call(Api.fetchNeedToBeCancelledOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_NEED_TO_BE_CANCELLED_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -61,7 +61,7 @@ function* fetchCancellationOrders(action) {
 function* fetchAttemptedOrders(action) {
   try {
     const data = yield call(Api.fetchAttemptedOrders, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+    yield put({type: ActionTypes.SUCCESS_FETCH_ATTEMPTED_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -383,9 +383,9 @@ export function* watchFetchHistoryOrders() {
   }
 }
 
-export function* watchFetchCancellationOrders() {
+export function* watchFetchNeedToBeCancelledOrders() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_CANCELLATION_ORDERS, fetchCancellationOrders)
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS, fetchNeedToBeCancelledOrders)
   }
 }
 

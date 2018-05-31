@@ -50,7 +50,7 @@ export function fetchHistoryOrders(action) {
   .then(json => json)
 }
 
-export function fetchCancellationOrders(action) {
+export function fetchNeedToBeCancelledOrders(action) {
   return POST({
     api: `/deliveryStatus/cancellationOrders`,
     apiBase: 'gremlinUrl',

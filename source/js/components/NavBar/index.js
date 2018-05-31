@@ -77,76 +77,30 @@ class NavBar extends Component {
 
   render() {
     const { shouldDeliever } = this.state
-    const menuItems = [
-      { value: '', label: 'in progress' },
-      { value: 'assigned', label: 'assigned'},
-      { value: 'unassigned', label: 'unassigned'},
-      { value: 'history', label: 'history' },
-      { value: 'cancellation', label: 'Need to be cancelled'},
-      { value: 'attempted', label: 'Attempted'},
-      { value: 'unavailable-deliverers', label: 'Unavailable deliverers'}
-    ]
-    if (!this.props.canAccess('other-orders')) {
-      menuItems.splice(1, 2)
-      menuItems.pop()
-    }
     return (
       <header>
         <ul>
-          {/* <li className="logo">
-            <a href='/orders'>
-              <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAA1JAAAAJGI0MjhiMjNhLTcyYzctNGQyYi1hNjlmLTM5MTU0MWZmMzA4MQ.png" />
-            </a>
-          </li> */}
           <li style={{ cursor: 'pointer' }} onClick={this.handleSideMenuToggle}>
             { getIcon('menu')}
           </li>
-          {
-            this.props.canAccess('resume-pause')
-            ? (
-              <li className="resume-pause">
-                <span>
-                  {
-                    shouldDeliever
-                    ? 'Pause Deliveries'
-                    : 'Continue Deliveries'
-                  }
-                </span>
-                <span onClick={this.handleClick}>
-                  {
-                    shouldDeliever
-                    ? getIcon('pause')
-                    : getIcon('play')
-                  }
-                </span>
-            </li>
-            )
-            : ''
-          }
-          {
-            this.props.canAccess('auto-pilot')
-            ? (
-              <li>
-                <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
-                <ToggleButton
-                  autoPilotStatus={this.props.autoPilotStatus}
-                  autoPilot={this.props.autoPilot}
-                />
-              </li>
-            )
-            : ''
-          }
-          {/* {
-            menuItems.map((item, i) => {
-              return (
-                <a key={`nav-link-${i}`} href={`/orders/${item.value}`}>
-                  <li className={`menu-item ${this.state.ordersType === item.value ? 'active' : ''}`}>
-                    { item.label }
-                  </li>
-                </a>
-              )
-            })
-          } */}
+
+          <li className='resume-pause'>
+            <span>
+              Pause deliveries
+            </span>
+            <span onClick={this.handleClick}>
+              {getIcon('pause')}
+            </span>
+          </li>
+
+          <li>
+            <span style={{color: '#FFF', fontSize: '16px'}}>Autopilot</span>
+            <ToggleButton
+              autoPilotStatus={this.props.autoPilotStatus}
+              autoPilot={this.props.autoPilot}
+            />
+          </li>
+          
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>

@@ -108,8 +108,8 @@ body.no-scroll {
 
 .body-container {
   position: relative;
-  padding: 40px 0;
-  height: 100vh;
+  margin-top: 105px;
+  max-height: 100vh;
   overflow: auto;
 }
 button {

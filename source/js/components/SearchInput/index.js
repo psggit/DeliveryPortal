@@ -9,13 +9,9 @@ class SearchInput extends Component {
     this.handlePress = this.handlePress.bind(this)
     this.handleClearSearch = this.handleClearSearch.bind(this)
     this.state = {
-      searchQuery: props.searchQuery,
+      searchQuery: '',
       searched: false
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ searchQuery: nextProps.searchQuery })
   }
 
   handleClearSearch() {
@@ -24,14 +20,13 @@ class SearchInput extends Component {
       searched: false
     })
 
-    this.props.setSearchQuery('')
-    // this.search('', 'all')
-    this.props.changeOrderpageKey()
+    if (this.props.clearSearch) {
+      this.props.clearSearch()
+    }
   }
 
-  search(searchQuery, ordersType) {
-    this.props.setSearchQuery(searchQuery, ordersType)
-    this.props.search(searchQuery, 0)
+  search(searchQuery) {
+    this.props.search(searchQuery)
   }
 
   handleChange(e) {
@@ -46,7 +41,7 @@ class SearchInput extends Component {
     const { searchQuery } = this.state
     if (e.keyCode === 13 && searchQuery.length) {
       this.setState({ searched: true })
-      this.search(searchQuery, 'all')
+      this.search(searchQuery)
     }
   }
 

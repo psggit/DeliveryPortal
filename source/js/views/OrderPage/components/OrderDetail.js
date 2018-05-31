@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { getIcon } from './../utils'
+import { connect } from 'react-redux'
+import * as Actions from './../actions'
+import { bindActionCreators } from 'redux'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ShowNotifiedRetailers from './ShowNotifiedRetailers'
@@ -13,7 +15,7 @@ import DelivererDetail from './DelivererDetail'
 import Notes from './Notes'
 import ShowGmap from './ShowGmap'
 import moment from 'moment'
-import { getHasuraId } from './../utils'
+import { getHasuraId, getIcon } from './../utils'
 import '@sass/OrdersPage/OrderDetail.scss'
 
 function getTimeDiff(d2) {
@@ -118,10 +120,12 @@ class OrderDetail extends Component {
   }
 
   componentDidMount() {
-    // const { actions, currentOrderId } = this.props
-    // actions.fetchPlotData({
-    //   order_id: currentOrderId
-    // })
+    const { currentOrderId } = this.props
+    this.props.actions.fetchOrderDetail(currentOrderId)
+  }
+
+  componentWillUnmount() {
+    this.props.actions.setLoading('loadingOrderDetail')
   }
 
   handleRefersh() {
@@ -333,4 +337,13 @@ class OrderDetail extends Component {
   }
 }
 
-export default OrderDetail
+const mapStateToProps = state => state.OrderPage
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderDetail)
