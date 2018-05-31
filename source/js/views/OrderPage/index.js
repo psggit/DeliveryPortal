@@ -60,7 +60,8 @@ class OrderPage extends Component {
       toDate: tommorrow.toISOString(),
       fromDate: today.toISOString(),
       dateChanged: false,
-      isSideMenuOpen: false
+      isSideMenuOpen: false,
+      key: 0
     }
     // this.onStateChange = this.onStateChange.bind(this)
     this.pollOrdersData = this.pollOrdersData.bind(this)
@@ -81,6 +82,7 @@ class OrderPage extends Component {
     this.handleChooseDate = this.handleChooseDate.bind(this)
     this.handleClearDate = this.handleClearDate.bind(this)
     this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
+    this.changeKey =this.changeKey.bind(this)
     // this.handlefetchAutoPilotStatus = this.handlefetchAutoPilotStatus.bind(this)
   }
 
@@ -162,10 +164,16 @@ class OrderPage extends Component {
     // }
   }
 
+  changeKey() {
+    const { key } = this.state
+    this.setState({ key: key + 1 })
+  }
 
   handleRouteChange(ordersType) {
+    // this.setState({ ordersType })
+    this.props.actions.setLoadingAll()
     if (['busy-delivery-agents', 'returning'].indexOf(ordersType) === -1) {
-      this.props.actions.setLoadingAll()
+      // this.props.actions.setLoadingAll()
       this.setState({ ordersType }, () => {
         this.fetchOrdersData(ordersType)
         if (ordersType === 'live') {
@@ -235,7 +243,7 @@ class OrderPage extends Component {
     if (ordersType !== 'live') {
       clearTimeout(this.timeOutId)
     } else {
-      this.timeOutId = setTimeout(this.pollOrdersData, 30000)
+      this.timeOutId = setTimeout(this.pollOrdersData, 1000)
     }
     // setTimeout(this.pollOrdersData, 1000)
   }
@@ -482,7 +490,7 @@ class OrderPage extends Component {
     }, menuItemsMap)
 
     return (
-      <div>
+      <div key={this.state.key}>
         <NavBar
           isSideMenuOpen={this.state.isSideMenuOpen}
           autoPilot={this.handleAutoPilot}
@@ -501,6 +509,7 @@ class OrderPage extends Component {
           setSideMenuToggle={this.setSideMenuToggle}
         />
         <SideMenu
+          changeOrderpageKey={this.changeKey}
           changeAppKey={this.props.changeAppKey}
           setSideMenuToggle={this.setSideMenuToggle}
           isOpen={this.state.isSideMenuOpen}
