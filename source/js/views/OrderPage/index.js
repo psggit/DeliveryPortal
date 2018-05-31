@@ -67,7 +67,8 @@ class Home extends Component {
       isSideMenuOpen: false,
       currentRoute: location.pathname.split('/')[3] || 'live',
       shouldMountOrderDetail: false,
-      currentOrderId: null
+      currentOrderId: null,
+      key: 0
     }
 
     this.setSideMenuToggle = this.setSideMenuToggle.bind(this)
@@ -76,6 +77,7 @@ class Home extends Component {
     this.unmountOrderDetail = this.unmountOrderDetail.bind(this)
     this.searchOrders = this.searchOrders.bind(this)
     this.clearSearchOrders = this.clearSearchOrders.bind(this)
+    this.updateKey = this.updateKey.bind(this)
     // this.onStateChange = this.onStateChange.bind(this)
     // this.pollOrdersData = this.pollOrdersData.bind(this)
     // this.mountOrderDetail = this.mountOrderDetail.bind(this)
@@ -118,9 +120,19 @@ class Home extends Component {
     this.setState({ isSideMenuOpen: !isSideMenuOpen })
   }
 
+  updateKey() {
+    const { key } = this.state
+    this.setState({ key: key + 1 })
+  }
+
   handleRouteChange(nextroute) {
-    this.setState({ currentRoute: nextroute })
+    const { currentRoute } = this.state
     this.props.actions.setLoadingAll()
+    if (currentRoute === nextroute) {
+      this.updateKey()
+    } else {
+      this.setState({ currentRoute: nextroute })
+    }
   }
 
   mountOrderDetail(orderId) {
@@ -316,7 +328,7 @@ class Home extends Component {
               { location.search ? 'All orders' : this.menuItemsMap[this.state.currentRoute] }
             </h3>
           </div>
-          <Switch>
+          <Switch key={this.state.key}>
             <Route exact path='/home/orders' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/live' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/assigned' render={ props => <LiveAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
