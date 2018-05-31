@@ -26,7 +26,7 @@ class SearchInput extends Component {
 
     this.props.setSearchQuery('')
     // this.search('', 'all')
-    this.props.changeAppKey()
+    this.props.changeOrderpageKey()
   }
 
   search(searchQuery, ordersType) {
@@ -38,7 +38,7 @@ class SearchInput extends Component {
     const searchQuery = e.target.value
     this.setState({ searchQuery })
     if (!searchQuery.length) {
-      this.search('', 'all')
+      this.handleClearSearch()
     }
   }
 

@@ -97,7 +97,7 @@ class OrderPage extends Component {
       //   value: filterValue
       // }
     }
-    this.setState({ ordersType, offset }, function() {
+    // this.setState({ ordersType, offset }, function() {
       switch (ordersType) {
         case 'assigned':
           postData.support_id = parseInt(getHasuraId())
@@ -126,7 +126,7 @@ class OrderPage extends Component {
           actions.fetchLiveOrders(postData)
           break
       }
-    })
+    // })
   }
 
   searchOrdersData(searchQuery, offset) {
@@ -170,6 +170,7 @@ class OrderPage extends Component {
   }
 
   handleRouteChange(ordersType) {
+    console.log(ordersType);
     // this.setState({ ordersType })
     this.props.actions.setLoadingAll()
     if (['busy-delivery-agents', 'returning'].indexOf(ordersType) === -1) {
@@ -214,16 +215,16 @@ class OrderPage extends Component {
     const { actions } = this.props
     // const { ordersType } = this.state
     const _self = this
-    // this.fetchDataFromQueryParams()
+
+    ;(function pollAutoPilotStatus() {
+      actions.fetchAutoPilotStatus({ city_id: 5 })
+      setTimeout(pollAutoPilotStatus, 30000)
+    })()
+
     const ordersType = this.props.match.params.ordersType || 'live'
+
     this.setState({ ordersType }, () => {
       let timeOutId
-
-      ;(function pollAutoPilotStatus() {
-        actions.fetchAutoPilotStatus({ city_id: 5 })
-        setTimeout(pollAutoPilotStatus, 30000)
-      })()
-
       if (ordersType === 'live') {
         this.fetchOrdersData('live', 0)
         this.pollOrdersData()
@@ -234,11 +235,14 @@ class OrderPage extends Component {
   }
 
   pollOrdersData() {
+    console.log('polling started');
     const { actions } = this.props
     const { pageOffset, ordersType, searchQuery } = this.state
-    searchQuery.length
-    ? this.searchOrdersData(searchQuery, pageOffset)
-    : this.fetchOrdersData(ordersType, pageOffset)
+    this.fetchOrdersData(ordersType, pageOffset)
+
+    // searchQuery.length
+    // ? this.searchOrdersData(searchQuery, pageOffset)
+    // : this.fetchOrdersData(ordersType, pageOffset)
 
     if (ordersType !== 'live') {
       clearTimeout(this.timeOutId)
@@ -273,11 +277,8 @@ class OrderPage extends Component {
   }
 
   setSearchQuery(searchQuery, ordersType) {
-    console.log(ordersType);
     if (ordersType) {
       this.setState({ searchQuery, ordersType })
-    } else {
-      this.setState({ searchQuery, ordersType: this.props.match.params.ordersType})
     }
   }
 
