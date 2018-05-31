@@ -164,11 +164,13 @@ class OrderPage extends Component {
 
 
   handleRouteChange(ordersType) {
-    this.props.actions.setLoadingAll()
     if (['busy-delivery-agents', 'returning'].indexOf(ordersType) === -1) {
-      this.fetchOrdersData(ordersType)
+      this.props.actions.setLoadingAll()
       this.setState({ ordersType }, () => {
-        this.pollOrdersData()
+        this.fetchOrdersData(ordersType)
+        if (ordersType === 'live') {
+          this.pollOrdersData()
+        }
       })
     } else {
       this.setState({ ordersType })
@@ -224,10 +226,8 @@ class OrderPage extends Component {
   }
 
   pollOrdersData() {
-    console.log('987yt6rfghvbjnkhgv');
     const { actions } = this.props
     const { pageOffset, ordersType, searchQuery } = this.state
-    console.log("ordersType" + ordersType);
     searchQuery.length
     ? this.searchOrdersData(searchQuery, pageOffset)
     : this.fetchOrdersData(ordersType, pageOffset)

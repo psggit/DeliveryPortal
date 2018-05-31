@@ -19,11 +19,8 @@ class SideMenu extends Component {
     // location.href = `/orders/${ordersType}`
     this.props.resetPagination()
     this.props.handleRouteChange(ordersType)
-    this.props.unmountOrderDetail()
+    // this.props.unmountOrderDetail()
     this.props.setSideMenuToggle()
-    setTimeout(() => {
-      this.props.changeAppKey()
-    }, 1000)
   }
 
   render() {
