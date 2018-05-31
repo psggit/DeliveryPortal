@@ -15,7 +15,7 @@ class NavBar extends Component {
       shouldDeliever: true,
       ordersType: 'all'
     }
-    // this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this)
     this.handleNavigation = this.handleNavigation.bind(this)
     this.handleSideMenuToggle = this.handleSideMenuToggle.bind(this)
   }
@@ -61,6 +61,10 @@ class NavBar extends Component {
     })
   }
 
+  handleClick(route) {
+    this.props.history.push(`/home/orders/${route}`, null)
+  }
+
   handleNavigation(ordersType) {
     $('body').animate({
       scrollTop: 0
@@ -100,7 +104,15 @@ class NavBar extends Component {
               autoPilot={this.props.autoPilot}
             />
           </li>
-          
+
+          <li onClick={() => { this.handleClick('live') }} style={{ color: '#fff', fontSize: '16px', cursor: 'pointer', marginRight: '20px' }}>
+            In-progress orders
+          </li>
+
+          <li onClick={() => { this.handleClick('attempted') }} style={{ color: '#fff', fontSize: '16px', cursor: 'pointer' }}>
+            Attempted orders
+          </li>
+
           <li className='user' onClick={this.handleLogout}>Logout</li>
         </ul>
       </header>

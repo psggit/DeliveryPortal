@@ -164,6 +164,18 @@ class Home extends Component {
       _self.props.actions.fetchAutoPilotStatus({ city_id: 5 })
       setTimeout(pollAutoPilotStatus, 30000)
     })()
+
+    this.unlisten = history.listen(location => {
+      this.props.actions.setLoadingAll()
+      const nextroute = location.pathname.split('/')[3]
+      if (nextroute === this.state.currentRoute) {
+        this.updateKey()
+      }
+      if (nextroute !== 'search') {
+        this.setState({ currentRoute: nextroute })
+      }
+      this.unmountOrderDetail()
+    })
   }
 
   // setSearchQuery(searchQuery, ordersType) {
@@ -282,6 +294,7 @@ class Home extends Component {
       <Router history={history}>
         <div>
           <NavBar
+            history={history}
             isSideMenuOpen={this.state.isSideMenuOpen}
             autoPilot={this.handleAutoPilot}
             autoPilotStatus={false}
