@@ -12,7 +12,7 @@ import { Router } from 'react-router'
 import createHistory from 'history/createBrowserHistory'
 import LiveOrdersList from './components/LiveOrdersList'
 import LiveAssignedOrdersList from './components/LiveAssignedOrdersList'
-import LiveUnAssignedOrdersList from './components/LiveUnAssignedOrdersList'
+// import LiveUnAssignedOrdersList from './components/LiveUnAssignedOrdersList'
 import HistoryOrdersList from './components/HistoryOrdersList'
 import NeedToBeCancelledOrdersList from './components/NeedToBeCancelledOrdersList'
 import AttemptedOrdersList from './components/AttemptedOrdersList'
@@ -336,7 +336,7 @@ class Home extends Component {
             <Route exact path='/home/orders' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/live' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/assigned' render={ props => <LiveAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
-            <Route exact path='/home/orders/unassigned' render={ props => <LiveUnAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            {/* <Route exact path='/home/orders/unassigned' render={ props => <LiveUnAssignedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } /> */}
             <Route exact path='/home/orders/history' render={ props => <HistoryOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/need-to-be-cancelled' render={ props => <NeedToBeCancelledOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/attempted' render={ props => <AttemptedOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
