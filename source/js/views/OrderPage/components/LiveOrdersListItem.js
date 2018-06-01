@@ -15,7 +15,7 @@ function Moment(time) {
   }
 }
 
-const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign }) => {
+const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNotes }) => {
   const {retailer_notified_time} = data
   const {dp_delivered_time } = data
   const {retailer_accepted_time} = data
@@ -45,7 +45,7 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign }) => {
       <td>{ data.assigned_to_id }</td>
       <td>{ moment(data.order_placed_time).format('MMM Do YY, h:mm a') }</td>
       <td><button onClick={(e) => { handleOrderAssign(data.order_id, e)}} style={{ fontSize: '12px', padding: '5px 10px', borderRadius: '4px' }}>Assign</button></td>
-      <td><button style={{ fontSize: '12px', padding: '5px 10px', borderRadius: '4px' }}>Notes</button></td>
+      <td><button onClick={(e) => { handleShowNotes(e, data.order_id) }} style={{ fontSize: '12px', padding: '5px 10px', borderRadius: '4px' }}>Notes</button></td>
     </tr>
   )
 }

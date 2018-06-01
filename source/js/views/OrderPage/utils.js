@@ -3,7 +3,7 @@
 import React from 'react'
 
 export function getIcon(name, color) {
-  const iconsPath = '../assets/icons/';
+  const iconsPath = './../../assets/icons/';
   switch (name) {
     case 'back':
       return (

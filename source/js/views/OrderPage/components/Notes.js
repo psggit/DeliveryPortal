@@ -50,7 +50,7 @@ class Notes extends React.Component{
         className='card'
         style={{
         width: position ? '400px' : '',
-        position: position ? 'absolute' : 'static',
+        position: position ? 'fixed' : 'static',
         top: position ? position.top : '',
         left: position ? position.left : '',
         transform: position ? 'translateX(-50%)' : 'none',
@@ -67,7 +67,7 @@ class Notes extends React.Component{
               marginTop: '2px',
               cursor: 'pointer'
             }}>
-            {getIcon('cross')}
+            {getIcon('cross', '#FFF')}
           </span>
           }
         </div>
@@ -80,7 +80,7 @@ class Notes extends React.Component{
           <div>
             {
               position &&
-              <button style={{ marginBottom: '20px' }} onClick={this.showTakeNotes}>
+              <button style={{ marginBottom: '20px', padding: '5px 10px', borderRadius: '4px', fontSize: '12px' }} onClick={this.showTakeNotes}>
                 create new
               </button>
             }

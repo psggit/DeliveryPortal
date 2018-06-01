@@ -7,6 +7,7 @@ import LiveOrdersListItem from './LiveOrdersListItem'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getHasuraId } from './../utils'
+import Notes from './Notes'
 
 class LiveOrdersList extends React.Component {
   constructor() {
@@ -14,13 +15,17 @@ class LiveOrdersList extends React.Component {
     this.pagesLimit = 40
     this.state = {
       activePage: 1,
-      pageOffset: 0
+      pageOffset: 0,
+      shouldMountNotesBox: false,
+      notesBoxPosition: {}
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.pollData = this.pollData.bind(this)
     this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
+    this.handleShowNotes = this.handleShowNotes.bind(this)
+    this.unmountNotesBox = this.unmountNotesBox.bind(this)
   }
 
   handleClick(orderId, e) {
@@ -56,6 +61,10 @@ class LiveOrdersList extends React.Component {
     unMountModal()
   }
 
+  unmountNotesBox() {
+    this.setState({ shouldMountNotesBox: false })
+  }
+
   componentDidMount() {
     this.props.actions.fetchLiveOrders({
       limit: 40,
@@ -63,6 +72,21 @@ class LiveOrdersList extends React.Component {
     })
 
     this.pollData()
+  }
+
+  handleShowNotes(e, orderId) {
+    this.orderId = orderId
+    const posObj = e.target.getBoundingClientRect()
+    // console.log(posObj);
+    const notesBoxPosition = {
+      top: posObj.top + 19,
+      left: posObj.left - 150
+    }
+
+    this.props.actions.fetchNotes({ id: orderId })
+    this.setState({ shouldMountNotesBox: false }, () => {
+      this.setState({ notesBoxPosition, shouldMountNotesBox: true })
+    })
   }
 
   pollData() {
@@ -104,6 +128,7 @@ class LiveOrdersList extends React.Component {
                   <LiveOrdersListItem
                     handleClick={this.handleClick}
                     handleOrderAssign={this.openAssignOrderModal}
+                    handleShowNotes={this.handleShowNotes}
                     key={item.order_id}
                     data={item}
                   />
@@ -123,6 +148,17 @@ class LiveOrdersList extends React.Component {
             onChange={this.handlePageChange}
           />
           : ''
+        }
+        {
+          this.state.shouldMountNotesBox &&
+          <Notes
+            data={this.props.notesData}
+            createNote={this.props.actions.createNote}
+            id={this.orderId}
+            loadingNotes={this.props.loadingNotes}
+            position={this.state.notesBoxPosition}
+            unmountNotesBox={this.unmountNotesBox}
+          />
         }
 
       </Fragment>

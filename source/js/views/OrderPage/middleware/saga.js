@@ -166,7 +166,7 @@ function* filterOrdersData(action) {
   }
 }
 
-
+// TODO: Fix what to fetch when assignOrder called (since its being used at two places)
 function* assignOrder(action) {
   try {
     const data = yield call(Api.assignOrder, action)
