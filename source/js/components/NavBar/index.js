@@ -105,11 +105,11 @@ class NavBar extends Component {
             />
           </li>
 
-          <li onClick={() => { this.handleClick('live') }} style={{ color: '#fff', fontSize: '16px', cursor: 'pointer', marginRight: '20px' }}>
+          <li onClick={() => { this.handleClick('live') }} style={{ color: '#fff', fontSize: '16px', cursor: 'pointer', padding: '0 20px', borderRight: '2px solid #fff' }}>
             In-progress orders
           </li>
 
-          <li onClick={() => { this.handleClick('attempted') }} style={{ color: '#fff', fontSize: '16px', cursor: 'pointer' }}>
+          <li onClick={() => { this.handleClick('attempted') }} style={{ color: '#fff', fontSize: '16px', padding: '0 20px', cursor: 'pointer' }}>
             Attempted orders
           </li>
 

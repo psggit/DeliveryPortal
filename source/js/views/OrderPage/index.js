@@ -20,7 +20,7 @@ import BusyDeliveryAgentsList from './components/UnavailableDpList'
 import ReturningOrdersList from './components/ReturningOrdersList'
 import SearchOrdersList from './components/SearchOrdersList'
 import SideMenu from './components/SideMenu'
-import { menuItems } from './constants/strings'
+import { menuItemsMap } from './constants/strings'
 import OrderDetail from './components/OrderDetail'
 import { canAccess } from './utils'
 
@@ -50,15 +50,9 @@ import '@sass/OrdersPage/OrdersList.scss'
 // import { menuItems } from './constants/strings'
 
 const history = createHistory()
-
 class Home extends Component {
   constructor() {
     super()
-    const today = new Date()
-    today.setUTCHours(0, 0, 0, 0)
-    const tommorrow = new Date(today.getTime())
-    tommorrow.setDate(tommorrow.getDate() + 1)
-    tommorrow.setUTCHours(0, 0, 0, 0)
     this.pagesLimit = 40
     this.timeOutId = null
     this.isTimeOutCleared = false
@@ -152,12 +146,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.menuItemsMap = {}
-    menuItems.reduce((menuItemsMap, item) => {
-      menuItemsMap[item.value] = item.label
-      return menuItemsMap
-    }, this.menuItemsMap)
-
     const _self = this
 
     ;(function pollAutoPilotStatus() {
@@ -310,11 +298,14 @@ class Home extends Component {
             handleRouteChange={this.handleRouteChange}
           />
           <div className='body-container'>
-            <SearchInput
-              clearSearch={this.clearSearchOrders}
-              search={this.searchOrders}
-              placeholder='Search all orders...'
-            />
+            {/* Need to use React.createPortal for date filter in attemptedOrders */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '600px' }}>
+              <SearchInput
+                clearSearch={this.clearSearchOrders}
+                search={this.searchOrders}
+                placeholder='Search all orders...'
+              />
+            </div>
             {
               this.state.shouldMountOrderDetail &&
               <OrderDetail
@@ -338,7 +329,7 @@ class Home extends Component {
               margin: '0',
               textAlign: 'center'
             }}>
-              { location.search ? 'All orders' : this.menuItemsMap[this.state.currentRoute] }
+              { location.search ? 'All orders' : menuItemsMap[this.state.currentRoute] }
             </h3>
           </div>
           <Switch key={this.state.key}>

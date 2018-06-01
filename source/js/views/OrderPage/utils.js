@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export function getIcon(name) {
+export function getIcon(name, color) {
   const iconsPath = '../assets/icons/';
   switch (name) {
     case 'back':
@@ -39,7 +39,7 @@ export function getIcon(name) {
       )
     case 'cross':
       return (
-        <svg fill="#FFFFFF" width="14px" height="14px" version="1.1" id="Layer_1" x="0px" y="0px"
+        <svg fill={color} width="14px" height="14px" version="1.1" id="Layer_1" x="0px" y="0px"
           viewBox="0 0 512 512">
         <g>
           <g>

@@ -29,3 +29,10 @@ export const menuItems = [
   { value: 'returning', label: 'Returning orders'},
   { value: 'all', label: 'All orders'}
 ]
+
+export const menuItemsMap = {}
+
+menuItems.reduce((menuItemsMap, item) => {
+  menuItemsMap[item.value] = item.label
+  return menuItemsMap
+}, menuItemsMap)
