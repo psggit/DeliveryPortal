@@ -132,8 +132,8 @@ class AttemptedOrdersList extends React.Component {
           borderBottomRightRadius: dateChanged ? '0' : '2px'
         }}>
           {
-            `${ Moment(new Date(fromDate).toJSON().slice(0, 10)).format('MMM Do YY') }
-            to ${ Moment(new Date(toDate).toJSON().slice(0, 10)).format('MMM Do YY') }`
+            `${ Moment(new Date(fromDate).toJSON().slice(0, 10)).format('MMM Do YYYY') }
+            - ${ Moment(new Date(toDate).toJSON().slice(0, 10)).format('MMM Do YYYY') }`
           }
         </span>
         {
