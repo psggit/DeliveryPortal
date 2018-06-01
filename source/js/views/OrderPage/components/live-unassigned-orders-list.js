@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from './../actions'
-import LiveUnassignedOrdersListItem from './LiveUnassignedOrdersListItem'
+import LiveUnassignedOrdersListItem from './live-unassigned-orders-list-item'
 import Pagination from 'react-js-pagination'
 
 class LiveUnassignedOrdersList extends React.Component {
