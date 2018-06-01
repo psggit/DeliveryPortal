@@ -298,7 +298,6 @@ class Home extends Component {
             handleRouteChange={this.handleRouteChange}
           />
           <div className='body-container'>
-            {/* Need to use React.createPortal for date filter in attemptedOrders */}
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '600px' }}>
               <SearchInput
                 clearSearch={this.clearSearchOrders}
@@ -307,6 +306,7 @@ class Home extends Component {
               />
             </div>
             {
+              // OrderDetail component is using the old API
               this.state.shouldMountOrderDetail &&
               <OrderDetail
                 ordersType={this.state.currentRoute}

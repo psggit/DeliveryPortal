@@ -206,13 +206,13 @@ table.orders-list {
     padding: 20px 5px;
     font-size: 14px;
   }
+  td:not(:first-child):not(:last-child) {
+    text-align: center;
+  }
   tbody {
     td:nth-child(2) {
       font-size: 14px;
     }
-  }
-  td:nth-child(3) {
-    text-align: center;
   }
 }
 

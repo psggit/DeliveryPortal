@@ -4,6 +4,9 @@ import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import * as Actions from './../actions'
 import LiveOrdersListItem from './LiveOrdersListItem'
+import { mountModal, unMountModal } from '@components/ModalBox/utils'
+import ConfirmModal from '@components/ModalBox/ConfirmModal'
+import { getHasuraId } from './../utils'
 
 class LiveOrdersList extends React.Component {
   constructor() {
@@ -16,10 +19,14 @@ class LiveOrdersList extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.pollData = this.pollData.bind(this)
+    this.openAssignOrderModal = this.openAssignOrderModal.bind(this)
+    this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
   }
 
-  handleClick(orderId) {
-    this.props.mountOrderDetail(orderId)
+  handleClick(orderId, e) {
+    if (e.target.nodeName !== 'BUTTON') {
+      this.props.mountOrderDetail(orderId)
+    }
   }
 
   handlePageChange(pageNumber) {
@@ -29,6 +36,24 @@ class LiveOrdersList extends React.Component {
       limit: this.pagesLimit,
       offset
     })
+  }
+
+  openAssignOrderModal(orderId) {
+    // this.props.unmountOrderDetail()
+    mountModal(ConfirmModal({
+      heading: 'Assign order',
+      confirmMessage: 'Are your sure you want to assign this order?',
+      handleConfirm: () => { this.handleConfirmAssign(orderId) }
+    }))
+  }
+
+  handleConfirmAssign(orderId) {
+    const postData = {
+      support_id: parseInt(getHasuraId()),
+      order_id: orderId
+    }
+    this.props.actions.assignOrder(postData)
+    unMountModal()
   }
 
   componentDidMount() {
@@ -64,9 +89,12 @@ class LiveOrdersList extends React.Component {
                 <td>Order status</td>
                 <td>Consumer Id</td>
                 <td>Consumer name</td>
+                <td>Consumer phone</td>
                 <td>Delivery agent</td>
                 <td>Assigned to</td>
                 <td>Order placed time</td>
+                <td></td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
@@ -75,6 +103,7 @@ class LiveOrdersList extends React.Component {
                 ? this.props.liveOrdersData.map(item => (
                   <LiveOrdersListItem
                     handleClick={this.handleClick}
+                    handleOrderAssign={this.openAssignOrderModal}
                     key={item.order_id}
                     data={item}
                   />
