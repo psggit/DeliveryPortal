@@ -1,10 +1,11 @@
-FROM node:7.6.0
+FROM node:8.9.4
 
 RUN mkdir -p /app
 WORKDIR /app
 
 COPY package.json .
-RUN npm install
+RUN npm rebuild
+RUN npm install --build-from-source
 
 COPY ./ /app
 
