@@ -86,7 +86,7 @@ class Home extends Component {
     // this.searchOrdersData = this.searchOrdersData.bind(this)
     // this.filterOrdersData = this.filterOrdersData.bind(this)
     // this.handleClearFilter = this.handleClearFilter.bind(this)
-    // this.handleAutoPilot = this.handleAutoPilot.bind(this)
+    this.handleAutoPilot = this.handleAutoPilot.bind(this)
     // this.setDate = this.setDate.bind(this)
     // this.handleChooseDate = this.handleChooseDate.bind(this)
     // this.handleClearDate = this.handleClearDate.bind(this)
@@ -233,13 +233,13 @@ class Home extends Component {
   //   this.fetchOrdersData(ordersType, pageOffset)
   // }
   //
-  // handleAutoPilot(status, CB) {
-  //   const { actions } = this.props
-  //   const postData = {
-  //     status
-  //   }
-  //   actions.autoPilot(postData, CB)
-  // }
+  handleAutoPilot(status, CB) {
+    const { actions } = this.props
+    const postData = {
+      status
+    }
+    actions.autoPilot(postData, CB)
+  }
 
 
   // handleDateChange(dateType) {
