@@ -62,7 +62,7 @@ export default class App extends Component {
         response.json().then((data) => {
           if (!location.pathname.includes('orders')) {
             // createSession(data)
-            location.href = '/orders'
+            location.href = '/home/orders/live'
           }
         })
       })
