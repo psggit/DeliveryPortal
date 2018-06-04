@@ -34,6 +34,7 @@ export default function showNotified(data) {
       })
       .then(json => {
         this.retailers = json.retailers
+        this.message = json.message
         this.setState({ loadingRetailers: false })
       })
     }
@@ -95,8 +96,8 @@ export default function showNotified(data) {
                     'Loading...'
                   }
                   {
-                    !this.state.loadingRetailers && (!this.retailers || !this.retailers.length) &&
-                    'No retailers available'
+                    !this.state.loadingRetailers &&
+                    this.message
                   }
                 </tbody>
               </table>

@@ -35,6 +35,7 @@ export default function showNotified(data) {
       })
       .then(json => {
         this.DP = json.Dps
+        this.message = json.message
         this.setState({ loadingDP: false })
       })
       .catch(err => {
@@ -99,13 +100,10 @@ export default function showNotified(data) {
                     'Loading...'
                   }
                   {
-                    !this.state.loadingDP && !this.DP &&
-                    'No retailer is confirmed'
+                    !this.state.loadingDP &&
+                    this.message
                   }
-                  {
-                    !this.state.loadingDP && this.DP && !this.DP.length &&
-                    'No delivery agent available'
-                  }
+
                 </tbody>
               </table>
             </ModalBody>
