@@ -1,17 +1,21 @@
 import React from 'react'
 import Moment from 'moment'
 
-const AttemptedOrdersListItem = ({ data, handleClick }) => {
+const AttemptedOrdersListItem = ({ data }) => {
   return (
-    <tr className='orders-list-item' onClick={(e) => {handleClick(data.order_id, e)} }>
-      <td>{ data.order_id }</td>
-      <td>{ data.status }</td>
+    <tr style={{ cursor: 'auto' }} className='orders-list-item'>
+      <td style={{ color: '#4a4a4a', textDecoration: 'unset', cursor: 'auto' }}>{ data.cart_value }</td>
       <td>{ data.consumer_id }</td>
       <td>{ data.consumer_name }</td>
       <td>{ data.consumer_phone }</td>
-      <td>{ data.dp_name }</td>
-      <td>{ data.assigned_to_id }</td>
-      <td>{ Moment(data.order_placed_time).format('MMM Do YY, h:mm a') }</td>
+      <td>{ data.consumer_address }</td>
+      <td>{ data.reason }</td>
+      <td>{ data.cart_details }</td>
+      <td>{ data.retailer_list}</td>
+      <td>{ data.unavailable_product }</td>
+      <td>{ data.prime_retailer }</td>
+      <td>{ data.locality_name }</td>
+      <td>{ Moment(data.order_attempted_time).format('MMM Do YY, h:mm a') }</td>
     </tr>
   )
 }

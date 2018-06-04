@@ -28,10 +28,10 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
   const {dp_picked_up_time} = data
   const { dp_confirmation_time } = data
 
-  const orderStatusArr = data.status.split('::')
-  const status = orderStatusArr[0]
-  const time = eval(orderStatusArr[1])
-  const article = orderStatusArr[2]
+  const orderStatusArr = data.status ? data.status.split('::') : ''
+  const status = orderStatusArr[0] || ''
+  const time = eval(orderStatusArr[1]) || ''
+  const article = orderStatusArr[2] || ''
   const orderStatus = `${status}${time}${article}`
 
   return (

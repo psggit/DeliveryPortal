@@ -92,7 +92,7 @@ class NavBar extends Component {
             <span>
               Pause deliveries
             </span>
-            <span onClick={this.handleClick}>
+            <span>
               {getIcon('pause')}
             </span>
           </li>

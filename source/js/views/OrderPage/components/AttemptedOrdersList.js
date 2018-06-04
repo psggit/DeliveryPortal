@@ -162,7 +162,6 @@ class AttemptedOrdersList extends React.Component {
                 <td>Reason</td>
                 <td>Cart details</td>
                 <td>Nearby retailers</td>
-                <td>Delivery agent</td>
                 <td>Unavailable product</td>
                 <td>Prime retailer</td>
                 <td>Locality name</td>
@@ -174,7 +173,6 @@ class AttemptedOrdersList extends React.Component {
                 !this.props.loadingAttemptedOrders
                 ? this.props.attemptedOrdersData.map(item => (
                   <AttemptedOrdersListItem
-                    handleClick={this.handleClick}
                     key={item.order_id}
                     data={item}
                   />
