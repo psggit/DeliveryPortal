@@ -21,6 +21,7 @@ const HistoryOrdersListItem = ({ data, handleClick }) => {
   const {dp_delivered_time } = data
   const {retailer_accepted_time} = data
   const {cancellation_time} = data
+  const {cancelled_time} = data
   const {cancellation_return_time} = data
   const {dp_reached_to_consumer_time} = data
   const {dp_arrived_at_store_time} = data

@@ -216,6 +216,7 @@ const actionsMap = {
         status: orderStatus.status,
         cancellationFee: orderStatus.cancellation_fee,
         cancelledTime: orderStatus.cancelled_time,
+        cancellationTime: orderStatus.cancellation_time,
         cancellationReturnTime: orderStatus.cancellation_return_time,
         deliveredTime: orderStatus.dp_delivered_time,
         pickedUpTime: orderStatus.dp_picked_up_time,

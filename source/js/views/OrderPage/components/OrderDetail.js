@@ -171,6 +171,7 @@ class OrderDetail extends Component {
       const dp_delivered_time = order.deliveredTime
       const dp_reached_to_consumer_time = deliverer.reachedToConsumerTime
       const cancellation_time = order.cancellationTime
+      const cancelled_time = order.cancelledTime
       const orderPlacedTime = order.orderPlacedTime
       const cancellation_return_time = order.cancellationReturnTime
       const dp_picked_up_time = order.pickedUpTime
