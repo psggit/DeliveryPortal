@@ -50,7 +50,7 @@ class Notes extends React.Component{
         className='card'
         style={{
         width: position ? '400px' : '',
-        position: position ? 'fixed' : 'static',
+        position: position ? 'absolute' : 'static',
         top: position ? position.top : '',
         left: position ? position.left : '',
         transform: position ? 'translateX(-50%)' : 'none',

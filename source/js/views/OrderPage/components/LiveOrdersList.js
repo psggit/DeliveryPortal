@@ -77,9 +77,11 @@ class LiveOrdersList extends React.Component {
   handleShowNotes(e, orderId) {
     this.orderId = orderId
     const posObj = e.target.getBoundingClientRect()
-    // console.log(posObj);
+    const containerScrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+    console.log(containerScrollPos);
+
     const notesBoxPosition = {
-      top: posObj.top + 19,
+      top: posObj.top + containerScrollPos + 19,
       left: posObj.left - 150
     }
 
