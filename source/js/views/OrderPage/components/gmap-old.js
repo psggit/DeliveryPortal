@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Gmaps, Marker, InfoWindow } from 'react-gmaps';
 import { Api } from './../../../utils/config'
-const customerImg = '../assets/icons/customer.svg';
-const delivererImg = '../assets/icons/deliverer.svg';
-const outletImg = '../assets/icons/retailer.svg';
+const customerImg = './../../assets/icons/customer.svg';
+const delivererImg = './../../assets/icons/deliverer.svg';
+const outletImg = './../../assets/icons/retailer.svg';
 
 // import customer from '/icons/customer.svg'
 // console.log(customer)
@@ -24,7 +24,7 @@ class Gmap extends Component {
     this.handleMapCreated = this.handleMapCreated.bind(this)
     this.handleZoomChanged = this.handleZoomChanged.bind(this)
   }
-  
+
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
     this.setState({ plotData: nextProps.plotData })
@@ -36,7 +36,7 @@ class Gmap extends Component {
 
 
     const { orderId, actions, ordersType } = this.props
-    
+
     const _self = this
     // if (ordersType !== 'history') {
       var socket = io(Api.socketUrl, {
@@ -46,11 +46,11 @@ class Gmap extends Component {
         console.log(data);
         socket.emit('subscribe', {"order_id": orderId });
       });
-      
+
       socket.on('subscribed', function(data) {
         console.log(data)
       })
-      
+
       socket.on('live_data', function(res) {
         console.log(res)
         let dx = res.gps_coordinates[0]
@@ -59,7 +59,7 @@ class Gmap extends Component {
           dx: dx,
           dy: dy
         })
-        
+
         _self.state.plotData.push({lat: dx, lng: dy})
       })
     // }
@@ -73,7 +73,7 @@ class Gmap extends Component {
     //   dy: plotData[plotData.length - 1].lng
     // })
     var trafficLayer = new google.maps.TrafficLayer()
-    
+
     // const flightPlanCoordinates = [
     //   {lat: 37.772, lng: -122.214},
     //   {lat: 21.291, lng: -157.821},
@@ -87,7 +87,7 @@ class Gmap extends Component {
     //   strokeOpacity: 1.0,
     //   strokeWeight: 2,
     // })
-    
+
     trafficLayer.setMap(map)
     // deliveryPath.setMap(map)
   }
@@ -97,7 +97,7 @@ class Gmap extends Component {
     // console.log(newZoome, zoom)
     if (zoom !== newZoome) {
       // console.log('changed')
-      this.setState({ zoom: newZoome }) 
+      this.setState({ zoom: newZoome })
     }
   }
   componentWillUnmount() {
@@ -143,7 +143,7 @@ class Gmap extends Component {
   //   y: null
   // }
   render() {
-    
+
     const { customer, retailer, deliverer } = this.props
     const cx = customer.gps ? parseFloat(customer.gps.split(',')[0]) : null
     const cy = customer.gps ? parseFloat(customer.gps.split(',')[1]) : null
@@ -164,7 +164,7 @@ class Gmap extends Component {
           onZoomChanged={this.handleZoomChanged}
           >
           <Marker
-            icon={'../assets/icons/customer.svg'}
+            icon={customerImg}
             lat={cx}
             lng={cy} />
           <Marker

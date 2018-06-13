@@ -1,5 +1,7 @@
 import React from 'react'
 import moment from 'moment'
+import { getHasuraRole } from './../utils'
+
 function getTimeDiff(d2) {
   const d1 = new Date()
   return Math.round(
@@ -35,10 +37,30 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
   const article = orderStatusArr[2] || ''
   const orderStatus = `${status}${time}${article}`
 
+  let orderPlacedWaitingTime = null
+  if (data.order_placed_time) {
+    orderPlacedWaitingTime = getTimeDiff(data.order_placed_time)
+  }
+
+  let statusStyle = { fontStyle: 'italic' }
+  if (cancellation_time) {
+    statusStyle = {
+      color: time >= 5 && !cancellation_time && getHasuraRole() !== 'excise_person' ? '#ff3b34' : ''
+    }
+  }
+
   return (
-    <tr className='orders-list-item' onClick={(e) => {handleClick(data.order_id, e)} }>
-      <td>{ data.order_id }</td>
-      <td>{ orderStatus }</td>
+    <tr className='orders-list-item' onClick={ (e) => {handleClick(data.order_id, e)} }>
+      <td
+        className={
+          orderPlacedWaitingTime >= 60 && getHasuraRole() !== 'excise_person'
+          ? 'danger'
+          : ''
+        }
+      >
+        { data.order_id }
+      </td>
+      <td style={statusStyle}>{ orderStatus }</td>
       <td>{ data.consumer_id }</td>
       <td>{ data.consumer_name }</td>
       <td>{ data.consumer_phone }</td>
