@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { getHasuraRole } from './../utils'
+import { getIcon } from './../utils'
 
 function getTimeDiff(d2) {
   const d1 = new Date()
@@ -51,6 +52,13 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
 
   return (
     <tr className='orders-list-item' onClick={ (e) => {handleClick(data.order_id, e)} }>
+      <td>
+          <span
+            className='progress-bar'
+            onClick={this.toggleProgressBar}>
+            { getIcon('back') }
+          </span>
+      </td>
       <td
         className={
           orderPlacedWaitingTime >= 60 && getHasuraRole() !== 'excise_person'

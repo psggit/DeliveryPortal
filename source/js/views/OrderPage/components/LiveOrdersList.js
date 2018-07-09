@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import * as Actions from './../actions'
 import LiveOrdersListItem from './LiveOrdersListItem'
+import ProgressBar from './ProgressBar'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getHasuraId } from './../utils'
@@ -17,7 +18,8 @@ class LiveOrdersList extends React.Component {
       activePage: 1,
       pageOffset: 0,
       shouldMountNotesBox: false,
-      notesBoxPosition: {}
+      notesBoxPosition: {},
+      showingProgressBar : false
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -104,6 +106,10 @@ class LiveOrdersList extends React.Component {
     clearTimeout(this.timeoutId)
   }
 
+  toggleProgressBar() {
+    this.setState({ showingProgressBar : !showingProgressBar })
+  }
+
   render() {
     return (
       <Fragment>
@@ -111,6 +117,7 @@ class LiveOrdersList extends React.Component {
           <table className='orders-list'>
             <thead>
               <tr>
+                <td></td>
                 <td>Order Id</td>
                 <td>Order status</td>
                 <td>Consumer Id</td>
@@ -127,13 +134,15 @@ class LiveOrdersList extends React.Component {
               {
                 !this.props.loadingLiveOrders
                 ? this.props.liveOrdersData.map(item => (
-                  <LiveOrdersListItem
-                    handleClick={this.handleClick}
-                    handleOrderAssign={this.openAssignOrderModal}
-                    handleShowNotes={this.handleShowNotes}
-                    key={item.order_id}
-                    data={item}
-                  />
+                  // <LiveOrdersListItem
+                  //   handleClick={this.handleClick}
+                  //   handleOrderAssign={this.openAssignOrderModal}
+                  //   handleShowNotes={this.handleShowNotes}
+                  //   toggleProgressBar={this.toggleProgressBar}
+                  //   key={item.order_id}
+                  //   data={item}
+                  // />
+                  <ProgressBar handleClick="{this.toggleProgressBar}" data={item}></ProgressBar>
                 ))
                 : <tr className='loader2' />
               }
