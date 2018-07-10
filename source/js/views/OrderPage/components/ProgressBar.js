@@ -7,7 +7,7 @@ function getTimeDiff(d1, d2) {
     let date1 = new Date(d1);
     let date2 = new Date(d2);
     let millisec, seconds, minutes = 0
-    console.log(d1, d2, !d2)
+
     if(d1 && d2) {
         millisec = date2.getTime() - date1.getTime()
         seconds =  millisec / 1000
