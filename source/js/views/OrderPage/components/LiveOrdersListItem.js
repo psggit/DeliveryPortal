@@ -18,7 +18,7 @@ function Moment(time) {
   }
 }
 
-const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNotes }) => {
+const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNotes, toggleProgressBar}) => {
   const {retailer_notified_time} = data
   const {dp_delivered_time } = data
   const {retailer_accepted_time} = data
@@ -55,7 +55,7 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
       <td>
           <span
             className='progress-bar'
-            onClick={this.toggleProgressBar}>
+            onClick={(e) => {toggleProgressBar(e)} }>
             { getIcon('back') }
           </span>
       </td>

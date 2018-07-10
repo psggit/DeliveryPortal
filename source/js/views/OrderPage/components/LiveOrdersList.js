@@ -28,6 +28,7 @@ class LiveOrdersList extends React.Component {
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
     this.handleShowNotes = this.handleShowNotes.bind(this)
     this.unmountNotesBox = this.unmountNotesBox.bind(this)
+    this.toggleProgressBar = this.toggleProgressBar.bind(this)
   }
 
   handleClick(orderId, e) {
@@ -106,11 +107,14 @@ class LiveOrdersList extends React.Component {
     clearTimeout(this.timeoutId)
   }
 
-  toggleProgressBar() {
+  toggleProgressBar(e) {
+    e.stopPropagation();
+    let { showingProgressBar } = this.state
     this.setState({ showingProgressBar : !showingProgressBar })
   }
 
   render() {
+    const { showingProgressBar } = this.state;
     return (
       <Fragment>
         <div className='order-list-container'>
@@ -133,17 +137,23 @@ class LiveOrdersList extends React.Component {
             <tbody>
               {
                 !this.props.loadingLiveOrders
-                ? this.props.liveOrdersData.map(item => (
-                  // <LiveOrdersListItem
-                  //   handleClick={this.handleClick}
-                  //   handleOrderAssign={this.openAssignOrderModal}
-                  //   handleShowNotes={this.handleShowNotes}
-                  //   toggleProgressBar={this.toggleProgressBar}
-                  //   key={item.order_id}
-                  //   data={item}
-                  // />
-                  <ProgressBar handleClick="{this.toggleProgressBar}" data={item}></ProgressBar>
-                ))
+                ? this.props.liveOrdersData.map((item) => {
+
+                  if(!showingProgressBar) {
+
+                    return <LiveOrdersListItem
+                              handleClick={this.handleClick}
+                              handleOrderAssign={this.openAssignOrderModal}
+                              handleShowNotes={this.handleShowNotes}
+                              toggleProgressBar={this.toggleProgressBar}
+                              key={item.order_id}
+                              data={item}
+                            />
+                  } else {
+                    return <ProgressBar handleClick={this.toggleProgressBar} data={item}></ProgressBar>
+                  }
+                 
+                })
                 : <tr className='loader2' />
               }
             </tbody>
