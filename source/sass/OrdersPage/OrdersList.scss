@@ -258,10 +258,15 @@ table {
   td:first-child {
     cursor: pointer;
     padding-left: 20px;
+  }
+
+  td:nth-child(2) {
+    cursor: pointer;
+    padding-left: 20px;
     color: #4990ef;
     text-decoration: underline;
   }
-
+  
   &:hover {
     background: #eaeaea;
     td {

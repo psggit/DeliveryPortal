@@ -1,0 +1,82 @@
+.progress-bar-container {
+    width: 100%;
+    padding: 20px;
+    tr {
+        //counter-reset: td;
+    }
+
+    td:first-child {
+        cursor: pointer;
+        padding-left: 20px;
+    }
+    
+
+    td.table-col {
+        width: calc(100% / 9);
+        //counter-increment: td;
+        text-align: center;
+        position: relative;
+    }
+
+    td.table-col .before {
+        border-radius: 50%;
+        display: block;
+        width: 20px;
+        height: 20px;
+        //border: 3px solid green;
+        margin: 0 auto 10px auto;
+        line-height: 15px;
+        // background-color: white;
+    }
+
+    td.table-col .after {
+        position: absolute;
+        width: calc(100% - 26px); //width (20/2) + width(20/2) + border (3px) + border (3px)
+        left: calc(50% + 13px); //width(20/2) + border(3px)
+        height: 5px;
+        line-height: 40px;
+        top: 27px;
+    }
+    
+    // td.table-col:nth-child(1n):before {
+    //     content: counter(td);
+    //     border-radius: 50%;
+    //     display: block;
+    //     width: 20px;
+    //     height: 20px;
+    //     border: 3px solid green;
+    //     margin: 0 auto 10px auto;
+    //     line-height: 15px;
+    //     background-color: white;
+    // }
+
+
+    // td.table-col:nth-child(1n):after {
+    //    content: '';
+    //    position: absolute;
+    //    width: 100%;
+    //    height:5px;
+    // //    background: green;
+    //    top: 27px;//padding(20px) + height(20/2 px) - border(3px)
+    // }
+
+    // td.table-col:last-child .after{
+    //     content: none !important;
+    //     background: red;
+    // }
+
+    .progress-bar {
+        background: white;
+        vertical-align: top;
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        margin-right: 20px;
+        svg {
+          pointer-events: none;
+          width: 100%;
+          height: 100%;
+        }
+      }
+}

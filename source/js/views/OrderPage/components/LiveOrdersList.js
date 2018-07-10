@@ -19,7 +19,8 @@ class LiveOrdersList extends React.Component {
       pageOffset: 0,
       shouldMountNotesBox: false,
       notesBoxPosition: {},
-      showingProgressBar : false
+      showingProgressBar : false,
+      inProgressOrderDetails : new Set()
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -107,14 +108,34 @@ class LiveOrdersList extends React.Component {
     clearTimeout(this.timeoutId)
   }
 
-  toggleProgressBar(e) {
+  toggleProgressBar(e, orderId) {
+
     e.stopPropagation();
-    let { showingProgressBar } = this.state
-    this.setState({ showingProgressBar : !showingProgressBar })
+
+    let { showingProgressBar, inProgressOrderDetails } = this.state
+    
+    if(!inProgressOrderDetails.has(orderId)) {
+
+        this.setState({ showingProgressBar : true, inProgressOrderDetails : inProgressOrderDetails.add(orderId) })
+  
+    } else {
+
+        inProgressOrderDetails.delete(orderId)
+
+        if(inProgressOrderDetails && inProgressOrderDetails.size > 0) {
+          this.setState({ inProgressOrderDetails : inProgressOrderDetails })
+        } else {
+          this.setState({ showingProgressBar : false, inProgressOrderDetails : inProgressOrderDetails })
+        }
+      
+    }
+    
   }
 
   render() {
-    const { showingProgressBar } = this.state;
+
+    const { showingProgressBar, inProgressOrderDetails } = this.state;
+
     return (
       <Fragment>
         <div className='order-list-container'>
@@ -139,9 +160,8 @@ class LiveOrdersList extends React.Component {
                 !this.props.loadingLiveOrders
                 ? this.props.liveOrdersData.map((item) => {
 
-                  if(!showingProgressBar) {
-
-                    return <LiveOrdersListItem
+                  if((!showingProgressBar && inProgressOrderDetails.size === 0)  || (!showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id))) {
+                      return <LiveOrdersListItem
                               handleClick={this.handleClick}
                               handleOrderAssign={this.openAssignOrderModal}
                               handleShowNotes={this.handleShowNotes}
@@ -149,8 +169,17 @@ class LiveOrdersList extends React.Component {
                               key={item.order_id}
                               data={item}
                             />
-                  } else {
-                    return <ProgressBar handleClick={this.toggleProgressBar} data={item}></ProgressBar>
+                  } else if(showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id)) {
+                      return <LiveOrdersListItem
+                              handleClick={this.handleClick}
+                              handleOrderAssign={this.openAssignOrderModal}
+                              handleShowNotes={this.handleShowNotes}
+                              toggleProgressBar={this.toggleProgressBar}
+                              key={item.order_id}
+                              data={item}
+                            />
+                  } else if(showingProgressBar && inProgressOrderDetails.size > 0 && inProgressOrderDetails.has(item.order_id)) {
+                      return <ProgressBar handleClick={this.toggleProgressBar} key={item.order_id} data={item}></ProgressBar>
                   }
                  
                 })

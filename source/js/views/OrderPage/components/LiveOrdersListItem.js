@@ -55,7 +55,7 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
       <td>
           <span
             className='progress-bar'
-            onClick={(e) => {toggleProgressBar(e)} }>
+            onClick={(e) => {toggleProgressBar(e, data.order_id)} }>
             { getIcon('back') }
           </span>
       </td>
