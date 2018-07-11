@@ -44,7 +44,7 @@ class OTPField extends React.Component {
 
     this.setState({isSubmitting: true})
 
-    fetch(`${Api.authUrl}/excise-person/auth/otp-login`, fetchOptions)
+    fetch(`${Api.gremlinUrl}/excise-person/auth/otp-login`, fetchOptions)
       .then(
         function(response) {
           console.log(response.headers)

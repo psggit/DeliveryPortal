@@ -26,14 +26,14 @@ class PhoneField extends React.Component {
       if (e.keyCode === 13) this.handleSubmit()
     }
   }
-  
+
   handleClick() {
     const { phone } = this.state
     if (phone.length) {
       this.handleSubmit()
     } else {
       this.setState({ phoneErr: true })
-    } 
+    }
   }
 
   handleSubmit () {
@@ -60,7 +60,7 @@ class PhoneField extends React.Component {
 
     this.setState({isSubmitting: true})
 
-    fetch(`${Api.authUrl}/excise-person/auth/otp-login`, fetchOptions)
+    fetch(`${Api.gremlinUrl}/excise-person/auth/otp-login`, fetchOptions)
       .then(
         function(response) {
           console.log(response.headers)
