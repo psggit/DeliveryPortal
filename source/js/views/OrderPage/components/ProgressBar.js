@@ -45,49 +45,57 @@ const ProgressBar = ({handleClick, data}) => {
 
     return (
         <tr className="progress-bar-container" >
-                <td> 
-                    <span
-                        className='progress-bar'
-                        onClick={(e) => {handleClick(e, data.order_id)} }>
-                        { getIcon('back') }
-                    </span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : '3px solid green'}} className="before" ></span>RNT
-                    <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.order_placed_time,data.retailer_notified_time) }} className="before"></span>RCT
-                    <span style={{ background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="before"></span>DPNT
-                    <span style={{ background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="before"></span>DPCT
-                    <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="after"></span>
-                </td>
-                <td className="table-col"> 
-                    <span style={{ border : getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="before"></span>AST
-                    <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="before"></span>PCT
-                    <span style={{ background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="before"></span>ACL
-                    <span style={{ background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="after"></span>
-                </td>
-                <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="before"></span>DD
-                    {/* <span style={{ background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time) }} className="after">DD</span> */}
-                </td>
-                {/* <td className="table-col">
-                    <span style={{ border : getBeforeStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time) }} className="before"></span>
-                </td> */}
-        
+            <td> 
+                <span
+                    className='progress-bar-container__info'
+                    onClick={(e) => {handleClick(e, data.order_id)} }>
+                    { getIcon('back') }
+                </span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : '3px solid green'}} className="before" ></span>
+                <div title="Order Placed" className="progress-bar-container__column--node-title">OP</div>
+                <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.order_placed_time,data.retailer_notified_time) }} className="before"></span>
+                <div title="Retailer Nofified" className="progress-bar-container__column--node-title">RN</div>
+                <span style={{ background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="before"></span>
+                <div title="Retailer Confirmed" className="progress-bar-container__column--node-title">RC</div>
+                <span style={{ background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="before"></span>
+                <div title="Delivery Person Notified" className="progress-bar-container__column--node-title">DPN</div>
+                <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column"> 
+                <span style={{ border : getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="before"></span>
+                <div title="Delivery Person Confirmed" className="progress-bar-container__column--node-title">DPC</div>
+                <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="before"></span>
+                <div title="Arrived Store Location" className="progress-bar-container__column--node-title">ASL</div>
+                <span style={{ background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="before"></span>
+                <div title="Pickedup Product" className="progress-bar-container__column--node-title">PP</div>
+                <span style={{ background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="before"></span>
+                <div title="Arrived Consumer Location" className="progress-bar-container__column--node-title">ACL</div>
+                <span style={{ background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time) }} className="after"></span>
+            </td>
+            <td className="progress-bar-container__column">
+                <span style={{ border : getBeforeStyle(data.dp_delivered_time, null) }} className="before"></span>
+                <div title="Delivered" className="progress-bar-container__column--node-title">DD</div>
+            </td>
         </tr>
     )
 }

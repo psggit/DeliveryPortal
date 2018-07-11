@@ -1,8 +1,14 @@
 .progress-bar-container {
     width: 100%;
     padding: 20px;
+
     tr {
+        border-bottom: 1px solid #f6f6f6;
         //counter-reset: td;
+    }
+
+    td {
+        padding: 20px 5px;
     }
 
     td:first-child {
@@ -10,14 +16,14 @@
         padding-left: 20px;
     }
     
-    td.table-col {
-        width: calc(100% / 8);
+    td.progress-bar-container__column {
+        width: calc(100% / 9);
         //counter-increment: td;
         text-align: center;
         position: relative;
     }
 
-    td.table-col .before {
+    td.progress-bar-container__column .before {
         border-radius: 50%;
         display: block;
         width: 20px;
@@ -28,13 +34,17 @@
         // background-color: white;
     }
 
-    td.table-col .after {
+    td.progress-bar-container__column .after {
         position: absolute;
         width: calc(100% - 26px); //width (20/2) + width(20/2) + border (3px) + border (3px)
         left: calc(50% + 13px); //width(20/2) + border(3px)
         height: 5px;
         line-height: 40px;
         top: 27px;
+    }
+
+    td .progress-bar-container__column--node-title {
+        cursor: pointer;
     }
     
     // td.table-col:nth-child(1n):before {
@@ -64,7 +74,7 @@
     //     background: red;
     // }
 
-    .progress-bar {
+    .progress-bar-container__info {
         background: white;
         vertical-align: top;
         display: inline-block;
