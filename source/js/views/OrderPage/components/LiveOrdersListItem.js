@@ -38,18 +38,6 @@ const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNo
   const article = orderStatusArr[2] || ''
   const orderStatus = `${status}${time}${article}`
 
-  let orderPlacedWaitingTime = null
-  if (data.order_placed_time) {
-    orderPlacedWaitingTime = getTimeDiff(data.order_placed_time)
-  }
-
-  let statusStyle = { fontStyle: 'italic' }
-  if (cancellation_time) {
-    statusStyle = {
-      color: time >= 5 && !cancellation_time && getHasuraRole() !== 'excise_person' ? '#ff3b34' : ''
-    }
-  }
-
   return (
     <tr className='orders-list-item' onClick={ (e) => {handleClick(data.order_id, e)} }>
       <td>
