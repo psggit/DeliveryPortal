@@ -58,7 +58,6 @@ function getAfterStyle(date1, date2) {
 
 }
 
-
 // const LiveOrdersListItem = ({ data, handleClick, handleOrderAssign, handleShowNotes, toggleProgressBar}) => {
 //   const {retailer_notified_time} = data
 //   const {dp_delivered_time } = data
@@ -265,13 +264,6 @@ class LiveOrdersListItem extends React.Component {
           showProgressBar
           &&
           <tr className="progress-bar-container" >
-              {/* <td> 
-                  <span
-                      className='progress-bar-container__info'
-                      onClick={(e) => {handleClick(e, data.order_id)} }>
-                      { getIcon('back') }
-                  </span>
-              </td> */}
               <td className="progress-bar-container__column">
                   <span style={{ border : '3px solid green'}} className="before" ></span>
                   <div title="Order Placed" className="progress-bar-container__column--node-title">OP</div>

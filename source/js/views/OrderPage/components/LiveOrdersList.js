@@ -4,21 +4,11 @@ import { bindActionCreators } from 'redux'
 import Pagination from 'react-js-pagination'
 import * as Actions from './../actions'
 import LiveOrdersListItem from './LiveOrdersListItem'
-import ProgressBar from './ProgressBar'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getHasuraId } from './../utils'
 import Notes from './Notes'
-import { getHasuraRole } from './../utils'
-import TableView from '@components/TableView'
 import moment from 'moment'
-
-function getTimeDiff(d2) {
-  const d1 = new Date()
-  return Math.round(
-    (d1 - new Date(d2)) / 60000
-  )
-}
 
 class LiveOrdersList extends React.Component {
   constructor() {
@@ -28,9 +18,7 @@ class LiveOrdersList extends React.Component {
       activePage: 1,
       pageOffset: 0,
       shouldMountNotesBox: false,
-      notesBoxPosition: {},
-      // showingProgressBar : false,
-      // inProgressOrderDetails : new Set()
+      notesBoxPosition: {}
     }
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -39,11 +27,9 @@ class LiveOrdersList extends React.Component {
     this.handleConfirmAssign = this.handleConfirmAssign.bind(this)
     this.handleShowNotes = this.handleShowNotes.bind(this)
     this.unmountNotesBox = this.unmountNotesBox.bind(this)
-    //this.toggleProgressBar = this.toggleProgressBar.bind(this)
   }
 
   handleClick(orderId, e) {
-    //e.stopPropagation()
     if (e.target.nodeName !== 'BUTTON') {
       this.props.mountOrderDetail(orderId)
     }
@@ -119,81 +105,9 @@ class LiveOrdersList extends React.Component {
     clearTimeout(this.timeoutId)
   }
 
-  // toggleProgressBar(e, orderId) {
-
-  //   e.stopPropagation();
-
-  //   let { showingProgressBar, inProgressOrderDetails } = this.state
-    
-  //   if(!inProgressOrderDetails.has(orderId)) {
-
-  //       this.setState({ showingProgressBar : true, inProgressOrderDetails : inProgressOrderDetails.add(orderId) })
-  
-  //   } else {
-
-  //       inProgressOrderDetails.delete(orderId)
-
-  //       if(inProgressOrderDetails && inProgressOrderDetails.size > 0) {
-  //         this.setState({ inProgressOrderDetails : inProgressOrderDetails })
-  //       } else {
-  //         this.setState({ showingProgressBar : false, inProgressOrderDetails : inProgressOrderDetails })
-  //       }
-      
-  //   }
-    
-  // }
-
   render() {
 
-    const { showingProgressBar, inProgressOrderDetails } = this.state;
-    let tableHeaderItems = ['', 'Order Id', 'Order status', 'Consumer Id', 'Consumer name', 'Consumer phone', 'Delivery agent', 'Assigned to', 'Order placed time', '', '']
-    let tableBodyItems = {}
-    // let orderPlacedWaitingTime = null
-    // let statusStyle = { fontStyle: 'italic' }
-
-    for(let i in this.props.liveOrdersData) {
-
-      const liveOrder = this.props.liveOrdersData[i]
-
-      const {retailer_notified_time} = liveOrder
-      const {dp_delivered_time } = liveOrder
-      const {retailer_accepted_time} = liveOrder
-      const {cancellation_time} = liveOrder
-      const {cancelled_time} = liveOrder
-      const {cancellation_return_time} = liveOrder
-      const {dp_reached_to_consumer_time} = liveOrder
-      const {dp_arrived_at_store_time} = liveOrder
-      const {dp_accepted_time} = liveOrder
-      const {dp_notified_time} = liveOrder
-      const {dp_picked_up_time} = liveOrder
-      const { dp_confirmation_time } = liveOrder
-
-      const orderStatusArr = liveOrder.status ? liveOrder.status.split('::') : ''
-      const status = orderStatusArr[0] || ''
-      const time = eval(orderStatusArr[1]) || ''
-      const article = orderStatusArr[2] || ''
-      const orderStatus = `${status}${time}${article}`
-
-      // orderPlacedWaitingTime = null
-      // if (liveOrder.order_placed_time) {
-      //   orderPlacedWaitingTime = getTimeDiff(data.order_placed_time)
-      // }
-
-      // statusStyle = { fontStyle: 'italic' }
-      // if (cancellation_time) {
-      //   statusStyle = {
-      //     color: time >= 5 && !cancellation_time && getHasuraRole() !== 'excise_person' ? '#ff3b34' : ''
-      //   }
-      // }
-
-      tableBodyItems[liveOrder.order_id] = [liveOrder.order_id, orderStatus, liveOrder.consumer_id, liveOrder.consumer_name, liveOrder.consumer_phone, liveOrder.dp_name, liveOrder.assigned_to_id, moment(liveOrder.order_placed_time).format('MMM Do YY, h:mm a') ]
-
-    }
-
-   
-    
     return (
-
       <Fragment>
         <div className='order-list-container'>
           <table className='orders-list'>
