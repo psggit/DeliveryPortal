@@ -8,7 +8,7 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getHasuraId } from './../utils'
 import Notes from './Notes'
-import moment from 'moment'
+
 
 class LiveOrdersList extends React.Component {
   constructor() {
@@ -134,10 +134,9 @@ class LiveOrdersList extends React.Component {
                               handleClick={this.handleClick}
                               handleOrderAssign={this.openAssignOrderModal}
                               handleShowNotes={this.handleShowNotes}
-                              // toggleProgressBar={this.toggleProgressBar}
                               key={item.order_id}
                               data={item}
-                          />
+                           />
                  
                 })
                 : <tr className='loader2' />
