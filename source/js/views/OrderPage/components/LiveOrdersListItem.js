@@ -317,11 +317,12 @@ class LiveOrdersListItem extends React.Component {
                   <div title="Delivered" className="progress-bar-container__column--node-title">DD</div>
               </td>
           </tr>
+
         }
       </React.Fragment>
     )
   }
-  
+
 }
 
 
