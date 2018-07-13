@@ -160,27 +160,36 @@ class LiveOrdersList extends React.Component {
                 !this.props.loadingLiveOrders
                 ? this.props.liveOrdersData.map((item) => {
 
-                  if((!showingProgressBar && inProgressOrderDetails.size === 0)  || (!showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id))) {
-                      return <LiveOrdersListItem
+                  // if((!showingProgressBar && inProgressOrderDetails.size === 0)  || (!showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id))) {
+                  //     return <LiveOrdersListItem
+                  //             handleClick={this.handleClick}
+                  //             handleOrderAssign={this.openAssignOrderModal}
+                  //             handleShowNotes={this.handleShowNotes}
+                  //             toggleProgressBar={this.toggleProgressBar}
+                  //             key={item.order_id}
+                  //             data={item}
+                  //           />
+                  // } else if(showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id)) {
+                  //     return <LiveOrdersListItem
+                  //             handleClick={this.handleClick}
+                  //             handleOrderAssign={this.openAssignOrderModal}
+                  //             handleShowNotes={this.handleShowNotes}
+                  //             toggleProgressBar={this.toggleProgressBar}
+                  //             key={item.order_id}
+                  //             data={item}
+                  //           />
+                  // } else if(showingProgressBar && inProgressOrderDetails.size > 0 && inProgressOrderDetails.has(item.order_id)) {
+                  //     return <ProgressBar handleClick={this.toggleProgressBar} key={item.order_id} data={item}></ProgressBar>
+                  // }
+
+                  return <LiveOrdersListItem
                               handleClick={this.handleClick}
                               handleOrderAssign={this.openAssignOrderModal}
                               handleShowNotes={this.handleShowNotes}
-                              toggleProgressBar={this.toggleProgressBar}
+                              // toggleProgressBar={this.toggleProgressBar}
                               key={item.order_id}
                               data={item}
-                            />
-                  } else if(showingProgressBar && inProgressOrderDetails.size > 0 && !inProgressOrderDetails.has(item.order_id)) {
-                      return <LiveOrdersListItem
-                              handleClick={this.handleClick}
-                              handleOrderAssign={this.openAssignOrderModal}
-                              handleShowNotes={this.handleShowNotes}
-                              toggleProgressBar={this.toggleProgressBar}
-                              key={item.order_id}
-                              data={item}
-                            />
-                  } else if(showingProgressBar && inProgressOrderDetails.size > 0 && inProgressOrderDetails.has(item.order_id)) {
-                      return <ProgressBar handleClick={this.toggleProgressBar} key={item.order_id} data={item}></ProgressBar>
-                  }
+                          />
                  
                 })
                 : <tr className='loader2' />
