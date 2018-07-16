@@ -35,21 +35,19 @@ function getTimeDiff(d1, d2) {
 }
 
 function getBeforeStyle(date1, date2) {
-  //let beforeStyle = {};
+
   if(getTimeDiff(date1, date2) > 60) {
-      return {
-        border : '3px solid red',
-        background : 'red'
-      }
+    return {
+      border : '3px solid red',
+      background : 'red'
+    }
   } else if (getTimeDiff(date1, date2) === 0) {
     return {
-      border : '3px solid grey',
-      // background : 'grey'
+      border : '3px solid grey'
     }
   } else {
     return {
       border : '3px solid green',
-      // content: ' \00A7',
       background : 'green'
     }
   }
