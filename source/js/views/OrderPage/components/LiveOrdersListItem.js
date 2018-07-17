@@ -4,7 +4,7 @@ import { getHasuraRole } from './../utils'
 import { getIcon } from './../utils'
 import '@sass/OrdersPage/ProgressDetail.scss'
 
-function getTimeDiffWithCurrDate(d2) {
+function getTimeDiff(d2) {
   const d1 = new Date()
   return Math.round(
     (d1 - new Date(d2)) / 60000
@@ -19,7 +19,7 @@ function Moment(time) {
   }
 }
 
-function getTimeDiff(d1, d2) {
+function getProgressDuration(d1, d2) {
 
   let date1 = new Date(d1);
   let date2 = new Date(d2);
@@ -36,12 +36,12 @@ function getTimeDiff(d1, d2) {
 
 function getBeforeStyle(date1, date2) {
 
-  if(getTimeDiff(date1, date2) > 60) {
+  if(getProgressDuration(date1, date2) > 60) {
     return {
       border : '3px solid red',
       background : 'red'
     }
-  } else if (getTimeDiff(date1, date2) === 0) {
+  } else if (getProgressDuration(date1, date2) === 0) {
     return {
       border : '3px solid grey'
     }
@@ -51,14 +51,14 @@ function getBeforeStyle(date1, date2) {
       background : 'green'
     }
   }
-  
+
 }
 
 function getAfterStyle(date1, date2) {
 
-  if(getTimeDiff(date1, date2) > 60) {
+  if(getProgressDuration(date1, date2) > 60) {
       return 'red'
-  } else if (getTimeDiff(date1, date2) === 0) {
+  } else if (getProgressDuration(date1, date2) === 0) {
       return 'grey'
   } else {
       return 'green'
@@ -106,7 +106,7 @@ class LiveOrdersListItem extends React.Component {
 
     let orderPlacedWaitingTime = null
     if (data.order_placed_time) {
-      orderPlacedWaitingTime = getTimeDiffWithCurrDate(data.order_placed_time)
+      orderPlacedWaitingTime = getTimeDiff(data.order_placed_time)
     }
 
     let statusStyle = { fontStyle: 'italic' }
@@ -168,7 +168,7 @@ class LiveOrdersListItem extends React.Component {
                       <div title="Delivery Person Notified" className="progress-bar-container__column--node-title">DPN</div>
                       <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="after"></span>
                   </div>
-                  <div className="progress-bar-container__column"> 
+                  <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time) } className="before"></span>
                       <div title="Delivery Person Confirmed" className="progress-bar-container__column--node-title">DPC</div>
                       <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="after"></span>
