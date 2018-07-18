@@ -67,7 +67,7 @@ function getBeforeStyle(date1, date2, threshold) {
       background : 'green'
     }
   }
-  
+
 }
 
 function getAfterStyle(date1, date2, threshold) {
