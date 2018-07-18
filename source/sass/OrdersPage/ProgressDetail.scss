@@ -4,66 +4,68 @@
     padding: 0px;
     
     td {
-        padding: 0 5px !important;
-        transition: all 0.2s ease-in;
+      padding: 0 5px !important;
+      transition: all 0.2s ease-in;
     }
     
     &.active {
-        padding: 20px;
-        td {
-            padding: 20px 5px !important;
-            transition: all 0.2s ease-out;
-        }
-        .progress-bar {
-            transition: all 0.2s ease-out;
-            max-height: 999px;
-        }
+      padding: 20px;
+      td {
+        padding: 20px 5px !important;
+        transition: all 0.2s ease-out;
+      }
+      .progress-bar {
+        transition: all 0.2s ease-out;
+        max-height: 999px;
+      }
     }
 
     .progress-bar {
-        transition: all 0.2s ease-in;
-        max-height: 0;
-        overflow: hidden;
-        width: 100%;
-        display: flex;
+      transition: all 0.2s ease-in;
+      max-height: 0;
+      overflow: hidden;
+      width: 100%;
+      display: flex;
 
-        > * {
-            flex: 1 0 auto;
-        }
-       
-        .progress-bar-container__column {
-            text-align: center;
-            position: relative;
-            .total-duration {
-                position: absolute;
-                top: 0px;
-                left: 10px;
-            }
-        }
-    
-        .progress-bar-container__column .before {
-            border-radius: 50%;
-            display: block;
-            width: 20px;
-            height: 20px;
-            margin: 0 auto 10px auto;
-            line-height: 15px;
-        }
-    
-        .progress-bar-container__column .after {
-            position: absolute;
-            width: calc(100% - 26px);//width (20/2) + width(20/2) + border (3px) + border (3px)
-            left: calc(50% + 13px);//width(20/2) + border(3px)
-            height: 5px;
-            line-height: 40px;
-            top: 8px; //width(20/2) - border(3px)
-        }
-    
-        .progress-bar-container__column--node-title {
-            cursor: pointer;
-            width: 150px;
-        }
-    
+      > * {
+        flex: 1 0 auto;
+      }
+
+      .total-duration {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .progress-bar-container__column {
+        text-align: center;
+        position: relative;
+      }
+  
+      .progress-bar-container__column .before {
+        border-radius: 50%;
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 0 auto 10px auto;
+        line-height: 15px;
+      }
+  
+      .progress-bar-container__column .after {
+        position: absolute;
+        width: calc(100% - 26px);//width (20/2) + width(20/2) + border (3px) + border (3px)
+        left: calc(50% + 13px);//width(20/2) + border(3px)
+        height: 5px;
+        line-height: 40px;
+        top: 8px; //width(20/2) - border(3px)
+      }
+  
+      .progress-bar-container__column--node-title {
+        cursor: pointer;
+        width: 150px;
+      }
+  
     }
 
 }
