@@ -4,7 +4,7 @@ import { getHasuraRole } from './../utils'
 import { getIcon } from './../utils'
 import '@sass/OrdersPage/ProgressDetail.scss'
 
-function getTimeDiffWithCurrDate(d2) {
+function getTimeDiff(d2) {
   const d1 = new Date()
   return Math.round(
     (d1 - new Date(d2)) / 60000
@@ -19,7 +19,7 @@ function Moment(time) {
   }
 }
 
-function getTimeDiff(d1, d2) {
+function getProgressDurationInMinutes(d1, d2) {
 
   let date1 = new Date(d1);
   let date2 = new Date(d2);
@@ -29,19 +29,35 @@ function getTimeDiff(d1, d2) {
       millisec = date2.getTime() - date1.getTime()
       seconds =  millisec / 1000
       minutes = seconds * ( 1/60 )
+      minutes = minutes.toFixed(2)
   }
 
   return minutes;
 }
 
-function getBeforeStyle(date1, date2) {
+function getProgressDurationInSeconds(d1, d2) {
 
-  if(getTimeDiff(date1, date2) > 60) {
+  let date1 = new Date(d1);
+  let date2 = new Date(d2);
+  let millisec, seconds = 0, minutes = 0
+
+  if(d1 && d2) {
+      millisec = date2.getTime() - date1.getTime()
+      seconds =  millisec / 1000
+      seconds = seconds.toFixed(2);
+  }
+
+  return seconds;
+}
+
+function getBeforeStyle(date1, date2, threshold) {
+
+  if(getProgressDurationInMinutes(date1, date2) > threshold) {
     return {
       border : '3px solid red',
       background : 'red'
     }
-  } else if (getTimeDiff(date1, date2) === 0) {
+  } else if (getProgressDurationInMinutes(date1, date2) === 0) {
     return {
       border : '3px solid grey'
     }
@@ -54,11 +70,11 @@ function getBeforeStyle(date1, date2) {
   
 }
 
-function getAfterStyle(date1, date2) {
+function getAfterStyle(date1, date2, threshold) {
 
-  if(getTimeDiff(date1, date2) > 60) {
+  if(getProgressDurationInMinutes(date1, date2) > threshold) {
       return 'red'
-  } else if (getTimeDiff(date1, date2) === 0) {
+  } else if (getProgressDurationInMinutes(date1, date2) === 0) {
       return 'grey'
   } else {
       return 'green'
@@ -69,28 +85,30 @@ function getAfterStyle(date1, date2) {
 function getReadableTimeFormat(d1) {
   
   let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  let d = new Date(d1);
-  // var day = days[d.getDay()];
-  let hr = d.getHours();
-  let min = d.getMinutes();
+  if(d1) {
+    let d = new Date(d1);
+    let hr = d.getHours();
+    let min = d.getMinutes();
 
-  if (min < 10) {
-      min = "0" + min;
+    if (min < 10) {
+        min = "0" + min;
+    }
+
+    let ampm = "am";
+    if( hr > 12 ) {
+        hr -= 12;
+        ampm = "pm";
+    }
+
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    //return (month + " " + date + " " + year + ", " + hr + ":" + min + " " + ampm);
+    return (hr + ":" + min + " " + ampm);
   }
-
-  let ampm = "am";
-  if( hr > 12 ) {
-      hr -= 12;
-      ampm = "pm";
-  }
-
-  let date = d.getDate();
-  let month = months[d.getMonth()];
-  let year = d.getFullYear();
   
-  return ("time", month + " " + date + " " + year + ", " + hr + ":" + min + " " + ampm);
 }
 
 class LiveOrdersListItem extends React.Component {
@@ -133,7 +151,7 @@ class LiveOrdersListItem extends React.Component {
 
     let orderPlacedWaitingTime = null
     if (data.order_placed_time) {
-      orderPlacedWaitingTime = getTimeDiffWithCurrDate(data.order_placed_time)
+      orderPlacedWaitingTime = getTimeDiff(data.order_placed_time)
     }
 
     let statusStyle = { fontStyle: 'italic' }
@@ -142,6 +160,17 @@ class LiveOrdersListItem extends React.Component {
         color: time >= 5 && !cancellation_time && getHasuraRole() !== 'excise_person' ? '#ff3b34' : ''
       }
     }
+
+    //defining threshold (2 mins)
+    const retailerNotificationThreshold = 2;
+    const retailerConfirmationThreshold = 2;
+    const deliveryNotificationThreshold = 2;
+    const deliveryConfirmationThreshold = 2;
+    const arriveStoreThreshold = 2;
+    const productPickupThreshold = 2;
+    const arriveConsumerThreshold = 2;
+    const deliverProductThreshold = 2;
+
 
     return (
       <React.Fragment>
@@ -176,48 +205,85 @@ class LiveOrdersListItem extends React.Component {
             <td colspan="11">
               <div class="progress-bar">
                   <div className="progress-bar-container__column">
-                      <span style={{ border : '3px solid green', background : 'green' }} className="before" ></span>
-                      <div className="progress-bar-container__column--node-title">Order Placed ({getReadableTimeFormat(data.order_placed_time)})</div>
-                      <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time) }} className="after"></span>
+                      <div title="Total Duration" class="total-duration"> 
+                        {
+                          data.dp_reached_to_consumer_time ? `(${getProgressDurationInMinutes(data.order_placed_time, data.dp_reached_to_consumer_time)} mins)` : ''
+                        }
+                      </div>
+                      <span style={{ border : '3px solid green', background : 'green' }} className="before"></span>
+                      <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)})</div>
+                      <span style={{ background : getAfterStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.order_placed_time,data.retailer_notified_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Retailer Notified ()</div>
-                      <span style={{ background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold) } className="before"></span>
+                      <div title="Retailer Notified" className="progress-bar-container__column--node-title">RN <br/> 
+                        {
+                          data.retailer_notified_time ? `(${getProgressDurationInSeconds(data.order_placed_time, data.retailer_notified_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Retailer Confirmed</div>
-                      <span style={{ background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold) } className="before"></span>
+                      <div title="Retailer Confirmed" className="progress-bar-container__column--node-title">RC <br/>
+                        {
+                          data.retailer_confirmation_time ? `(${getProgressDurationInSeconds(data.retailer_notified_time, data.retailer_confirmation_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Delivery Person Notified</div>
-                      <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold) } className="before"></span>
+                      <div title="Delivery Person Notified" className="progress-bar-container__column--node-title">DPN <br/>
+                        {
+                          data.dp_notified_time ? `(${getProgressDurationInSeconds(data.retailer_confirmation_time, data.dp_notified_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column"> 
-                      <span style={ getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Delivery Person Confirmed</div>
-                      <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold) } className="before"></span>
+                      <div title="Delivery Person Confirmed" className="progress-bar-container__column--node-title">DPC <br/>
+                        {
+                          data.dp_confirmation_time ? `(${getProgressDurationInSeconds(data.dp_notified_time, data.dp_confirmation_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Arrived Store Location</div>
-                      <span style={{ background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold) } className="before"></span>
+                      <div title="Arrived Store Location" className="progress-bar-container__column--node-title">ASL <br/>
+                        {
+                          data.dp_arrived_at_store_time ? `(${getProgressDurationInSeconds(data.dp_confirmation_time, data.dp_arrived_at_store_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Pickedup Product</div>
-                      <span style={{ background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold) } className="before"></span>
+                      <div title="Pickedup Product" className="progress-bar-container__column--node-title">PP <br/>
+                        {
+                          data.dp_picked_up_time ? `(${getProgressDurationInSeconds(data.dp_arrived_at_store_time, data.dp_picked_up_time)} secs)` : ''
+                        }
+                      </div>
+                      <span style={{ background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Arrived Consumer Location</div>
-                      <span style={{ background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time) }} className="after"></span>
+                      <span style={ getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold) } className="before"></span>
+                      <div title="Arrived Consumer Location" className="progress-bar-container__column--node-title">ACL <br/>
+                        {
+                          data.dp_reached_to_consumer_time ? `(${getProgressDurationInSeconds(data.dp_picked_up_time, data.dp_reached_to_consumer_time)} secs)` : ''
+                        }
+                     </div>
+                      <span style={{ background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
-                      <span style={ getBeforeStyle(data.dp_delivered_time, null) } className="before"></span>
-                      <div className="progress-bar-container__column--node-title">Delivered</div>
+                      <span style={ getBeforeStyle(data.dp_delivered_time, null, deliverProductThreshold) } className="before"></span>
+                      <div title="Delivered" className="progress-bar-container__column--node-title">DD <br/>
+                        {
+                          data.dp_delivered_time ? (getReadableTimeFormat(data.dp_delivered_time)) : ''
+                        }
+                      </div>
                   </div>
                 </div>
               </td>
