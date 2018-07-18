@@ -49,7 +49,15 @@ function getProgressDurationInSeconds(d1, d2) {
   return seconds;
 }
 
+var totalDuration = 0;
+
+function resetTotalDuration() {
+  totalDuration = 0;
+}
+
 function getBeforeStyle(date1, date2, threshold) {
+ 
+  totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
 
   if(getProgressDurationInMinutes(date1, date2) > threshold) {
     return {
@@ -79,6 +87,10 @@ function getAfterStyle(date1, date2, threshold) {
       return 'green'
   }
 
+}
+
+function getTotalDuration() {
+  return totalDuration.toFixed(2);
 }
 
 // const HistoryOrdersListItem = ({ data, handleClick }) => {
@@ -189,14 +201,14 @@ class HistoryOrdersListItem extends React.Component {
         <tr className={`progress-bar-container ${showProgressBar ? 'active' : ''}`} >
             <td colSpan="11">
               <div class="progress-bar">
-                  <div title="Total Duration" class="total-duration">
+                  <div title="Total Duration" class="total-duration"> 
                     {
-                      data.dp_reached_to_consumer_time ? <div> TD <br/> ({getProgressDurationInMinutes(data.order_placed_time, data.dp_reached_to_consumer_time)} mins) </div>: ''
+                      `(${getTotalDuration()} secs)`
                     }
                   </div>
                   <div className="progress-bar-container__column">
                     <span style={{ border : '3px solid green', background : 'green' }} className="before"></span>
-                    <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)})</div>
+                    <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)}) {resetTotalDuration()}</div>
                     <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time, retailerNotificationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">

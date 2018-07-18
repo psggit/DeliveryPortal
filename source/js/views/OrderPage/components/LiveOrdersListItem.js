@@ -50,8 +50,16 @@ function getProgressDurationInSeconds(d1, d2) {
   return seconds;
 }
 
-function getBeforeStyle(date1, date2, threshold) {
+var totalDuration = 0;
 
+function resetTotalDuration() {
+  totalDuration = 0;
+}
+
+function getBeforeStyle(date1, date2, threshold) {
+  
+  totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
+ 
   if(getProgressDurationInMinutes(date1, date2) > threshold) {
     return {
       border : '3px solid red',
@@ -80,6 +88,15 @@ function getAfterStyle(date1, date2, threshold) {
       return 'green'
   }
 
+}
+
+function getTotalDuration() {
+
+  //setTimeout(() => {
+    //console.log("tota", totalDuration);
+    return totalDuration.toFixed(2);
+  //}, 1000)
+  
 }
 
 class LiveOrdersListItem extends React.Component {
@@ -177,12 +194,12 @@ class LiveOrdersListItem extends React.Component {
             <div class="progress-bar">
               <div title="Total Duration" class="total-duration"> 
                 {
-                  data.dp_reached_to_consumer_time ? `(${getProgressDurationInMinutes(data.order_placed_time, data.dp_reached_to_consumer_time)} mins)` : ''
+                  `(${getTotalDuration()} secs)`
                 }
               </div>
               <div className="progress-bar-container__column">   
                 <span style={{ border : '3px solid green', background : 'green' }} className="before"></span>
-                <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)})</div>
+                <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)}) {resetTotalDuration()}</div>
                 <span style={{ background : getAfterStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold) }} className="after"></span>
               </div>
               <div className="progress-bar-container__column">
