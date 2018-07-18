@@ -66,6 +66,33 @@ function getAfterStyle(date1, date2) {
 
 }
 
+function getReadableTimeFormat(d1) {
+  
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  let d = new Date(d1);
+  // var day = days[d.getDay()];
+  let hr = d.getHours();
+  let min = d.getMinutes();
+
+  if (min < 10) {
+      min = "0" + min;
+  }
+
+  let ampm = "am";
+  if( hr > 12 ) {
+      hr -= 12;
+      ampm = "pm";
+  }
+
+  let date = d.getDate();
+  let month = months[d.getMonth()];
+  let year = d.getFullYear();
+  
+  return ("time", month + " " + date + " " + year + ", " + hr + ":" + min + " " + ampm);
+}
+
 class LiveOrdersListItem extends React.Component {
 
   constructor(props) {
@@ -149,48 +176,48 @@ class LiveOrdersListItem extends React.Component {
             <td colspan="11">
               <div class="progress-bar">
                   <div className="progress-bar-container__column">
-                      <span style={{ border : '3px solid green', background : 'green'}} className="before" ></span>
-                      <div title="Order Placed" className="progress-bar-container__column--node-title">OP</div>
+                      <span style={{ border : '3px solid green', background : 'green' }} className="before" ></span>
+                      <div className="progress-bar-container__column--node-title">Order Placed ({getReadableTimeFormat(data.order_placed_time)})</div>
                       <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.order_placed_time,data.retailer_notified_time) } className="before"></span>
-                      <div title="Retailer Notified" className="progress-bar-container__column--node-title">RN</div>
+                      <div className="progress-bar-container__column--node-title">Retailer Notified ()</div>
                       <span style={{ background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time) } className="before"></span>
-                      <div title="Retailer Confirmed" className="progress-bar-container__column--node-title">RC</div>
+                      <div className="progress-bar-container__column--node-title">Retailer Confirmed</div>
                       <span style={{ background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time) } className="before"></span>
-                      <div title="Delivery Person Notified" className="progress-bar-container__column--node-title">DPN</div>
+                      <div className="progress-bar-container__column--node-title">Delivery Person Notified</div>
                       <span style={{ background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time) } className="before"></span>
-                      <div title="Delivery Person Confirmed" className="progress-bar-container__column--node-title">DPC</div>
+                      <div className="progress-bar-container__column--node-title">Delivery Person Confirmed</div>
                       <span style={{ background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time) } className="before"></span>
-                      <div title="Arrived Store Location" className="progress-bar-container__column--node-title">ASL</div>
+                      <div className="progress-bar-container__column--node-title">Arrived Store Location</div>
                       <span style={{ background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time) } className="before"></span>
-                      <div title="Pickedup Product" className="progress-bar-container__column--node-title">PP</div>
+                      <div className="progress-bar-container__column--node-title">Pickedup Product</div>
                       <span style={{ background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time) } className="before"></span>
-                      <div title="Arrived Consumer Location" className="progress-bar-container__column--node-title">ACL</div>
+                      <div className="progress-bar-container__column--node-title">Arrived Consumer Location</div>
                       <span style={{ background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">
                       <span style={ getBeforeStyle(data.dp_delivered_time, null) } className="before"></span>
-                      <div title="Delivered" className="progress-bar-container__column--node-title">DD</div>
+                      <div className="progress-bar-container__column--node-title">Delivered</div>
                   </div>
                 </div>
               </td>
