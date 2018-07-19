@@ -78,7 +78,7 @@ class LiveOrdersListItem extends React.Component {
     if(getProgressDurationInMinutes(date1, date2) > threshold) {
       return {
         border : '3px solid #ff3b34',
-        background : '#ff3b34'
+        // background : '#ff3b34'
       }
     } else if (getProgressDurationInMinutes(date1, date2) === 0) {
       return {
@@ -87,7 +87,7 @@ class LiveOrdersListItem extends React.Component {
     } else {
       return {
         border : '3px solid #4caf50',
-        background : '#4caf50'
+        // background : '#4caf50'
       }
     }
   
@@ -214,7 +214,7 @@ class LiveOrdersListItem extends React.Component {
 
               <div className="progress-bar-container__column">  
 
-                <span style={{ border : '3px solid #4caf50', background : '#4caf50' }} className="before">
+                <span style={{ border : '3px solid #4caf50' }} className="before">
                   {this.resetTotalDuration()}
                 </span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>

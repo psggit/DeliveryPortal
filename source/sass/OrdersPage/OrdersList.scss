@@ -206,6 +206,7 @@ table.orders-list {
     padding: 20px 5px;
     font-size: 14px;
   }
+
   td:not(:first-child):not(:last-child) {
     text-align: center;
   }
@@ -257,6 +258,13 @@ table {
   td:first-child {
     cursor: pointer;
     padding-left: 20px;
+  }
+
+
+  td:first-child {
+    span.rotate-icon {
+      transform: rotate(-180deg);
+    }
   }
 
   td:nth-child(2) {
