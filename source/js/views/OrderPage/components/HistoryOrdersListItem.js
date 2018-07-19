@@ -139,7 +139,7 @@ class HistoryOrdersListItem extends React.Component {
   toggleProgressBar(e) {
     e.stopPropagation()
     const {showProgressBar} = this.state;
-    this.setState({ showProgressBar : !showProgressBar})
+    this.setState({ showProgressBar : !showProgressBar});
   }
 
   render() {
@@ -200,15 +200,15 @@ class HistoryOrdersListItem extends React.Component {
         </tr>
         <tr className={`progress-bar-container ${showProgressBar ? 'active' : ''}`} >
             <td colSpan="11">
+              <div title="Total Duration" class={`total-duration ${showProgressBar ? 'show' : ''}`}> 
+                  
+                  Total Duration : { getTotalDuration() } secs
+                
+              </div>
               <div class="progress-bar">
-                  <div title="Total Duration" class="total-duration"> 
-                    {
-                      `(${getTotalDuration()} secs)`
-                    }
-                  </div>
                   <div className="progress-bar-container__column">
-                    <span style={{ border : '3px solid green', background : 'green' }} className="before"></span>
-                    <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)}) {resetTotalDuration()}</div>
+                    <span style={{ border : '3px solid green', background : 'green' }} className="before">{resetTotalDuration()}</span>
+                    <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)})</div>
                     <span style={{ background : getAfterStyle(data.order_placed_time,data.retailer_notified_time, retailerNotificationThreshold) }} className="after"></span>
                   </div>
                   <div className="progress-bar-container__column">

@@ -7,6 +7,19 @@
       padding: 0 5px !important;
       transition: all 0.2s ease-in;
     }
+
+    .total-duration {
+      display: none;
+
+      &.show {
+        //cursor: pointer;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-weight: 600 ;
+      }
+    }
+    
     
     &.active {
       padding: 20px;
@@ -29,13 +42,6 @@
 
       > * {
         flex: 1 0 auto;
-      }
-
-      .total-duration {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        text-align: center;
       }
       
       .progress-bar-container__column {

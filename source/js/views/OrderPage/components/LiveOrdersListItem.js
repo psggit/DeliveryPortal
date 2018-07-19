@@ -191,12 +191,12 @@ class LiveOrdersListItem extends React.Component {
         </tr>
         <tr className={`progress-bar-container ${showProgressBar ? 'active' : ''}`} >
           <td colspan="11">
+            <div title="Total Duration" class={`total-duration ${showProgressBar ? 'show' : ''}`}> 
+                
+                  Total Duration : {getTotalDuration()} secs
+                
+            </div>
             <div class="progress-bar">
-              <div title="Total Duration" class="total-duration"> 
-                {
-                  `(${getTotalDuration()} secs)`
-                }
-              </div>
               <div className="progress-bar-container__column">   
                 <span style={{ border : '3px solid green', background : 'green' }} className="before"></span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>({getReadableTimeFormat(data.order_placed_time)}) {resetTotalDuration()}</div>
