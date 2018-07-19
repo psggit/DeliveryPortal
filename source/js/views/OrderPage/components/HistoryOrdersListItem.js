@@ -131,17 +131,17 @@ class HistoryOrdersListItem extends React.Component {
 
     if(getProgressDurationInMinutes(date1, date2) > threshold) {
       return {
-        border : '3px solid red',
-        background : 'red'
+        border : '3px solid #ff3b34',
+        background : '#ff3b34'
       }
     } else if (getProgressDurationInMinutes(date1, date2) === 0) {
       return {
-        border : '3px solid grey'
+        border : '3px solid #dfdfdf'
       }
     } else {
       return {
-        border : '3px solid green',
-        background : 'green'
+        border : '3px solid #4caf50',
+        background : '#4caf50'
       }
     }
     
@@ -150,11 +150,11 @@ class HistoryOrdersListItem extends React.Component {
   getAfterStyle(date1, date2, threshold) {
 
     if(getProgressDurationInMinutes(date1, date2) > threshold) {
-        return 'red'
+        return '#ff3b34'
     } else if (getProgressDurationInMinutes(date1, date2) === 0) {
-        return 'grey'
+        return '#dfdfdf'
     } else {
-        return 'green'
+        return '#4caf50'
     }
 
   }
@@ -241,92 +241,135 @@ class HistoryOrdersListItem extends React.Component {
             <div class="progress-bar">
 
               <div className="progress-bar-container__column">
-                <span style={{ border : '3px solid green', background : 'green' }} className="before">
+
+                <span style={{ border : '3px solid #4caf50', background : '#4caf50' }} className="before">
                   {this.resetTotalDuration()}
                 </span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>
                   ({getReadableTimeFormat(data.order_placed_time)})
                 </div>
                 <span style={{ background : this.getAfterStyle(data.order_placed_time,data.retailer_notified_time, retailerNotificationThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.order_placed_time,data.retailer_notified_time, retailerNotificationThreshold) } className="before"></span>
+
+                <span style={ 
+                        this.getBeforeStyle(data.order_placed_time,data.retailer_notified_time, retailerNotificationThreshold) 
+                      } 
+                      className="before">
+                </span>
                 <div title="Retailer Notified" className="progress-bar-container__column--node-title">RN <br/> 
                   {
                     data.retailer_notified_time ? `(${getProgressDuration(data.order_placed_time,data.retailer_notified_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold) } className="before"></span>
+                
+                <span style={ 
+                      this.getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold) } 
+                      className="before">
+                </span>
                 <div title="Retailer Confirmed" className="progress-bar-container__column--node-title">RC <br/>
                   {
                     data.retailer_confirmation_time ? `(${getProgressDuration(data.retailer_notified_time, data.retailer_confirmation_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold) } className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold) } 
+                      className="before">
+                </span>
                 <div title="Delivery Person Notified" className="progress-bar-container__column--node-title">DPN <br/>
                   {
                     data.dp_notified_time ? `(${getProgressDuration(data.retailer_confirmation_time, data.dp_notified_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column"> 
-                <span style={ this.getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold) } className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold) } 
+                      className="before">
+                </span>
                 <div title="Delivery Person Confirmed" className="progress-bar-container__column--node-title">DPC <br/>
                   {
                     data.dp_confirmation_time ? `(${getProgressDuration(data.dp_notified_time, data.dp_confirmation_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold) } className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold) } 
+                      className="before">
+                </span>
                 <div title="Arrived Store Location" className="progress-bar-container__column--node-title">ASL <br/>
                   {
                     data.dp_arrived_at_store_time ? `(${getProgressDuration(data.dp_confirmation_time, data.dp_arrived_at_store_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold) } className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold) } 
+                      className="before">
+                </span>
                 <div title="Pickedup Product" className="progress-bar-container__column--node-title">PP <br/>
                   {
                     data.dp_picked_up_time ? `(${getProgressDuration(data.dp_arrived_at_store_time, data.dp_picked_up_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold) } className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold) } 
+                      className="before">
+                </span>
                 <div title="Arrived Consumer Location" className="progress-bar-container__column--node-title">ACL <br/>
                   {
                     data.dp_reached_to_consumer_time ? `(${getProgressDuration(data.dp_picked_up_time, data.dp_reached_to_consumer_time)})` : ''
                   }
                 </div>
                 <span style={{ background : this.getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold) }} className="after"></span>
+              
               </div>
 
               <div className="progress-bar-container__column">
-                <span style={ this.getBeforeStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold)} className="before"></span>
+
+                <span style={ 
+                      this.getBeforeStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold)} 
+                      className="before">
+                </span>
                 <div title="Delivered" className="progress-bar-container__column--node-title">DD <br/>
                   {
                     data.dp_delivered_time ? `(${getReadableTimeFormat(data.dp_delivered_time)})` : ''
                   }
                 </div>
+
               </div>
               
             </div>
