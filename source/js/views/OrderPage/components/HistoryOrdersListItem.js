@@ -34,20 +34,20 @@ function getProgressDurationInMinutes(d1, d2) {
   return minutes;
 }
 
-// function getProgressDurationInSeconds(d1, d2) {
+function getProgressDurationInSeconds(d1, d2) {
 
-//   let date1 = new Date(d1);
-//   let date2 = new Date(d2);
-//   let millisec, seconds = 0, minutes = 0
+  let date1 = new Date(d1);
+  let date2 = new Date(d2);
+  let millisec, seconds = 0, minutes = 0
 
-//   if(d1 && d2) {
-//       millisec = date2.getTime() - date1.getTime()
-//       seconds =  millisec / 1000
-//       seconds = seconds.toFixed(2);
-//   }
+  if(d1 && d2) {
+      millisec = date2.getTime() - date1.getTime()
+      seconds =  millisec / 1000
+      seconds = seconds.toFixed(2);
+  }
 
-//   return seconds;
-// }
+  return seconds;
+}
 
 function getProgressDuration(d1, d2) {
 
@@ -131,7 +131,7 @@ class HistoryOrdersListItem extends React.Component {
 
   getBeforeStyle(date1, date2, threshold, orderStatus) {
   
-    this.totalDuration += parseFloat(getProgressDurationInMinutes(date1, date2))
+    this.totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
 
     if(getProgressDurationInMinutes(date1, date2) > threshold) {
       return {
@@ -170,9 +170,9 @@ class HistoryOrdersListItem extends React.Component {
   }
 
   getTotalDuration() {
-    const totalDurationInMinutes = this.totalDuration
-    const totalDurationInSeconds = totalDurationInMinutes * 60
-    const totalDurationInHours = totalDurationInMinutes / 60
+    const totalDurationInSeconds = this.totalDuration
+    const totalDurationInMinutes = totalDurationInSeconds * (1/60)
+    const totalDurationInHours = totalDurationInMinutes / 60 
 
     if(totalDurationInMinutes > 60) {
       return `${totalDurationInHours.toFixed(2)} hours`
