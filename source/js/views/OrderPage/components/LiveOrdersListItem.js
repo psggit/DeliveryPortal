@@ -19,6 +19,7 @@ function Moment(time) {
   }
 }
 
+//getProgressDurationInMinutes - Returns the difference of given time in minutes
 function  getProgressDurationInMinutes(d1, d2) {
 
   const date1 = new Date(d1);
@@ -35,22 +36,23 @@ function  getProgressDurationInMinutes(d1, d2) {
   return minutes;
 }
 
-function getProgressDurationInSeconds(d1, d2) {
+// getProgressDurationInSeconds - Returns the difference of given time in seconds
+// function getProgressDurationInSeconds(d1, d2) {
 
-  let date1 = new Date(d1);
-  let date2 = new Date(d2);
-  let millisec, seconds = 0, minutes = 0
+//   let date1 = new Date(d1);
+//   let date2 = new Date(d2);
+//   let millisec, seconds = 0, minutes = 0
 
-  if(d1 && d2) {
-      millisec = date2.getTime() - date1.getTime()
-      seconds =  millisec / 1000
-      seconds = seconds.toFixed(2);
-  }
+//   if(d1 && d2) {
+//       millisec = date2.getTime() - date1.getTime()
+//       seconds =  millisec / 1000
+//       seconds = seconds.toFixed(2);
+//   }
 
-  return seconds;
-}
+//   return seconds;
+// }
 
-
+//getProgressDuration - Returns the time difference between two given time
 function getProgressDuration(d1, d2) {
 
   const date1 = new Date(d1);
@@ -76,6 +78,76 @@ function getProgressDuration(d1, d2) {
   return defaultDuration
 }
 
+//getBeforeStyle - Based on the progress duration time, returns the style 
+function getBeforeStyle(date1, date2, threshold, orderStatus) {
+   
+  if(getProgressDurationInMinutes(date1, date2) > threshold) {
+      return {
+        border : '3px solid #ff3b34',
+        // background : '#ff3b34'
+      }
+  } else if (getProgressDurationInMinutes(date1, date2) === 0 && orderStatus === "force_redeemed") {
+      return {
+        border : '3px solid #4caf50'
+      }
+  } else if (getProgressDurationInMinutes(date1, date2) === 0) {
+      return {
+        border : '3px solid #dfdfdf'
+      }
+  } else {
+      return {
+        border : '3px solid #4caf50',
+        // background : '#4caf50'
+      }
+  }
+
+}
+
+//getAfterStyle - Based on the progress duration time, returns the style 
+function getAfterStyle(date1, date2, threshold, orderStatus) {
+
+  if(getProgressDurationInMinutes(date1, date2) > threshold) {
+      return '#ff3b34'
+  } else if (getProgressDurationInMinutes(date1, date2) === 0 && orderStatus === "force_redeemed") {
+      return '#4caf50'
+  } else if (getProgressDurationInMinutes(date1, date2) === 0) {
+      return '#dfdfdf'
+  } else {
+      return '#4caf50'
+  }
+
+}
+
+//getTotalDuration - Return the time intervel between order placed time and current time
+function getTotalDuration(orderPlacedTime) {
+
+  let millisec, seconds = 0, minutes = 0, hours = 0
+  const defaultDuration = '0.00 secs'
+
+  const date1 = new Date(orderPlacedTime);
+  const date2 = new Date();
+
+  if(date1 && date2) {
+
+    millisec = date2.getTime() - date1.getTime()
+    seconds =  millisec / 1000
+    minutes = seconds * ( 1/60 )
+    hours = minutes / 60
+
+    if(minutes > 60) {
+      return `${hours.toFixed(2)} hours`
+    } else if(seconds > 60) {
+      return `${minutes.toFixed(2)} mins`
+    } else if (seconds < 60){
+      return `${seconds.toFixed(2)} secs`
+    }
+
+  } 
+
+  return defaultDuration
+  
+}
+
 class LiveOrdersListItem extends React.Component {
 
   constructor(props) {
@@ -86,91 +158,7 @@ class LiveOrdersListItem extends React.Component {
     this.toggleProgressBar = this.toggleProgressBar.bind(this)
   }
 
-  getBeforeStyle(date1, date2, threshold, orderStatus) {
-
-    this.totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
-   
-    if(getProgressDurationInMinutes(date1, date2) > threshold) {
-        return {
-          border : '3px solid #ff3b34',
-          // background : '#ff3b34'
-        }
-    } else if (getProgressDurationInMinutes(date1, date2) === 0 && orderStatus === "force_redeemed") {
-        return {
-          border : '3px solid #4caf50'
-        }
-    } else if (getProgressDurationInMinutes(date1, date2) === 0) {
-        return {
-          border : '3px solid #dfdfdf'
-        }
-    } else {
-        return {
-          border : '3px solid #4caf50',
-          // background : '#4caf50'
-        }
-    }
-  
-  }
-  
-  getAfterStyle(date1, date2, threshold, orderStatus) {
-  
-    if(getProgressDurationInMinutes(date1, date2) > threshold) {
-        return '#ff3b34'
-    } else if (getProgressDurationInMinutes(date1, date2) === 0 && orderStatus === "force_redeemed") {
-        return '#4caf50'
-    } else if (getProgressDurationInMinutes(date1, date2) === 0) {
-        return '#dfdfdf'
-    } else {
-        return '#4caf50'
-    }
-  
-  }
-  
-  getTotalDuration(orderPlacedTime) {
-
-    // const totalDurationInMinutes = this.totalDuration
-    // const totalDurationInSeconds = totalDurationInMinutes * 60
-    // const totalDurationInHours = totalDurationInMinutes / 60 
-
-    // const totalDurationInSeconds = this.totalDuration
-    // const totalDurationInMinutes = totalDurationInSeconds * (1/60)
-    // const totalDurationInHours = totalDurationInMinutes / 60 
-
-    // if(totalDurationInMinutes > 60) {
-    //   return `${totalDurationInHours.toFixed(2)} hours`
-    // } else if(totalDurationInSeconds > 60) {
-    //   return `${totalDurationInMinutes.toFixed(2)} mins`
-    // } else {
-    //   return `${totalDurationInSeconds.toFixed(2)} secs`
-    // }
-
-    let millisec, seconds = 0, minutes = 0, hours = 0
-    const defaultDuration = '0.00 secs'
-
-    const date1 = new Date(orderPlacedTime);
-    const date2 = new Date();
-
-    if(date1 && date2) {
-
-      millisec = date2.getTime() - date1.getTime()
-      seconds =  millisec / 1000
-      minutes = seconds * ( 1/60 )
-      hours = minutes / 60
-
-      if(minutes > 60) {
-        return `${hours.toFixed(2)} hours`
-      } else if(seconds > 60) {
-        return `${minutes.toFixed(2)} mins`
-      } else if (seconds < 60){
-        return `${seconds.toFixed(2)} secs`
-      }
-
-    } 
-
-    return defaultDuration
-    
-  }
-
+  //toggleProgressBar - toggles the progress bar on click
   toggleProgressBar(e) {
     e.stopPropagation()
     const {showProgressBar} = this.state;
@@ -211,15 +199,15 @@ class LiveOrdersListItem extends React.Component {
       }
     }
 
-    //defining threshold (2 mins)
+    //defining threshold (in mins)
     const retailerNotificationThreshold = 2;
-    const retailerConfirmationThreshold = 2;
+    const retailerConfirmationThreshold = 5;
     const deliveryNotificationThreshold = 2;
-    const deliveryConfirmationThreshold = 2;
+    const deliveryConfirmationThreshold = 5;
     const arriveStoreThreshold = 2;
-    const productPickupThreshold = 2;
+    const productPickupThreshold = 15;
     const arriveConsumerThreshold = 2;
-    const deliverProductThreshold = 2;
+    const deliverProductThreshold = 30;
 
 
     return (
@@ -256,7 +244,7 @@ class LiveOrdersListItem extends React.Component {
 
             <div title="Total Duration" className={`total-duration ${showProgressBar ? 'show' : ''}`}> 
                 
-                  Total Duration : { this.getTotalDuration(data.order_placed_time) } 
+                  Total Duration : { getTotalDuration(data.order_placed_time) } 
                 
             </div>
             
@@ -269,7 +257,7 @@ class LiveOrdersListItem extends React.Component {
                   ({getReadableTimeFormat(data.order_placed_time)})
                 </div>
                 <span style={
-                              { background : this.getAfterStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold, data.order_status) }
+                              { background : getAfterStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold, data.order_status) }
                             } 
                       className="after">
                 </span>
@@ -279,7 +267,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold, data.order_status)
+                        getBeforeStyle(data.order_placed_time, data.retailer_notified_time, retailerNotificationThreshold, data.order_status)
                       } 
                       className="before">
                 </span>
@@ -289,7 +277,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold, data.order_status) }
+                        { background : getAfterStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -299,7 +287,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold, data.order_status)
+                        getBeforeStyle(data.retailer_notified_time, data.retailer_confirmation_time, retailerConfirmationThreshold, data.order_status)
                       } 
                       className="before">
                 </span>
@@ -309,7 +297,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold, data.order_status) }
+                        { background : getAfterStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -319,7 +307,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold, data.order_status) 
+                        getBeforeStyle(data.retailer_confirmation_time, data.dp_notified_time, deliveryNotificationThreshold, data.order_status) 
                       } 
                       className="before">
                 </span>
@@ -329,7 +317,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold, data.order_status) }
+                        { background : getAfterStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -339,7 +327,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column"> 
 
                 <span style={ 
-                        this.getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold, data.order_status)
+                        getBeforeStyle(data.dp_notified_time, data.dp_confirmation_time, deliveryConfirmationThreshold, data.order_status)
                       } 
                       className="before">
                 </span>
@@ -349,7 +337,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold, data.order_status) }
+                        { background : getAfterStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -359,7 +347,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold, data.order_status) 
+                        getBeforeStyle(data.dp_confirmation_time, data.dp_arrived_at_store_time, arriveStoreThreshold, data.order_status) 
                       } 
                       className="before">
                 </span>
@@ -369,7 +357,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                          { background : this.getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold, data.order_status) }
+                          { background : getAfterStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold, data.order_status) }
                         } 
                         className="after">
                 </span>
@@ -379,7 +367,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold, data.order_status) 
+                        getBeforeStyle(data.dp_arrived_at_store_time, data.dp_picked_up_time, productPickupThreshold, data.order_status) 
                       }  
                       className="before">
                 </span>
@@ -389,7 +377,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold, data.order_status) }
+                        { background : getAfterStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -399,7 +387,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold, data.order_status)
+                        getBeforeStyle(data.dp_picked_up_time, data.dp_reached_to_consumer_time, arriveConsumerThreshold, data.order_status)
                       } 
                       className="before">
                 </span>
@@ -409,7 +397,7 @@ class LiveOrdersListItem extends React.Component {
                   }
                 </div>
                 <span style={
-                        { background : this.getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold, data.order_status) }
+                        { background : getAfterStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold, data.order_status) }
                       } 
                       className="after">
                 </span>
@@ -419,7 +407,7 @@ class LiveOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={ 
-                        this.getBeforeStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold, data.order_status) 
+                        getBeforeStyle(data.dp_reached_to_consumer_time, data.dp_delivered_time, deliverProductThreshold, data.order_status) 
                       }  
                       className="before">
                 </span>
