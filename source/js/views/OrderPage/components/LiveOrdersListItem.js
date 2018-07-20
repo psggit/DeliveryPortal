@@ -187,7 +187,7 @@ class LiveOrdersListItem extends React.Component {
         <tr className='orders-list-item' onClick={ (e) => {handleClick(data.order_id, e)} }>
           <td onClick={(e) => {this.toggleProgressBar(e)} }>
               <span
-                className='orders-list-item__info'
+                className={`orders-list-item__info ${showProgressBar ? 'rotate-icon' : ''}`}
               >
                 { getIcon('down-arrow') }
               </span>
@@ -212,15 +212,15 @@ class LiveOrdersListItem extends React.Component {
           <td><button onClick={(e) => { handleShowNotes(e, data.order_id) }} style={{ fontSize: '12px', padding: '5px 10px', borderRadius: '4px' }}>Notes</button></td>
         </tr>
         <tr className={`progress-bar-container ${showProgressBar ? 'active' : ''}`} >
-          <td colspan="11">
+          <td colSpan="11">
 
-            <div title="Total Duration" class={`total-duration ${showProgressBar ? 'show' : ''}`}> 
+            <div title="Total Duration" className={`total-duration ${showProgressBar ? 'show' : ''}`}> 
                 
                   Total Duration : { this.getTotalDuration() } 
                 
             </div>
             
-            <div class="progress-bar">
+            <div className="progress-bar">
 
               <div className="progress-bar-container__column">  
 
