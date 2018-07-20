@@ -116,7 +116,6 @@ class HistoryOrdersListItem extends React.Component {
       showProgressBar : false
     }
     this.toggleProgressBar = this.toggleProgressBar.bind(this)
-    this.totalDuration = 0;
   }
 
   toggleProgressBar(e) {
@@ -125,14 +124,8 @@ class HistoryOrdersListItem extends React.Component {
     this.setState({ showProgressBar : !showProgressBar});
   }
 
-  resetTotalDuration() {
-    this.totalDuration = 0;
-  }
-
   getBeforeStyle(date1, date2, threshold, orderStatus) {
   
-    this.totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
-
     if(getProgressDurationInMinutes(date1, date2) > threshold) {
       return {
         border : '3px solid #ff3b34',
@@ -169,18 +162,41 @@ class HistoryOrdersListItem extends React.Component {
 
   }
 
-  getTotalDuration() {
-    const totalDurationInSeconds = this.totalDuration
-    const totalDurationInMinutes = totalDurationInSeconds * (1/60)
-    const totalDurationInHours = totalDurationInMinutes / 60 
+  getTotalDuration(orderPlacedTime, orderDeliveredTime, orderCancelledTime) {
 
-    if(totalDurationInMinutes > 60) {
-      return `${totalDurationInHours.toFixed(2)} hours`
-    } else if(totalDurationInSeconds > 60) {
-      return `${totalDurationInMinutes.toFixed(2)} mins`
-    } else {
-      return `${totalDurationInSeconds.toFixed(2)} secs`
+    let millisec, seconds = 0, minutes = 0, hours = 0
+    const defaultDuration = '0.00 secs'
+
+    if(orderPlacedTime && orderDeliveredTime) {
+
+      const date1 = new Date(orderPlacedTime);
+      const date2 = new Date(orderDeliveredTime);
+      millisec = date2.getTime() - date1.getTime()
+      seconds =  millisec / 1000
+      minutes = seconds * ( 1/60 )
+      hours = minutes / 60
+
+    } else if(orderPlacedTime && orderCancelledTime) {
+
+      const date1 = new Date(orderPlacedTime);
+      const date2 = new Date(orderCancelledTime);
+     
+      millisec = date2.getTime() - date1.getTime()
+      seconds =  millisec / 1000
+      minutes = seconds * ( 1/60 )
+      hours = minutes / 60
+
     }
+
+    if(minutes > 60) {
+      return `${hours.toFixed(2)} hours`
+    } else if(seconds > 60) {
+      return `${minutes.toFixed(2)} mins`
+    } else if (seconds < 60){
+      return `${seconds.toFixed(2)} secs`
+    }
+
+    return defaultDuration
   }
 
   render() {
@@ -243,8 +259,8 @@ class HistoryOrdersListItem extends React.Component {
           <td colSpan="11">
 
             <div title="Total Duration" class={`total-duration ${showProgressBar ? 'show' : ''}`}> 
-                
-              Total Duration : { this.getTotalDuration() } 
+      
+              Total Duration : { data.order_status === "cancelled" ? this.getTotalDuration(data.order_placed_time, data.dp_delivered_time, data.cancelled_time) : this.getTotalDuration(data.order_placed_time, data.dp_delivered_time, null) } 
               
             </div>
 
@@ -253,7 +269,7 @@ class HistoryOrdersListItem extends React.Component {
               <div className="progress-bar-container__column">
 
                 <span style={{ border : '3px solid #4caf50' }} className="before">
-                  {this.resetTotalDuration()}
+                  {/* {this.resetTotalDuration()} */}
                 </span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>
                   ({getReadableTimeFormat(data.order_placed_time)})
