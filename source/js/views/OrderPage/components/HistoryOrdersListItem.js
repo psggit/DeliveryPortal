@@ -268,9 +268,7 @@ class HistoryOrdersListItem extends React.Component {
 
               <div className="progress-bar-container__column">
 
-                <span style={{ border : '3px solid #4caf50' }} className="before">
-                  {/* {this.resetTotalDuration()} */}
-                </span>
+                <span style={{ border : '3px solid #4caf50' }} className="before"></span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>
                   ({getReadableTimeFormat(data.order_placed_time)})
                 </div>

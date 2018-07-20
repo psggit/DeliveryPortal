@@ -84,13 +84,8 @@ class LiveOrdersListItem extends React.Component {
       showProgressBar : false
     }
     this.toggleProgressBar = this.toggleProgressBar.bind(this)
-    this.totalDuration = 0;
   }
 
-  resetTotalDuration() {
-    this.totalDuration = 0;
-  }
-  
   getBeforeStyle(date1, date2, threshold, orderStatus) {
 
     this.totalDuration += parseFloat(getProgressDurationInSeconds(date1, date2))
@@ -131,23 +126,48 @@ class LiveOrdersListItem extends React.Component {
   
   }
   
-  getTotalDuration() {
+  getTotalDuration(orderPlacedTime) {
 
     // const totalDurationInMinutes = this.totalDuration
     // const totalDurationInSeconds = totalDurationInMinutes * 60
     // const totalDurationInHours = totalDurationInMinutes / 60 
 
-    const totalDurationInSeconds = this.totalDuration
-    const totalDurationInMinutes = totalDurationInSeconds * (1/60)
-    const totalDurationInHours = totalDurationInMinutes / 60 
+    // const totalDurationInSeconds = this.totalDuration
+    // const totalDurationInMinutes = totalDurationInSeconds * (1/60)
+    // const totalDurationInHours = totalDurationInMinutes / 60 
 
-    if(totalDurationInMinutes > 60) {
-      return `${totalDurationInHours.toFixed(2)} hours`
-    } else if(totalDurationInSeconds > 60) {
-      return `${totalDurationInMinutes.toFixed(2)} mins`
-    } else {
-      return `${totalDurationInSeconds.toFixed(2)} secs`
-    }
+    // if(totalDurationInMinutes > 60) {
+    //   return `${totalDurationInHours.toFixed(2)} hours`
+    // } else if(totalDurationInSeconds > 60) {
+    //   return `${totalDurationInMinutes.toFixed(2)} mins`
+    // } else {
+    //   return `${totalDurationInSeconds.toFixed(2)} secs`
+    // }
+
+    let millisec, seconds = 0, minutes = 0, hours = 0
+    const defaultDuration = '0.00 secs'
+
+    const date1 = new Date(orderPlacedTime);
+    const date2 = new Date();
+
+    if(date1 && date2) {
+
+      millisec = date2.getTime() - date1.getTime()
+      seconds =  millisec / 1000
+      minutes = seconds * ( 1/60 )
+      hours = minutes / 60
+
+      if(minutes > 60) {
+        return `${hours.toFixed(2)} hours`
+      } else if(seconds > 60) {
+        return `${minutes.toFixed(2)} mins`
+      } else if (seconds < 60){
+        return `${seconds.toFixed(2)} secs`
+      }
+
+    } 
+
+    return defaultDuration
     
   }
 
@@ -236,7 +256,7 @@ class LiveOrdersListItem extends React.Component {
 
             <div title="Total Duration" className={`total-duration ${showProgressBar ? 'show' : ''}`}> 
                 
-                  Total Duration : { this.getTotalDuration() } 
+                  Total Duration : { this.getTotalDuration(data.order_placed_time) } 
                 
             </div>
             
@@ -244,9 +264,7 @@ class LiveOrdersListItem extends React.Component {
 
               <div className="progress-bar-container__column">  
 
-                <span style={{ border : '3px solid #4caf50' }} className="before">
-                  {this.resetTotalDuration()}
-                </span>
+                <span style={{ border : '3px solid #4caf50' }} className="before"></span>
                 <div title="Order Placed" className="progress-bar-container__column--node-title">OP <br/>
                   ({getReadableTimeFormat(data.order_placed_time)})
                 </div>
