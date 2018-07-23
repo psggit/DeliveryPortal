@@ -43,6 +43,7 @@ class HistoryOrdersList extends React.Component {
           <table className='orders-list'>
             <thead>
               <tr>
+                <td></td>
                 <td>Order Id</td>
                 <td>Order status</td>
                 <td>Consumer Id</td>
@@ -51,6 +52,8 @@ class HistoryOrdersList extends React.Component {
                 <td>Delivery agent</td>
                 <td>Assigned to</td>
                 <td>Order placed time</td>
+                <td></td>
+                <td></td>
               </tr>
             </thead>
             <tbody>

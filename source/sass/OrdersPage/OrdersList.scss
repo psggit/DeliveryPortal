@@ -206,6 +206,7 @@ table.orders-list {
     padding: 20px 5px;
     font-size: 14px;
   }
+
   td:not(:first-child):not(:last-child) {
     text-align: center;
   }
@@ -240,13 +241,39 @@ table {
     color: #4a4a4a;
   }
 
+  .orders-list-item__info {
+    vertical-align: top;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 20px;
+    svg {
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   td:first-child {
+    cursor: pointer;
+    padding-left: 20px;
+  }
+
+
+  td:first-child {
+    span.rotate-icon {
+      transform: rotate(-180deg);
+    }
+  }
+
+  td:nth-child(2) {
     cursor: pointer;
     padding-left: 20px;
     color: #4990ef;
     text-decoration: underline;
   }
-
+  
   &:hover {
     background: #eaeaea;
     td {

@@ -9,6 +9,7 @@ import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { getHasuraId } from './../utils'
 import Notes from './Notes'
 
+
 class LiveOrdersList extends React.Component {
   constructor() {
     super()
@@ -105,12 +106,14 @@ class LiveOrdersList extends React.Component {
   }
 
   render() {
+
     return (
       <Fragment>
         <div className='order-list-container'>
           <table className='orders-list'>
             <thead>
               <tr>
+                <td></td>
                 <td>Order Id</td>
                 <td>Order status</td>
                 <td>Consumer Id</td>
@@ -126,15 +129,16 @@ class LiveOrdersList extends React.Component {
             <tbody>
               {
                 !this.props.loadingLiveOrders
-                ? this.props.liveOrdersData.map(item => (
-                  <LiveOrdersListItem
-                    handleClick={this.handleClick}
-                    handleOrderAssign={this.openAssignOrderModal}
-                    handleShowNotes={this.handleShowNotes}
-                    key={item.order_id}
-                    data={item}
-                  />
-                ))
+                ? this.props.liveOrdersData.map((item) => {
+                    return <LiveOrdersListItem
+                              handleClick={this.handleClick}
+                              handleOrderAssign={this.openAssignOrderModal}
+                              handleShowNotes={this.handleShowNotes}
+                              key={item.order_id}
+                              data={item}
+                           />
+                 
+                })
                 : <tr className='loader2' />
               }
             </tbody>
@@ -164,6 +168,7 @@ class LiveOrdersList extends React.Component {
         }
 
       </Fragment>
+    
     )
   }
 }

@@ -321,6 +321,7 @@ class Home extends Component {
             padding: '10px',
             background: '#f6f6f6',
             position: 'sticky',
+            zIndex: 1,
             top: '65px',
             boxShadow: '0px 1px 2px 0px #ddd'
           }}>

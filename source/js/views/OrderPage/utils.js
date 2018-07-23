@@ -176,3 +176,32 @@ export function canAccess(feature) {
   }
   return !(accessObj[hasuraRole].indexOf(feature) > -1)
 }
+
+export function getReadableTimeFormat(d1) {
+  
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  if(d1) {
+    let d = new Date(d1);
+    let hr = d.getHours();
+    let min = d.getMinutes();
+
+    if (min < 10) {
+        min = "0" + min;
+    }
+
+    let ampm = "am";
+    if( hr > 12 ) {
+        hr -= 12;
+        ampm = "pm";
+    }
+
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    //return (month + " " + date + " " + year + ", " + hr + ":" + min + " " + ampm);
+    return (hr + ":" + min + " " + ampm);
+  }
+  
+}
