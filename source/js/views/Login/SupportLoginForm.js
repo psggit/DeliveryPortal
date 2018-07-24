@@ -63,7 +63,6 @@ class SupportLoginForm extends React.Component {
           return
         }
         response.json().then(function(data) {
-          localStorage.setItem('_hipbaru', JSON.stringify(data))
           createSession(data)
           location.href = '/home/orders/live'
         })

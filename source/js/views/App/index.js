@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { Api } from './../../utils/config'
 import Login from './../Login'
+import { createSession } from './../Login/utils'
 import Home from './../OrderPage'
 
 const publicPath = '/';
@@ -60,8 +61,8 @@ export default class App extends Component {
           return
         }
         response.json().then((data) => {
+          createSession(data)
           if (!location.pathname.includes('orders')) {
-            // createSession(data)
             location.href = '/home/orders/live'
           }
         })
