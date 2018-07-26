@@ -52,6 +52,7 @@ const initialOrderState = {
     loadingUnavailableDp: true,
     loadingReturningOrders: true,
     loadingSearchOrders: true,
+    loadingCustomerDetails: true,
     autoPilotStatus: false,
     liveOrdersData: [],
     liveAssignedOrdersData: [],
@@ -65,6 +66,7 @@ const initialOrderState = {
     orders: [],
     plotData: [],
     notesData: [],
+    customerDetails: {},
     ordersCount: 0,
     order: {
       id: '',
@@ -295,6 +297,13 @@ const actionsMap = {
     return Object.assign({}, state, {
       notesData: action.data.Notes,
       loadingNotes: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS]: (state, action) => {
+    return Object.assign({}, state, {
+      customerDetails: action.data,
+      loadingCustomerDetails: false
     })
   }
 };

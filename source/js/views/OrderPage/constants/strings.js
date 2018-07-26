@@ -27,6 +27,7 @@ export const menuItems = [
   { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
   { value: 'attempted', label: 'Attempted orders'},
   { value: 'returning', label: 'Returning orders'},
+  { value: 'create-new-order', label: 'Create new order'},
   { value: 'all', label: 'All orders'}
 ]
 

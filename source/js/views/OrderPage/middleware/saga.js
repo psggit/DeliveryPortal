@@ -8,6 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
+import { customerDetails }  from './../../../mockData'
 
 
 /**
@@ -348,6 +349,15 @@ function* fetchNotes(action) {
   }
 }
 
+function* fetchCustomerDetails() {
+  try {
+    const data = customerDetails
+    yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
 
 
 /**
@@ -554,5 +564,11 @@ export function* watchCreateNote() {
 export function* watchFetchNotes() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_NOTES, fetchNotes)
+  }
+}
+
+export function* watchFetchCustomerAddress() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
   }
 }

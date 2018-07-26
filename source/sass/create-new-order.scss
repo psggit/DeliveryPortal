@@ -1,0 +1,17 @@
+.new-order-form-container {
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+
+  .mobile-number {
+    width: 400px;
+  }
+
+  .submit-button {
+    margin-top: 0;
+  }
+  
+  .submit-button button{
+    height: 46px;
+  }
+}

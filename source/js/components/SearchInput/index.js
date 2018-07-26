@@ -54,6 +54,7 @@ class SearchInput extends Component {
           onChange={this.handleChange}
           onKeyDown={this.handlePress}
           value={searchQuery}
+          maxLength={this.props.maxLength || ''}
         />
         { this.state.searchQuery ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
         <span>{ getIcon('search') }</span>

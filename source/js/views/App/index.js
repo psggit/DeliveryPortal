@@ -7,6 +7,7 @@ import Login from './../Login'
 import { createSession } from './../Login/utils'
 import Home from './../OrderPage'
 
+
 const publicPath = '/';
 
 export const routeCodes = {
@@ -20,7 +21,8 @@ export const routeCodes = {
   attempted: `${ publicPath }home/orders/attempted`,
   returning: `${ publicPath }home/orders/returning`,
   history: `${ publicPath }home/orders/history`,
-  LOGIN: `${ publicPath }login`
+  LOGIN: `${ publicPath }login`,
+  'create-new-order': `${ publicPath }home/orders/create-new-order`
 };
 
 

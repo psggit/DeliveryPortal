@@ -181,3 +181,8 @@ export const restockOrder = data => ({
   type: ActionTypes.REQUEST_RESTOCK_ORDER,
   data
 })
+
+export const fetchCustomerDetails = data => ({
+  type: ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS,
+  data
+})

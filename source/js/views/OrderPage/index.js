@@ -19,6 +19,8 @@ import AttemptedOrdersList from './components/AttemptedOrdersList'
 import BusyDeliveryAgentsList from './components/UnavailableDpList'
 import ReturningOrdersList from './components/ReturningOrdersList'
 import SearchOrdersList from './components/SearchOrdersList'
+// import AddressList from './components/AddressList'
+import CreateNewOrder from './components/CreateNewOrder'
 import SideMenu from './components/SideMenu'
 import { menuItemsMap } from './constants/strings'
 import OrderDetail from './components/OrderDetail'
@@ -29,6 +31,7 @@ import SearchInput from '@components/SearchInput'
 
 import '@sass/components/_pagination.scss'
 import '@sass/OrdersPage/OrdersList.scss'
+
 // import { getIcon, getTimeDiff, canAccess, getHasuraId } from './utils'
 // import * as ActionTypes from './constants/actions'
 // import NavBar from '@components/NavBar'
@@ -299,11 +302,15 @@ class Home extends Component {
           />
           <div className='body-container'>
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '600px' }}>
+            {
+              this.state.currentRoute !== 'create-new-order'
+              &&
               <SearchInput
                 clearSearch={this.clearSearchOrders}
                 search={this.searchOrders}
                 placeholder='Search all orders...'
               />
+            }
             </div>
             {
               // OrderDetail component is using the old API
@@ -316,23 +323,27 @@ class Home extends Component {
               />
             }
           </div>
-          <div style={{
-            marginTop: '10px',
-            padding: '10px',
-            background: '#f6f6f6',
-            position: 'sticky',
-            zIndex: 1,
-            top: '65px',
-            boxShadow: '0px 1px 2px 0px #ddd'
-          }}>
-            <h3 style={{
-              textTransform: 'uppercase',
-              margin: '0',
-              textAlign: 'center'
-            }}>
-              { location.search ? 'All orders' : menuItemsMap[this.state.currentRoute] }
-            </h3>
-          </div>
+          {
+              this.state.currentRoute !== 'create-new-order'
+              &&
+              <div style={{
+                marginTop: '10px',
+                padding: '10px',
+                background: '#f6f6f6',
+                position: 'sticky',
+                zIndex: 1,
+                top: '65px',
+                boxShadow: '0px 1px 2px 0px #ddd'
+              }}>
+                <h3 style={{
+                  textTransform: 'uppercase',
+                  margin: '0',
+                  textAlign: 'center'
+                }}>
+                  { location.search ? 'All orders' : menuItemsMap[this.state.currentRoute] }
+                </h3>
+              </div>
+          }
           <Switch key={this.state.key}>
             <Route exact path='/home/orders' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/live' render={ props => <LiveOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
@@ -344,6 +355,8 @@ class Home extends Component {
             <Route exact path='/home/orders/busy-delivery-agents' render={ props => <BusyDeliveryAgentsList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/returning' render={ props => <ReturningOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
             <Route exact path='/home/orders/search' render={ props => <SearchOrdersList {...props} mountOrderDetail={this.mountOrderDetail} /> } />
+            <Route exact path='/home/orders/create-new-order' render={ props => <CreateNewOrder/> }  />
+            {/* <Route exact path='/home/orders/customer-search' component={AddressList} /> */}
           </Switch>
         </div>
       </Router>
