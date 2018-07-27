@@ -186,3 +186,13 @@ export const fetchCustomerDetails = data => ({
   type: ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS,
   data
 })
+
+// export const validateGeolocation = data => ({
+//   type: ActionTypes.REQUEST_VALIDATE_GEOLOCATION,
+//   data
+// })
+
+export const fetchInventoryList = data => ({
+  type: ActionTypes.REQUEST_FETCH_INVENTORY_LIST,
+  data
+})

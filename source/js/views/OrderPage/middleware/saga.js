@@ -8,7 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
-import { customerDetails }  from './../../../mockData'
+import { customerDetails, inventoryList }  from './../../../mockData'
 
 
 /**
@@ -349,8 +349,9 @@ function* fetchNotes(action) {
   }
 }
 
-function* fetchCustomerDetails() {
+function* fetchCustomerDetails(action) {
   try {
+    //const data = yield call(Api.fetchNotes, action)
     const data = customerDetails
     yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
   } catch (err) {
@@ -358,7 +359,24 @@ function* fetchCustomerDetails() {
   }
 }
 
+function* fetchInventoryList(action) {
+  try {
+    //const data = yield call(Api.fetchNotes, action)
+    const data = inventoryList
+    yield put({type: ActionTypes.SUCCESS_FETCH_INVENTORY_LIST, data})
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
 
+// function* validateGPS(action) {
+//   try {
+//     const data = customerDetails
+//     yield put({type: ActionTypes.SUCCESS_VALIDATE_GEOLOCATION, data})
+//   } catch (err) {
+//     err.response.json().then(json => { Notify(json.message, "warning") })
+//   }
+// }
 
 /**
  * Watchers
@@ -567,8 +585,20 @@ export function* watchFetchNotes() {
   }
 }
 
-export function* watchFetchCustomerAddress() {
+export function* watchFetchCustomerDetails() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
+  }
+}
+
+// export function* watchValidateGPS() {
+//   while (true) {
+//     yield* takeLatest(ActionTypes.REQUEST_VALIDATE_GEOLOCATION, validateGPS)
+//   }
+// }
+
+export function* watchFetchInventoryList() {
+  while(true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_INVENTORY_LIST, fetchInventoryList)
   }
 }

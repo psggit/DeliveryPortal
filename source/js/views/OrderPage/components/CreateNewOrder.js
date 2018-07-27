@@ -6,8 +6,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import createHistory from 'history/createBrowserHistory'
 import AddressList from './AddressList';
+import InventoryList from './InventoryList'
+import Geocode from 'react-geocode'
 
 const history = createHistory()
+
+//const KEY = 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
 
 class CreateNewOrder extends React.Component {
 
@@ -21,6 +25,7 @@ class CreateNewOrder extends React.Component {
     this.setPhoneNumber = this.setPhoneNumber.bind(this)
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
+    this.fetchInventoryList = this.fetchInventoryList.bind(this)
   }
 
   setPhoneNumber(e) {
@@ -31,17 +36,50 @@ class CreateNewOrder extends React.Component {
     this.props.actions.fetchCustomerDetails({
       query,
       offset: 0,
-      limit: 40
+      limit: 9999
     })
     history.push(`/home/orders/customer-search?q=${query}`, null)
   }
+
+  // validateGeolocation(gps) {
+  //   this.props.actions.fetchCustomerDetails({
+  //     gps
+  //   })
+  // }
 
   clearSearchResults() {
     const { currentRoute } = this.state
     history.push(`/home/orders/${currentRoute}`, null)
   }
+
+  // getLatitudeLongitude(address) {
+  //   Geocode.setApiKey(KEY);
+  //   // Enable or disable logs. Its optional.
+  //   Geocode.enableDebug();
+  //   Geocode.fromAddress(address).then(
+  //     response => {
+  //       const { lat, lng } = response.results[0].geometry.location;
+  //       console.log(lat, lng);
+  //     },
+  //     error => {
+  //       console.error(error);
+  //     }
+  //   );
+  // }
+
+  fetchInventoryList(gps) {
+    this.props.actions.fetchInventoryList({
+      from : 0,
+      gps : gps,
+      is_featured : false,
+      km : "40km",
+      size : 9999,
+      stateName : "TN"
+    })
+  }
   
   render() {
+   
     return (
       <React.Fragment>
         <SearchInput
@@ -50,11 +88,30 @@ class CreateNewOrder extends React.Component {
           placeholder='Phone number'
           maxLength = {10}
         />
-        { 
-          !this.props.data.loadingCustomerDetails
-          &&
-          <AddressList data={this.props.data.customerDetails}></AddressList>
-        }
+        <div className="new-order-container" style={{display: 'flex', justifyContent: 'space-between', marginTop: '30px'}}>
+          {
+
+            !this.props.data.loadingCustomerDetails && 
+            Object.keys(this.props.data.customerDetails).length
+            ?
+            <AddressList data={this.props.data.customerDetails} handleClick={this.fetchInventoryList}></AddressList>
+            : ''
+          }
+          {
+            !this.props.data.loadingCustomerDetails && 
+            Object.keys(this.props.data.customerDetails).length === 0
+            ?
+            <button> Add address </button>
+            : ''
+          }
+          {
+            !this.props.data.loadingInventoryList && 
+            Object.keys(this.props.data.inventoryList).length
+            ?
+            <InventoryList data={this.props.data.inventoryList}></InventoryList>
+            : ''
+          }
+        </div>
       </React.Fragment>
     )
   }
