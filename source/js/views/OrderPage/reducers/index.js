@@ -303,7 +303,6 @@ const actionsMap = {
   },
 
   [ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS]: (state, action) => {
-    console.log("cust detials")
     return Object.assign({}, state, {
       customerDetails: action.data,
       loadingCustomerDetails: false
@@ -311,7 +310,6 @@ const actionsMap = {
   },
 
   [ActionTypes.SUCCESS_FETCH_INVENTORY_LIST]: (state, action) => {
-    console.log("inventry list")
     return Object.assign({}, state, {
       inventoryList: action.data,
       loadingInventoryList: false

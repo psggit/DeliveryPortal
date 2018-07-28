@@ -314,3 +314,15 @@ export function restockOrder(action) {
   .then(json => json)
   return data
 }
+
+
+export function placeOrder(action) {
+  const data = POST({
+    api: `support/portal/create/order`,
+    handleError: true,
+    apiBase: 'ordermanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

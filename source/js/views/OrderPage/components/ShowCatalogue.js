@@ -140,8 +140,8 @@ export default function showCatalogue(data) {
       })
     }
 
-    addItemToCart(productId, type) {
-      data.addItemToCart(productId, type)
+    addItemToCart(item, brand) {
+      data.addItemToCart(item, brand)
       // unMountModal()
     }
 
@@ -187,10 +187,12 @@ export default function showCatalogue(data) {
     }
 
     render() {
-      console.log(this.brands);
       return (
-        <ModalBox>
-          <ModalHeader>Browse Catalogue</ModalHeader>
+      <React.Fragment>
+       {
+         this.genres && this.genres.length ?  
+         <ModalBox>
+         <ModalHeader>Browse Catalogue</ModalHeader>
           <div style={{ display: 'flex', margin: '20px 0' }}>
             {
               !this.state.loadingGenres &&
@@ -272,7 +274,7 @@ export default function showCatalogue(data) {
                                             <td>{ item.price }</td>
                                             <td>
                                               <button
-                                                onClick={() => { this.addItemToCart(item.id, item.type) }}
+                                                onClick={() => { this.addItemToCart(item, this.brands[i].brand) }}
                                                 style={{
                                                   padding: '2px 20px'
                                                 }}
@@ -300,7 +302,14 @@ export default function showCatalogue(data) {
           <ModalFooter>
             <button className='btn btn-primary' onClick={unMountModal}>Close</button>
           </ModalFooter>
-        </ModalBox>
+       </ModalBox>  : 
+       <ModalBox>
+          <ModalHeader>Notification</ModalHeader>
+          <ModalBody>No genres available for selected address. Try selecting different address</ModalBody>
+          <ModalFooter><button className='btn btn-primary' onClick={unMountModal}>Close</button></ModalFooter>
+       </ModalBox>
+       }
+       </React.Fragment>
       )
     }
   }

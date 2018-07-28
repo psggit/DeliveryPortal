@@ -8,7 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
-import { customerDetails, inventoryList }  from './../../../mockData'
+import { customerDetails }  from './../../../mockData'
 
 
 /**
@@ -359,15 +359,25 @@ function* fetchCustomerDetails(action) {
   }
 }
 
-function* fetchInventoryList(action) {
+function* placeOrder(action) {
   try {
-    //const data = yield call(Api.fetchNotes, action)
-    const data = inventoryList
-    yield put({type: ActionTypes.SUCCESS_FETCH_INVENTORY_LIST, data})
+    const data = yield call(Api.placeOrder, action)
+    //const data = customerDetails
+    yield put({type: ActionTypes.SUCCESS_PLACE_ORDER, data})
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
+
+// function* fetchInventoryList(action) {
+//   try {
+//     //const data = yield call(Api.fetchNotes, action)
+//     const data = inventoryList
+//     yield put({type: ActionTypes.SUCCESS_FETCH_INVENTORY_LIST, data})
+//   } catch (err) {
+//     err.response.json().then(json => { Notify(json.message, "warning") })
+//   }
+// }
 
 // function* validateGPS(action) {
 //   try {
@@ -597,8 +607,14 @@ export function* watchFetchCustomerDetails() {
 //   }
 // }
 
-export function* watchFetchInventoryList() {
+// export function* watchFetchInventoryList() {
+//   while(true) {
+//     yield* takeLatest(ActionTypes.REQUEST_FETCH_INVENTORY_LIST, fetchInventoryList)
+//   }
+// }
+
+export function* watchPlaceOrder() {
   while(true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_INVENTORY_LIST, fetchInventoryList)
+    yield* takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
   }
 }

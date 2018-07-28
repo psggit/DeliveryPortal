@@ -11,7 +11,7 @@ class AddressList extends React.Component {
   renderAddressList() {
     return this.props.data.addresses.map((item, i) => {
       return (
-        <div key={i} onClick={()=>this.props.handleClick(item.gps)} className="address">{ item.address }</div>
+        <div key={i} onClick={()=>this.props.handleClick(item.gps, item.id)} className="address">{ item.address }</div>
       )
     })
   }
@@ -19,7 +19,7 @@ class AddressList extends React.Component {
   render() {
     return (
       <div className="address-container">
-        <div className="credits header">Credits: {this.props.data.consumer_info.credits}</div>
+        <div className="credits header">CREDITS: {this.props.data.consumer_info.credits}</div>
         <div className="title header">Select delivery address </div>
         <div className="addresses">
           {
