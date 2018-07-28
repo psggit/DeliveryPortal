@@ -317,8 +317,9 @@ export function restockOrder(action) {
 
 
 export function placeOrder(action) {
+  console.log("place ordr", action.data);
   const data = POST({
-    api: `support/portal/create/order`,
+    api: `/support/portal/create/order`,
     handleError: true,
     apiBase: 'ordermanUrl',
     data: action.data

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import createHistory from 'history/createBrowserHistory'
 import AddressList from './AddressList';
-import InventoryList from './InventoryList'
+//import InventoryList from './InventoryList'
 import Geocode from 'react-geocode'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
