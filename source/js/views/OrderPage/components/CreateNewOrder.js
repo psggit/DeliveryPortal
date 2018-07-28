@@ -240,7 +240,7 @@ class CreateNewOrder extends React.Component {
               <div className="cart-body"> 
                 <div className="subheader">
                   <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
-                  <button onClick={() => this.fetchInventoryList(this.state.gps, '')}> Add item </button>
+                  <button onClick={() => this.fetchInventoryList(this.gps, this.addressId)}> Add item </button>
                 </div>
                 {
                   <React.Fragment>

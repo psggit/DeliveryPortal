@@ -11,7 +11,7 @@ class AddressList extends React.Component {
   renderAddressList() {
     return this.props.data.addresses.map((item, i) => {
       return (
-        <div key={i} onClick={()=>this.props.handleClick(item.gps, item.id)} className="address">{ item.address }</div>
+        <div key={i} onClick={()=>this.props.handleClick(item.gps, item.address_id)} className="address">{ item.address }</div>
       )
     })
   }
