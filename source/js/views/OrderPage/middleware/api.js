@@ -315,9 +315,18 @@ export function restockOrder(action) {
   return data
 }
 
+export function fetchCustomerDetails(action) {
+  const data = POST({
+    api: `/support/portal/consumer/get_info`,
+    handleError: true,
+    apiBase: 'ordermanUrl',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}
 
 export function placeOrder(action) {
-  console.log("place ordr", action.data);
   const data = POST({
     api: `/support/portal/create/order`,
     handleError: true,

@@ -8,7 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
-import { customerDetails }  from './../../../mockData'
+//import { customerDetails }  from './../../../mockData'
 
 
 /**
@@ -351,8 +351,7 @@ function* fetchNotes(action) {
 
 function* fetchCustomerDetails(action) {
   try {
-    //const data = yield call(Api.fetchNotes, action)
-    const data = customerDetails
+    const data = yield call(Api.fetchCustomerDetails, action)
     yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
@@ -362,7 +361,6 @@ function* fetchCustomerDetails(action) {
 function* placeOrder(action) {
   try {
     const data = yield call(Api.placeOrder, action)
-    //const data = customerDetails
     yield put({type: ActionTypes.SUCCESS_PLACE_ORDER, data})
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })

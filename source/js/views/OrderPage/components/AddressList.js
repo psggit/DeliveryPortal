@@ -19,7 +19,7 @@ class AddressList extends React.Component {
   render() {
     return (
       <div className="address-container">
-        <div className="credits header">CREDITS: {this.props.data.consumer_info.credits}</div>
+        <div className="credits header">CREDITS: {this.props.data.consumer_details.available_credits}</div>
         <div className="title header">Select delivery address </div>
         <div className="addresses">
           {

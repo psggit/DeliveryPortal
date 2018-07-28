@@ -56,9 +56,7 @@ class CreateNewOrder extends React.Component {
 
   getCustomerDetails(query) {
     this.props.actions.fetchCustomerDetails({
-      query,
-      offset: 0,
-      limit: 9999
+      mobile: query
     })
     this.setPhoneNumber(query)
     history.push(`/home/orders/customer-search?q=${query}`, null)
