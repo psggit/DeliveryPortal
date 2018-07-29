@@ -119,11 +119,71 @@ export const customerDetails = {
             "landmark": "tsct",
             "store_pickup": true,
             "city_name": "Chennai"
+        },
+        {
+            "id": 11991,
+            "distance": 0.21890923498185952,
+            "state_short_name": "TN",
+            "type": "Home",
+            "city_gps": "13.010356,80.252106",
+            "city_id": 5,
+            "address": "Neikarapatti residence, B Ramachandra Adithanar Rd, Gandhi Nagar, Adyar, Chennai, Tamil Nadu 600020, India",
+            "gps": "13.009616614098432,80.25397796183825",
+            "delivery": true,
+            "flat_number": "test",
+            "landmark": "tsct",
+            "store_pickup": true,
+            "city_name": "Chennai"
+        },
+        {
+            "id": 11991,
+            "distance": 0.21890923498185952,
+            "state_short_name": "TN",
+            "type": "Home",
+            "city_gps": "13.010356,80.252106",
+            "city_id": 5,
+            "address": "Neikarapatti residence, B Ramachandra Adithanar Rd, Gandhi Nagar, Adyar, Chennai, Tamil Nadu 600020, India",
+            "gps": "13.009616614098432,80.25397796183825",
+            "delivery": true,
+            "flat_number": "test",
+            "landmark": "tsct",
+            "store_pickup": true,
+            "city_name": "Chennai"
+        },
+        {
+            "id": 11991,
+            "distance": 0.21890923498185952,
+            "state_short_name": "TN",
+            "type": "Home",
+            "city_gps": "13.010356,80.252106",
+            "city_id": 5,
+            "address": "Neikarapatti residence, B Ramachandra Adithanar Rd, Gandhi Nagar, Adyar, Chennai, Tamil Nadu 600020, India",
+            "gps": "13.009616614098432,80.25397796183825",
+            "delivery": true,
+            "flat_number": "test",
+            "landmark": "tsct",
+            "store_pickup": true,
+            "city_name": "Chennai"
+        },
+        {
+            "id": 11991,
+            "distance": 0.21890923498185952,
+            "state_short_name": "TN",
+            "type": "Home",
+            "city_gps": "13.010356,80.252106",
+            "city_id": 5,
+            "address": "Neikarapatti residence, B Ramachandra Adithanar Rd, Gandhi Nagar, Adyar, Chennai, Tamil Nadu 600020, India",
+            "gps": "13.009616614098432,80.25397796183825",
+            "delivery": true,
+            "flat_number": "test",
+            "landmark": "tsct",
+            "store_pickup": true,
+            "city_name": "Chennai"
         }
     ],
-    "consumer_info": {
+    "consumer_details": {
         "name":"",
-        "credits": 200
+        "available_credits": 200
 
     }
 }

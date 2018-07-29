@@ -3,16 +3,18 @@
     width: 46%;
     background: #ffffff;
     box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.47);
+    font-size: 14px;
      
     .header {
       background: #2f2f2f;
       color: #ffffff;
-      padding: 15px;
+      padding: 12px;
+      height: 42px;;
     }
 
 
     .cart-body {
-      margin: 20px;
+      margin: 10px;
       font-size: 14px;
      
       .subheader {
@@ -21,6 +23,7 @@
         padding: 10px;
         border-bottom: 1px solid #dfdfdf;
         font-weight: 600;
+        height: 60px;
       }
   
       .cart-header, .cart-item {
@@ -30,6 +33,7 @@
         font-weight: 600;
         width: 100%;
         border-bottom: 1px solid #f6f6f6;
+        height: auto;
   
         .brand {
           width: 40%;
@@ -57,14 +61,15 @@
       }
 
       .cart-items {
-        height: 200px;
+        height: 190px;
         overflow-y: auto;
       }
 
       .place-order {
         width: 100%;
-        padding: 5px 20px 10px 20px;
+        padding: 10px 20px;
         border-top: 1px solid #dfdfdf;
+        height: 50px;
         
         button {
           float: right

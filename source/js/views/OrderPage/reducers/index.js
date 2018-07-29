@@ -51,7 +51,7 @@ const initialOrderState = {
     loadingAttemptedOrders: true,
     loadingUnavailableDp: true,
     loadingReturningOrders: true,
-    loadingInventoryList: true,
+    //loadingInventoryList: true,
     loadingSearchOrders: true,
     loadingCustomerDetails: true,
     autoPilotStatus: false,
@@ -62,7 +62,7 @@ const initialOrderState = {
     needToBeCancelledOrdersData: [],
     attemptedOrdersData: [],
     unavailableDpsData: [],
-    inventoryList: [],
+    //inventoryList: [],
     returningOrders: [],
     searchOrdersData: [],
     orders: [],
@@ -309,12 +309,12 @@ const actionsMap = {
     })
   },
 
-  [ActionTypes.SUCCESS_FETCH_INVENTORY_LIST]: (state, action) => {
-    return Object.assign({}, state, {
-      inventoryList: action.data,
-      loadingInventoryList: false
-    })
-  }
+  // [ActionTypes.SUCCESS_FETCH_INVENTORY_LIST]: (state, action) => {
+  //   return Object.assign({}, state, {
+  //     inventoryList: action.data,
+  //     loadingInventoryList: false
+  //   })
+  // }
 
   // [ActionTypes.SUCCESS_VALIDATE_GEOLOCATION]: (state, action) => {
   //   return Object.assign({}, state, {

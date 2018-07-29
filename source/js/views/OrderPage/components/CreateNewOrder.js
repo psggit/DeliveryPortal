@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import createHistory from 'history/createBrowserHistory'
 import AddressList from './AddressList';
 //import InventoryList from './InventoryList'
-import Geocode from 'react-geocode'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
@@ -32,6 +31,7 @@ class CreateNewOrder extends React.Component {
     this.orderedList = []
     this.orderedListItemDetails = []
 
+    this.showAddressList = this.showAddressList.bind(this)
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
     this.fetchInventoryList = this.fetchInventoryList.bind(this)
@@ -71,6 +71,7 @@ class CreateNewOrder extends React.Component {
   fetchInventoryList(gps, addressId) {
     this.setAddressId(addressId)
     this.setGPS(gps)
+  
     mountModal(showCatalogue({
       heading: 'Browse catalogue',
       gps,
@@ -178,6 +179,13 @@ class CreateNewOrder extends React.Component {
     })
   }
 
+  showAddressList() {
+    //console.log("props", this.props)
+    mountModal(AddressList({
+      addresses:this.props.data.customerDetails.addresses,
+      handleClick:this.fetchInventoryList
+    }))
+  }
 
   renderCartItems() {
     return this.orderedListItemDetails.map((item) => {
@@ -222,6 +230,7 @@ class CreateNewOrder extends React.Component {
             !this.props.data.loadingCustomerDetails && 
             Object.keys(this.props.data.customerDetails).length
             ?
+            //this.showAddressList() : ''
             <AddressList data={this.props.data.customerDetails} handleClick={this.fetchInventoryList}></AddressList>
             : ''
           }
