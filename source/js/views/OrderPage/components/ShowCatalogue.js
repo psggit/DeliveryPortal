@@ -232,8 +232,8 @@ export default function showCatalogue(data) {
                 </thead>
                 <tbody>
                   {
-                    this.brands.map((item, i) => (
-                      <Fragment key={item.id}>
+                    this.brands.map((item, i) => {
+                      return <Fragment key={item.id}>
                         <tr
                           onClick={() => {this.setActiveAccordian(i, item.genreShortName, item.shortName) }}
                           style={{ cursor: 'pointer' }} key={ i }
@@ -256,8 +256,11 @@ export default function showCatalogue(data) {
                                   <tbody>
                                     {
                                       !this.state.loadingSKU ? (
-                                        this.skus.map(item => (
-                                          <tr key={ item.id }>
+                                        this.skus.map(item => {
+                                          const newItem = Object.assign({}, item)
+                                          newItem.brand = this.brands[i].brand
+                                          console.log(newItem)
+                                          return <tr key={ item.id }>
                                             <td>
                                               {`${item.volume} ml`}
                                               <br />
@@ -274,7 +277,7 @@ export default function showCatalogue(data) {
                                             <td>{ item.price }</td>
                                             <td>
                                               <button
-                                                onClick={() => { this.addItemToCart(item, this.brands[i].brand) }}
+                                                onClick={() => { this.addItemToCart(newItem) }}
                                                 style={{
                                                   padding: '2px 20px'
                                                 }}
@@ -283,7 +286,7 @@ export default function showCatalogue(data) {
                                               </button>
                                             </td>
                                           </tr>
-                                        ))
+                                        })
                                       )
                                       : <div className='rolling-loader'></div>
                                     }
@@ -293,7 +296,7 @@ export default function showCatalogue(data) {
                             </tr>
                         }
                       </Fragment>
-                    ))
+                    })
                   }
                 </tbody>
               </table>

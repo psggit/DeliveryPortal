@@ -68,7 +68,7 @@ class Order extends Component {
     unmountOrderDetail()
   }
 
-  increaseProductQuantity(item, brand) {
+  increaseProductQuantity(item) {
     const { actions, order } = this.props
     mountModal(ConfirmModal({
       heading: 'Add item to cart',
@@ -206,7 +206,7 @@ class Order extends Component {
                               {
                                 ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                                 <span
-                                  onClick={() => { this.increaseProductQuantity(item, item.brand_name) }}
+                                  onClick={() => { this.increaseProductQuantity(item) }}
                                   style={{
                                     cursor: 'pointer'
                                   }}>{

@@ -32,11 +32,8 @@ class CreateNewOrder extends React.Component {
     this.address = ''
     this.orderedList = []
     this.orderedListItemDetails = []
-    this.showAddressList = false
-
-    this.showAddressListModal = this.showAddressListModal.bind(this)
+   
     this.showAddAddressModal = this.showAddAddressModal.bind(this)
-    this.toggleAddressList = this.toggleAddressList.bind(this)
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
     this.fetchInventoryList = this.fetchInventoryList.bind(this)
@@ -45,6 +42,17 @@ class CreateNewOrder extends React.Component {
     this.decreaseProductQuantity = this.decreaseProductQuantity.bind(this)
     this.removeItemFromCart = this.removeItemFromCart.bind(this)
     this.placeOrder = this.placeOrder.bind(this)
+    this.renderAddressList = this.renderAddressList.bind(this)
+  }
+
+  componentDidMount() {
+    if(location.search) {
+      const phoneNo = location.search.split("=")[1]
+      this.setPhoneNumber(phoneNo)
+      this.props.actions.fetchCustomerDetails({
+        mobile: phoneNo
+      })
+    }
   }
 
   setPhoneNumber(phoneNumber) {
@@ -60,26 +68,13 @@ class CreateNewOrder extends React.Component {
     this.gps = gps
   }
 
-  toggleAddressList() {
-    this.showAddressList = !this.showAddressList
-  }
-
-  showAddressListModal() {
-    mountModal(AddressList({
-      addresses: this.props.data.customerDetails.addresses,
-      handleClick: this.fetchInventoryList,
-      showAddAddressModal: this.showAddAddressModal
-    }))
-  }
-
   getCustomerDetails(query) {
     
     this.props.actions.fetchCustomerDetails({
       mobile: query
     })
-    this.toggleAddressList()
     this.setPhoneNumber(query)
-    history.push(`/home/orders/customer-search?q=${query}`, null)
+    history.push(`/home/orders/create-new-order?q=${query}`, null)
   }
 
   clearSearchResults() {
@@ -88,24 +83,26 @@ class CreateNewOrder extends React.Component {
   }
 
 
-  fetchInventoryList(gps, addressId, address) {
-
-    if(gps && addressId && address){
-      this.setAddress(addressId, address)
-      this.setGPS(gps)
-    }
-   
-    this.showAddressList = false
+  fetchInventoryList() {
   
-    mountModal(showCatalogue({
-      heading: 'Browse catalogue',
-      gps,
-      addItemToCart: this.increaseProductQuantity
-    }))
-    this.showCart = true
+    if(this.gps) {
+      mountModal(showCatalogue({
+        heading: 'Browse catalogue',
+        gps: this.gps,
+        addItemToCart: this.increaseProductQuantity
+      }))
+      this.showCart = true
+    } else {
+      const message = {
+        heading: 'Error message',
+        confirmMessage: 'Please select delivery address to list the products..'
+      }
+      this.showErrorNotification(message)
+    }
+    
   }
 
-  addItemToCart(cartItem, brand) {
+  addItemToCart(cartItem) {
    
     let foundItem = false
 
@@ -129,7 +126,6 @@ class CreateNewOrder extends React.Component {
         type : cartItem.type,
         count : 1
       }
-      cartItem.brand = brand
       cartItem.quantity = 1
       this.orderedList.push(order)
       this.orderedListItemDetails.push(cartItem)
@@ -169,30 +165,28 @@ class CreateNewOrder extends React.Component {
     }
   }
   
-  increaseProductQuantity(item, brand) {
-    mountModal(ConfirmModal({
-      heading: 'Add item to cart',
-      confirmMessage: 'Are you sure you want to add this product?',
-      handleConfirm: () => {
-        this.addItemToCart(item, brand)
-        this.setState({ orderedItems: this.orderedList })
-        unMountModal()
-      }
-    }))
+  increaseProductQuantity(item) {
+    this.addItemToCart(item)
+    this.setState({ orderedItems: this.orderedList })
+    unMountModal()
   }
 
 
 
   decreaseProductQuantity(id) {
-    mountModal(ConfirmModal({
-      heading: 'Delete item from cart',
-      confirmMessage: 'Are you sure you want to delete this product?',
-      handleConfirm: () => {
-        this.removeItemFromCart(id)
-        this.setState({ orderedItems: this.orderedList })
-        unMountModal()
-      }
-    }))
+    this.removeItemFromCart(id)
+    this.setState({ orderedItems: this.orderedList })
+    unMountModal()
+  }
+
+  showErrorNotification(messageObj) {
+      mountModal(ConfirmModal({
+        heading: messageObj.heading,
+        confirmMessage: messageObj.confirmMessage,
+        handleConfirm: () => {
+          unMountModal()
+        }
+      }))
   }
 
   placeOrder() {
@@ -202,13 +196,6 @@ class CreateNewOrder extends React.Component {
       order_type: "delivery",
       products: this.state.orderedItems
     })
-  }
-
-  showAddressList() {
-    mountModal(AddressList({
-      addresses:this.props.data.customerDetails.addresses,
-      handleClick:this.fetchInventoryList
-    }))
   }
 
   showAddAddressModal() {
@@ -234,7 +221,7 @@ class CreateNewOrder extends React.Component {
                 </span>
                   {item.quantity}
                 <span
-                  onClick={() => { this.increaseProductQuantity(item, item.brand) }}
+                  onClick={() => { this.increaseProductQuantity(item) }}
                   style={{
                     cursor: 'pointer'
                   }}>
@@ -242,6 +229,26 @@ class CreateNewOrder extends React.Component {
                 </span>
               </div>
             </div>
+    })
+  }
+
+  inputChange(gps, addressId, address) {
+    if(gps && addressId && address){
+      this.setAddress(addressId, address)
+      this.setGPS(gps)
+    }
+  }
+
+  renderAddressList() {
+    return  this.props.data.customerDetails.addresses.map((item, i) => {
+      return (
+              <React.Fragment>
+                <div className="address">
+                  <input name="consumer-address" type="radio" value={item.address} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}/>
+                  <div> {item.address} </div>
+                </div>
+              </React.Fragment>
+            )
     })
   }
 
@@ -257,14 +264,6 @@ class CreateNewOrder extends React.Component {
         />
         <div className="new-order-container" style={{display: 'flex', justifyContent: 'space-between', marginTop: '30px'}}>
           {
-
-            !this.props.data.loadingCustomerDetails && 
-            Object.keys(this.props.data.customerDetails).length &&
-            this.showAddressList
-            ?
-            this.showAddressListModal() : ''
-          }
-          {
             !this.props.data.loadingCustomerDetails && 
             Object.keys(this.props.data.customerDetails).length
             ? 
@@ -279,18 +278,21 @@ class CreateNewOrder extends React.Component {
                   <span>CREDITS:</span> 
                   <div className="field-value">{this.props.data.customerDetails.consumer_details.available_credits} </div>
                 </div>
-                <div className="field"> 
-                  <span>ADDRESS:</span>
-                  <div className="address"> {this.address}</div>
-                  <div><button onClick={this.showAddAddressModal}> Change </button> </div>
+                <div className="addresses-container"> 
+                  <div className="field">
+                    <span> ADDRESS:</span> 
+                  </div>
+                  <div className="addresses">
+                    {this.renderAddressList()}
+                  </div>
+                  <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div>
                 </div>
               </div>
             </div>
             : ''
           }
           {
-            this.showCart
-            &&
+            this.showCart &&
             <div className="cart">
               <div className="header">ORDER</div>
               <div className="cart-body"> 
@@ -317,6 +319,24 @@ class CreateNewOrder extends React.Component {
               </div>
               
             </div>
+          }
+          {
+            !this.props.data.loadingCustomerDetails && 
+            Object.keys(this.props.data.customerDetails).length &&
+            !this.showCart
+            &&
+            <div className="cart"> 
+            <div className="header">ORDER</div>
+            <div className="cart-body"> 
+              <div className="subheader">
+                <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
+                <button onClick={() => this.fetchInventoryList(this.gps, this.addressId)}> Add item </button>
+              </div>
+              <div className="cart-items">
+                <div className="notification-message">No items in cart</div>
+              </div>
+            </div>
+          </div>
           }
         </div>
       </React.Fragment>

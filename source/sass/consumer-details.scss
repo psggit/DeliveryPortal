@@ -3,7 +3,7 @@
   background: #ffffff;
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.47);
   font-size: 14px;
-  height: 402px;
+  height: 432px;
 
   .header {
     background: #2f2f2f;
@@ -13,16 +13,51 @@
   }
 
   .content {
-    margin: 20px;
+    margin: 10px;
+    
+    .addresses-container {
+    
+      span {
+        font-weight: 600;
+      }
 
-    .addresses {
-      display: flex;
+      .addresses {
+
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        overflow-y: auto;
+        border: 1px solid #f6f6f6;
+        margin-bottom: 10px;
+
+        input {
+          margin-right: 10px;
+        }
+
+        .address {
+          display: flex;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+      }
     }
-  
+
+    .add-address {
+      display: flex;
+      justify-content: flex-end;
+      height: 40px;
+
+      button {
+        padding: 10px 20px;
+      }
+    }
+
     .field {
       display: flex;
       font-size: 14px;
       padding: 10px;
+      height: 40px;
       border-bottom: 1px solid #f6f6f6;
       
       .field-name {
