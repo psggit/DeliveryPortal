@@ -12,6 +12,10 @@ import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
 import NewAddress from './NewAddress'
 import '@sass/consumer-details.scss'
+import Geocode from 'react-geocode'
+
+
+const KEY ='AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
 
 const history = createHistory()
 
@@ -43,6 +47,7 @@ class CreateNewOrder extends React.Component {
     this.removeItemFromCart = this.removeItemFromCart.bind(this)
     this.placeOrder = this.placeOrder.bind(this)
     this.renderAddressList = this.renderAddressList.bind(this)
+    this.getGPSFromAddress = this.getGPSFromAddress.bind(this)
   }
 
   componentDidMount() {
@@ -200,8 +205,7 @@ class CreateNewOrder extends React.Component {
 
   showAddAddressModal() {
     mountModal(NewAddress({
-      handleClick: this.fetchInventoryList,
-      goBack: this.showAddressListModal
+      handleClick: this.getGPSFromAddress
     }))
   }
 
@@ -249,6 +253,29 @@ class CreateNewOrder extends React.Component {
                 </div>
               </React.Fragment>
             )
+    })
+  }
+
+  getGPSFromAddress(formValuesObj) {
+
+    Geocode.setApiKey(KEY);
+    var self = this;
+    Geocode.fromAddress(formValuesObj.address).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng, this)
+        self.validateAddress({lat, lng})
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+  }
+
+  validateAddress(data) {
+    this.props.actions.validateGeolocation({
+      gps: `${data.lat},${data.lng}`
     })
   }
 
@@ -333,7 +360,7 @@ class CreateNewOrder extends React.Component {
                 <button onClick={() => this.fetchInventoryList(this.gps, this.addressId)}> Add item </button>
               </div>
               <div className="cart-items">
-                <div className="notification-message">No items in cart</div>
+                <div className="notification-message">Cart is empty!</div>
               </div>
             </div>
           </div>

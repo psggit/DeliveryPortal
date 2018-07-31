@@ -202,4 +202,9 @@ export const placeOrder = data => ({
   data
 })
 
+export const validateGeolocation = data => ({
+  type: ActionTypes.REQUEST_VALIDATE_GPS,
+  data
+}) 
+
 

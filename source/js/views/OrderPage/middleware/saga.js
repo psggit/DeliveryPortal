@@ -368,6 +368,15 @@ function* placeOrder(action) {
   }
 }
 
+function* validateGPS(action) {
+  try {
+    const data = yield call(Api.validateGPS, action)
+    yield put({type: ActionTypes.SUCCESS_VALIDATE_GPS, data})
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
 // function* fetchInventoryList(action) {
 //   try {
 //     //const data = yield call(Api.fetchNotes, action)
@@ -615,5 +624,11 @@ export function* watchFetchCustomerDetails() {
 export function* watchPlaceOrder() {
   while(true) {
     yield* takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
+  }
+}
+
+export function* watchValidateGPS() {
+  while(true) {
+    yield* takeLatest(ActionTypes.REQUEST_VALIDATE_GPS, validateGPS)
   }
 }

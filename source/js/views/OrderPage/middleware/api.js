@@ -336,3 +336,14 @@ export function placeOrder(action) {
   .then(json => json)
   return data
 }
+
+export function validateGPS(action) {
+  const data = POST({
+    api: `/consumer/delivery/address/check`,
+    handleError: true,
+    apiBase: 'api1',
+    data: action.data
+  })
+  .then(json => json)
+  return data
+}

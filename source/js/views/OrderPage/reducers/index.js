@@ -51,6 +51,8 @@ const initialOrderState = {
     loadingAttemptedOrders: true,
     loadingUnavailableDp: true,
     loadingReturningOrders: true,
+    validatingGPS : true,
+    isGPSValid: false,
     //loadingInventoryList: true,
     loadingSearchOrders: true,
     loadingCustomerDetails: true,
@@ -316,12 +318,12 @@ const actionsMap = {
   //   })
   // }
 
-  // [ActionTypes.SUCCESS_VALIDATE_GEOLOCATION]: (state, action) => {
-  //   return Object.assign({}, state, {
-  //     customerDetails: action.data,
-  //     validatingGPS: false
-  //   })
-  // }
+  [ActionTypes.SUCCESS_VALIDATE_GPS]: (state, action) => {
+    return Object.assign({}, state, {
+      validatingGPS : false,
+      isGPSValid: true,
+    })
+  }
 };
 
 export default function reducer(state = initialOrderState, action = {}) {
