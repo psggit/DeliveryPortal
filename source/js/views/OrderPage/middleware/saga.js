@@ -351,7 +351,7 @@ function* fetchNotes(action) {
 
 function* fetchCustomerDetails(action) {
   try {
-    const data = customerDetails
+    const data = yield call(Api.fetchCustomerDetails, action)
     yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
@@ -362,6 +362,7 @@ function* placeOrder(action) {
   try {
     const data = yield call(Api.placeOrder, action)
     yield put({type: ActionTypes.SUCCESS_PLACE_ORDER, data})
+    Notify("Order placed successfully", "success")
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
   }

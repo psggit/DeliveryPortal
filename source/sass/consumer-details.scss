@@ -1,0 +1,44 @@
+.consumer-details {
+  width: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.47);
+  font-size: 14px;
+  height: 402px;
+
+  .header {
+    background: #2f2f2f;
+    color: #ffffff;
+    padding: 12px;
+    height: 42px;
+  }
+
+  .content {
+    margin: 20px;
+
+    .addresses {
+      display: flex;
+    }
+  
+    .field {
+      display: flex;
+      font-size: 14px;
+      padding: 10px;
+      border-bottom: 1px solid #f6f6f6;
+      
+      .field-name {
+        width: calc(100% - 85px);
+      }
+  
+      span {
+        width: 85px;
+        font-weight: 600;
+      }
+  
+      .address {
+        width: calc(100% - 85px - 60px);
+      }
+  
+    }
+  }
+ 
+}

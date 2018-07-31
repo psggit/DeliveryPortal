@@ -6,11 +6,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import createHistory from 'history/createBrowserHistory'
 import AddressList from './AddressList';
-//import InventoryList from './InventoryList'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
+import NewAddress from './NewAddress'
+import '@sass/consumer-details.scss'
 
 const history = createHistory()
 
@@ -28,10 +29,14 @@ class CreateNewOrder extends React.Component {
     this.phoneNumber = ''
     this.gps = ''
     this.addressId = ''
+    this.address = ''
     this.orderedList = []
     this.orderedListItemDetails = []
+    this.showAddressList = false
 
-    this.showAddressList = this.showAddressList.bind(this)
+    this.showAddressListModal = this.showAddressListModal.bind(this)
+    this.showAddAddressModal = this.showAddAddressModal.bind(this)
+    this.toggleAddressList = this.toggleAddressList.bind(this)
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
     this.fetchInventoryList = this.fetchInventoryList.bind(this)
@@ -46,18 +51,33 @@ class CreateNewOrder extends React.Component {
     this.phoneNumber = phoneNumber
   }
 
-  setAddressId(addressId) {
+  setAddress(addressId, address) {
     this.addressId = addressId
+    this.address = address
   }
 
   setGPS(gps) {
     this.gps = gps
   }
 
+  toggleAddressList() {
+    this.showAddressList = !this.showAddressList
+  }
+
+  showAddressListModal() {
+    mountModal(AddressList({
+      addresses: this.props.data.customerDetails.addresses,
+      handleClick: this.fetchInventoryList,
+      showAddAddressModal: this.showAddAddressModal
+    }))
+  }
+
   getCustomerDetails(query) {
+    
     this.props.actions.fetchCustomerDetails({
       mobile: query
     })
+    this.toggleAddressList()
     this.setPhoneNumber(query)
     history.push(`/home/orders/customer-search?q=${query}`, null)
   }
@@ -68,9 +88,14 @@ class CreateNewOrder extends React.Component {
   }
 
 
-  fetchInventoryList(gps, addressId) {
-    this.setAddressId(addressId)
-    this.setGPS(gps)
+  fetchInventoryList(gps, addressId, address) {
+
+    if(gps && addressId && address){
+      this.setAddress(addressId, address)
+      this.setGPS(gps)
+    }
+   
+    this.showAddressList = false
   
     mountModal(showCatalogue({
       heading: 'Browse catalogue',
@@ -180,10 +205,16 @@ class CreateNewOrder extends React.Component {
   }
 
   showAddressList() {
-    //console.log("props", this.props)
     mountModal(AddressList({
       addresses:this.props.data.customerDetails.addresses,
       handleClick:this.fetchInventoryList
+    }))
+  }
+
+  showAddAddressModal() {
+    mountModal(NewAddress({
+      handleClick: this.fetchInventoryList,
+      goBack: this.showAddressListModal
     }))
   }
 
@@ -228,17 +259,33 @@ class CreateNewOrder extends React.Component {
           {
 
             !this.props.data.loadingCustomerDetails && 
-            Object.keys(this.props.data.customerDetails).length
+            Object.keys(this.props.data.customerDetails).length &&
+            this.showAddressList
             ?
-            //this.showAddressList() : ''
-            <AddressList data={this.props.data.customerDetails} handleClick={this.fetchInventoryList}></AddressList>
-            : ''
+            this.showAddressListModal() : ''
           }
           {
             !this.props.data.loadingCustomerDetails && 
-            Object.keys(this.props.data.customerDetails).length === 0
-            ?
-            <button> Add address </button>
+            Object.keys(this.props.data.customerDetails).length
+            ? 
+            <div className="consumer-details">
+              <div className="header">CONSUMER</div>
+              <div className="content">
+                <div className="field">
+                  <span> NAME:</span> 
+                  <div className="field-value"> {this.props.data.customerDetails.consumer_details.consumer_name} </div>
+                </div>
+                <div className="field"> 
+                  <span>CREDITS:</span> 
+                  <div className="field-value">{this.props.data.customerDetails.consumer_details.available_credits} </div>
+                </div>
+                <div className="field"> 
+                  <span>ADDRESS:</span>
+                  <div className="address"> {this.address}</div>
+                  <div><button onClick={this.showAddAddressModal}> Change </button> </div>
+                </div>
+              </div>
+            </div>
             : ''
           }
           {
