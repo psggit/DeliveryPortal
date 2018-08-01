@@ -31,6 +31,7 @@ import SearchInput from '@components/SearchInput'
 
 import '@sass/components/_pagination.scss'
 import '@sass/OrdersPage/OrdersList.scss'
+import { getQueryObj } from '@utils/url-utils'
 
 // import { getIcon, getTimeDiff, canAccess, getHasuraId } from './utils'
 // import * as ActionTypes from './constants/actions'
@@ -65,6 +66,7 @@ class Home extends Component {
       currentRoute: location.pathname.split('/')[3] || 'live',
       shouldMountOrderDetail: false,
       currentOrderId: null,
+      searchQuery: getQueryObj(location.search.slice(1)).q,
       key: 0
     }
 
@@ -309,6 +311,7 @@ class Home extends Component {
                 clearSearch={this.clearSearchOrders}
                 search={this.searchOrders}
                 placeholder='Search all orders...'
+                searchQuery={this.state.searchQuery}
               />
             }
             </div>

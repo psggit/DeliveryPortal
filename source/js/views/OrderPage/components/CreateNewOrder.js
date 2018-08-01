@@ -10,6 +10,7 @@ import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
 import '@sass/consumer-details.scss'
+import { getQueryObj } from '@utils/url-utils'
 
 
 
@@ -25,6 +26,8 @@ class CreateNewOrder extends React.Component {
       isSubmitting : false,
       currentRoute: location.pathname.split('/')[3] || 'live',
       orderedItems: [],
+      searchQuery: getQueryObj(location.search.slice(1)).q,
+      addressId: ''
     }
 
     this.showCartItems = false
@@ -49,8 +52,11 @@ class CreateNewOrder extends React.Component {
 
   componentDidMount() {
     if(location.search) {
-      const phoneNo = location.search.split("=")[1]
+      const data = getQueryObj(location.search.slice(1))
+      const phoneNo = data.q
+      const addressId = data.address_id
       this.setPhoneNumber(phoneNo)
+      this.setState({addressId: parseInt(addressId)})
       this.props.actions.fetchCustomerDetails({
         mobile: phoneNo
       })
@@ -71,7 +77,6 @@ class CreateNewOrder extends React.Component {
   }
 
   getCustomerDetails(query) {
-    
     this.props.actions.fetchCustomerDetails({
       mobile: query
     })
@@ -226,6 +231,7 @@ class CreateNewOrder extends React.Component {
   }
 
   inputChange(gps, addressId, address) {
+    console.log("input change", addressId);
 
     this.orderedList = []
     this.orderedListItemDetails = []
@@ -237,7 +243,7 @@ class CreateNewOrder extends React.Component {
       this.setAddress(addressId, address)
       this.setGPS(gps)
     }
-    
+
   }
 
   renderAddressList() {
@@ -245,10 +251,10 @@ class CreateNewOrder extends React.Component {
       return  this.props.data.customerDetails.addresses.map((item, i) => {
         return (
                 <React.Fragment>
-                  <div className="address">
-                    <input name="consumer-address" type="radio" value={item.address} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}/>
-                    <div> {item.address} </div>
-                  </div>
+                  <label className="address" onClick={() => this.inputChange(item.gps, item.address_id, item.address)}>
+                    <input name="consumer-address" type="radio" value={item.address} checked={item.address_id === this.state.addressId}/>
+                    {item.address}
+                  </label>
                 </React.Fragment>
               )
       })
@@ -265,6 +271,7 @@ class CreateNewOrder extends React.Component {
           clearSearch={this.clearSearchResults}
           search={this.getCustomerDetails}
           placeholder='Phone number'
+          searchQuery={this.state.searchQuery}
           maxLength = {10}
         />
         <div className="new-order-container" style={{display: 'flex', justifyContent: 'space-between', marginTop: '30px'}}>
