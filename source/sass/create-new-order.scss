@@ -34,7 +34,8 @@
         font-weight: 600;
         width: 100%;
         border-bottom: 1px solid #f6f6f6;
-        height: auto;
+        padding: 10px;
+
   
         .brand {
           width: 40%;
@@ -56,13 +57,13 @@
           }
         }
 
-        .box-style {
-          padding: 10px;
-        }
+        // .box-style {
+        //   padding: 10px;
+        // }
       }
 
       .cart-items {
-        height: 190px;
+        height: 220px;
         overflow-y: auto;
         position: relative;
       }

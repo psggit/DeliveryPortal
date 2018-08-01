@@ -5,7 +5,6 @@ import * as Actions from './../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import createHistory from 'history/createBrowserHistory'
-import AddressList from './AddressList';
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
@@ -175,8 +174,6 @@ class CreateNewOrder extends React.Component {
     this.setState({ orderedItems: this.orderedList })
     unMountModal()
   }
-
-
 
   decreaseProductQuantity(id) {
     this.removeItemFromCart(id)
