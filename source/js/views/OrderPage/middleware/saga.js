@@ -368,33 +368,6 @@ function* placeOrder(action) {
   }
 }
 
-function* validateGPS(action) {
-  try {
-    const data = yield call(Api.validateGPS, action)
-    yield put({type: ActionTypes.SUCCESS_VALIDATE_GPS, data})
-  } catch (err) {
-    err.response.json().then(json => { Notify(json.message, "warning") })
-  }
-}
-
-// function* fetchInventoryList(action) {
-//   try {
-//     //const data = yield call(Api.fetchNotes, action)
-//     const data = inventoryList
-//     yield put({type: ActionTypes.SUCCESS_FETCH_INVENTORY_LIST, data})
-//   } catch (err) {
-//     err.response.json().then(json => { Notify(json.message, "warning") })
-//   }
-// }
-
-// function* validateGPS(action) {
-//   try {
-//     const data = customerDetails
-//     yield put({type: ActionTypes.SUCCESS_VALIDATE_GEOLOCATION, data})
-//   } catch (err) {
-//     err.response.json().then(json => { Notify(json.message, "warning") })
-//   }
-// }
 
 /**
  * Watchers
@@ -609,26 +582,9 @@ export function* watchFetchCustomerDetails() {
   }
 }
 
-// export function* watchValidateGPS() {
-//   while (true) {
-//     yield* takeLatest(ActionTypes.REQUEST_VALIDATE_GEOLOCATION, validateGPS)
-//   }
-// }
-
-// export function* watchFetchInventoryList() {
-//   while(true) {
-//     yield* takeLatest(ActionTypes.REQUEST_FETCH_INVENTORY_LIST, fetchInventoryList)
-//   }
-// }
-
 export function* watchPlaceOrder() {
   while(true) {
     yield* takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
   }
 }
 
-export function* watchValidateGPS() {
-  while(true) {
-    yield* takeLatest(ActionTypes.REQUEST_VALIDATE_GPS, validateGPS)
-  }
-}

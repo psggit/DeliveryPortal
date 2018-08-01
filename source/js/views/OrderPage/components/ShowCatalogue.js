@@ -259,7 +259,6 @@ export default function showCatalogue(data) {
                                         this.skus.map(item => {
                                           const newItem = Object.assign({}, item)
                                           newItem.brand = this.brands[i].brand
-                                          console.log(newItem)
                                           return <tr key={ item.id }>
                                             <td>
                                               {`${item.volume} ml`}

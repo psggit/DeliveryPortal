@@ -9,10 +9,8 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
-import NewAddress from './NewAddress'
 import '@sass/consumer-details.scss'
-import Geocode from 'react-geocode'
-import { GET, POST } from '@utils/fetch'
+
 
 
 const KEY ='AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
@@ -37,7 +35,6 @@ class CreateNewOrder extends React.Component {
     this.orderedList = []
     this.orderedListItemDetails = []
    
-    this.showAddAddressModal = this.showAddAddressModal.bind(this)
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
     this.fetchInventoryList = this.fetchInventoryList.bind(this)
@@ -47,10 +44,7 @@ class CreateNewOrder extends React.Component {
     this.removeItemFromCart = this.removeItemFromCart.bind(this)
     this.placeOrder = this.placeOrder.bind(this)
     this.renderAddressList = this.renderAddressList.bind(this)
-    this.getGPSFromAddress = this.getGPSFromAddress.bind(this)
-
-    this.saveAddress = this.saveAddress.bind(this)
-    this.validateAddress = this.validateAddress.bind(this)
+    
   }
 
   componentDidMount() {
@@ -204,12 +198,6 @@ class CreateNewOrder extends React.Component {
     })
   }
 
-  showAddAddressModal() {
-    mountModal(NewAddress({
-      handleClick: this.getGPSFromAddress
-    }))
-  }
-
   renderCartItems() {
     return this.orderedListItemDetails.map((item) => {
       return <div className="cart-item">
@@ -259,67 +247,6 @@ class CreateNewOrder extends React.Component {
     } else {
       return <div className="notification-message">No addresses available!</div>
     }
-  }
-
-  getGPSFromAddress(formValuesObj) {
-
-    Geocode.setApiKey(KEY);
-    //var self = this;
-    Geocode.fromAddress(formValuesObj.address).then(
-      response => {
-        const { lat, lng } = response.results[0].geometry.location;
-        const data = Object.assign({}, formValuesObj)
-        data.gps = `${lat},${lng}`
-        this.validateAddress(data)
-      },
-      error => {
-        console.error(error);
-      }
-    );
-
-  }
-
-  validateAddress(addressObj) {
-    POST({
-      api: `/consumer/delivery/address/check`,
-      handleError: true,
-      apiBase: 'blogicUrl',
-      data: {
-        gps: addressObj.gps
-      }
-    })
-    .then((json) => {
-      this.saveAddress(addressObj)
-    })
-    .catch((err) => {
-      const message = {
-        heading: 'Error message',
-        confirmMessage: 'Address is not valid..'
-      }
-      this.showErrorNotification(message)
-    })
-  }
-
-  saveAddress(addressObj) {
-    POST({
-      api: `/consumer/settings/address`,
-      handleError: true,
-      apiBase: 'blogicUrl',
-      data: {
-        address: addressObj.address,
-        flat_number: addressObj.flatNumber,
-        gps: addressObj.gps,
-        landmark: addressObj.landmark,
-        type: addressObj.addressType
-      }
-    })
-    .then((json) => {
-      this.getCustomerDetails(this.phoneNumber)
-    })
-    .catch((err) => {
-      console.warning("Error in fetching consumer details", err)
-    })
-
   }
 
   render() {

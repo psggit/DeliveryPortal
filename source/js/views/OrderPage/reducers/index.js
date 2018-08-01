@@ -51,9 +51,6 @@ const initialOrderState = {
     loadingAttemptedOrders: true,
     loadingUnavailableDp: true,
     loadingReturningOrders: true,
-    validatingGPS : true,
-    isGPSValid: false,
-    //loadingInventoryList: true,
     loadingSearchOrders: true,
     loadingCustomerDetails: true,
     autoPilotStatus: false,
@@ -64,7 +61,6 @@ const initialOrderState = {
     needToBeCancelledOrdersData: [],
     attemptedOrdersData: [],
     unavailableDpsData: [],
-    //inventoryList: [],
     returningOrders: [],
     searchOrdersData: [],
     orders: [],
@@ -308,20 +304,6 @@ const actionsMap = {
     return Object.assign({}, state, {
       customerDetails: action.data,
       loadingCustomerDetails: false
-    })
-  },
-
-  // [ActionTypes.SUCCESS_FETCH_INVENTORY_LIST]: (state, action) => {
-  //   return Object.assign({}, state, {
-  //     inventoryList: action.data,
-  //     loadingInventoryList: false
-  //   })
-  // }
-
-  [ActionTypes.SUCCESS_VALIDATE_GPS]: (state, action) => {
-    return Object.assign({}, state, {
-      validatingGPS : false,
-      isGPSValid: true,
     })
   }
 };

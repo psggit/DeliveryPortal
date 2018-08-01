@@ -187,24 +187,8 @@ export const fetchCustomerDetails = data => ({
   data
 })
 
-// export const validateGeolocation = data => ({
-//   type: ActionTypes.REQUEST_VALIDATE_GEOLOCATION,
-//   data
-// })
-
-// export const fetchInventoryList = data => ({
-//   type: ActionTypes.REQUEST_FETCH_INVENTORY_LIST,
-//   data
-// })
-
 export const placeOrder = data => ({
   type: ActionTypes.REQUEST_PLACE_ORDER,
   data
 })
-
-export const validateGeolocation = data => ({
-  type: ActionTypes.REQUEST_VALIDATE_GPS,
-  data
-}) 
-
 
