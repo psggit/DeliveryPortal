@@ -27,7 +27,7 @@ class CreateNewOrder extends React.Component {
       orderedItems: [],
     }
 
-    this.showCart = false
+    this.showCartItems = false
     this.phoneNumber = ''
     this.gps = ''
     this.addressId = ''
@@ -93,7 +93,7 @@ class CreateNewOrder extends React.Component {
         gps: this.gps,
         addItemToCart: this.increaseProductQuantity
       }))
-      this.showCart = true
+      this.showCartItems = true
     } else {
       const message = {
         heading: 'Error message',
@@ -226,10 +226,18 @@ class CreateNewOrder extends React.Component {
   }
 
   inputChange(gps, addressId, address) {
+
+    this.orderedList = []
+    this.orderedListItemDetails = []
+    this.showCartItems = false;
+  
+    this.setState({orderedItems : []})
+
     if(gps && addressId && address){
       this.setAddress(addressId, address)
       this.setGPS(gps)
     }
+    
   }
 
   renderAddressList() {
@@ -289,7 +297,7 @@ class CreateNewOrder extends React.Component {
             : ''
           }
           {
-            this.showCart &&
+            this.showCartItems &&
             <div className="cart">
               <div className="header">ORDER</div>
               <div className="cart-body"> 
@@ -320,7 +328,7 @@ class CreateNewOrder extends React.Component {
           {
             !this.props.data.loadingCustomerDetails && 
             Object.keys(this.props.data.customerDetails).length &&
-            !this.showCart
+            !this.showCartItems
             &&
             <div className="cart"> 
             <div className="header">ORDER</div>
