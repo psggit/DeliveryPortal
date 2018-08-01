@@ -12,18 +12,16 @@ import { getIcon } from './../utils'
 import '@sass/consumer-details.scss'
 import { getQueryObj } from '@utils/url-utils'
 
-
-
-const KEY ='AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
+const KEY = 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
 
 const history = createHistory()
 
 class CreateNewOrder extends React.Component {
 
   constructor(props) {
-    super(props) 
+    super(props)
     this.state = {
-      isSubmitting : false,
+      isSubmitting: false,
       currentRoute: location.pathname.split('/')[3] || 'live',
       orderedItems: [],
       searchQuery: getQueryObj(location.search.slice(1)).q,
@@ -33,11 +31,11 @@ class CreateNewOrder extends React.Component {
     this.showCartItems = false
     this.phoneNumber = ''
     this.gps = ''
-    this.addressId = ''
+    //this.addressId = ''
     this.address = ''
     this.orderedList = []
     this.orderedListItemDetails = []
-   
+
     this.getCustomerDetails = this.getCustomerDetails.bind(this)
     this.clearSearchResults = this.clearSearchResults.bind(this)
     this.fetchInventoryList = this.fetchInventoryList.bind(this)
@@ -47,28 +45,33 @@ class CreateNewOrder extends React.Component {
     this.removeItemFromCart = this.removeItemFromCart.bind(this)
     this.placeOrder = this.placeOrder.bind(this)
     this.renderAddressList = this.renderAddressList.bind(this)
-    
+
   }
 
   componentDidMount() {
-    if(location.search) {
+
+    if (location.search) {
+
       const data = getQueryObj(location.search.slice(1))
       const phoneNo = data.q
       const addressId = data.address_id
+
       this.setPhoneNumber(phoneNo)
-      this.setState({addressId: parseInt(addressId)})
+      if(addressId) {
+        this.setState({ addressId: parseInt(addressId) })
+      }    
       this.props.actions.fetchCustomerDetails({
         mobile: phoneNo
       })
     }
+
   }
 
   setPhoneNumber(phoneNumber) {
     this.phoneNumber = phoneNumber
   }
 
-  setAddress(addressId, address) {
-    this.addressId = addressId
+  setAddress(address) {
     this.address = address
   }
 
@@ -91,8 +94,7 @@ class CreateNewOrder extends React.Component {
 
 
   fetchInventoryList() {
-  
-    if(this.gps) {
+    if (this.gps) {
       mountModal(showCatalogue({
         heading: 'Browse catalogue',
         gps: this.gps,
@@ -100,38 +102,38 @@ class CreateNewOrder extends React.Component {
       }))
       this.showCartItems = true
     } else {
-      const message = {
-        heading: 'Error message',
-        confirmMessage: 'Please select delivery address to list the products..'
-      }
-      this.showErrorNotification(message)
+      this.props.data.customerDetails.addresses.map((item) => {
+        if(item.address_id === this.state.addressId) {
+          this.setAddress(item.address)
+          this.setGPS(item.gps)
+        }
+      })
     }
-    
   }
 
   addItemToCart(cartItem) {
-   
+
     let foundItem = false
 
     this.orderedList.map((item) => {
-      if(item.product_id === cartItem.id) {
-          item.count += 1
-          foundItem = true;
-      } 
+      if (item.product_id === cartItem.id) {
+        item.count += 1
+        foundItem = true;
+      }
     })
 
     this.orderedListItemDetails.map((item) => {
-      if(item.id === cartItem.id) {
+      if (item.id === cartItem.id) {
         item.quantity += 1
         foundItem = true;
-      } 
+      }
     })
 
-    if(!foundItem) {
+    if (!foundItem) {
       let order = {
-        product_id : cartItem.id,
-        type : cartItem.type,
-        count : 1
+        product_id: cartItem.id,
+        type: cartItem.type,
+        count: 1
       }
       cartItem.quantity = 1
       this.orderedList.push(order)
@@ -143,35 +145,35 @@ class CreateNewOrder extends React.Component {
     let foundItem = false
 
     this.orderedList.map((item) => {
-      if(item.product_id === id && item.count > 1) {
-          item.count -= 1
-          foundItem = true;
-      } 
+      if (item.product_id === id && item.count > 1) {
+        item.count -= 1
+        foundItem = true;
+      }
     })
 
     this.orderedListItemDetails.map((item) => {
-      if(item.id === id && item.quantity > 1) {
+      if (item.id === id && item.quantity > 1) {
         item.quantity -= 1
         foundItem = true;
-      } 
+      }
     })
 
-    if(!foundItem) {
+    if (!foundItem) {
       this.orderedList = this.orderedList.filter((item) => {
-        if(item.product_id !== id) {
-           return item
-        } 
-      })
-  
-      this.orderedListItemDetails = this.orderedListItemDetails.filter((item) => {
-        if(item.id !== id) {
+        if (item.product_id !== id) {
           return item
-        } 
+        }
+      })
+
+      this.orderedListItemDetails = this.orderedListItemDetails.filter((item) => {
+        if (item.id !== id) {
+          return item
+        }
       })
 
     }
   }
-  
+
   increaseProductQuantity(item) {
     this.addItemToCart(item)
     this.setState({ orderedItems: this.orderedList })
@@ -185,19 +187,19 @@ class CreateNewOrder extends React.Component {
   }
 
   showErrorNotification(messageObj) {
-      mountModal(ConfirmModal({
-        heading: messageObj.heading,
-        confirmMessage: messageObj.confirmMessage,
-        handleConfirm: () => {
-          unMountModal()
-        }
-      }))
+    mountModal(ConfirmModal({
+      heading: messageObj.heading,
+      confirmMessage: messageObj.confirmMessage,
+      handleConfirm: () => {
+        unMountModal()
+      }
+    }))
   }
 
   placeOrder() {
     this.props.actions.placeOrder({
       mobile: this.phoneNumber,
-      address_id: this.addressId,
+      address_id: this.state.addressId,
       order_type: "delivery",
       products: this.state.orderedItems
     })
@@ -206,57 +208,63 @@ class CreateNewOrder extends React.Component {
   renderCartItems() {
     return this.orderedListItemDetails.map((item) => {
       return <div className="cart-item">
-              <div className="brand box-style"> {item.brand} </div>
-              <div className="volume box-style"> {item.volume} </div>
-              <div className="price box-style"> {item.price} </div>
-              <div className="quantity box-style" > 
-                <span
-                  onClick={() => { this.decreaseProductQuantity(item.id) }}
-                  style={{
-                    cursor: 'pointer'
-                  }}>
-                  {getIcon('minus')}
-                </span>
-                  {item.quantity}
-                <span
-                  onClick={() => { this.increaseProductQuantity(item) }}
-                  style={{
-                    cursor: 'pointer'
-                  }}>
-                  {getIcon('plus')}
-                </span>
-              </div>
-            </div>
+        <div className="brand box-style"> {item.brand} </div>
+        <div className="volume box-style"> {item.volume} </div>
+        <div className="price box-style"> {item.price} </div>
+        <div className="quantity box-style" >
+          <span
+            onClick={() => { this.decreaseProductQuantity(item.id) }}
+            style={{
+              cursor: 'pointer'
+            }}>
+            {getIcon('minus')}
+          </span>
+          {item.quantity}
+          <span
+            onClick={() => { this.increaseProductQuantity(item) }}
+            style={{
+              cursor: 'pointer'
+            }}>
+            {getIcon('plus')}
+          </span>
+        </div>
+      </div>
     })
   }
 
   inputChange(gps, addressId, address) {
-    console.log("input change", addressId);
 
     this.orderedList = []
     this.orderedListItemDetails = []
     this.showCartItems = false;
-  
-    this.setState({orderedItems : []})
 
-    if(gps && addressId && address){
-      this.setAddress(addressId, address)
+    this.setState({ orderedItems: [] })
+
+    if (gps && addressId && address) {
+      this.setState({ addressId })
+      this.setAddress(address)
       this.setGPS(gps)
     }
 
   }
 
+  handleChange(e) {
+    this.setState({
+      addressId: parseInt(e.currentTarget.value)
+    });
+  }
+
   renderAddressList() {
-    if(this.props.data.customerDetails.addresses.length) {
-      return  this.props.data.customerDetails.addresses.map((item, i) => {
+    if (this.props.data.customerDetails.addresses.length) {
+      return this.props.data.customerDetails.addresses.map((item, i) => {
         return (
-                <React.Fragment>
-                  <label className="address" onClick={() => this.inputChange(item.gps, item.address_id, item.address)}>
-                    <input name="consumer-address" type="radio" value={item.address} checked={item.address_id === this.state.addressId}/>
-                    {item.address}
-                  </label>
-                </React.Fragment>
-              )
+          <React.Fragment>
+            <label className="address" for={item.address_id} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}>
+              <input id={item.address_id} name="consumer-address" type="radio" value={item.address_id} checked={this.state.addressId === item.address_id} onChange={(e) => this.handleChange(e)} />
+              {item.address}
+            </label>
+          </React.Fragment>
+        )
       })
     } else {
       return <div className="notification-message">No addresses available!</div>
@@ -264,7 +272,7 @@ class CreateNewOrder extends React.Component {
   }
 
   render() {
-   
+
     return (
       <React.Fragment>
         <SearchInput
@@ -272,83 +280,86 @@ class CreateNewOrder extends React.Component {
           search={this.getCustomerDetails}
           placeholder='Phone number'
           searchQuery={this.state.searchQuery}
-          maxLength = {10}
+          maxLength={10}
         />
-        <div className="new-order-container" style={{display: 'flex', justifyContent: 'space-between', marginTop: '30px'}}>
+        <div className="new-order-container" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
           {
-            !this.props.data.loadingCustomerDetails && 
-            Object.keys(this.props.data.customerDetails).length
-            ? 
-            <div className="consumer-details">
-              <div className="header">CONSUMER</div>
-              <div className="content">
-                <div className="field">
-                  <span> NAME:</span> 
-                  <div className="field-value"> {this.props.data.customerDetails.consumer_details.consumer_name} </div>
-                </div>
-                <div className="field"> 
-                  <span>CREDITS:</span> 
-                  <div className="field-value">{this.props.data.customerDetails.consumer_details.available_credits} </div>
-                </div>
-                <div className="addresses-container"> 
+            !this.props.data.loadingCustomerDetails &&
+              Object.keys(this.props.data.customerDetails).length
+              ?
+              <div className="consumer-details">
+                <div className="header">CONSUMER</div>
+                <div className="content">
                   <div className="field">
-                    <span>SELECT DELIVERY ADDRESS:</span> 
+                    <span> NAME:</span>
+                    <div className="field-value"> {this.props.data.customerDetails.consumer_details.consumer_name} </div>
                   </div>
-                  <div className="addresses">
-                    {this.renderAddressList()}
+                  <div className="field">
+                    <span>CREDITS:</span>
+                    <div className="field-value">{this.props.data.customerDetails.consumer_details.available_credits} </div>
                   </div>
-                  {/* <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div> */}
+                  <div className="addresses-container">
+                    <div className="field">
+                      <span>ADDRESS:</span>
+                    </div>
+                    <div className="addresses">
+                      {this.renderAddressList()}
+                    </div>
+                    {/* <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div> */}
+                  </div>
                 </div>
               </div>
-            </div>
-            : ''
+              : ''
           }
           {
             this.showCartItems &&
             <div className="cart">
               <div className="header">ORDER</div>
-              <div className="cart-body"> 
+              <div className="cart-body">
                 <div className="subheader">
                   <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
-                  <button onClick={() => this.fetchInventoryList(this.gps, this.addressId)}> Add item </button>
+                  <button  onClick={() => this.fetchInventoryList()}> Add item </button>
                 </div>
                 {
                   <React.Fragment>
-                  <div className="cart-header">
-                    <div className="brand box-style"> Brand </div>
-                    <div className="volume box-style"> Volume </div>
-                    <div className="price box-style"> Price </div>
-                    <div className="quantity box-style"> Quantity </div>
-                  </div>
-                  <div className="cart-items">
-                    {this.renderCartItems()}
-                  </div>
-                  <div className="place-order">
-                    <button onClick={() => this.placeOrder()}> PLACE ORDER </button>
-                  </div>
+                    <div className="cart-header">
+                      <div className="brand box-style"> Brand </div>
+                      <div className="volume box-style"> Volume </div>
+                      <div className="price box-style"> Price </div>
+                      <div className="quantity box-style"> Quantity </div>
+                    </div>
+                    <div className="cart-items">
+                      {this.renderCartItems()}
+                    </div>
+                    <div className="place-order">
+                      <button onClick={() => this.placeOrder()}> PLACE ORDER </button>
+                    </div>
                   </React.Fragment>
                 }
               </div>
-              
+
             </div>
           }
           {
-            !this.props.data.loadingCustomerDetails && 
+            !this.props.data.loadingCustomerDetails &&
             Object.keys(this.props.data.customerDetails).length &&
             !this.showCartItems
             &&
-            <div className="cart"> 
-            <div className="header">ORDER</div>
-            <div className="cart-body"> 
-              <div className="subheader">
-                <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
-                <button onClick={() => this.fetchInventoryList(this.gps, this.addressId)}> Add item </button>
-              </div>
-              <div className="cart-items">
-                <div className="notification-message">Cart is empty!</div>
+            <div className="cart">
+              <div className="header">ORDER</div>
+              <div className="cart-body">
+                <div className="subheader">
+                  <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
+                  {
+                    this.state.addressId &&
+                    <button onClick={() => this.fetchInventoryList()}> Add item </button>
+                  }
+                </div>
+                <div className="cart-items">
+                  <div className="notification-message">{this.state.addressId ? 'Cart is empty!' : 'Select delivery address'}</div>
+                </div>
               </div>
             </div>
-          </div>
           }
         </div>
       </React.Fragment>
@@ -358,7 +369,7 @@ class CreateNewOrder extends React.Component {
 
 function mapStateToProps(state) {
   return {
-      data : state.OrderPage
+    data: state.OrderPage
   }
 }
 

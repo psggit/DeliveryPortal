@@ -72,24 +72,24 @@ export default function showCatalogue(data) {
           stateName: 'TN'
         }
       })
-      .then(json => {
-        let id
-        let type
-        let cashbackTitle
-        this.skus = json.brand.skus.map(item => {
-          id = item.offer ? item.offer.cash_back_offer_id : item.sku_pricing_id
-          type = item.offer ? 'cashback' : 'normal'
-          cashbackTitle = item.offer ? item.offer.title : ''
-          return {
-            id,
-            volume: item.volume,
-            price: item.price,
-            type,
-            cashbackTitle
-          }
+        .then(json => {
+          let id
+          let type
+          let cashbackTitle
+          this.skus = json.brand.skus.map(item => {
+            id = item.offer ? item.offer.cash_back_offer_id : item.sku_pricing_id
+            type = item.offer ? 'cashback' : 'normal'
+            cashbackTitle = item.offer ? item.offer.title : ''
+            return {
+              id,
+              volume: item.volume,
+              price: item.price,
+              type,
+              cashbackTitle
+            }
+          })
+          this.setState({ loadingSKU: false })
         })
-        this.setState({ loadingSKU: false })
-      })
     }
 
     listBrandsUsingGenre(genre) {
@@ -106,17 +106,17 @@ export default function showCatalogue(data) {
           stateName: 'TN'
         }
       })
-      .then(json => {
-        this.brands = json.map(item => {
-          return {
-            id: item.id,
-            brand: item.brand_name,
-            shortName: item.brand_short_name,
-            genreShortName: item.genre_short_name
-          }
+        .then(json => {
+          this.brands = json.map(item => {
+            return {
+              id: item.id,
+              brand: item.brand_name,
+              shortName: item.brand_short_name,
+              genreShortName: item.genre_short_name
+            }
+          })
+          this.setState({ loadingBrands: false })
         })
-        this.setState({ loadingBrands: false })
-      })
     }
 
     listGenres() {
@@ -128,16 +128,16 @@ export default function showCatalogue(data) {
           gps: data.gps
         }
       })
-      .then(json => {
-        this.genres = json.data.map(item => {
-          this.shortNamesMap[item.genre_name] = item.short_name
-          return {
-            id: item.id,
-            genre: item.genre_name
-          }
+        .then(json => {
+          this.genres = json.data.map(item => {
+            this.shortNamesMap[item.genre_name] = item.short_name
+            return {
+              id: item.id,
+              genre: item.genre_name
+            }
+          })
+          this.setState({ loadingGenres: false })
         })
-        this.setState({ loadingGenres: false })
-      })
     }
 
     addItemToCart(item, brand) {
@@ -160,17 +160,17 @@ export default function showCatalogue(data) {
             stateName: 'TN'
           }
         })
-        .then(json => {
-          this.brands = json.brands.map(item => {
-            return {
-              id: item.id,
-              brand: item.brand_name,
-              shortName: item.short_name,
-              genreShortName: item.category.genre_short.short_name
-            }
+          .then(json => {
+            this.brands = json.brands.map(item => {
+              return {
+                id: item.id,
+                brand: item.brand_name,
+                shortName: item.short_name,
+                genreShortName: item.category.genre_short.short_name
+              }
+            })
+            this.setState({ loadingBrands: false })
           })
-          this.setState({ loadingBrands: false })
-        })
       } else {
         this.listBrandsUsingGenre(this.state.genreShortName)
       }
@@ -188,61 +188,59 @@ export default function showCatalogue(data) {
 
     render() {
       return (
-      <React.Fragment>
-       {
-         this.genres && this.genres.length ?  
-         <ModalBox>
-         <ModalHeader>Browse Catalogue</ModalHeader>
-          <div style={{ display: 'flex', margin: '20px 0' }}>
-            {
-              !this.state.loadingGenres &&
-              <Fragment>
-                <select
-                  style={{ marginRight: '20px' }}
-                  value={this.state.genre}
-                  onChange={this.handleChange}
-                >
-                  {
-                    this.genres.map(item => (
-                      <option
-                        key={item.id}>
-                        { item.genre }
-                      </option>
-                    ))
-                  }
-                </select>
-                <Search
-                  placeholder='Search for brands..'
-                  search={this.searchBrands}
-                  setSearchQuery={this.setSearchQuery}
-                  searchQuery={this.state.searchQuery}
-                />
-              </Fragment>
-            }
-          </div>
-          <ModalBody height='560px'>
-            {
-              !this.state.loadingGenres && !this.state.loadingBrands &&
-              <table className='table--hovered'>
-                <thead>
-                  <tr>
-                    <td>Brand name</td>
-                    <td></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    this.brands.map((item, i) => {
-                      return <Fragment key={item.id}>
-                        <tr
-                          onClick={() => {this.setActiveAccordian(i, item.genreShortName, item.shortName) }}
-                          style={{ cursor: 'pointer' }} key={ i }
-                        >
-                          <td>{item.brand}</td>
-                          <td style={{ textAlign: 'center' }}>{ getIcon('down-arrow')}</td>
-                        </tr>
-                        {
-                          this.state.isAccordianOpen && i === this.state.activeAccordian &&
+        <React.Fragment>
+          <ModalBox>
+            <ModalHeader>Browse Catalogue</ModalHeader>
+            <div style={{ display: 'flex', margin: '20px 0' }}>
+              {
+                !this.state.loadingGenres &&
+                <Fragment>
+                  <select
+                    style={{ marginRight: '20px' }}
+                    value={this.state.genre}
+                    onChange={this.handleChange}
+                  >
+                    {
+                      this.genres.map(item => (
+                        <option
+                          key={item.id}>
+                          {item.genre}
+                        </option>
+                      ))
+                    }
+                  </select>
+                  <Search
+                    placeholder='Search for brands..'
+                    search={this.searchBrands}
+                    setSearchQuery={this.setSearchQuery}
+                    searchQuery={this.state.searchQuery}
+                  />
+                </Fragment>
+              }
+            </div>
+            <ModalBody height='560px'>
+              {
+                !this.state.loadingGenres && !this.state.loadingBrands &&
+                <table className='table--hovered'>
+                  <thead>
+                    <tr>
+                      <td>Brand name</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      this.brands.map((item, i) => {
+                        return <Fragment key={item.id}>
+                          <tr
+                            onClick={() => { this.setActiveAccordian(i, item.genreShortName, item.shortName) }}
+                            style={{ cursor: 'pointer' }} key={i}
+                          >
+                            <td>{item.brand}</td>
+                            <td style={{ textAlign: 'center' }}>{getIcon('down-arrow')}</td>
+                          </tr>
+                          {
+                            this.state.isAccordianOpen && i === this.state.activeAccordian &&
                             <tr className='accordian-row'>
                               <td>
                                 <table>
@@ -259,7 +257,7 @@ export default function showCatalogue(data) {
                                         this.skus.map(item => {
                                           const newItem = Object.assign({}, item)
                                           newItem.brand = this.brands[i].brand
-                                          return <tr key={ item.id }>
+                                          return <tr key={item.id}>
                                             <td>
                                               {`${item.volume} ml`}
                                               <br />
@@ -270,10 +268,10 @@ export default function showCatalogue(data) {
                                                   fontSize: '14px'
                                                 }}
                                               >
-                                                { item.cashbackTitle }
+                                                {item.cashbackTitle}
                                               </span>
                                             </td>
-                                            <td>{ item.price }</td>
+                                            <td>{item.price}</td>
                                             <td>
                                               <button
                                                 onClick={() => { this.addItemToCart(newItem) }}
@@ -287,31 +285,26 @@ export default function showCatalogue(data) {
                                           </tr>
                                         })
                                       )
-                                      : <div className='rolling-loader'></div>
+                                        : <div className='rolling-loader'></div>
                                     }
                                   </tbody>
                                 </table>
                               </td>
                             </tr>
-                        }
-                      </Fragment>
-                    })
-                  }
-                </tbody>
-              </table>
-            }
-          </ModalBody>
-          <ModalFooter>
-            <button className='btn btn-primary' onClick={unMountModal}>Close</button>
-          </ModalFooter>
-       </ModalBox>  : 
-       <ModalBox>
-          <ModalHeader>Notification</ModalHeader>
-          <ModalBody>No genres available for selected address. Try selecting different address</ModalBody>
-          <ModalFooter><button className='btn btn-primary' onClick={unMountModal}>Close</button></ModalFooter>
-       </ModalBox>
-       }
-       </React.Fragment>
+                          }
+                        </Fragment>
+                      })
+                    }
+                  </tbody>
+                </table>
+              }
+            </ModalBody>
+            <ModalFooter>
+              <button className='btn btn-primary' onClick={unMountModal}>Close</button>
+            </ModalFooter>
+          </ModalBox>
+
+        </React.Fragment>
       )
     }
   }
