@@ -363,6 +363,9 @@ function* placeOrder(action) {
     const data = yield call(Api.placeOrder, action)
     yield put({type: ActionTypes.SUCCESS_PLACE_ORDER, data})
     Notify("Order placed successfully", "success")
+    setTimeout(() => {
+      window.location.href = '/home/orders/live'
+    }, 1000)
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
   }

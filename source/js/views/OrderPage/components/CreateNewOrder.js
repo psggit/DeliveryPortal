@@ -25,13 +25,13 @@ class CreateNewOrder extends React.Component {
       currentRoute: location.pathname.split('/')[3] || 'live',
       orderedItems: [],
       searchQuery: getQueryObj(location.search.slice(1)).q,
-      addressId: ''
+      addressId: '',
+      isSubmittingOrder: false
     }
 
     this.showCartItems = false
     this.phoneNumber = ''
     this.gps = ''
-    //this.addressId = ''
     this.address = ''
     this.orderedList = []
     this.orderedListItemDetails = []
@@ -197,6 +197,7 @@ class CreateNewOrder extends React.Component {
   }
 
   placeOrder() {
+    this.setState({isSubmittingOrder : true })
     this.props.actions.placeOrder({
       mobile: this.phoneNumber,
       address_id: this.state.addressId,
@@ -331,8 +332,8 @@ class CreateNewOrder extends React.Component {
                     <div className="cart-items">
                       {this.renderCartItems()}
                     </div>
-                    <div className="place-order">
-                      <button onClick={() => this.placeOrder()}> PLACE ORDER </button>
+                    <div className="place-order">{this.state.isSubmittingOrder}
+                      <button className={this.state.isSubmittingOrder ? 'disable' : ''} onClick={() => this.placeOrder()}> PLACE ORDER </button>
                     </div>
                   </React.Fragment>
                 }
