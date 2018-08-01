@@ -4,6 +4,7 @@
     background: #ffffff;
     box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.47);
     font-size: 14px;
+    height: 382px;
      
     .header {
       background: #2f2f2f;
@@ -35,6 +36,7 @@
         width: 100%;
         border-bottom: 1px solid #f6f6f6;
         padding: 10px;
+        height: 40px;
 
   
         .brand {
@@ -57,13 +59,10 @@
           }
         }
 
-        // .box-style {
-        //   padding: 10px;
-        // }
       }
 
       .cart-items {
-        height: 220px;
+        height: 170px;
         overflow-y: auto;
         position: relative;
       }
@@ -81,12 +80,13 @@
 
       .place-order {
         width: 100%;
-        padding: 10px 20px;
+        padding-top: 10px;
         border-top: 1px solid #dfdfdf;
         height: 50px;
         
         button {
-          float: right
+          float: right;
+          padding: 10px 20px;
         }
       }
 

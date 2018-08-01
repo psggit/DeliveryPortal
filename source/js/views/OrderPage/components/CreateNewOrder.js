@@ -12,6 +12,7 @@ import { getIcon } from './../utils'
 import NewAddress from './NewAddress'
 import '@sass/consumer-details.scss'
 import Geocode from 'react-geocode'
+import { GET, POST } from '@utils/fetch'
 
 
 const KEY ='AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
@@ -47,6 +48,9 @@ class CreateNewOrder extends React.Component {
     this.placeOrder = this.placeOrder.bind(this)
     this.renderAddressList = this.renderAddressList.bind(this)
     this.getGPSFromAddress = this.getGPSFromAddress.bind(this)
+
+    this.saveAddress = this.saveAddress.bind(this)
+    this.validateAddress = this.validateAddress.bind(this)
   }
 
   componentDidMount() {
@@ -241,27 +245,32 @@ class CreateNewOrder extends React.Component {
   }
 
   renderAddressList() {
-    return  this.props.data.customerDetails.addresses.map((item, i) => {
-      return (
-              <React.Fragment>
-                <div className="address">
-                  <input name="consumer-address" type="radio" value={item.address} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}/>
-                  <div> {item.address} </div>
-                </div>
-              </React.Fragment>
-            )
-    })
+    if(this.props.data.customerDetails.addresses.length) {
+      return  this.props.data.customerDetails.addresses.map((item, i) => {
+        return (
+                <React.Fragment>
+                  <div className="address">
+                    <input name="consumer-address" type="radio" value={item.address} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}/>
+                    <div> {item.address} </div>
+                  </div>
+                </React.Fragment>
+              )
+      })
+    } else {
+      return <div className="notification-message">No addresses available!</div>
+    }
   }
 
   getGPSFromAddress(formValuesObj) {
 
     Geocode.setApiKey(KEY);
-    var self = this;
+    //var self = this;
     Geocode.fromAddress(formValuesObj.address).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        console.log(lat, lng, this)
-        self.validateAddress({lat, lng})
+        const data = Object.assign({}, formValuesObj)
+        data.gps = `${lat},${lng}`
+        this.validateAddress(data)
       },
       error => {
         console.error(error);
@@ -270,10 +279,47 @@ class CreateNewOrder extends React.Component {
 
   }
 
-  validateAddress(data) {
-    this.props.actions.validateGeolocation({
-      gps: `${data.lat},${data.lng}`
+  validateAddress(addressObj) {
+    POST({
+      api: `/consumer/delivery/address/check`,
+      handleError: true,
+      apiBase: 'blogicUrl',
+      data: {
+        gps: addressObj.gps
+      }
     })
+    .then((json) => {
+      this.saveAddress(addressObj)
+    })
+    .catch((err) => {
+      const message = {
+        heading: 'Error message',
+        confirmMessage: 'Address is not valid..'
+      }
+      this.showErrorNotification(message)
+    })
+  }
+
+  saveAddress(addressObj) {
+    POST({
+      api: `/consumer/settings/address`,
+      handleError: true,
+      apiBase: 'blogicUrl',
+      data: {
+        address: addressObj.address,
+        flat_number: addressObj.flatNumber,
+        gps: addressObj.gps,
+        landmark: addressObj.landmark,
+        type: addressObj.addressType
+      }
+    })
+    .then((json) => {
+      this.getCustomerDetails(this.phoneNumber)
+    })
+    .catch((err) => {
+      console.warning("Error in fetching consumer details", err)
+    })
+
   }
 
   render() {
@@ -304,12 +350,12 @@ class CreateNewOrder extends React.Component {
                 </div>
                 <div className="addresses-container"> 
                   <div className="field">
-                    <span> ADDRESS:</span> 
+                    <span>SELECT DELIVERY ADDRESS:</span> 
                   </div>
                   <div className="addresses">
                     {this.renderAddressList()}
                   </div>
-                  <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div>
+                  {/* <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div> */}
                 </div>
               </div>
             </div>

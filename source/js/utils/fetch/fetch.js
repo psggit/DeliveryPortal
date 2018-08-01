@@ -12,7 +12,7 @@ export function GET(options) {
 
 export function POST(options) {
   options.method = "POST"
-
+  
   return Utils.constructFetchUtility(options)
 }
 
