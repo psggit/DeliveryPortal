@@ -66,6 +66,7 @@ const initialOrderState = {
     orders: [],
     plotData: [],
     notesData: [],
+    orderSummary: {},
     customerDetails: {},
     ordersCount: 0,
     order: {
@@ -304,6 +305,12 @@ const actionsMap = {
     return Object.assign({}, state, {
       customerDetails: action.data,
       loadingCustomerDetails: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_VALIDATE_ORDER]: (state, action) => {
+    return Object.assign({}, state, {
+      orderSummary: action.data
     })
   }
 };

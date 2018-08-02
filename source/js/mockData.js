@@ -226,3 +226,14 @@ export const inventoryList = {
 		"ordinal_position": 7
 	}]
 }
+
+export const orderSummary = {
+	"data": {
+		"total_credits": "1234",
+		"cart_total": "100",
+		"total": "120",
+        "delivery_fee": 20,
+        "delivery_possible": true,
+        "delivery_message": ""
+    }
+}  

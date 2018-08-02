@@ -53,7 +53,6 @@ export function checkStatus(response) {
   if (response.status >= 200 && response.status < 305) {
     return response
   } else {
-    // console.log(response.statusText);
     var error = new Error(response.statusText)
     error.response = response
     throw error

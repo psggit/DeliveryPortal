@@ -24,12 +24,15 @@ class CreateNewOrder extends React.Component {
       currentRoute: location.pathname.split('/')[3] || 'live',
       orderedItems: [],
       searchQuery: getQueryObj(location.search.slice(1)).q,
+      //phoneNo: '',
       addressId: '',
+      credits: '',
+      validatingCart: false,
       isSubmittingOrder: false
     }
 
     this.showCartItems = false
-    this.phoneNumber = ''
+    this.phoneNo = ''
     this.gps = ''
     this.address = ''
     this.orderedList = []
@@ -44,6 +47,7 @@ class CreateNewOrder extends React.Component {
     this.removeItemFromCart = this.removeItemFromCart.bind(this)
     this.placeOrder = this.placeOrder.bind(this)
     this.renderAddressList = this.renderAddressList.bind(this)
+    this.checkout = this.checkout.bind(this)
 
   }
 
@@ -54,7 +58,7 @@ class CreateNewOrder extends React.Component {
       const data = getQueryObj(location.search.slice(1))
       const phoneNo = data.q
       const addressId = data.address_id
-
+      //this.setState({phoneNo})
       this.setPhoneNumber(phoneNo)
       if(addressId) {
         this.setState({ addressId: parseInt(addressId) })
@@ -66,8 +70,15 @@ class CreateNewOrder extends React.Component {
 
   }
 
-  setPhoneNumber(phoneNumber) {
-    this.phoneNumber = phoneNumber
+  componentWillReceiveProps(newProps) {
+    if(Object.keys(newProps.data.customerDetails).length > 0) {
+      this.setState({credits: newProps.data.customerDetails.consumer_details.available_credits})
+    }
+  }
+
+  setPhoneNumber(phoneNo) {
+    this.phoneNo = phoneNo
+    //this.setState({phoneNo})
   }
 
   setAddress(address) {
@@ -196,9 +207,10 @@ class CreateNewOrder extends React.Component {
   }
 
   placeOrder() {
+    unMountModal()
     this.setState({isSubmittingOrder : true })
     this.props.actions.placeOrder({
-      mobile: this.phoneNumber,
+      mobile: this.phoneNo,
       address_id: this.state.addressId,
       order_type: "delivery",
       products: this.state.orderedItems
@@ -254,11 +266,33 @@ class CreateNewOrder extends React.Component {
     });
   }
 
+  mountOrderSummaryModal(response) {
+
+    if(this.props.data.customerDetails.consumer_details.available_credits !== response.total_credits) {
+      this.setState({credits: response.total_credits})
+    }
+    
+    if(response.delivery_possible) {
+      mountModal(CartSummary({
+        cartTotal: response.cart_total,
+        total: response.total,
+        deliveryFee: response.delivery_fee,
+        cartItems: this.orderedListItemDetails,
+        handleClick: this.placeOrder
+      }))
+    }
+  }
+
   checkout() {
-    mountModal(CartSummary({
-      cartItems: this.orderedListItemDetails,
-      handleClick: this.placeOrder
-    }))
+    if(!this.state.validatingCart) {
+      this.props.actions.validateOrder({
+        mobile: this.phoneNo,
+        address_id: this.state.addressId,
+        order_type: "delivery",
+        products: this.state.orderedItems
+      }, (response) => this.mountOrderSummaryModal(response))
+      this.setState({validatingCart : true })
+    }
   }
 
   renderAddressList() {
@@ -292,7 +326,7 @@ class CreateNewOrder extends React.Component {
         <div className="new-order-container" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
           {
             !this.props.data.loadingCustomerDetails &&
-              Object.keys(this.props.data.customerDetails).length
+              Object.keys(this.props.data.customerDetails).length > 0
               ?
               <div className="consumer-details">
                 <div className="header">CONSUMER</div>
@@ -303,7 +337,7 @@ class CreateNewOrder extends React.Component {
                   </div>
                   <div className="field">
                     <span>CREDITS:</span>
-                    <div className="field-value">{this.props.data.customerDetails.consumer_details.available_credits} </div>
+                    <div className="field-value">{this.state.credits} </div>
                   </div>
                   <div className="addresses-container">
                     <div className="field">
@@ -319,6 +353,8 @@ class CreateNewOrder extends React.Component {
               : ''
           }
           {
+            !this.props.data.loadingCustomerDetails &&
+            Object.keys(this.props.data.customerDetails).length > 0 &&
             this.showCartItems &&
             <div className="cart">
               <div className="header">ORDER</div>
@@ -339,7 +375,7 @@ class CreateNewOrder extends React.Component {
                       {this.renderCartItems()}
                     </div>
                     <div className="place-order">
-                      <button className={this.state.isSubmittingOrder ? 'disable' : ''} onClick={() => this.checkout()}> CHECKOUT </button>
+                      <button className={this.state.validatingCart ? 'disable' : ''} onClick={() => this.checkout()}> CHECKOUT </button>
                     </div>
                   </React.Fragment>
                 }
@@ -349,7 +385,7 @@ class CreateNewOrder extends React.Component {
           }
           {
             !this.props.data.loadingCustomerDetails &&
-            Object.keys(this.props.data.customerDetails).length &&
+            Object.keys(this.props.data.customerDetails).length > 0 &&
             !this.showCartItems
             &&
             <div className="cart">

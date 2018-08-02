@@ -12,15 +12,8 @@ export default function CartSummary(data) {
       super(props)
     }
 
-    cartTotal() {
-      return data.cartItems.reduce((sum, item) => {
-        const price = item.price.split("₹")[1] 
-        return sum + parseInt(price)
-      }, 0)
-    }
-
     renderCartItems() {
-      return data.cartItems.map((item, i) => {
+      return data.cartItems.map((item) => {
         const price = item.price.split("₹")[1] 
         return (
           <tr>
@@ -34,6 +27,14 @@ export default function CartSummary(data) {
     }
 
     render() {
+      const style = { 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          paddingBottom: '10px',
+          marginBottom: '10px', 
+          borderBottom: '1px solid #f6f6f6'
+      }
       return (
         <ModalBox>
           <ModalHeader> ORDER SUMMARY </ModalHeader>
@@ -53,9 +54,17 @@ export default function CartSummary(data) {
             </table>
           </ModalBody>
           <ModalFooter>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={style}>
+              <div style={{fontWeight: '600'}}>
+                Cart total: {data.cartTotal}
+              </div>
+              <div style={{fontWeight: '600'}}>
+                Delivery fee: {data.deliveryFee}
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '600' }}>
               <div>
-                Total: {this.cartTotal()}
+                Total: {data.total}
               </div>
               <button onClick={() => data.handleClick()}> PLACE ORDER </button>
             </div>

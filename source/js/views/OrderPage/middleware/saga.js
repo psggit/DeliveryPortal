@@ -8,7 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
-import { customerDetails }  from './../../../mockData'
+import { customerDetails, orderSummary }  from './../../../mockData'
 
 
 /**
@@ -354,6 +354,7 @@ function* fetchCustomerDetails(action) {
     const data = yield call(Api.fetchCustomerDetails, action)
     yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
   } catch (err) {
+    yield put({type: ActionTypes.REQUEST_SET_LOADING, data: 'loadingCustomerDetails'})
     err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
@@ -368,6 +369,17 @@ function* placeOrder(action) {
     }, 1000)
   } catch (err) {
     err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* validateOrder(action) {
+  try {
+    const data = orderSummary
+    yield put({type: ActionTypes.SUCCESS_VALIDATE_ORDER, data})
+    action.callback(data.data)
+  } catch (err) {
+    Notify("Can't place order", "warning")
+    //err.response.json().then(json => { Notify(json.delivery_message, "warning") })
   }
 }
 
@@ -582,6 +594,12 @@ export function* watchFetchNotes() {
 export function* watchFetchCustomerDetails() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
+  }
+}
+
+export function* watchValidateCart() {
+  while(true) {
+    yield* takeLatest(ActionTypes.REQUEST_VALIDATE_ORDER, validateOrder)
   }
 }
 

@@ -192,3 +192,9 @@ export const placeOrder = data => ({
   data
 })
 
+export const validateOrder = (data, callback) => ({
+  type: ActionTypes.REQUEST_VALIDATE_ORDER,
+  data,
+  callback
+})
+
