@@ -20,7 +20,7 @@ class CreateNewOrder extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isSubmitting: false,
+      // isSubmitting: false,
       currentRoute: location.pathname.split('/')[3] || 'live',
       orderedItems: [],
       searchQuery: getQueryObj(location.search.slice(1)).q,
@@ -28,7 +28,7 @@ class CreateNewOrder extends React.Component {
       addressId: '',
       credits: '',
       validatingCart: false,
-      isSubmittingOrder: false
+      // isSubmittingOrder: false
     }
 
     this.showCartItems = false
@@ -208,7 +208,7 @@ class CreateNewOrder extends React.Component {
 
   placeOrder() {
     unMountModal()
-    this.setState({isSubmittingOrder : true })
+    // this.setState({isSubmittingOrder : true })
     this.props.actions.placeOrder({
       mobile: this.phoneNo,
       address_id: this.state.addressId,
