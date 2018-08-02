@@ -375,6 +375,7 @@ function* placeOrder(action) {
 function* validateOrder(action) {
   try {
     const data = orderSummary
+    //const data = yield call(Api.validateOrder, action)
     yield put({type: ActionTypes.SUCCESS_VALIDATE_ORDER, data})
     action.callback(data.data)
   } catch (err) {
