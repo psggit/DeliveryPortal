@@ -11,8 +11,7 @@ import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
 import '@sass/consumer-details.scss'
 import { getQueryObj } from '@utils/url-utils'
-
-const KEY = 'AIzaSyDpG-NeL-XGYAduQul2JenVr86HIPITEso'
+import CartSummary from './CartSummary';
 
 const history = createHistory()
 
@@ -255,6 +254,13 @@ class CreateNewOrder extends React.Component {
     });
   }
 
+  checkout() {
+    mountModal(CartSummary({
+      cartItems: this.orderedListItemDetails,
+      handleClick: this.placeOrder
+    }))
+  }
+
   renderAddressList() {
     if (this.props.data.customerDetails.addresses.length) {
       return this.props.data.customerDetails.addresses.map((item, i) => {
@@ -332,8 +338,8 @@ class CreateNewOrder extends React.Component {
                     <div className="cart-items">
                       {this.renderCartItems()}
                     </div>
-                    <div className="place-order">{this.state.isSubmittingOrder}
-                      <button className={this.state.isSubmittingOrder ? 'disable' : ''} onClick={() => this.placeOrder()}> PLACE ORDER </button>
+                    <div className="place-order">
+                      <button className={this.state.isSubmittingOrder ? 'disable' : ''} onClick={() => this.checkout()}> CHECKOUT </button>
                     </div>
                   </React.Fragment>
                 }
