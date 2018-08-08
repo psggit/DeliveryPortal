@@ -14,6 +14,13 @@ class SearchInput extends Component {
     }
   }
 
+  // componentDidMount() {
+  //   this.setState({
+  //     searchQuery: '',
+  //     searched: false
+  //   })
+  // }
+
   handleClearSearch() {
     this.setState({
       searchQuery: '',

@@ -73,6 +73,11 @@ class CreateNewOrder extends React.Component {
       })
     }
 
+    // Listen for changes to the current location.
+    this.unlisten = history.listen(location => {
+      this.props.actions.setLoadingAll()
+    })
+
   }
 
   componentWillReceiveProps(newProps) {
@@ -262,7 +267,7 @@ class CreateNewOrder extends React.Component {
     this.setState({ orderedItems: [] })
 
     if (gps && addressId && address) {
-      this.setState({ addressId })
+      this.setState({ addressId, validatingCart: false })
       this.setAddress(address)
       this.setGPS(gps)
     }
