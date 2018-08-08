@@ -10,7 +10,7 @@ import { Api } from "./../config"
  */
 
 const getToken = () => ({
-  "Authorization": `Bearer ${localStorage.getItem('auth-token')}`,
+  // "Authorization": `Bearer ${localStorage.getItem('auth-token')}`,
   "x-hasura-role": `${localStorage.getItem('x-hasura-role')}`
 })
 
@@ -50,11 +50,9 @@ function constructBody({ type, data }) {
  * Error handling helpers
  */
 export function checkStatus(response) {
-  console.log(response)
   if (response.status >= 200 && response.status < 305) {
     return response
   } else {
-    // console.log(response.statusText);
     var error = new Error(response.statusText)
     error.response = response
     throw error
@@ -75,6 +73,7 @@ export function constructFetchUtility(options) {
   let fetchOptions = {
     method,
     headers: getHeaders(type),
+    credentials: 'include'
   }
 
   if(cors) fetchOptions.mode = 'cors'

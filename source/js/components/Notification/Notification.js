@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react"
-import { render } from "react-dom"
+import { render, unmountComponentAtNode } from "react-dom"
 import { Motion, spring } from "react-motion"
 import { getIcon } from './../utils'
 
@@ -20,13 +20,19 @@ export default class Notification extends Component {
     }
   }
 
+  unmountNotify() {
+    setTimeout(() => {
+      unmountComponentAtNode(document.querySelector('.notification-container'))
+    }, 1000)
+  }
+
   componentDidMount() {
     const x = 360
     setTimeout(() => {
       this.setState({ x })
 
       setTimeout(() => {
-        this.setState({ x: 0 })
+        this.setState({ x: 0 }, this.unmountNotify)
       }, 4000)
     }, 100)
   }
@@ -39,16 +45,17 @@ export default class Notification extends Component {
           <div
             className={`notification ${type}`}
             style={{
+                display: 'flex',
                 WebkitTransform: `translateX(-${x}px)`,
                 transform: `translateX(-${x}px)`
               }}
           >
             <span>
               {
-                getIcon(type) 
+                getIcon(type)
               }
             </span>
-            <span>{ message }</span>
+            <span style={{ marginLeft: '10px' }}>{ message }</span>
           </div>
         }
       </Motion>

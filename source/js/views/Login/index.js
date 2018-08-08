@@ -7,9 +7,9 @@ class Login extends React.Component {
   constructor() {
     super()
   }
-  componentWillMount() {
-    if (!location.href.split('/')[3].length) history.pushState(null, null, '/login')
-  }
+  // componentWillMount() {
+  //   if (!location.href.split('/')[3].length) history.pushState(null, null, '/login')
+  // }
 
   render() {
     const subdomain = window.location.hostname.split('.')[0]
@@ -17,14 +17,10 @@ class Login extends React.Component {
     return (
       <div>
         {
-          !localStorage.getItem('_hipbaru')
-          ? (
             subdomain == 'excise'
             ? <ExciseLoginForm createSession={createSession} />
-            : <SupportLoginForm createSession={createSession} /> 
-          )
-          : location.href = '/orders'
-        } 
+            : <SupportLoginForm createSession={createSession} />
+        }
       </div>
     )
   }

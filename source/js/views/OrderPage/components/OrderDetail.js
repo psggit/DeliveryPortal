@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
-import { getIcon } from './../utils'
+import { connect } from 'react-redux'
+import * as Actions from './../actions'
+import { bindActionCreators } from 'redux'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ShowNotifiedRetailers from './ShowNotifiedRetailers'
 import ShowNotifiedDeliverers from './ShowNotifiedDeliverers'
+import ShowAssignableRetailers from './ShowAssignableRetailers'
+import ShowAssignableDeliveryAgents from './ShowAssignableDeliveryAgents'
 import Order from './Order'
 import ConsumerDetail from './ConsumerDetail'
 import RetailerDetail from './RetailerDetail'
 import DelivererDetail from './DelivererDetail'
+import Notes from './Notes'
 import ShowGmap from './ShowGmap'
 import moment from 'moment'
-import { getHasuraId } from './../utils'
+import { getHasuraId, getIcon } from './../utils'
 import '@sass/OrdersPage/OrderDetail.scss'
 
 function getTimeDiff(d2) {
@@ -37,6 +42,8 @@ class OrderDetail extends Component {
     this.openGmap = this.openGmap.bind(this)
     this.showNotifiedDeliverers = this.showNotifiedDeliverers.bind(this)
     this.showNotifiedRetailers = this.showNotifiedRetailers.bind(this)
+    this.showAssignableRetailers = this.showAssignableRetailers.bind(this)
+    this.showAssignableDeliveryAgents = this.showAssignableDeliveryAgents.bind(this)
     this.handleRefersh = this.handleRefersh.bind(this)
   }
 
@@ -54,6 +61,27 @@ class OrderDetail extends Component {
       deliverer,
       customer,
       plotData
+    }))
+  }
+
+  showAssignableDeliveryAgents() {
+    const { order, actions, retailer } = this.props
+    mountModal(ShowAssignableDeliveryAgents({
+      heading: 'Assign new delivery agent',
+      orderId: order.id,
+      retailerId: retailer.id,
+      assignNewDeliveryAgentToOrder: actions.assignNewDeliveryAgentToOrder,
+      setLoading: actions.setLoading
+    }))
+  }
+
+  showAssignableRetailers() {
+    const { order, actions } = this.props
+    mountModal(ShowAssignableRetailers({
+      heading: 'Assign new retailer',
+      orderId: order.id,
+      assignNewRetailerToOrder: actions.assignNewRetailerToOrder,
+      setLoading: actions.setLoading
     }))
   }
 
@@ -92,14 +120,17 @@ class OrderDetail extends Component {
   }
 
   componentDidMount() {
-    // const { actions, currentOrderId } = this.props
-    // actions.fetchPlotData({
-    //   order_id: currentOrderId
-    // })
+    const { currentOrderId } = this.props
+    this.props.actions.fetchOrderDetail(currentOrderId)
+  }
+
+  componentWillUnmount() {
+    this.props.actions.setLoading('loadingOrderDetail')
   }
 
   handleRefersh() {
     const { actions, currentOrderId } = this.props
+    actions.setLoading('loadingOrderDetail')
     actions.fetchOrderDetail(currentOrderId)
   }
 
@@ -126,7 +157,8 @@ class OrderDetail extends Component {
     } = this.props
 
     const isOrderConfirmed = false
-    const supportId = getHasuraId()
+    const supportId = parseInt(getHasuraId())
+    console.log(supportId, order.assignedToId);
     const isOrderAssigned = supportId == order.assignedToId
 
     const { actions } = this.props
@@ -139,6 +171,7 @@ class OrderDetail extends Component {
       const dp_delivered_time = order.deliveredTime
       const dp_reached_to_consumer_time = deliverer.reachedToConsumerTime
       const cancellation_time = order.cancellationTime
+      const cancelled_time = order.cancelledTime
       const orderPlacedTime = order.orderPlacedTime
       const cancellation_return_time = order.cancellationReturnTime
       const dp_picked_up_time = order.pickedUpTime
@@ -204,6 +237,19 @@ class OrderDetail extends Component {
               ? <button id='show-deliverers' style={{marginLeft: '20px'}} onClick={this.showNotifiedDeliverers}>Show notified deliverers</button>
               : ''
             }
+
+            <span style={{ float: 'right', marginRight: '80px' }}>
+              {
+                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
+                <button onClick={this.showAssignableDeliveryAgents}>assign new delivery agent</button>
+              }
+
+              {
+                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
+                <button style={{marginLeft: '20px'}} onClick={this.showAssignableRetailers}>Assign new retailer</button>
+              }
+            </span>
+
             </div>
         </div>
         {/* <hr /> */}
@@ -227,6 +273,11 @@ class OrderDetail extends Component {
                     />
                   : ''
                 }
+                {
+                  order.notes !== null && order.notes.length
+                  ? <Notes loadingNotes={false} data={order.notes} />
+                  : ''
+                }
               </div>
               <div className='right'>
                 {
@@ -236,6 +287,7 @@ class OrderDetail extends Component {
                       ordersType={ordersType}
                       customer={customer}
                       actions={actions}
+                      orderId={order.id}
                       isOrderAssigned={isOrderAssigned}
                       openAssignOrderModal={this.openAssignOrderModal}
                     />
@@ -243,12 +295,16 @@ class OrderDetail extends Component {
                 }
 
                 {
-                  retailer.id && this.props.canAccess('retailer')
+
+                  order.retailers.findIndex(item =>
+                    item.status === 'notified' || item.status === 'accepted'
+                  ) > -1 && this.props.canAccess('retailer')
                   ? <RetailerDetail
                       canAccess={this.props.canAccess}
                       ordersType={ordersType}
                       actions={actions}
                       notifiedRetailers={order.retailers}
+                      dpConfirmationTime={deliverer.confirmationTime}
                       retailer={retailer}
                       isOrderConfirmed={isOrderConfirmed}
                       orderId={order.id}
@@ -256,7 +312,9 @@ class OrderDetail extends Component {
                   : ''
                 }
                 {
-                  deliverer.id && this.props.canAccess('deliverer')
+                  order.deliverers.findIndex(item =>
+                    item.status === 'notified' || item.status === 'accepted'
+                  ) > -1 && this.props.canAccess('deliverer')
                   ? <DelivererDetail
                       canAccess={this.props.canAccess}
                       ordersType={ordersType}
@@ -272,7 +330,7 @@ class OrderDetail extends Component {
               </div>
             </div>
           )
-          : <div className='loader'></div>
+          : <div style={{ top: '30%', left: '48%' }} className='loader2'></div>
         }
 
       </div>
@@ -280,4 +338,13 @@ class OrderDetail extends Component {
   }
 }
 
-export default OrderDetail
+const mapStateToProps = state => state.OrderPage
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(Actions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderDetail)

@@ -8,6 +8,7 @@ import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
 import Notify from '@components/Notification'
+import { customerDetails, orderSummary }  from './../../../mockData'
 
 
 /**
@@ -49,10 +50,10 @@ function* fetchHistoryOrders(action) {
   }
 }
 
-function* fetchCancellationOrders(action) {
+function* fetchNeedToBeCancelledOrders(action) {
   try {
-    const data = yield call(Api.fetchCancellationOrders, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+    const data = yield call(Api.fetchNeedToBeCancelledOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_NEED_TO_BE_CANCELLED_ORDERS, data})
   } catch (err) {
     console.log(err)
   }
@@ -61,9 +62,38 @@ function* fetchCancellationOrders(action) {
 function* fetchAttemptedOrders(action) {
   try {
     const data = yield call(Api.fetchAttemptedOrders, action)
-    yield put({type: ActionTypes.SUCCESS_FETCH_LIVE_ORDERS, data})
+    yield put({type: ActionTypes.SUCCESS_FETCH_ATTEMPTED_ORDERS, data})
   } catch (err) {
     console.log(err)
+  }
+}
+
+function* fetchUnavailableDp(action) {
+  try {
+    const data = yield call(Api.fetchUnavailableDp, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_UNAVAILABLE_DP, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* fetchReturningOrders(action) {
+  try {
+    const data = yield call(Api.fetchReturningOrders, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_RETURNING_ORDERS, data})
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* restockOrder(action) {
+  try {
+    const data = yield call(Api.restockOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, data: { offset: 0, limit: 40 } })
+    Notify("Successfully restocked the order", "success")
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, data: { offset: 0, limit: 40 } })
+    err.response.json().then(json => { Notify(json.status, "warning") })
   }
 }
 
@@ -117,14 +147,11 @@ function* fetchOrderDetail(action) {
 function* forceRedeem(action) {
   try {
     const data = yield call(Api.forceRedeem, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-      Notify("Successfully redeemed the order", "success")
-    }
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    Notify("Successfully redeemed the order", "success")
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
@@ -140,71 +167,59 @@ function* filterOrdersData(action) {
   }
 }
 
-
+// TODO: Fix what to fetch when assignOrder called (since its being used at two places)
 function* assignOrder(action) {
   try {
     const data = yield call(Api.assignOrder, action)
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
     Notify("Successfully assigned the order", "success")
   } catch (err) {
-    console.log(err)
-    Notify("Something went wrong", "warning")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    err.response.json().then(json => { Notify(json.status, "warning") })
   }
 }
 
 function* skipRetailer(action) {
   try {
     const data = yield call(Api.skipRetailer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully skipped the retailer", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
+    Notify("Successfully skipped the retailer", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* skipDeliverer(action) {
   try {
     const data = yield call(Api.skipDeliverer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully skipped the deliverer", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
+    Notify("Successfully skipped the deliverer", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* cancelOrder(action) {
   try {
     const data = yield call(Api.cancelOrder, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      Notify("Successfully cancelled the order", "success")
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
-    }
+    Notify("Successfully cancelled the order", "success")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
 function* confirmRetailer(action) {
   try {
     const data = yield call(Api.confirmRetailer, action)
-    if (data.errorCode) {
-      Notify(data.message, "warning")
-    } else {
-      yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
-      Notify("Successfully confirmed the retailer", "success")
-    }
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
+    Notify("Successfully confirmed the retailer", "success")
   } catch (err) {
-    console.log(err)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
@@ -214,14 +229,22 @@ function* confirmDeliverer(action) {
     yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
     Notify("Successfully confirmed the deliverer", "success")
   } catch (err) {
-    console.log(err)
-    Notify("Something went wrong", "warning")
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: {id: action.data.delivery_order_id}})
+    err.response.json().then(json => { Notify(json.message, "warning") })
   }
 }
 
-function* setLoadingOrderDetail() {
+function* setLoading(action) {
   try {
-    yield put({type: ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL})
+    yield put({ type: ActionTypes.SUCCESS_SET_LOADING, data: action.data })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function* setLoadingAll(action) {
+  try {
+    yield put({ type: ActionTypes.SUCCESS_SET_LOADING_ALL, data: action.data })
   } catch (err) {
     console.log(err)
   }
@@ -265,6 +288,7 @@ function* deleteItemFromCart(action) {
     Notify("Successfully deleted item from cart", "success")
     action.CB()
   } catch (err) {
+    yield put({ type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
   }
@@ -277,11 +301,86 @@ function* addItemToCart(action) {
     Notify("Successfully added item to cart", "success")
     action.CB()
   } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
     err.response.json().then(json => { Notify(json.message, "warning") })
     action.CB()
   }
 }
 
+function* assignNewRetailerToOrder(action) {
+  try {
+    const data = yield call(Api.assignNewRetailerToOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully assigned new retailer", "success")
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* assignNewDeliveryAgentToOrder(action) {
+  try {
+    const data = yield call(Api.assignNewDeliveryAgentToOrder, action)
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    Notify("Successfully assigned new delivery agent", "success")
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_FETCH_ORDER_DETAIL, data: { id: action.data.delivery_order_id } })
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* createNote(action) {
+  try {
+    const data = yield call(Api.createNote, action)
+    yield put({type: action.postAction, data: { id: action.data.order_id } })
+    Notify("Successfully created the note", "success")
+  } catch (err) {
+    yield put({type: action.postAction, data: { id: action.data.order_id } })
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* fetchNotes(action) {
+  try {
+    const data = yield call(Api.fetchNotes, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_NOTES, data})
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* fetchCustomerDetails(action) {
+  try {
+    const data = yield call(Api.fetchCustomerDetails, action)
+    yield put({type: ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS, data})
+  } catch (err) {
+    yield put({type: ActionTypes.REQUEST_SET_LOADING, data: 'loadingCustomerDetails'})
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* placeOrder(action) {
+  try {
+    const data = yield call(Api.placeOrder, action)
+    yield put({type: ActionTypes.SUCCESS_PLACE_ORDER, data})
+    Notify("Order placed successfully", "success")
+    setTimeout(() => {
+      window.location.href = '/home/orders/live'
+    }, 1000)
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.message, "warning") })
+  }
+}
+
+function* validateOrder(action) {
+  try {
+    const data = yield call(Api.validateOrder, action)
+    yield put({type: ActionTypes.SUCCESS_VALIDATE_ORDER, data})
+    action.callback(data)
+  } catch (err) {
+    err.response.json().then(json => { Notify(json.delivery_message, "warning") })
+  }
+}
 
 
 /**
@@ -317,15 +416,33 @@ export function* watchFetchHistoryOrders() {
   }
 }
 
-export function* watchFetchCancellationOrders() {
+export function* watchFetchNeedToBeCancelledOrders() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_CANCELLATION_ORDERS, fetchCancellationOrders)
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS, fetchNeedToBeCancelledOrders)
   }
 }
 
 export function* watchFetchAttemptedOrders() {
   while (true) {
     yield* takeLatest(ActionTypes.REQUEST_FETCH_ATTEMPTED_ORDERS, fetchAttemptedOrders)
+  }
+}
+
+export function* watchUnavailableDp() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP, fetchUnavailableDp)
+  }
+}
+
+export function* watchFetchReturningOrders() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, fetchReturningOrders)
+  }
+}
+
+export function* watchRestockOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_RESTOCK_ORDER, restockOrder)
   }
 }
 
@@ -407,9 +524,15 @@ export function* watchConfirmDeliverer() {
   }
 }
 
-export function* watchSetLoadingOrderDetail() {
+export function* watchSetLoading() {
   while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL, setLoadingOrderDetail)
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING, setLoading)
+  }
+}
+
+export function* watchSetLoadingAll() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ALL, setLoadingAll)
   }
 }
 
@@ -442,3 +565,46 @@ export function* watchAddItemToCart() {
     yield* takeLatest(ActionTypes.REQUEST_ADD_ITEM_TO_CART, addItemToCart)
   }
 }
+
+export function* watchAssignNewRetailerToOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER, assignNewRetailerToOrder)
+  }
+}
+
+export function* watchAssignNewDeliveryAgentToOrder() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER, assignNewDeliveryAgentToOrder)
+  }
+}
+
+export function* watchCreateNote() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_CREATE_NOTE, createNote)
+  }
+}
+
+export function* watchFetchNotes() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_NOTES, fetchNotes)
+  }
+}
+
+export function* watchFetchCustomerDetails() {
+  while (true) {
+    yield* takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
+  }
+}
+
+export function* watchValidateCart() {
+  while(true) {
+    yield* takeLatest(ActionTypes.REQUEST_VALIDATE_ORDER, validateOrder)
+  }
+}
+
+export function* watchPlaceOrder() {
+  while(true) {
+    yield* takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
+  }
+}
+

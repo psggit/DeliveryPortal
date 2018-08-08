@@ -17,3 +17,23 @@ export const dateOptions = [
   { value: 'tomorrow', label: 'Tomorrow' },
   { value: 'custom', label: 'Custom date' }
 ]
+
+export const menuItems = [
+  { value: 'live', label: 'In-progress orders' },
+  { value: 'assigned', label: 'Assigned orders'},
+  { value: 'unassigned', label: 'Unassigned orders'},
+  { value: 'history', label: 'Order history' },
+  { value: 'busy-delivery-agents', label: 'Busy delivery agents'},
+  { value: 'need-to-be-cancelled', label: 'Need to be cancelled'},
+  { value: 'attempted', label: 'Attempted orders'},
+  { value: 'returning', label: 'Returning orders'},
+  { value: 'create-new-order', label: 'Create new order'},
+  { value: 'all', label: 'All orders'}
+]
+
+export const menuItemsMap = {}
+
+menuItems.reduce((menuItemsMap, item) => {
+  menuItemsMap[item.value] = item.label
+  return menuItemsMap
+}, menuItemsMap)

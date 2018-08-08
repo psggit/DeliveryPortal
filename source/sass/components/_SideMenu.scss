@@ -3,13 +3,14 @@
   box-shadow: 0 0 2px 0 #9b9b9b;
   background: #fff;
   width: 260px;
-  height: calc(100vh - 125px);
+  height: 100vh;
   display: inline-block;
   vertical-align: top;
-  margin: 20px 0 0 20px;
-  // position: fixed;
-  // top: 85px;
-  // left: 20px;
+  // margin: 20px 0 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
   overflow: auto;
   ul {
     margin: 0;
@@ -40,3 +41,16 @@
   }
 }
 
+.side-menu.side-menu--open {
+  left: 0;
+  transition: all 0.2s ease;
+}
+
+.side-menu.side-menu--close {
+  transition: all 0.2s ease;
+  left: -260px;
+}
+
+.side-menu.side-menu--close ~ .side-menu-overlay {
+  opacity: 0;
+}

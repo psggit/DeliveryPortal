@@ -11,6 +11,7 @@ class RetailerDetail extends Component {
     this.handleConfirmRetailer = this.handleConfirmRetailer.bind(this)
     this.openConfirmRetailer = this.openConfirmRetailer.bind(this)
   }
+
   openSkipRetailer() {
     mountModal(ConfirmModal({
       heading: 'Skip retailer',
@@ -33,6 +34,7 @@ class RetailerDetail extends Component {
       delivery_order_id: orderId
     }, )
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   handleSkipRetailer() {
@@ -42,12 +44,13 @@ class RetailerDetail extends Component {
       order_id: orderId,
       retailer_id: retailer.id
     })
-    
+
     unMountModal()
+    actions.setLoading('loadingOrderDetail')
     // actions.fetchOrderDetail(orderId)
   }
   render() {
-    const { isOrderConfirmed, ordersType, retailer } = this.props
+    const { isOrderConfirmed, ordersType, retailer, dpConfirmationTime } = this.props
     return (
       <div className='card'>
         <div className='card-head'>
@@ -55,6 +58,10 @@ class RetailerDetail extends Component {
           { retailer.confirmationTime ? getIcon('confirmed') : '' }
         </div>
         <div className='card-body'>
+          <p>
+            <span><b>Id: </b></span>
+            <span>{retailer.id}</span>
+          </p>
           <p>
             <span><b>Name: </b></span>
             <span>{retailer.name}</span>
@@ -65,7 +72,7 @@ class RetailerDetail extends Component {
                 <span><b>Phone: </b></span>
                 <span>{retailer.phone}</span>
               </p>
-            : ''  
+            : ''
           }
         </div>
         {

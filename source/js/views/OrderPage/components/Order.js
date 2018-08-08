@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getIcon } from './../utils'
+import { getIcon, getHasuraId } from './../utils'
 import { validateNumType, checkCtrlA } from './../utils'
 import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
@@ -18,6 +18,7 @@ class Order extends Component {
     this.increaseProductQuantity = this.increaseProductQuantity.bind(this)
     this.decreaseProductQuantity = this.decreaseProductQuantity.bind(this)
     this.callbackUpdate = this.callbackUpdate.bind(this)
+
     this.state = {
       forceRedeemKey: 0,
       canChangeQuantity: true
@@ -67,7 +68,7 @@ class Order extends Component {
     unmountOrderDetail()
   }
 
-  increaseProductQuantity(id, type) {
+  increaseProductQuantity(item) {
     const { actions, order } = this.props
     mountModal(ConfirmModal({
       heading: 'Add item to cart',
@@ -76,8 +77,8 @@ class Order extends Component {
         this.setState({ canChangeQuantity: false })
         actions.addItemToCart({
           delivery_order_id: order.id,
-          product_id: id,
-          type
+          product_id: item.id ? item.id : item.product_id,
+          type : item.type
         }, this.callbackUpdate)
         unMountModal()
       }
@@ -146,8 +147,9 @@ class Order extends Component {
         </div>
         <div className='card-body'>
           <p className='subhead'>Ordered items ({ order.cartItems.length })</p>
+
           {
-            ordersType !== 'history' &&
+            ordersType !== 'history' && this.props.canAccess('action-buttons') &&
             <button
               onClick={this.showCatalogue}
               title="Show catalogue"
@@ -159,6 +161,7 @@ class Order extends Component {
               Add Item
             </button>
           }
+          <hr />
           <table>
             <thead>
               <tr>
@@ -176,13 +179,13 @@ class Order extends Component {
                       <td>{item.brand_name}</td>
                       <td>{`${item.total_volume} ml`}</td>
                       <td>{`INR ${item.total_price}`}</td>
-                      <td>
+                      <td style={{ width: '80px' }}>
                         {
                           this.state.canChangeQuantity
                           ? (
                             <Fragment>
                               {
-                                ordersType !== 'history' &&
+                                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                                 <span
                                   onClick={() => { this.decreaseProductQuantity(item.product_id, item.type) }}
                                   style={{
@@ -201,9 +204,9 @@ class Order extends Component {
                               </span>
 
                               {
-                                ordersType !== 'history' &&
+                                ordersType !== 'history' && this.props.canAccess('action-buttons') &&
                                 <span
-                                  onClick={() => { this.increaseProductQuantity(item.product_id, item.type) }}
+                                  onClick={() => { this.increaseProductQuantity(item) }}
                                   style={{
                                     cursor: 'pointer'
                                   }}>{
@@ -237,7 +240,7 @@ class Order extends Component {
           ordersType !== 'history' && this.props.canAccess('action-buttons')
           ? (
             <div className='card-footer'>
-              { !isOrderAssigned ? <button className='btn btn-green' onClick={openAssignOrderModal}>Assign to me</button> : '' }
+              <button className='btn btn-green' onClick={openAssignOrderModal}>Assign to me</button>
               <button className='btn btn-red' onClick={this.openCancelOrder}>Cancel order</button>
               {
                 this.props.canAccess('force-redeem')

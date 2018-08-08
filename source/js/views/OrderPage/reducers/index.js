@@ -21,6 +21,18 @@
   Deliverer: null > null > null > searching > confirmed > picked > delivered > returning
 */
 
+// retailer_notified_time,
+// dp_delivered_time,
+// retailer_accepted_time,
+// cancellation_time,
+// cancellation_return_time,
+// dp_reached_to_consumer_time,
+// dp_arrived_at_store_time,
+// dp_accepted_time,
+// dp_notified_time,
+// dp_picked_up_time,
+// dp_confirmation_time,
+
 import * as ActionTypes from './../constants/actions'
 
 // Initial Order State
@@ -30,9 +42,32 @@ const initialOrderState = {
     state: 'SearchingRetailer',
     loadingOrdersList: true,
     loadingGenres: true,
+    loadingNotes: true,
+    loadingLiveOrders: true,
+    loadingLiveAssignedOrders: true,
+    loadingLiveUnassignedOrders: true,
+    loadingHistoryOrders: true,
+    loadingNeedToBeCancelledOrders: true,
+    loadingAttemptedOrders: true,
+    loadingUnavailableDp: true,
+    loadingReturningOrders: true,
+    loadingSearchOrders: true,
+    loadingCustomerDetails: true,
     autoPilotStatus: false,
+    liveOrdersData: [],
+    liveAssignedOrdersData: [],
+    liveUnassignedOrdersData: [],
+    historyOrdersData: [],
+    needToBeCancelledOrdersData: [],
+    attemptedOrdersData: [],
+    unavailableDpsData: [],
+    returningOrders: [],
+    searchOrdersData: [],
     orders: [],
     plotData: [],
+    notesData: [],
+    orderSummary: {},
+    customerDetails: {},
     ordersCount: 0,
     order: {
       id: '',
@@ -47,7 +82,8 @@ const initialOrderState = {
       assignedTo: '',
       assignedToId: '',
       isFreelancer: '',
-      cartItems: '',
+      cartItems: [],
+      notes: [],
       retailers: [],
       deliverers: [],
       orderPlacedTime: ''
@@ -84,46 +120,73 @@ const initialOrderState = {
 const actionsMap = {
   [ActionTypes.SUCCESS_FETCH_LIVE_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
-      state: 'SearchingRetailer',
-      loadingOrdersList: false,
-      orders: action.data.orders,
-      ordersCount: action.data.count
+      loadingLiveOrders: false,
+      liveOrdersData: action.data.orders,
+      liveOrdersCount: action.data.count,
     })
   },
 
   [ActionTypes.SUCCESS_FETCH_LIVE_ASSIGNED_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
-      state: 'SearchingRetailer',
-      loadingOrdersList: false,
-      orders: action.data.orders,
-      ordersCount: action.data.count
+      loadingLiveAssignedOrders: false,
+      liveAssignedOrdersData: action.data.orders,
+      liveAssignedOrdersCount: action.data.count
     })
   },
 
   [ActionTypes.SUCCESS_FETCH_LIVE_UNASSIGNED_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
-      state: 'SearchingRetailer',
-      loadingOrdersList: false,
-      orders: action.data.orders,
-      ordersCount: action.data.count
+      loadingLiveUnassignedOrders: false,
+      liveUnassignedOrdersData: action.data.orders,
+      liveUnassignedOrdersCount: action.data.count
     })
   },
 
   [ActionTypes.SUCCESS_FETCH_HISTORY_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
-      state: 'SearchingRetailer',
-      loadingOrdersList: false,
-      orders: action.data.orders,
-      ordersCount: action.data.count
+      loadingHistoryOrders: false,
+      historyOrdersData: action.data.orders,
+      historyOrdersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_NEED_TO_BE_CANCELLED_ORDERS]: (state, action) => {
+    return Object.assign({}, state, {
+      loadingNeedToBeCancelledOrders: false,
+      needToBeCancelledOrdersData: action.data.orders,
+      needToBeCancelledOrdersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_ATTEMPTED_ORDERS]: (state, action) => {
+    return Object.assign({}, state, {
+      loadingAttemptedOrders: false,
+      attemptedOrdersData: action.data.orders,
+      attemptedOrdersCount: action.data.count
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_UNAVAILABLE_DP]: (state, action) => {
+    return Object.assign({}, state, {
+      unavailableDpsData: action.data.dps.dps,
+      unavailableDpsDataCount: action.data.dps.count,
+      loadingUnavailableDp: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_RETURNING_ORDERS]: (state, action) => {
+    return Object.assign({}, state, {
+      returningOrders: action.data.orderDetails,
+      returningOrdersCount: action.data.count,
+      loadingReturningOrders: false
     })
   },
 
   [ActionTypes.SUCCESS_SEARCH_LIVE_ORDERS]: (state, action) => {
     return Object.assign({}, state, {
-      state: 'SearchingRetailer',
-      loadingOrdersList: false,
-      orders: action.data.orders,
-      ordersCount: action.data.count
+      loadingSearchOrders: false,
+      searchOrdersData: action.data.orders,
+      searchOrdersCount: action.data.count
     })
   },
 
@@ -156,6 +219,7 @@ const actionsMap = {
         status: orderStatus.status,
         cancellationFee: orderStatus.cancellation_fee,
         cancelledTime: orderStatus.cancelled_time,
+        cancellationTime: orderStatus.cancellation_time,
         cancellationReturnTime: orderStatus.cancellation_return_time,
         deliveredTime: orderStatus.dp_delivered_time,
         pickedUpTime: orderStatus.dp_picked_up_time,
@@ -165,6 +229,7 @@ const actionsMap = {
         assignedToId: orderStatus.assigned_to_id,
         isFreelancer: orderStatus.is_freelancer,
         cartItems: orderStatus.cart_items,
+        notes: orderStatus.notes,
         retailers: orderStatus.retailers,
         deliverers: orderStatus.deliverers,
         orderPlacedTime: orderStatus.order_placed_time
@@ -201,9 +266,25 @@ const actionsMap = {
     })
   },
 
-  [ActionTypes.SUCCESS_SET_LOADING_ORDER_DETAIL]: (state, action) => {
+  [ActionTypes.SUCCESS_SET_LOADING]: (state, action) => {
     return Object.assign({}, state, {
-      loadingOrderDetail: true
+      [action.data]: true
+    })
+  },
+
+  [ActionTypes.SUCCESS_SET_LOADING_ALL]: (state, action) => {
+    return Object.assign({}, state, {
+      loadingLiveOrders: true,
+      loadingHistoryOrders: true,
+      loadingLiveAssignedOrders: true,
+      loadingLiveUnassignedOrders: true,
+      loadingNeedToBeCancelledOrders: true,
+      loadingAttemptedOrders: true,
+      loadingUnavailableDp: true,
+      loadingReturningOrders: true,
+      loadingGenres: true,
+      loadingNotes: true,
+      loadingCustomerDetails: true,
     })
   },
 
@@ -211,6 +292,26 @@ const actionsMap = {
     return Object.assign({}, state, {
       genres: action.data.map(item => item.genre_name),
       loadingGenres: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_NOTES]: (state, action) => {
+    return Object.assign({}, state, {
+      notesData: action.data.Notes,
+      loadingNotes: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_FETCH_CUSTOMER_DETAILS]: (state, action) => {
+    return Object.assign({}, state, {
+      customerDetails: action.data,
+      loadingCustomerDetails: false
+    })
+  },
+
+  [ActionTypes.SUCCESS_VALIDATE_ORDER]: (state, action) => {
+    return Object.assign({}, state, {
+      orderSummary: action.data
     })
   }
 };

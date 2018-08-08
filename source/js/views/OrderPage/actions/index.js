@@ -43,8 +43,8 @@ export const fetchHistoryOrders = (data) => ({
   data
 })
 
-export const fetchCancellationOrders = (data) => ({
-  type: ActionTypes.REQUEST_FETCH_CANCELLATION_ORDERS,
+export const fetchNeedToBeCancelledOrders = (data) => ({
+  type: ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS,
   data
 })
 
@@ -108,8 +108,14 @@ export const confirmDeliverer = (data) => ({
   data: data
 })
 
-export const setLoadingOrderDetail = () => ({
-  type: ActionTypes.REQUEST_SET_LOADING_ORDER_DETAIL
+export const setLoading = (data) => ({
+  type: ActionTypes.REQUEST_SET_LOADING,
+  data
+})
+
+export const setLoadingAll = (data) => ({
+  type: ActionTypes.REQUEST_SET_LOADING_ALL,
+  data
 })
 
 export const autoPilot = (data, CB) => ({
@@ -139,3 +145,56 @@ export const addItemToCart = (data, CB) => ({
   data,
   CB
 })
+
+export const assignNewRetailerToOrder = (data) => ({
+  type: ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER,
+  data
+})
+
+export const assignNewDeliveryAgentToOrder = (data) => ({
+  type: ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER,
+  data
+})
+
+export const createNote = (data, postAction) => ({
+  type: ActionTypes.REQUEST_CREATE_NOTE,
+  data,
+  postAction
+})
+
+export const fetchNotes = data => ({
+  type: ActionTypes.REQUEST_FETCH_NOTES,
+  data
+})
+
+export const fetchUnavailableDp = data => ({
+  type: ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP,
+  data
+})
+
+export const fetchReturningOrders = data => ({
+  type: ActionTypes.REQUEST_FETCH_RETURNING_ORDERS,
+  data
+})
+
+export const restockOrder = data => ({
+  type: ActionTypes.REQUEST_RESTOCK_ORDER,
+  data
+})
+
+export const fetchCustomerDetails = data => ({
+  type: ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS,
+  data
+})
+
+export const placeOrder = data => ({
+  type: ActionTypes.REQUEST_PLACE_ORDER,
+  data
+})
+
+export const validateOrder = (data, callback) => ({
+  type: ActionTypes.REQUEST_VALIDATE_ORDER,
+  data,
+  callback
+})
+

@@ -9,14 +9,17 @@ class SearchInput extends Component {
     this.handlePress = this.handlePress.bind(this)
     this.handleClearSearch = this.handleClearSearch.bind(this)
     this.state = {
-      searchQuery: props.searchQuery,
+      searchQuery: props.searchQuery || '',
       searched: false
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ searchQuery: nextProps.searchQuery })
-  }
+  // componentDidMount() {
+  //   this.setState({
+  //     searchQuery: '',
+  //     searched: false
+  //   })
+  // }
 
   handleClearSearch() {
     this.setState({
@@ -24,12 +27,12 @@ class SearchInput extends Component {
       searched: false
     })
 
-    this.props.setSearchQuery('')
-    this.search('')
+    if (this.props.clearSearch) {
+      this.props.clearSearch()
+    }
   }
 
   search(searchQuery) {
-    this.props.setSearchQuery(searchQuery)
     this.props.search(searchQuery)
   }
 
@@ -37,7 +40,7 @@ class SearchInput extends Component {
     const searchQuery = e.target.value
     this.setState({ searchQuery })
     if (!searchQuery.length) {
-      this.search('')
+      this.handleClearSearch()
     }
   }
 
@@ -58,6 +61,7 @@ class SearchInput extends Component {
           onChange={this.handleChange}
           onKeyDown={this.handlePress}
           value={searchQuery}
+          maxLength={this.props.maxLength || ''}
         />
         { this.state.searchQuery ? <span onClick={this.handleClearSearch} className='clear-search'>{ getIcon('cross') }</span> : '' }
         <span>{ getIcon('search') }</span>

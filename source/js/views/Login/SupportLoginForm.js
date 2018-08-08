@@ -63,9 +63,8 @@ class SupportLoginForm extends React.Component {
           return
         }
         response.json().then(function(data) {
-          localStorage.setItem('_hipbaru', JSON.stringify(data))
           createSession(data)
-          location.href = '/orders'
+          location.href = '/home/orders/live'
         })
       }
     )
@@ -113,7 +112,7 @@ class SupportLoginForm extends React.Component {
               Login
             </button>
           </div>
-          { error ? <p className='errorLogin'>Wrong username or password</p> : ''} 
+          { error ? <p className='errorLogin'>Wrong username or password</p> : ''}
         </div>
       </div>
     )
