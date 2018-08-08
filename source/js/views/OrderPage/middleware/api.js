@@ -339,7 +339,7 @@ export function placeOrder(action) {
 
 export function validateOrder(action) {
   const data = POST({
-    api: `/support/portal/create/order`,
+    api: `/support/portal/cart/checkout`,
     handleError: true,
     apiBase: 'ordermanUrl',
     data: action.data

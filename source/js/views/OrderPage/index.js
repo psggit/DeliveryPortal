@@ -151,6 +151,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    console.log("unmount");
     const _self = this
 
     ;(function pollAutoPilotStatus() {

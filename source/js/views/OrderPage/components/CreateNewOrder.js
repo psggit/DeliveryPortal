@@ -1,6 +1,5 @@
 import React from 'react'
 import SearchInput from '@components/SearchInput'
-import '@sass/create-new-order.scss'
 import * as Actions from './../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -9,9 +8,15 @@ import { mountModal, unMountModal } from '@components/ModalBox/utils'
 import ConfirmModal from '@components/ModalBox/ConfirmModal'
 import showCatalogue from './ShowCatalogue'
 import { getIcon } from './../utils'
-import '@sass/consumer-details.scss'
 import { getQueryObj } from '@utils/url-utils'
 import CartSummary from './CartSummary';
+//import { Repeat } from 'immutable';
+
+import Card from '@components/Card'
+import CardHeader from '@components/Card/CardHeader'
+import CardSubheader from '@components/Card/CardSubheader'
+import CardBody from '@components/Card/CardBody'
+import CardFooter from '@components/Card/CardFooter'
 
 const history = createHistory()
 
@@ -219,15 +224,17 @@ class CreateNewOrder extends React.Component {
 
   renderCartItems() {
     return this.orderedListItemDetails.map((item) => {
-      return <div className="cart-item">
-        <div className="brand box-style"> {item.brand} </div>
-        <div className="volume box-style"> {item.volume} </div>
-        <div className="price box-style"> {item.price} </div>
-        <div className="quantity box-style" >
+      return <div className="card-item" style={{ height: 'auto', textAlign: 'center'}}>
+        <div style={{width: '30%',textAlign: 'center',fontWeight: '600'}}> {item.brand} </div>
+        <div style={{width: '25%',textAlign: 'center',fontWeight: '600'}}> {item.volume} </div>
+        <div style={{width: '25%',textAlign: 'center',fontWeight: '600'}}> {item.price} </div>
+        <div style={{width: '20%',textAlign: 'center',fontWeight: '600'}}>
           <span
             onClick={() => { this.decreaseProductQuantity(item.id) }}
             style={{
-              cursor: 'pointer'
+              cursor: 'pointer',
+              margin: '0px 10px 0px 10px',
+              textAlign: 'center'
             }}>
             {getIcon('minus')}
           </span>
@@ -235,7 +242,9 @@ class CreateNewOrder extends React.Component {
           <span
             onClick={() => { this.increaseProductQuantity(item) }}
             style={{
-              cursor: 'pointer'
+              cursor: 'pointer',
+              margin: '0px 10px 0px 10px',
+              textAlign: 'center'
             }}>
             {getIcon('plus')}
           </span>
@@ -300,7 +309,7 @@ class CreateNewOrder extends React.Component {
       return this.props.data.customerDetails.addresses.map((item, i) => {
         return (
           <React.Fragment>
-            <label className="address" for={item.address_id} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}>
+            <label for={item.address_id} onClick={() => this.inputChange(item.gps, item.address_id, item.address)}>
               <input id={item.address_id} name="consumer-address" type="radio" value={item.address_id} checked={this.state.addressId === item.address_id} onChange={(e) => this.handleChange(e)} />
               {item.address}
             </label>
@@ -323,86 +332,82 @@ class CreateNewOrder extends React.Component {
           searchQuery={this.state.searchQuery}
           maxLength={10}
         />
-        <div className="new-order-container" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
           {
             !this.props.data.loadingCustomerDetails &&
-              Object.keys(this.props.data.customerDetails).length > 0
-              ?
-              <div className="consumer-details">
-                <div className="header">CONSUMER</div>
-                <div className="content">
-                  <div className="field">
+            Object.keys(this.props.data.customerDetails).length > 0
+            &&
+            <Card style={{ width: '50%'}}>
+              <CardHeader>CONSUMER</CardHeader>
+              <CardBody style={{height: 'calc(100% - 42px - 20px)'}}>
+                  <div className="card-item">
                     <span> NAME:</span>
-                    <div className="field-value"> {this.props.data.customerDetails.consumer_details.consumer_name} </div>
+                    <div className="card-value"> {this.props.data.customerDetails.consumer_details.consumer_name} </div>
                   </div>
-                  <div className="field">
+                  <div className="card-item">
                     <span>CREDITS:</span>
-                    <div className="field-value">{this.state.credits} </div>
+                    <div className="card-value">{this.state.credits} </div>
                   </div>
-                  <div className="addresses-container">
-                    <div className="field">
-                      <span>ADDRESS:</span>
+                  <div style={{height: 'calc(100% - 80px)'}}>
+                    <div className="card-item">
+                      <span style={{width: '100%'}}>ADDRESS:</span>
                     </div>
-                    <div className="addresses">
+                    <div className="card-body-content" style={{height: 'calc(100% - 40px)',  padding: '10px', border: '1px solid #f6f6f6'}}>
                       {this.renderAddressList()}
                     </div>
-                    {/* <div className="add-address"><button onClick={this.showAddAddressModal}> Add address </button> </div> */}
                   </div>
-                </div>
-              </div>
-              : ''
-          }
+              </CardBody>
+            </Card>
+        }
           {
             !this.props.data.loadingCustomerDetails &&
             Object.keys(this.props.data.customerDetails).length > 0 &&
             this.showCartItems &&
-            <div className="cart">
-              <div className="header">ORDER</div>
-              <div className="cart-body">
-                <div className="subheader">
-                  <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
-                  <button  onClick={() => this.fetchInventoryList()}> Add item </button>
-                </div>
-                {
-                  <React.Fragment>
-                    <div className="cart-header">
-                      <div className="brand box-style"> Brand </div>
-                      <div className="volume box-style"> Volume </div>
-                      <div className="price box-style"> Price </div>
-                      <div className="quantity box-style"> Quantity </div>
-                    </div>
-                    <div className="cart-items">
-                      {this.renderCartItems()}
-                    </div>
-                    <div className="place-order">
-                      <button className={this.state.validatingCart ? 'disable' : ''} onClick={() => this.checkout()}> CHECKOUT </button>
-                    </div>
-                  </React.Fragment>
-                }
-              </div>
+            <Card style={{ width: '46%'}}>
+              <CardHeader>ORDER</CardHeader>
+              <CardSubheader>
+                <div>Ordered Items ({this.orderedListItemDetails.length})</div>
+                <button  onClick={() => this.fetchInventoryList()}> Add item </button>
+              </CardSubheader>
+              <CardBody style={{height: 'calc(100% - 42px - 60px - 20px - 60px)'}}>
+                <React.Fragment>
+                  <div className="card-body-header">
+                    <div style={{width: '30%',textAlign: 'center',fontWeight: '600'}}> Brand </div>
+                    <div style={{width: '25%',textAlign: 'center',fontWeight: '600'}}> Volume </div>
+                    <div style={{width: '25%',textAlign: 'center',fontWeight: '600'}}> Price </div>
+                    <div style={{width: '20%',textAlign: 'center',fontWeight: '600'}}> Quantity </div>
+                  </div>
+                  <div className="card-body-content" style={{height: 'calc(100% - 40px)'}}>
+                    {this.renderCartItems()}
+                  </div>
+                </React.Fragment>
+              </CardBody>
+              <CardFooter>
+                <button className={this.state.validatingCart ? 'disable' : ''} onClick={() => this.checkout()}> CHECKOUT </button>
+              </CardFooter>
+            </Card>
 
-            </div>
           }
           {
             !this.props.data.loadingCustomerDetails &&
             Object.keys(this.props.data.customerDetails).length > 0 &&
             !this.showCartItems
             &&
-            <div className="cart">
-              <div className="header">ORDER</div>
-              <div className="cart-body">
-                <div className="subheader">
-                  <div className="title">Ordered Items ({this.orderedListItemDetails.length})</div>
-                  {
-                    this.state.addressId &&
-                    <button onClick={() => this.fetchInventoryList()}> Add item </button>
-                  }
-                </div>
-                <div className="cart-items">
+            <Card style={{ width: '46%'}}>
+              <CardHeader>ORDER</CardHeader>
+              <CardSubheader>
+                <div>Ordered Items ({this.orderedListItemDetails.length})</div>
+                {
+                  this.state.addressId &&
+                  <button onClick={() => this.fetchInventoryList()}> Add item </button>
+                }
+              </CardSubheader>
+              <CardBody style={{height: 'calc(100% - 42px - 60px - 20px)'}}>
+                <div className="card-body-content">
                   <div className="notification-message">{this.state.addressId ? 'Cart is empty!' : 'Select delivery address'}</div>
                 </div>
-              </div>
-            </div>
+              </CardBody>
+            </Card>
           }
         </div>
       </React.Fragment>

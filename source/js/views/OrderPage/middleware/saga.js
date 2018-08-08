@@ -374,13 +374,11 @@ function* placeOrder(action) {
 
 function* validateOrder(action) {
   try {
-    const data = orderSummary
-    //const data = yield call(Api.validateOrder, action)
+    const data = yield call(Api.validateOrder, action)
     yield put({type: ActionTypes.SUCCESS_VALIDATE_ORDER, data})
-    action.callback(data.data)
+    action.callback(data)
   } catch (err) {
-    Notify("Can't place order", "warning")
-    //err.response.json().then(json => { Notify(json.delivery_message, "warning") })
+    err.response.json().then(json => { Notify(json.delivery_message, "warning") })
   }
 }
 

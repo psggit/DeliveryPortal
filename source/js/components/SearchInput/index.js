@@ -8,7 +8,6 @@ class SearchInput extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handlePress = this.handlePress.bind(this)
     this.handleClearSearch = this.handleClearSearch.bind(this)
-    console.log(props)
     this.state = {
       searchQuery: props.searchQuery || '',
       searched: false
@@ -27,7 +26,6 @@ class SearchInput extends Component {
   }
 
   search(searchQuery) {
-    console.log("search query", searchQuery);
     this.props.search(searchQuery)
   }
 

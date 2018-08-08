@@ -284,6 +284,7 @@ const actionsMap = {
       loadingReturningOrders: true,
       loadingGenres: true,
       loadingNotes: true,
+      loadingCustomerDetails: true,
     })
   },
 
