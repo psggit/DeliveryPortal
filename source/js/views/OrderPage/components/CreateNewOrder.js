@@ -218,6 +218,7 @@ class CreateNewOrder extends React.Component {
 
   placeOrder() {
     unMountModal()
+    this.setState({validatingCart : true })
     // this.setState({isSubmittingOrder : true })
     this.props.actions.placeOrder({
       mobile: this.phoneNo,
@@ -285,6 +286,7 @@ class CreateNewOrder extends React.Component {
     if(this.props.data.customerDetails.consumer_details.available_credits !== response.total_credits) {
       this.setState({credits: response.total_credits})
     }
+    this.setState({validatingCart : false })
     
     if(response.delivery_possible) {
       mountModal(CartSummary({
@@ -306,9 +308,6 @@ class CreateNewOrder extends React.Component {
         order_type: "delivery",
         products: this.state.orderedItems
       }, (response) => this.mountOrderSummaryModal(response))
-      setTimeout(() => {
-        this.setState({validatingCart : false })
-      }, 4000)
     }
   }
 

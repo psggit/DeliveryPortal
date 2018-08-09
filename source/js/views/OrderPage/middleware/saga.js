@@ -378,7 +378,7 @@ function* validateOrder(action) {
     yield put({type: ActionTypes.SUCCESS_VALIDATE_ORDER, data})
     action.callback(data)
   } catch (err) {
-    err.response.json().then(json => { Notify(json.delivery_message, "warning") })
+    err.response.json().then(json => { action.callback(json); Notify(json.delivery_message, "warning") })
   }
 }
 
