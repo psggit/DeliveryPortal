@@ -67,7 +67,8 @@ export default function showCatalogue(data) {
           from: 0,
           size: 9999,
           km: '40km',
-          gps: '12.9705214,77.5794326',
+          //gps: '12.9705214,77.5794326',
+          gps: data.gps,
           is_featured: false,
           stateName: 'KA'
         }
