@@ -299,13 +299,16 @@ class CreateNewOrder extends React.Component {
 
   checkout() {
     if(!this.state.validatingCart) {
+      this.setState({validatingCart : true })
       this.props.actions.validateOrder({
         mobile: this.phoneNo,
         address_id: this.state.addressId,
         order_type: "delivery",
         products: this.state.orderedItems
       }, (response) => this.mountOrderSummaryModal(response))
-      this.setState({validatingCart : false })
+      setTimeout(() => {
+        this.setState({validatingCart : false })
+      }, 4000)
     }
   }
 
