@@ -305,7 +305,7 @@ class CreateNewOrder extends React.Component {
         order_type: "delivery",
         products: this.state.orderedItems
       }, (response) => this.mountOrderSummaryModal(response))
-      this.setState({validatingCart : true })
+      this.setState({validatingCart : false })
     }
   }
 
