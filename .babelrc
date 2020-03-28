@@ -1,19 +1,10 @@
 {
-  "plugins": [
-    "transform-class-properties",
-    "syntax-decorators",
-    "transform-decorators-legacy"
-  ],
   "presets": [
-    ["es2015", { "modules": false }],
-    "react",
-    "stage-0"
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
-  "env": {
-    "development": {
-      "presets": [
-        "react-hmre"
-      ]
-    }
-  }
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "syntax-dynamic-import"
+  ]
 }

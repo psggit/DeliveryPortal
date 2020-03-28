@@ -3,7 +3,7 @@ This is your saga file, which containes generator functions.
 This is a side-effect container. Do all your side-effect here only.
 */
 
-import { takeLatest, delay } from 'redux-saga'
+import { takeLatest, delay } from 'redux-saga/effects'
 import { call, fork, put, race, take } from 'redux-saga/effects'
 import * as ActionTypes from './../constants/actions'
 import * as Api from './api'
@@ -392,219 +392,187 @@ function* validateOrder(action) {
 //   }
 // }
 
-export function* watchFetchLiveOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ORDERS, fetchLiveOrders)
-  }
+function* watchFetchLiveOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ORDERS, fetchLiveOrders)
 }
 
-export function* watchFetchLiveAssignedOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ASSIGNED_ORDERS, fetchLiveAssignedOrders)
-  }
+function* watchFetchLiveAssignedOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_LIVE_ASSIGNED_ORDERS, fetchLiveAssignedOrders)
 }
 
-export function* watchFetchLiveUnassignedOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_LIVE_UNASSIGNED_ORDERS, fetchLiveUnassignedOrders)
-  }
+function* watchFetchLiveUnassignedOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_LIVE_UNASSIGNED_ORDERS, fetchLiveUnassignedOrders)
 }
 
-export function* watchFetchHistoryOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_HISTORY_ORDERS, fetchHistoryOrders)
-  }
+function* watchFetchHistoryOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_HISTORY_ORDERS, fetchHistoryOrders)
 }
 
-export function* watchFetchNeedToBeCancelledOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS, fetchNeedToBeCancelledOrders)
-  }
+function* watchFetchNeedToBeCancelledOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_NEED_TO_BE_CANCELLED_ORDERS, fetchNeedToBeCancelledOrders)
 }
 
-export function* watchFetchAttemptedOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_ATTEMPTED_ORDERS, fetchAttemptedOrders)
-  }
+function* watchFetchAttemptedOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_ATTEMPTED_ORDERS, fetchAttemptedOrders)
 }
 
-export function* watchUnavailableDp() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP, fetchUnavailableDp)
-  }
+function* watchUnavailableDp() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_UNAVAILABLE_DP, fetchUnavailableDp)
 }
 
-export function* watchFetchReturningOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, fetchReturningOrders)
-  }
+function* watchFetchReturningOrders() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_RETURNING_ORDERS, fetchReturningOrders)
 }
 
-export function* watchRestockOrder() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_RESTOCK_ORDER, restockOrder)
-  }
+function* watchRestockOrder() {
+  yield takeLatest(ActionTypes.REQUEST_RESTOCK_ORDER, restockOrder)
 }
 
-export function* watchSearchLiveOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ORDERS, searchLiveOrders)
-  }
+function* watchSearchLiveOrders() {
+  yield takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ORDERS, searchLiveOrders)
 }
 
-export function* watchSearchLiveAssignedOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ASSIGNED_ORDERS, searchLiveAssignedOrders)
-  }
+function* watchSearchLiveAssignedOrders() {
+  yield takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_ASSIGNED_ORDERS, searchLiveAssignedOrders)
 }
 
-export function* watchSearchLiveUnassignedOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_UNASSIGNED_ORDERS, searchLiveUnassignedOrders)
-  }
+function* watchSearchLiveUnassignedOrders() {
+  yield takeLatest(ActionTypes.REQUEST_SEARCH_LIVE_UNASSIGNED_ORDERS, searchLiveUnassignedOrders)
 }
 
-export function* watchSearchHistoryOrders() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SEARCH_HISTORY_ORDERS, searchHistoryOrders)
-  }
+function* watchSearchHistoryOrders() {
+  yield takeLatest(ActionTypes.REQUEST_SEARCH_HISTORY_ORDERS, searchHistoryOrders)
 }
 
-export function* watchFilterOrdersData() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FILTER_ORDERS_DATA, filterOrdersData)
-  }
+function* watchFilterOrdersData() {
+  yield takeLatest(ActionTypes.REQUEST_FILTER_ORDERS_DATA, filterOrdersData)
 }
 
-export function* watchFetchOrderDetail() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_ORDER_DETAIL, fetchOrderDetail)
-  }
+function* watchFetchOrderDetail() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_ORDER_DETAIL, fetchOrderDetail)
 }
 
-export function* watchForceRedeem() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FORCE_REDEEM, forceRedeem)
-  }
+function* watchForceRedeem() {
+  yield takeLatest(ActionTypes.REQUEST_FORCE_REDEEM, forceRedeem)
 }
 
-export function* watchAssignOrder() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_ORDER, assignOrder)
-  }
+function* watchAssignOrder() {
+  yield takeLatest(ActionTypes.REQUEST_ASSIGN_ORDER, assignOrder)
 }
 
-export function* watchSkipRetailer() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SKIP_RETAILER, skipRetailer)
-  }
+function* watchSkipRetailer() {
+  yield takeLatest(ActionTypes.REQUEST_SKIP_RETAILER, skipRetailer)
 }
 
-export function* watchSkipDeliverer() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SKIP_DELIVERER, skipDeliverer)
-  }
+function* watchSkipDeliverer() {
+  yield takeLatest(ActionTypes.REQUEST_SKIP_DELIVERER, skipDeliverer)
 }
 
-export function* watchCancelOrder() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_CANCEL_ORDER, cancelOrder)
-  }
+function* watchCancelOrder() {
+  yield takeLatest(ActionTypes.REQUEST_CANCEL_ORDER, cancelOrder)
 }
 
-export function* watchConfirmRetailer() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_CONFIRM_RETAILER, confirmRetailer)
-  }
+function* watchConfirmRetailer() {
+  yield takeLatest(ActionTypes.REQUEST_CONFIRM_RETAILER, confirmRetailer)
 }
 
-export function* watchConfirmDeliverer() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_CONFIRM_DELIVERER, confirmDeliverer)
-  }
+function* watchConfirmDeliverer() {
+  yield takeLatest(ActionTypes.REQUEST_CONFIRM_DELIVERER, confirmDeliverer)
 }
 
-export function* watchSetLoading() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING, setLoading)
-  }
+function* watchSetLoading() {
+  yield takeLatest(ActionTypes.REQUEST_SET_LOADING, setLoading)
 }
 
-export function* watchSetLoadingAll() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_SET_LOADING_ALL, setLoadingAll)
-  }
+function* watchSetLoadingAll() {
+  yield takeLatest(ActionTypes.REQUEST_SET_LOADING_ALL, setLoadingAll)
 }
 
-export function* watchAutoPilot() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_AUTO_PILOT, autoPilot)
-  }
+function* watchAutoPilot() {
+  yield takeLatest(ActionTypes.REQUEST_AUTO_PILOT, autoPilot)
 }
 
-export function* watchFetchAutoPilotStatus() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_AUTO_PILOT_STATUS, fetchAutoPilotStatus)
-  }
+function* watchFetchAutoPilotStatus() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_AUTO_PILOT_STATUS, fetchAutoPilotStatus)
 }
 
-export function* watchFetchPlotData() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_PLOT_DATA, fetchPlotData)
-  }
+function* watchFetchPlotData() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_PLOT_DATA, fetchPlotData)
 }
 
-export function* watchDeleteItemFromCart() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_DELETE_ITEM_FROM_CART, deleteItemFromCart)
-  }
+function* watchDeleteItemFromCart() {
+  yield takeLatest(ActionTypes.REQUEST_DELETE_ITEM_FROM_CART, deleteItemFromCart)
 }
 
-export function* watchAddItemToCart() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_ADD_ITEM_TO_CART, addItemToCart)
-  }
+function* watchAddItemToCart() {
+  yield takeLatest(ActionTypes.REQUEST_ADD_ITEM_TO_CART, addItemToCart)
 }
 
-export function* watchAssignNewRetailerToOrder() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER, assignNewRetailerToOrder)
-  }
+function* watchAssignNewRetailerToOrder() {
+  yield takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_RETAILER_TO_ORDER, assignNewRetailerToOrder)
 }
 
-export function* watchAssignNewDeliveryAgentToOrder() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER, assignNewDeliveryAgentToOrder)
-  }
+function* watchAssignNewDeliveryAgentToOrder() {
+  yield takeLatest(ActionTypes.REQUEST_ASSIGN_NEW_DP_TO_ORDER, assignNewDeliveryAgentToOrder)
 }
 
-export function* watchCreateNote() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_CREATE_NOTE, createNote)
-  }
+function* watchCreateNote() {
+  yield takeLatest(ActionTypes.REQUEST_CREATE_NOTE, createNote)
 }
 
-export function* watchFetchNotes() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_NOTES, fetchNotes)
-  }
+function* watchFetchNotes() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_NOTES, fetchNotes)
 }
 
-export function* watchFetchCustomerDetails() {
-  while (true) {
-    yield* takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
-  }
+function* watchFetchCustomerDetails() {
+  yield takeLatest(ActionTypes.REQUEST_FETCH_CUSTOMER_DETAILS, fetchCustomerDetails)
 }
 
-export function* watchValidateCart() {
-  while(true) {
-    yield* takeLatest(ActionTypes.REQUEST_VALIDATE_ORDER, validateOrder)
-  }
+function* watchValidateCart() {
+  yield takeLatest(ActionTypes.REQUEST_VALIDATE_ORDER, validateOrder)
 }
 
-export function* watchPlaceOrder() {
-  while(true) {
-    yield* takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
-  }
+function* watchPlaceOrder() {
+  yield takeLatest(ActionTypes.REQUEST_PLACE_ORDER, placeOrder)
 }
 
+export default function* rootSaga() {
+  yield all([
+    fork(watchFetchLiveOrders),
+    fork(watchFetchLiveAssignedOrders),
+    fork(watchFetchLiveUnassignedOrders),
+    fork(watchFetchHistoryOrders),
+    fork(watchFetchNeedToBeCancelledOrders),
+    fork(watchFetchAttemptedOrders),
+    fork(watchUnavailableDp),
+    fork(watchFetchReturningOrders),
+    fork(watchRestockOrder),
+    fork(watchSearchLiveOrders),
+    fork(watchSearchLiveAssignedOrders),
+    fork(watchSearchLiveUnassignedOrders),
+    fork(watchSearchHistoryOrders),
+    fork(watchFilterOrdersData),
+    fork(watchFetchOrderDetail),
+    fork(watchForceRedeem),
+    fork(watchAssignOrder),
+    fork(watchSkipRetailer),
+    fork(watchSkipDeliverer),
+    fork(watchCancelOrder),
+    fork(watchConfirmRetailer),
+    fork(watchConfirmDeliverer),
+    fork(watchSetLoading),
+    fork(watchSetLoadingAll),
+    fork(watchAutoPilot),
+    fork(watchFetchAutoPilotStatus),
+    fork(watchFetchPlotData),
+    fork(watchDeleteItemFromCart),
+    fork(watchAddItemToCart),
+    fork(watchAssignNewRetailerToOrder),
+    fork(watchAssignNewDeliveryAgentToOrder),
+    fork(watchCreateNote),
+    fork(watchFetchNotes),
+    fork(watchFetchCustomerDetails),
+    fork(watchValidateCart),
+    fork(watchPlaceOrder)
+  ])
+}

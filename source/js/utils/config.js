@@ -37,14 +37,15 @@
 // }
 
 function getAPIObj() {
-  if (window.location.href.split(':')[1] === '//localhost') {
+  if (window.location.href.split(':')[1] === '//localhost' || window.location.hostname.split('.')[0] === "support-local") {
     let scheme = 'https'
-    let baseHost = '.amebae21.hasura-app.io'
-    let appName = 'amebae21'
+    // let baseHost = '.amebae21.hasura-app.io'
+    let appName = 'hipbar-dev.com'
+    let baseHost = ".hipbar-dev.com"
 
     return {
-      authUrl: 'https://auth.' + appName + '.hasura-app.io',
-      blogicUrl: 'https://api1.' + appName + '.hasura-app.io',
+      authUrl: 'https://auth' + baseHost,
+      blogicUrl: 'https://api1' + baseHost,
       gremlinUrl: scheme + '://gremlin' + baseHost,
       catman: scheme + '://catman' + baseHost,
       ordermanUrl: scheme + '://orderman' + baseHost,
